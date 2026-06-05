@@ -21,10 +21,20 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/platform-ws": "^11.1.22",
+    "@nestjs/typeorm": "^11.0.1",
+    "@nestjs/websockets": "^11.1.22",
+    "joi": "^18.2.1",
+    "openai": "^6.38.0",
+    "pg": "^8.21.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "twilio": "^6.0.2",
+    "typeorm": "^1.0.0",
+    "ws": "^8.20.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -36,6 +46,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
     "@types/supertest": "^7.0.0",
+    "@types/ws": "^8.18.1",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",

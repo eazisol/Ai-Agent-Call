@@ -1,0 +1,87 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: ai_call_agent_postgres
+    restart: unless-stopped
+    env_file:
+      - ./.env.docker
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ai_call_agent_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: ai_call_agent_redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ai_call_agent_network
+
+  backend:
+    build:
+      context: ./ai-call-agent-backend
+      dockerfile: Dockerfile
+    container_name: ai_call_agent_backend
+    restart: unless-stopped
+    env_file:
+      - ./ai-call-agent-backend/.env.docker
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - ai_call_agent_network
+
+  frontend:
+    build:
+      context: ./ai-call-agent-frontend
+      dockerfile: Dockerfile
+    container_name: ai_call_agent_frontend
+    restart: unless-stopped
+    env_file:
+      - ./ai-call-agent-frontend/.env.docker
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+    networks:
+      - ai_call_agent_network
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: ai_call_agent_n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      N8N_BASIC_AUTH_ACTIVE: "true"
+      N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD}
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: postgres
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: ai_call_agent
+      DB_POSTGRESDB_USER: postgres
+      DB_POSTGRESDB_PASSWORD: postgres
+    depends_on:
+      - postgres
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - ai_call_agent_network
+
+volumes:
+  postgres_data:
+  redis_data:
+  n8n_data:
+
+networks:
+  ai_call_agent_network:
+    driver: bridge
