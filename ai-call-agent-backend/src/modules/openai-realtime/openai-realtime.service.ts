@@ -1,61 +1,56 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import WebSocket from 'ws';
+import { ApplicationError } from '../../common/errors/application-error';
+import type { VoiceAgentProviderPort } from '../../providers/voice-agent-provider.port';
 
 @Injectable()
-export class OpenaiRealtimeService {
-    private readonly logger = new Logger(OpenaiRealtimeService.name);
+export class OpenaiRealtimeService implements VoiceAgentProviderPort {
+  readonly providerName = 'openai_realtime';
+  private readonly logger = new Logger(OpenaiRealtimeService.name);
 
-    constructor(private readonly configService: ConfigService) { }
+  constructor(private readonly config: ConfigService) {}
 
-    createRealtimeConnection(): WebSocket {
-        const apiKey = this.configService.get<string>('openai.apiKey');
-        const model = this.configService.get<string>('openai.realtimeModel');
-
-        const url = `wss://api.openai.com/v1/realtime?model=${model}`;
-
-        const openAiWs = new WebSocket(url, {
-            headers: {
-                Authorization: `Bearer ${apiKey}`,
-                'OpenAI-Beta': 'realtime=v1',
-            },
-        });
-
-        openAiWs.on('open', () => {
-            this.logger.log('Connected to OpenAI Realtime API');
-
-            openAiWs.send(
-                JSON.stringify({
-                    type: 'session.update',
-                    session: {
-                        modalities: ['text', 'audio'],
-                        voice: 'alloy',
-                        instructions:
-                            'You are a helpful AI customer support representative. Speak clearly and professionally.',
-                        input_audio_format: 'g711_ulaw',
-                        output_audio_format: 'g711_ulaw',
-                        turn_detection: {
-                            type: 'server_vad',
-                        },
-                    },
-                }),
-            );
-        });
-
-        openAiWs.on('message', (data) => {
-            this.logger.debug(`OpenAI event received: ${data.toString()}`);
-        });
-
-        openAiWs.on('error', (error) => {
-            this.logger.error('OpenAI Realtime WebSocket error', error.stack);
-        });
-
-        openAiWs.on('close', (code, reason) => {
-            this.logger.warn(
-                `OpenAI Realtime closed | Code: ${code} | Reason: ${reason.toString()}`,
-            );
-        });
-
-        return openAiWs;
+  createRealtimeConnection(): WebSocket {
+    const apiKey = this.config.get<string>('openai.apiKey');
+    if (!apiKey) {
+      throw new ApplicationError(
+        'VOICE_PROVIDER_NOT_CONFIGURED',
+        'The voice provider is not configured.',
+        503,
+      );
     }
+
+    const model =
+      this.config.get<string>('openai.realtimeModel') ?? 'gpt-realtime';
+    const socket = new WebSocket(
+      `wss://api.openai.com/v1/realtime?model=${encodeURIComponent(model)}`,
+      { headers: { Authorization: `Bearer ${apiKey}` } },
+    );
+
+    socket.on('open', () => {
+      this.logger.log('Voice-agent session connected');
+      socket.send(
+        JSON.stringify({
+          type: 'session.update',
+          session: {
+            modalities: ['text', 'audio'],
+            voice: this.config.get<string>('openai.defaultVoice') ?? 'alloy',
+            instructions: this.config.get<string>('openai.defaultInstructions'),
+            input_audio_format: 'g711_ulaw',
+            output_audio_format: 'g711_ulaw',
+            turn_detection: { type: 'server_vad' },
+          },
+        }),
+      );
+    });
+    socket.on('error', (error) => {
+      this.logger.error(`Voice-agent socket error: ${error.message}`);
+    });
+    socket.on('close', (code) => {
+      this.logger.log(`Voice-agent session closed with code ${code}`);
+    });
+
+    return socket;
+  }
 }

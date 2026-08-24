@@ -6,6 +6,9 @@ import { Call } from './entities/call.entity';
 import { CallMessage } from './entities/call-message.entity';
 import { CallRecording } from './entities/call-recording.entity';
 import { EmailLog } from './entities/email-log.entity';
+import { CallProviderMapping } from './entities/call-provider-mapping.entity';
+import { ProviderEvent } from './entities/provider-event.entity';
+import { PrototypeOnlyGuard } from '../../common/guards/prototype-only.guard';
 
 @Module({
   imports: [
@@ -14,10 +17,12 @@ import { EmailLog } from './entities/email-log.entity';
       CallMessage,
       CallRecording,
       EmailLog,
+      CallProviderMapping,
+      ProviderEvent,
     ]),
   ],
   controllers: [CallsController],
-  providers: [CallsService],
+  providers: [CallsService, PrototypeOnlyGuard],
   exports: [CallsService, TypeOrmModule],
 })
-export class CallsModule { }
+export class CallsModule {}

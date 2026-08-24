@@ -1,6 +1,9 @@
 node_modules
 dist
-.next
-.env
-.git
 coverage
+.env
+.env.*
+!.env.example
+!.env.docker.example
+.git
+*.log

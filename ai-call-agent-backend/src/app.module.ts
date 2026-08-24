@@ -1,51 +1,57 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import configuration from './config/configuration';
 import { envValidationSchema } from './config/env.validation';
+import { HealthModule } from './health/health.module';
+import { ObjectStorageModule } from './infrastructure/object-storage/object-storage.module';
+import { RedisModule } from './infrastructure/redis/redis.module';
 import { BusinessesModule } from './modules/businesses/businesses.module';
 import { CallsModule } from './modules/calls/calls.module';
+import { N8nModule } from './modules/n8n/n8n.module';
 import { OpenaiRealtimeModule } from './modules/openai-realtime/openai-realtime.module';
 import { TwilioModule } from './modules/twilio/twilio.module';
 import { VoiceStreamModule } from './modules/voice-stream/voice-stream.module';
-import { N8nModule } from './modules/n8n/n8n.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      cache: true,
       load: [configuration],
       validationSchema: envValidationSchema,
-      envFilePath: '.env',
+      envFilePath: ['.env.local', '.env'],
     }),
-
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        host: config.get<string>('database.host'),
-        port: config.get<number>('database.port'),
-        username: config.get<string>('database.user'),
-        password: config.get<string>('database.password'),
-        database: config.get<string>('database.name'),
+        host: config.getOrThrow<string>('database.host'),
+        port: config.get<number>('database.port') ?? 5432,
+        username: config.getOrThrow<string>('database.user'),
+        password: config.getOrThrow<string>('database.password'),
+        database: config.getOrThrow<string>('database.name'),
+        ssl: config.get<boolean>('database.ssl')
+          ? { rejectUnauthorized: false }
+          : false,
         autoLoadEntities: true,
-        synchronize: true, // only for development
-        logging: config.get<string>('app.nodeEnv') === 'development',
+        synchronize: false,
+        logging: false,
       }),
     }),
-
     BusinessesModule,
-
     CallsModule,
-
     OpenaiRealtimeModule,
-
-    TwilioModule,
-
     VoiceStreamModule,
-
+    TwilioModule,
     N8nModule,
+    RedisModule,
+    ObjectStorageModule,
+    HealthModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

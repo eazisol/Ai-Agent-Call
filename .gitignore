@@ -1,0 +1,38 @@
+# Dependencies and generated output
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/out/
+**/coverage/
+**/.nyc_output/
+*.tsbuildinfo
+
+# Local configuration and secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!.env.docker.example
+!**/.env.example
+!**/.env.docker.example
+
+# Logs and runtime files
+*.log
+logs/
+*.pid
+*.pid.lock
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local tooling
+.vercel/
+.turbo/
+.cache/
+tmp/
+temp/

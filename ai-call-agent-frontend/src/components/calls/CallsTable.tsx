@@ -38,7 +38,7 @@ export function CallsTable({ calls }: CallsTableProps) {
                                     </span>
                                 </td>
                                 <td className="px-5 py-3">
-                                    {call.duration ? `${call.duration}s` : '-'}
+                                    {call.duration === undefined ? '-' : `${call.duration}s`}
                                 </td>
                                 <td className="px-5 py-3">
                                     {call.startedAt

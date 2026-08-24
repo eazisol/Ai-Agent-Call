@@ -1,0 +1,28 @@
+"use client";
+
+import { toast } from "sonner";
+
+/** Consistent toast for unimplemented portal chrome / nav targets. */
+export function toastComingSoon(description = "This section is not available yet.") {
+  toast.info("Coming in a future module", { description });
+}
+
+/**
+ * Routes that are live in the production App Router for Phase 3.
+ * Everything else stays visual-only and toasts instead of 404ing.
+ */
+export function isEnabledPortalRoute(href: string): boolean {
+  if (href === "/dashboard" || href === "/calls" || href === "/settings") {
+    return true;
+  }
+  if (href.startsWith("/calls/")) {
+    return true;
+  }
+  return false;
+}
+
+export function isNavItemActive(currentPath: string, href: string): boolean {
+  if (currentPath === href) return true;
+  if (href !== "/" && currentPath.startsWith(`${href}/`)) return true;
+  return false;
+}

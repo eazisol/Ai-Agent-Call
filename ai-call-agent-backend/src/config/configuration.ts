@@ -1,26 +1,105 @@
-export default () => ({
+const booleanValue = (
+  value: string | undefined,
+  fallback: boolean,
+): boolean => {
+  if (value === undefined || value === '') {
+    return fallback;
+  }
+
+  return value.toLowerCase() === 'true';
+};
+
+const numberValue = (value: string | undefined, fallback: number): number =>
+  Number.parseInt(value ?? String(fallback), 10);
+
+export default () => {
+  const nodeEnv = process.env.NODE_ENV ?? 'development';
+
+  return {
     app: {
-        nodeEnv: process.env.NODE_ENV || 'development',
-        port: parseInt(process.env.PORT || '3000', 10),
-        baseUrl: process.env.APP_BASE_URL,
+      name: 'EaziAiCall',
+      nodeEnv,
+      port: numberValue(process.env.PORT, 3000),
+      publicBaseUrl:
+        process.env.PUBLIC_BASE_URL ??
+        process.env.APP_BASE_URL ??
+        'http://localhost:3000',
+      corsOrigins: (process.env.CORS_ORIGINS ?? 'http://localhost:3001')
+        .split(',')
+        .map((origin) => origin.trim())
+        .filter(Boolean),
+      prototypeApiEnabled: booleanValue(
+        process.env.PROTOTYPE_API_ENABLED,
+        nodeEnv === 'development',
+      ),
+      logLevel: process.env.LOG_LEVEL ?? 'log',
     },
     database: {
-        host: process.env.DATABASE_HOST,
-        port: parseInt(process.env.DATABASE_PORT || '5432', 10),
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASSWORD,
-        name: process.env.DATABASE_NAME,
+      host: process.env.DATABASE_HOST,
+      port: numberValue(process.env.DATABASE_PORT, 5432),
+      user: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      name: process.env.DATABASE_NAME,
+      ssl: booleanValue(process.env.DATABASE_SSL, false),
+    },
+    redis: {
+      enabled: booleanValue(process.env.REDIS_ENABLED, true),
+      host: process.env.REDIS_HOST ?? 'localhost',
+      port: numberValue(process.env.REDIS_PORT, 6379),
+      password: process.env.REDIS_PASSWORD,
+      connectTimeoutMs: numberValue(process.env.REDIS_CONNECT_TIMEOUT_MS, 1500),
+    },
+    objectStorage: {
+      enabled: booleanValue(process.env.OBJECT_STORAGE_ENABLED, false),
+      endpoint: process.env.OBJECT_STORAGE_ENDPOINT,
+      region: process.env.OBJECT_STORAGE_REGION ?? 'us-east-1',
+      bucket: process.env.OBJECT_STORAGE_BUCKET,
+      accessKeyId: process.env.OBJECT_STORAGE_ACCESS_KEY_ID,
+      secretAccessKey: process.env.OBJECT_STORAGE_SECRET_ACCESS_KEY,
+      healthTimeoutMs: numberValue(
+        process.env.OBJECT_STORAGE_HEALTH_TIMEOUT_MS,
+        2000,
+      ),
+    },
+    providers: {
+      telephony: process.env.TELEPHONY_PROVIDER ?? 'twilio',
+      voiceAgent: process.env.VOICE_AGENT_PROVIDER ?? 'openai_realtime',
     },
     openai: {
-        apiKey: process.env.OPENAI_API_KEY,
-        realtimeModel: process.env.OPENAI_REALTIME_MODEL || 'gpt-realtime',
+      apiKey: process.env.OPENAI_API_KEY,
+      realtimeModel: process.env.OPENAI_REALTIME_MODEL ?? 'gpt-realtime',
+      defaultVoice: process.env.OPENAI_DEFAULT_VOICE ?? 'alloy',
+      defaultInstructions:
+        process.env.OPENAI_DEFAULT_INSTRUCTIONS ??
+        'You are a helpful AI receptionist. Speak clearly and professionally.',
     },
     twilio: {
-        accountSid: process.env.TWILIO_ACCOUNT_SID,
-        authToken: process.env.TWILIO_AUTH_TOKEN,
-        phoneNumber: process.env.TWILIO_PHONE_NUMBER,
+      accountSid: process.env.TWILIO_ACCOUNT_SID,
+      authToken: process.env.TWILIO_AUTH_TOKEN,
+      phoneNumber: process.env.TWILIO_PHONE_NUMBER,
+      validateSignatures: booleanValue(
+        process.env.TWILIO_VALIDATE_SIGNATURES,
+        true,
+      ),
+    },
+    voiceStream: {
+      signingSecret: process.env.VOICE_STREAM_SIGNING_SECRET,
+      tokenTtlSeconds: numberValue(
+        process.env.VOICE_STREAM_TOKEN_TTL_SECONDS,
+        120,
+      ),
+      maxDurationSeconds: numberValue(
+        process.env.VOICE_STREAM_MAX_DURATION_SECONDS,
+        7200,
+      ),
+      maxMessageBytes: numberValue(
+        process.env.VOICE_STREAM_MAX_MESSAGE_BYTES,
+        1_048_576,
+      ),
     },
     n8n: {
-        callCompletedWebhook: process.env.N8N_CALL_COMPLETED_WEBHOOK,
+      enabled: booleanValue(process.env.N8N_ENABLED, false),
+      callCompletedWebhook: process.env.N8N_CALL_COMPLETED_WEBHOOK,
     },
-});
+  };
+};

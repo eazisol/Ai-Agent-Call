@@ -8,4 +8,4 @@ import { Business } from './entities/business.entity';
   providers: [BusinessesService],
   exports: [BusinessesService, TypeOrmModule],
 })
-export class BusinessesModule { }
+export class BusinessesModule {}
