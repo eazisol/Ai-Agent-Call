@@ -115,6 +115,8 @@ calls are opt-in and are never part of the default tests.
 - [Runtime architecture](docs/module-0/runtime-architecture.md)
 - [Database migration runbook](docs/module-0/migration-runbook.md)
 - [Security and provider smoke-test runbook](docs/module-0/security-runbook.md)
+- [Tenant-key strategy](docs/module-0/tenant-key-strategy.md)
+- [Environment-variable strategy](docs/module-0/environment-strategy.md)
 
 The internal directory names (`ai-call-agent-backend` and
 `ai-call-agent-frontend`), npm package names, database name (`ai_call_agent`),

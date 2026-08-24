@@ -6,7 +6,7 @@
 | Project | EaziAiCall |
 | Version | 1.1 |
 | Date | 24 August 2026 |
-| Status | Architecture baseline; Module 0 ready for controlled development |
+| Status | Architecture baseline; Module 0 Completed |
 | Planning method | Vertical Slice Development / Feature-Based Incremental Development |
 | Implementation tools | Cursor for production code; Lovable for approved UI/UX briefs |
 | Production source of truth | GitHub repository |
@@ -290,12 +290,12 @@ This is a deployment separation, not a requirement to create microservices. Each
 - **Commercial:** needed for a sellable, operable, and monetized launch or for the selected first industry vertical.
 - **Future:** scale, provider expansion, or controlled intelligence improvement.
 - **P0:** blocking/foundation; **P1:** high; **P2:** normal; **P3:** later.
-- **Status:** Module 0 is `Planning`. All others are `Not Started` for governance purposes. Existing partial work is evidence to audit, not proof of completion.
+- **Status:** Module 0 is `Completed` (24 August 2026). All others are `Not Started` until their Definition of Done is met.
 - **Delivery:** Work owns requirements/architecture; Cursor owns implementation/tests; Lovable supports approved UI/UX modules.
 
 | ID | Module | Phase | Release class | Priority | Dependencies | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| M0 | Existing Project Audit & SaaS Foundation Refactor | 0 | MVP | P0 | None | Ready for Development |
+| M0 | Existing Project Audit & SaaS Foundation Refactor | 0 | MVP | P0 | None | Completed |
 | M1 | Authentication | 1 | MVP | P0 | M0 | Not Started |
 | M2 | Organizations / Tenants | 1 | MVP | P0 | M1 | Not Started |
 | M3 | Users, Team & Roles | 1 | MVP | P0 | M1, M2 | Not Started |

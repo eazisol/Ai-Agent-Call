@@ -6,15 +6,16 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Overview of EaziAiCall activity and system performance.
+          Overview of EaziAiCall activity. Live stats arrive with Call Management
+          / Analytics modules; cards below are empty placeholders for now.
         </p>
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-4">
-        <StatCard title="Total Calls" value="0" />
-        <StatCard title="Completed Calls" value="0" />
-        <StatCard title="Failed Calls" value="0" />
-        <StatCard title="Avg Duration" value="0s" />
+        <StatCard title="Total Calls" value="—" />
+        <StatCard title="Completed Calls" value="—" />
+        <StatCard title="Failed Calls" value="—" />
+        <StatCard title="Avg Duration" value="—" />
       </div>
     </>
   );

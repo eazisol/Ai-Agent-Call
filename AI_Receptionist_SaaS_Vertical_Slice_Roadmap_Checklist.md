@@ -32,8 +32,8 @@
 
 ## Overall Development Phases & Modules
 
-- [ ] P00 — **Foundation**
-  - [ ] M00 — Existing Project Audit & SaaS Foundation (MVP)
+- [x] P00 — **Foundation**
+  - [x] M00 — Existing Project Audit & SaaS Foundation (MVP)
 - [ ] P01 — **SaaS Core**
   - [ ] M01 — Authentication (MVP)
   - [ ] M02 — Organizations / Tenants (MVP)
@@ -91,7 +91,7 @@
 
 # PHASE 00 — Foundation
 
-- [ ] P00-GATE — Phase 00 is complete only when every required module below is accepted.
+- [x] P00-GATE — Phase 00 is complete only when every required module below is accepted.
 
 ## Module 00 — Existing Project Audit & SaaS Foundation `M00`
 
@@ -101,94 +101,94 @@
 
 ### Submodule 00.01 — Scope & Requirements
 
-- [ ] P00-M00-01-01 — Confirm the objective and boundaries of **Existing Project Audit & SaaS Foundation**.
-- [ ] P00-M00-01-02 — Create a safe Git checkpoint of the current working repository before architecture changes.
-- [ ] P00-M00-01-03 — Audit the existing NestJS backend, Next.js frontend, PostgreSQL schema, Docker setup, Twilio integration, OpenAI Realtime code, voice-stream/WebSocket code, n8n integration, dashboard, calls pages and settings.
-- [ ] P00-M00-01-04 — Classify current files and modules as Keep, Refactor, Move, Park-for-Future or Remove-with-Approval.
-- [ ] P00-M00-01-05 — Prepare the multi-tenant foundation without rebuilding the project from zero.
-- [ ] P00-M00-01-06 — Prepare provider-abstraction folders/interfaces for telephony and voice-agent providers.
-- [ ] P00-M00-01-07 — Establish a migration-first database workflow and remove production dependence on TypeORM synchronize:true.
-- [ ] P00-M00-01-08 — Validate local and Docker startup for frontend, backend, PostgreSQL and Redis.
-- [ ] P00-M00-01-09 — Define S3-compatible object-storage configuration and ownership boundaries.
-- [ ] P00-M00-01-10 — Add health checks, structured error handling and baseline logging.
-- [ ] P00-M00-01-11 — Document environment-variable strategy for local, development, staging and production.
-- [ ] P00-M00-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P00-M00-01-01 — Confirm the objective and boundaries of **Existing Project Audit & SaaS Foundation**.
+- [x] P00-M00-01-02 — Create a safe Git checkpoint of the current working repository before architecture changes.
+- [x] P00-M00-01-03 — Audit the existing NestJS backend, Next.js frontend, PostgreSQL schema, Docker setup, Twilio integration, OpenAI Realtime code, voice-stream/WebSocket code, n8n integration, dashboard, calls pages and settings.
+- [x] P00-M00-01-04 — Classify current files and modules as Keep, Refactor, Move, Park-for-Future or Remove-with-Approval.
+- [x] P00-M00-01-05 — Prepare the multi-tenant foundation without rebuilding the project from zero.
+- [x] P00-M00-01-06 — Prepare provider-abstraction folders/interfaces for telephony and voice-agent providers.
+- [x] P00-M00-01-07 — Establish a migration-first database workflow and remove production dependence on TypeORM synchronize:true.
+- [x] P00-M00-01-08 — Validate local and Docker startup for frontend, backend, PostgreSQL and Redis.
+- [x] P00-M00-01-09 — Define S3-compatible object-storage configuration and ownership boundaries.
+- [x] P00-M00-01-10 — Add health checks, structured error handling and baseline logging.
+- [x] P00-M00-01-11 — Document environment-variable strategy for local, development, staging and production.
+- [x] P00-M00-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
 ### Submodule 00.02 — Data & Persistence
 
-- [ ] P00-M00-02-01 — Implement/confirm data requirement: `Inventory existing tables and decide which are retained, migrated or extended.`.
-- [ ] P00-M00-02-02 — Implement/confirm data requirement: `Create migration baseline without destroying existing development data.`.
-- [ ] P00-M00-02-03 — Implement/confirm data requirement: `Document tenant-key strategy for future organization_id/business_id ownership.`.
-- [ ] P00-M00-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P00-M00-02-05 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [x] P00-M00-02-01 — Implement/confirm data requirement: `Inventory existing tables and decide which are retained, migrated or extended.`.
+- [x] P00-M00-02-02 — Implement/confirm data requirement: `Create migration baseline without destroying existing development data.`.
+- [x] P00-M00-02-03 — Implement/confirm data requirement: `Document tenant-key strategy for future organization_id/business_id ownership.`.
+- [x] P00-M00-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P00-M00-02-05 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
 
 ### Submodule 00.03 — Backend / Domain Logic
 
-- [ ] P00-M00-03-01 — Create/update the NestJS module boundaries, services and domain logic for **Existing Project Audit & SaaS Foundation**.
-- [ ] P00-M00-03-02 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
-- [ ] P00-M00-03-03 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P00-M00-03-01 — Create/update the NestJS module boundaries, services and domain logic for **Existing Project Audit & SaaS Foundation**.
+- [x] P00-M00-03-02 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [x] P00-M00-03-03 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
 ### Submodule 00.04 — API / Contracts
 
-- [ ] P00-M00-04-01 — Implement/verify API contract: `Add/verify backend health endpoint.`.
-- [ ] P00-M00-04-02 — Implement/verify API contract: `Confirm frontend-to-backend base URL strategy for local and containers.`.
-- [ ] P00-M00-04-03 — Implement/verify API contract: `Document webhook routes already present and routes to preserve.`.
-- [ ] P00-M00-04-04 — Add DTO/schema validation and consistent API error responses.
+- [x] P00-M00-04-01 — Implement/verify API contract: `Add/verify backend health endpoint.`.
+- [x] P00-M00-04-02 — Implement/verify API contract: `Confirm frontend-to-backend base URL strategy for local and containers.`.
+- [x] P00-M00-04-03 — Implement/verify API contract: `Document webhook routes already present and routes to preserve.`.
+- [x] P00-M00-04-04 — Add DTO/schema validation and consistent API error responses.
 
 ### Submodule 00.05 — Frontend / UX
 
-- [ ] P00-M00-05-01 — Build/complete frontend requirement: Verify existing Dashboard, Calls and Settings routes build successfully..
-- [ ] P00-M00-05-02 — Build/complete frontend requirement: Document current reusable frontend components and layouts..
-- [ ] P00-M00-05-03 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P00-M00-05-04 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P00-M00-05-01 — Build/complete frontend requirement: Verify existing Dashboard, Calls and Settings routes build successfully..
+- [x] P00-M00-05-02 — Build/complete frontend requirement: Document current reusable frontend components and layouts..
+- [x] P00-M00-05-03 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P00-M00-05-04 — Verify responsive, loading, empty, validation, success and error states.
 
 ### Submodule 00.06 — Provider / External Integration
 
-- [ ] P00-M00-06-01 — Integrate and verify: Verify PostgreSQL connection..
-- [ ] P00-M00-06-02 — Integrate and verify: Verify Redis connection..
-- [ ] P00-M00-06-03 — Integrate and verify: Verify Docker Compose service networking..
-- [ ] P00-M00-06-04 — Integrate and verify: Preserve Twilio and OpenAI provider code for later refactor..
-- [ ] P00-M00-06-05 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [x] P00-M00-06-01 — Integrate and verify: Verify PostgreSQL connection..
+- [x] P00-M00-06-02 — Integrate and verify: Verify Redis connection..
+- [x] P00-M00-06-03 — Integrate and verify: Verify Docker Compose service networking..
+- [x] P00-M00-06-04 — Integrate and verify: Preserve Twilio and OpenAI provider code for later refactor..
+- [x] P00-M00-06-05 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
 ### Submodule 00.07 — Security / Validation
 
-- [ ] P00-M00-07-01 — Confirm secrets are environment-based and not committed..
-- [ ] P00-M00-07-02 — Identify unsafe debug/development settings that cannot remain in production..
-- [ ] P00-M00-07-03 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P00-M00-07-01 — Confirm secrets are environment-based and not committed..
+- [x] P00-M00-07-02 — Identify unsafe debug/development settings that cannot remain in production..
+- [x] P00-M00-07-03 — Verify tenant isolation for all tenant-owned records and actions.
 
 ### Submodule 00.08 — Testing / QA
 
-- [ ] P00-M00-08-01 — Test: Backend production build succeeds..
-- [ ] P00-M00-08-02 — Test: Frontend production build succeeds..
-- [ ] P00-M00-08-03 — Test: Docker stack starts..
-- [ ] P00-M00-08-04 — Test: Health checks pass..
-- [ ] P00-M00-08-05 — Test: Existing core call-related functionality is not unintentionally broken..
-- [ ] P00-M00-08-06 — Run regression checks for directly affected existing modules.
-- [ ] P00-M00-08-07 — Complete manual QA of the end-to-end user journey.
+- [x] P00-M00-08-01 — Test: Backend production build succeeds..
+- [x] P00-M00-08-02 — Test: Frontend production build succeeds..
+- [x] P00-M00-08-03 — Test: Docker stack starts..
+- [x] P00-M00-08-04 — Test: Health checks pass..
+- [x] P00-M00-08-05 — Test: Existing core call-related functionality is not unintentionally broken..
+- [x] P00-M00-08-06 — Run regression checks for directly affected existing modules.
+- [x] P00-M00-08-07 — Complete manual QA of the end-to-end user journey.
 
 ### Submodule 00.09 — Documentation / Operational Readiness
 
-- [ ] P00-M00-09-01 — Update the Master Module Registry status and dependencies.
-- [ ] P00-M00-09-02 — Document database/API/provider changes introduced by this module.
-- [ ] P00-M00-09-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P00-M00-09-04 — Do not add future business features during M00. This is a controlled foundation slice only.
+- [x] P00-M00-09-01 — Update the Master Module Registry status and dependencies.
+- [x] P00-M00-09-02 — Document database/API/provider changes introduced by this module.
+- [x] P00-M00-09-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P00-M00-09-04 — Do not add future business features during M00. This is a controlled foundation slice only.
 
 ### Submodule 00.10 — Acceptance / Definition of Done
 
-- [ ] P00-M00-10-01 — Requirements approved.
-- [ ] P00-M00-10-02 — Database/migrations complete where required.
-- [ ] P00-M00-10-03 — Backend/domain logic complete.
-- [ ] P00-M00-10-04 — API contracts complete where required.
-- [ ] P00-M00-10-05 — Frontend complete where required.
-- [ ] P00-M00-10-06 — Real integration complete; no production-blocking mock flow remains.
-- [ ] P00-M00-10-07 — Loading/empty/error/validation states complete.
-- [ ] P00-M00-10-08 — Security and tenant-isolation checks pass.
-- [ ] P00-M00-10-09 — Unit/integration/E2E/manual QA required for this slice pass.
-- [ ] P00-M00-10-10 — Documentation updated.
-- [ ] P00-M00-10-11 — No unrelated future module was implemented.
-- [ ] P00-M00-10-12 — Module accepted and marked Completed before the next module starts.
+- [x] P00-M00-10-01 — Requirements approved.
+- [x] P00-M00-10-02 — Database/migrations complete where required.
+- [x] P00-M00-10-03 — Backend/domain logic complete.
+- [x] P00-M00-10-04 — API contracts complete where required.
+- [x] P00-M00-10-05 — Frontend complete where required.
+- [x] P00-M00-10-06 — Real integration complete; no production-blocking mock flow remains.
+- [x] P00-M00-10-07 — Loading/empty/error/validation states complete.
+- [x] P00-M00-10-08 — Security and tenant-isolation checks pass.
+- [x] P00-M00-10-09 — Unit/integration/E2E/manual QA required for this slice pass.
+- [x] P00-M00-10-10 — Documentation updated.
+- [x] P00-M00-10-11 — No unrelated future module was implemented.
+- [x] P00-M00-10-12 — Module accepted and marked Completed before the next module starts.
 
-**Module Gate:** `[M00] Existing Project Audit & SaaS Foundation = COMPLETE ✅` only after every required checkbox above is verified.
+**Module Gate:** `[M00] Existing Project Audit & SaaS Foundation = COMPLETE ✅` — verified 24 August 2026.
 
 ---
 
@@ -3996,7 +3996,7 @@
 
 # Final Execution Order
 
-- [ ] ORDER-01 — M00 Existing Project Audit & SaaS Foundation — Target: MVP — Dependencies: None
+- [x] ORDER-01 — M00 Existing Project Audit & SaaS Foundation — Target: MVP — Dependencies: None
 - [ ] ORDER-02 — M01 Authentication — Target: MVP — Dependencies: M00
 - [ ] ORDER-03 — M02 Organizations / Tenants — Target: MVP — Dependencies: M01
 - [ ] ORDER-04 — M03 Users, Team & Roles — Target: MVP — Dependencies: M02
@@ -4040,7 +4040,7 @@
 
 ## MVP Market-Test Gate
 
-- [ ] MVP-GATE-M00 — M00 Existing Project Audit & SaaS Foundation completed and accepted.
+- [x] MVP-GATE-M00 — M00 Existing Project Audit & SaaS Foundation completed and accepted.
 - [ ] MVP-GATE-M01 — M01 Authentication completed and accepted.
 - [ ] MVP-GATE-M02 — M02 Organizations / Tenants completed and accepted.
 - [ ] MVP-GATE-M03 — M03 Users, Team & Roles completed and accepted.

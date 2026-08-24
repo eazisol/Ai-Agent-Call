@@ -25,7 +25,10 @@ export class OpenaiRealtimeService implements VoiceAgentProviderPort {
       this.config.get<string>('openai.realtimeModel') ?? 'gpt-realtime';
     const socket = new WebSocket(
       `wss://api.openai.com/v1/realtime?model=${encodeURIComponent(model)}`,
-      { headers: { Authorization: `Bearer ${apiKey}` } },
+      {
+        headers: { Authorization: `Bearer ${apiKey}` },
+        handshakeTimeout: 10_000,
+      },
     );
 
     socket.on('open', () => {

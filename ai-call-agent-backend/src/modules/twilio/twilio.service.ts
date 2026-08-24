@@ -8,15 +8,10 @@ import type {
 } from '../../providers/telephony-provider.port';
 import { CallsService } from '../calls/calls.service';
 import { VoiceStreamTokenService } from '../voice-stream/voice-stream-token.service';
+import { TwilioWebhookDto } from './dto/twilio-webhook.dto';
 
-export interface TwilioWebhookBody extends Record<string, string | undefined> {
-  CallSid?: string;
-  CallDuration?: string;
-  CallStatus?: string;
-  From?: string;
-  To?: string;
-  Timestamp?: string;
-}
+/** Validated Twilio form body; extra string fields may still be present at runtime. */
+export type TwilioWebhookBody = TwilioWebhookDto;
 
 @Injectable()
 export class TwilioService implements TelephonyProviderPort {
@@ -84,7 +79,7 @@ export class TwilioService implements TelephonyProviderPort {
       body.Timestamp ?? body.CallDuration ?? 'unknown',
     ].join(':');
     const payload = Object.fromEntries(
-      Object.entries(body).filter(
+      Object.entries(body as unknown as Record<string, unknown>).filter(
         (entry): entry is [string, string] => typeof entry[1] === 'string',
       ),
     );

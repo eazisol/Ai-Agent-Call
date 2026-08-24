@@ -40,6 +40,6 @@ prototype call-read endpoints are development-only and return 404 in production.
 
 ## Runtime validation still required
 
-Use a disposable/test database and sandbox credentials to run the opt-in Docker,
-migration, Twilio-signature, and live audio checks. No billable provider call was
-made while implementing Module 0.
+Live Twilio/OpenAI audio remains an opt-in sandbox test (`docs/module-0/security-runbook.md`)
+and is not required to close Module 0. Docker PostgreSQL/Redis and `/health/ready`
+were verified on 24 August 2026.

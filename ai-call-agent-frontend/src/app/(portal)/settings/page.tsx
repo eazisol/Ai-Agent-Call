@@ -10,7 +10,9 @@ export default function SettingsPage() {
 
       <div className="mt-6 rounded-2xl bg-white p-5 shadow-sm">
         <p className="text-sm text-gray-500">
-          Business-level voice configuration will be delivered in Module 1.
+          Business-level voice and agent configuration is deferred to later
+          modules (Authentication → Organizations → Business → Agents). This
+          page is an intentional Module 0 placeholder.
         </p>
       </div>
     </>

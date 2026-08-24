@@ -67,14 +67,19 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         typeof payload === 'string'
           ? payload
           : (this.messageFromPayload(payload) ?? exception.message);
+      const details = this.detailsFromPayload(payload);
 
       return {
         statusCode,
         body: {
           error: {
-            code: `HTTP_${statusCode}`,
+            code:
+              statusCode === HttpStatus.BAD_REQUEST
+                ? 'VALIDATION_ERROR'
+                : `HTTP_${statusCode}`,
             message,
             correlationId,
+            details,
           },
         },
       };
@@ -95,5 +100,18 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   private messageFromPayload(payload: object): string | undefined {
     const message = (payload as { message?: string | string[] }).message;
     return Array.isArray(message) ? message.join(', ') : message;
+  }
+
+  private detailsFromPayload(
+    payload: unknown,
+  ): Record<string, unknown> | undefined {
+    if (typeof payload !== 'object' || payload === null) {
+      return undefined;
+    }
+    const message = (payload as { message?: string | string[] }).message;
+    if (Array.isArray(message)) {
+      return { validation: message };
+    }
+    return undefined;
   }
 }

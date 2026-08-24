@@ -3,6 +3,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  ParseUUIDPipe,
   UseGuards,
 } from '@nestjs/common';
 import { PrototypeOnlyGuard } from '../../common/guards/prototype-only.guard';
@@ -19,7 +20,7 @@ export class CallsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     const call = await this.callsService.findOne(id);
     if (!call) {
       throw new NotFoundException('Call not found');
