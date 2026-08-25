@@ -15,6 +15,7 @@
 | [data-model.md](./data-model.md) | `organizations`, `organization_members`, FK / ownership keys |
 | [domain-logic.md](./domain-logic.md) | Create/list/get/update, membership, owner rules |
 | [api-contracts.md](./api-contracts.md) | `/api/v1/organizations*`, `eazi_org`, frontend routes |
+| [M02_Organizations_Tenants_manual-qa-guide.md](./M02_Organizations_Tenants_manual-qa-guide.md) | Manual QA handoff — test cases, workflows, sign-off |
 
 ## Database changes
 

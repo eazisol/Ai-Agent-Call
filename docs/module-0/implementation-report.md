@@ -23,6 +23,10 @@ application was created.
 | Frontend runtime behavior       | Server-only internal API URL, runtime rendering, uncached fetches, loading/error/unavailable states     |
 | Delivery automation             | Reproducible Dockerfiles, health-gated Compose, pinned n8n, Node 22 CI workflow                         |
 
+## Manual QA
+
+See [M00_Existing_Project_Audit_and_SaaS_Foundation_manual-qa-guide.md](./M00_Existing_Project_Audit_and_SaaS_Foundation_manual-qa-guide.md).
+
 ## Intentional compatibility choices
 
 - Directory and npm package names remain `ai-call-agent-*`.

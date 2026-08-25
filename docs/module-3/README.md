@@ -18,6 +18,7 @@
 | [frontend-surfaces.md](./frontend-surfaces.md) | `/team`, `/invitations/accept`, org settings admin edit |
 | [invitation-ux-refinement.md](./invitation-ux-refinement.md) | Post-acceptance invite journeys, auth handoff, security |
 | [security-and-qa.md](./security-and-qa.md) | Escalation, last-owner, isolation evidence |
+| [M03_Users_Team_and_Roles_manual-qa-guide.md](./M03_Users_Team_and_Roles_manual-qa-guide.md) | Manual QA handoff — invite journeys, test cases, sign-off |
 
 ## Database changes
 

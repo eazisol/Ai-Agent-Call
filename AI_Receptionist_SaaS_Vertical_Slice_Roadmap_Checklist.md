@@ -4,6 +4,8 @@
 **Methodology:** Vertical Slice / Feature-Based Incremental Development
 **Rule:** Do not start the next module until the current module passes its acceptance criteria and Definition of Done.
 
+**Roadmap Update v3 (25 August 2026):** Added a mandatory per-module Manual QA Handoff guide under every `XX.05 — Documentation & Acceptance` submodule, plus `VS-GLOBAL-16`. M00–M03 receive this requirement retroactively as documentation backfill.
+
 > Checklist syntax: `- [ ] ID — detailed task`. Change `[ ]` to `[x]` only after the item is verified.
 
 ## Streamlined Execution Model — v2
@@ -14,13 +16,44 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 2. **Backend, Persistence & API** — former Data & Persistence + Backend / Domain Logic + API / Contracts.
 3. **Frontend & Integrations** — former Frontend / UX + Provider / External Integration.
 4. **Security & QA** — former Security / Validation + Testing / QA.
-5. **Documentation & Acceptance** — former Documentation / Operational Readiness + final module gate.
+5. **Documentation & Acceptance** — former Documentation / Operational Readiness + mandatory Manual QA Handoff guide + final module gate.
 
 **ID rule:** Checklist task IDs align with the 5 execution submodules: `01` Scope & Technical Design, `02` Backend/Persistence/API, `03` Frontend & Integrations, `04` Security & QA, `05` Documentation & Acceptance. Sequence within each submodule is `NN` (01, 02, …). Module gate remains `Pxx-Myy-GATE`.
 
-**Acceptance simplification:** The former repeated `XX.10 — Acceptance / Definition of Done` checklist is no longer duplicated inside every module. Its requirements are enforced by `VS-GLOBAL-01` through `VS-GLOBAL-15` plus the module-specific gate. Historical M00 completion remains preserved by its completed Module Gate.
+**Acceptance simplification:** The former repeated `XX.10 — Acceptance / Definition of Done` checklist is no longer duplicated inside every module. Its requirements are enforced by `VS-GLOBAL-01` through `VS-GLOBAL-16` plus the module-specific gate. Historical completed-module acceptance remains preserved, while the Manual QA Handoff requirement introduced in v3 is backfilled as documented below.
 
-**Working rule:** Finish all 5 submodules and pass the Global Vertical Slice Gate before starting the next module.
+**Working rule:** Finish all 5 submodules, create the module-specific Manual QA Handoff guide, and pass the Global Vertical Slice Gate before starting the next module.
+
+## Mandatory Manual QA Handoff Standard — v3
+
+Every module must produce a dedicated **Manual QA Handoff** document during **Submodule `XX.05 — Documentation & Acceptance`**. The purpose is to give a Manual QA Engineer/Tester enough product and technical context to test the completed module independently, reproduce defects clearly, and perform regression checks without having to reverse-engineer the implementation.
+
+**Canonical path:** `docs/module-<number>/M<number>_<Module_Name>_manual-qa-guide.md` (module code + slugified module title; e.g. `docs/module-2/M02_Organizations_Tenants_manual-qa-guide.md`).
+
+The Manual QA Handoff document must be written for a tester and must include, where applicable:
+
+- **Module overview** — what the module is, why it exists, and its role in the EaziAICall product.
+- **Delivered scope** — what was actually implemented and what remains explicitly out of scope.
+- **Dependencies and prerequisites** — required earlier modules, services, feature flags, environment setup, provider configuration, and safe test-data needs.
+- **Roles and permissions** — which roles can view/create/update/delete/execute each relevant action.
+- **User-facing surfaces** — routes, pages, forms, dialogs, states, navigation entry points, and responsive expectations.
+- **Backend/API surface** — relevant endpoints/contracts and the tester-visible behavior they support; do not expose secrets.
+- **Data and integrations** — relevant persisted records, ownership/tenant rules, external providers, async jobs/webhooks, and expected sync/status behavior.
+- **End-to-end workflows** — step-by-step happy-path journeys from entry point to successful completion.
+- **Negative and edge cases** — invalid data, expired/duplicate actions, provider/network failures, retries, unavailable dependencies, and destructive-action safeguards.
+- **Security and tenant-isolation checks** — unauthorized access, role restrictions, cross-tenant access, sensitive-data handling, and provider-secret exposure checks where applicable.
+- **UI state coverage** — loading, empty, success, validation, error, processing, disabled, retry, and confirmation states where applicable.
+- **Manual test cases** — numbered test cases with Preconditions, Steps, Expected Result, and Pass/Fail/Evidence fields.
+- **Regression scope** — previously completed modules and critical flows that must be rechecked because this module can affect them.
+- **Known limitations / accepted constraints** — intentional limitations that should not be filed as bugs.
+- **Bug-reporting guide** — defect title, environment, severity/priority suggestion, prerequisites, reproducible steps, expected result, actual result, screenshots/video/log evidence, affected role/tenant, and regression impact.
+- **QA sign-off checklist** — tester name/date/build or commit reference, test summary, open-blocker count, evidence links, final Pass / Pass with Known Issues / Fail recommendation.
+
+The document must contain **no passwords, tokens, API keys, SMTP credentials, provider secrets, or production-sensitive test data**.
+
+**Acceptance rule:** A module cannot newly pass its final module gate until its Manual QA Handoff guide exists, reflects the final implemented behavior, and is referenced from the module documentation/README where practical.
+
+**Retrospective rule for already-completed modules:** M00–M03 Manual QA Handoff guides were backfilled on 25 August 2026 using the module-named file convention (`M0N_<Module_Name>_manual-qa-guide.md`). M04+ must create their guide during `XX.05 — Documentation & Acceptance` before the module gate passes.
 
 ## Status Legend
 
@@ -47,6 +80,7 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] VS-GLOBAL-13 — Documentation and architecture/module registry are updated.
 - [ ] VS-GLOBAL-14 — No unrelated future module is implemented during the slice.
 - [ ] VS-GLOBAL-15 — Module is accepted before the next module moves to In Development.
+- [ ] VS-GLOBAL-16 — Module Manual QA Handoff guide exists at the canonical path, reflects final implemented behavior, and is linked from module documentation where practical.
 
 
 ## Overall Development Phases & Modules
@@ -186,8 +220,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [x] P00-M00-05-02 — Document database/API/provider changes introduced by this module.
 - [x] P00-M00-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [x] P00-M00-05-04 — Do not add future business features during M00. This is a controlled foundation slice only.
+- [x] P00-M00-05-05 — Create/update the **Manual QA Handoff** guide for **Existing Project Audit & SaaS Foundation** at `docs/module-0/M00_Existing_Project_Audit_and_SaaS_Foundation_manual-qa-guide.md`
 
-- [x] P00-M00-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [x] P00-M00-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M00] Existing Project Audit & SaaS Foundation = COMPLETE ✅` — verified 24 August 2026.
 ---
@@ -275,8 +311,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [x] P01-M01-05-01 — Update the Master Module Registry status and dependencies.
 - [x] P01-M01-05-02 — Document database/API/provider changes introduced by this module.
 - [x] P01-M01-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P01-M01-05-04 — Create/update the **Manual QA Handoff** guide for **Authentication** at `docs/module-1/M01_Authentication_manual-qa-guide.md`
 
-- [x] P01-M01-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [x] P01-M01-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M01] Authentication = COMPLETE ✅` — verified 25 August 2026.
 
@@ -346,8 +384,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [x] P01-M02-05-01 — Update the Master Module Registry status and dependencies.
 - [x] P01-M02-05-02 — Document database/API/provider changes introduced by this module.
 - [x] P01-M02-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P01-M02-05-04 — Create/update the **Manual QA Handoff** guide for **Organizations / Tenants** at `docs/module-2/M02_Organizations_Tenants_manual-qa-guide.md`
 
-- [x] P01-M02-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [x] P01-M02-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M02] Organizations / Tenants = COMPLETE ✅` — verified 25 August 2026.
 
@@ -422,8 +462,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [x] P01-M03-05-01 — Update the Master Module Registry status and dependencies.
 - [x] P01-M03-05-02 — Document database/API/provider changes introduced by this module.
 - [x] P01-M03-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P01-M03-05-04 — Create/update the **Manual QA Handoff** guide for **Users, Team & Roles** at `docs/module-3/M03_Users_Team_and_Roles_manual-qa-guide.md`
 
-- [x] P01-M03-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [x] P01-M03-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M03] Users, Team & Roles = COMPLETE ✅` — verified 25 August 2026.
 
@@ -499,8 +541,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P01-M04-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P01-M04-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P01-M04-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P01-M04-05-04 — Create/update the **Manual QA Handoff** guide for **Business Management** at `docs/module-4/M04_Business_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P01-M04-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P01-M04-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M04] Business Management = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -585,8 +629,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P02-M05-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P02-M05-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P02-M05-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P02-M05-05-04 — Create/update the **Manual QA Handoff** guide for **AI Agent Management** at `docs/module-5/M05_AI_Agent_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P02-M05-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P02-M05-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M05] AI Agent Management = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -657,8 +703,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P02-M06-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P02-M06-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P02-M06-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P02-M06-05-04 — Create/update the **Manual QA Handoff** guide for **ElevenLabs Voice Agent Provider** at `docs/module-6/M06_ElevenLabs_Voice_Agent_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P02-M06-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P02-M06-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M06] ElevenLabs Voice Agent Provider = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -746,8 +794,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P03-M07-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P03-M07-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P03-M07-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P03-M07-05-04 — Create/update the **Manual QA Handoff** guide for **Knowledge Base** at `docs/module-7/M07_Knowledge_Base_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P03-M07-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P03-M07-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M07] Knowledge Base = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -816,8 +866,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P03-M08-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P03-M08-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P03-M08-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P03-M08-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Library** at `docs/module-8/M08_Voice_Library_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P03-M08-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P03-M08-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M08] Voice Library = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -896,8 +948,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P03-M09-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P03-M09-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P03-M09-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P03-M09-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Cloning** at `docs/module-9/M09_Voice_Cloning_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P03-M09-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P03-M09-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M09] Voice Cloning = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -970,8 +1024,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P04-M10-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P04-M10-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P04-M10-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P04-M10-05-04 — Create/update the **Manual QA Handoff** guide for **Twilio Telephony Provider** at `docs/module-10/M10_Twilio_Telephony_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P04-M10-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P04-M10-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M10] Twilio Telephony Provider = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -1046,8 +1102,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P04-M11-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P04-M11-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P04-M11-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P04-M11-05-04 — Create/update the **Manual QA Handoff** guide for **Phone Number Management** at `docs/module-11/M11_Phone_Number_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P04-M11-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P04-M11-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M11] Phone Number Management = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -1124,8 +1182,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P05-M12-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M12-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M12-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P05-M12-05-04 — Create/update the **Manual QA Handoff** guide for **Incoming AI Calls** at `docs/module-12/M12_Incoming_AI_Calls_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P05-M12-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P05-M12-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M12] Incoming AI Calls = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -1195,8 +1255,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P05-M13-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M13-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M13-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P05-M13-05-04 — Create/update the **Manual QA Handoff** guide for **Outbound Calls** at `docs/module-13/M13_Outbound_Calls_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P05-M13-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P05-M13-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M13] Outbound Calls = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -1265,8 +1327,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P05-M14-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M14-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M14-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P05-M14-05-04 — Create/update the **Manual QA Handoff** guide for **Call Management** at `docs/module-14/M14_Call_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P05-M14-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P05-M14-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M14] Call Management = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -1332,8 +1396,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P05-M15-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M15-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M15-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P05-M15-05-04 — Create/update the **Manual QA Handoff** guide for **Transcript Management** at `docs/module-15/M15_Transcript_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P05-M15-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P05-M15-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M15] Transcript Management = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -1401,8 +1467,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P05-M16-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M16-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M16-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P05-M16-05-04 — Create/update the **Manual QA Handoff** guide for **Call Summary & Analysis** at `docs/module-16/M16_Call_Summary_and_Analysis_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P05-M16-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P05-M16-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M16] Call Summary & Analysis = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -1486,8 +1554,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P06-M17-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P06-M17-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P06-M17-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P06-M17-05-04 — Create/update the **Manual QA Handoff** guide for **Generic Tool Framework** at `docs/module-17/M17_Generic_Tool_Framework_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P06-M17-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P06-M17-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M17] Generic Tool Framework = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -1555,8 +1625,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P06-M18-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P06-M18-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P06-M18-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P06-M18-05-04 — Create/update the **Manual QA Handoff** guide for **Appointment Booking** at `docs/module-18/M18_Appointment_Booking_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P06-M18-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P06-M18-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M18] Appointment Booking = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -1624,8 +1696,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P06-M19-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P06-M19-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P06-M19-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P06-M19-05-04 — Create/update the **Manual QA Handoff** guide for **Restaurant Reservations** at `docs/module-19/M19_Restaurant_Reservations_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P06-M19-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P06-M19-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M19] Restaurant Reservations = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -1705,8 +1779,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P07-M20-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P07-M20-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P07-M20-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P07-M20-05-04 — Create/update the **Manual QA Handoff** guide for **Customer / CRM** at `docs/module-20/M20_Customer_CRM_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P07-M20-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P07-M20-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M20] Customer / CRM = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -1777,8 +1853,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P07-M21-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P07-M21-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P07-M21-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P07-M21-05-04 — Create/update the **Manual QA Handoff** guide for **Knowledge Gap Detection** at `docs/module-21/M21_Knowledge_Gap_Detection_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P07-M21-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P07-M21-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M21] Knowledge Gap Detection = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -1854,8 +1932,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P08-M22-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P08-M22-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P08-M22-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P08-M22-05-04 — Create/update the **Manual QA Handoff** guide for **n8n Automation** at `docs/module-22/M22_n8n_Automation_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P08-M22-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P08-M22-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M22] n8n Automation = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -1926,8 +2006,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P08-M23-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P08-M23-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P08-M23-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P08-M23-05-04 — Create/update the **Manual QA Handoff** guide for **Notifications** at `docs/module-23/M23_Notifications_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P08-M23-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P08-M23-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M23] Notifications = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -2006,8 +2088,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P09-M24-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P09-M24-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P09-M24-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P09-M24-05-04 — Create/update the **Manual QA Handoff** guide for **Analytics** at `docs/module-24/M24_Analytics_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P09-M24-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P09-M24-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M24] Analytics = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2077,8 +2161,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P09-M25-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P09-M25-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P09-M25-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P09-M25-05-04 — Create/update the **Manual QA Handoff** guide for **Subscription Plans** at `docs/module-25/M25_Subscription_Plans_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P09-M25-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P09-M25-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M25] Subscription Plans = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2153,8 +2239,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P09-M26-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P09-M26-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P09-M26-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P09-M26-05-04 — Create/update the **Manual QA Handoff** guide for **Usage Metering** at `docs/module-26/M26_Usage_Metering_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P09-M26-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P09-M26-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M26] Usage Metering = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2234,8 +2322,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P09-M27-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P09-M27-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P09-M27-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P09-M27-05-04 — Create/update the **Manual QA Handoff** guide for **Billing** at `docs/module-27/M27_Billing_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P09-M27-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P09-M27-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M27] Billing = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -2318,8 +2408,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P10-M28-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P10-M28-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P10-M28-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P10-M28-05-04 — Create/update the **Manual QA Handoff** guide for **Admin Portal** at `docs/module-28/M28_Admin_Portal_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P10-M28-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P10-M28-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M28] Admin Portal = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2396,8 +2488,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P10-M29-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P10-M29-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P10-M29-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P10-M29-05-04 — Create/update the **Manual QA Handoff** guide for **Security, Audit & Monitoring** at `docs/module-29/M29_Security_Audit_and_Monitoring_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P10-M29-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P10-M29-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M29] Security, Audit & Monitoring = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -2466,8 +2560,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P11-M30-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P11-M30-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P11-M30-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P11-M30-05-04 — Create/update the **Manual QA Handoff** guide for **Retell Voice Agent Provider** at `docs/module-30/M30_Retell_Voice_Agent_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P11-M30-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P11-M30-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M30] Retell Voice Agent Provider = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2537,8 +2633,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P11-M31-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P11-M31-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P11-M31-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P11-M31-05-04 — Create/update the **Manual QA Handoff** guide for **OpenAI Realtime Provider** at `docs/module-31/M31_OpenAI_Realtime_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P11-M31-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P11-M31-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M31] OpenAI Realtime Provider = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2600,8 +2698,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P11-M32-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P11-M32-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P11-M32-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P11-M32-05-04 — Create/update the **Manual QA Handoff** guide for **Telnyx Telephony Provider** at `docs/module-32/M32_Telnyx_Telephony_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P11-M32-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P11-M32-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M32] Telnyx Telephony Provider = COMPLETE ✅` only after every required checkbox above is verified.
 ---
@@ -2680,8 +2780,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P12-M33-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M33-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M33-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P12-M33-05-04 — Create/update the **Manual QA Handoff** guide for **Developer / Integration Portal** at `docs/module-33/M33_Developer_Integration_Portal_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P12-M33-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P12-M33-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M33] Developer / Integration Portal = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2749,8 +2851,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P12-M34-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M34-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M34-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P12-M34-05-04 — Create/update the **Manual QA Handoff** guide for **Documentation / Help Center** at `docs/module-34/M34_Documentation_Help_Center_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P12-M34-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P12-M34-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M34] Documentation / Help Center = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2827,8 +2931,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P12-M35-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M35-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M35-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P12-M35-05-04 — Create/update the **Manual QA Handoff** guide for **Operations / Support Console** at `docs/module-35/M35_Operations_Support_Console_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P12-M35-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P12-M35-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M35] Operations / Support Console = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2906,8 +3012,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P12-M36-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M36-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M36-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P12-M36-05-04 — Create/update the **Manual QA Handoff** guide for **Partner / Reseller / White-Label Portal** at `docs/module-36/M36_Partner_Reseller_White_Label_Portal_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P12-M36-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P12-M36-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M36] Partner / Reseller / White-Label Portal = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -2970,8 +3078,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P12-M37-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M37-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M37-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P12-M37-05-04 — Create/update the **Manual QA Handoff** guide for **Public Status Page** at `docs/module-37/M37_Public_Status_Page_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P12-M37-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P12-M37-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M37] Public Status Page = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -3042,8 +3152,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P12-M38-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M38-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M38-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P12-M38-05-04 — Create/update the **Manual QA Handoff** guide for **Business Mobile App** at `docs/module-38/M38_Business_Mobile_App_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P12-M38-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P12-M38-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M38] Business Mobile App = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -3117,8 +3229,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P12-M39-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M39-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M39-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P12-M39-05-04 — Create/update the **Manual QA Handoff** guide for **Embeddable Web Voice / Chat Widget** at `docs/module-39/M39_Embeddable_Web_Voice_Chat_Widget_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P12-M39-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P12-M39-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M39] Embeddable Web Voice / Chat Widget = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -3188,8 +3302,10 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P12-M40-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M40-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M40-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [ ] P12-M40-05-04 — Create/update the **Manual QA Handoff** guide for **Public Demo / Trial Sandbox** at `docs/module-40/M40_Public_Demo_Trial_Sandbox_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P12-M40-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+
+- [ ] P12-M40-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M40] Public Demo / Trial Sandbox = COMPLETE ✅` only after every required checkbox above is verified.
 ---

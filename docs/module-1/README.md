@@ -15,6 +15,7 @@
 | [data-model.md](./data-model.md) | `users`, token tables, email uniqueness, migration isolation |
 | [domain-logic.md](./domain-logic.md) | Auth services, password/token rules, email port |
 | [api-contracts.md](./api-contracts.md) | `/api/v1/auth/*`, cookies, rate limiting, security notes |
+| [M01_Authentication_manual-qa-guide.md](./M01_Authentication_manual-qa-guide.md) | Manual QA handoff — test cases, workflows, sign-off |
 
 ## Database changes
 
