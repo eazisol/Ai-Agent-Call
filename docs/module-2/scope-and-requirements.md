@@ -4,7 +4,7 @@
 | --- | --- |
 | Module | M02 — Organizations / Tenants |
 | Submodule | 02.01 — Scope & Technical Design |
-| Status | Requirements locked |
+| Status | Requirements locked — module Completed 25 August 2026 |
 | Date | 25 August 2026 |
 | Depends on | M01 Complete |
 | Target | MVP |

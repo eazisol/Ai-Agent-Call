@@ -91,6 +91,14 @@ export class AuthService {
 
     const existing = await this.users.findOne({ where: { email } });
     if (existing) {
+      if (!existing.emailVerifiedAt) {
+        await this.issueVerificationEmail(existing);
+        throw new ApplicationError(
+          'EMAIL_NOT_VERIFIED',
+          'Verify your email before signing in. We sent a new verification link.',
+          403,
+        );
+      }
       throw new ApplicationError(
         'EMAIL_ALREADY_REGISTERED',
         'An account with this email already exists.',
@@ -129,9 +137,10 @@ export class AuthService {
     }
 
     if (!user.emailVerifiedAt) {
+      await this.issueVerificationEmail(user);
       throw new ApplicationError(
         'EMAIL_NOT_VERIFIED',
-        'Verify your email before signing in.',
+        'Verify your email before signing in. We sent a new verification link.',
         403,
       );
     }

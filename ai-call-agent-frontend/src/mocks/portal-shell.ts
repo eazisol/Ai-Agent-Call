@@ -26,14 +26,11 @@ import {
 /**
  * Temporary Customer Portal shell/chrome fixtures ONLY.
  *
- * Used for organization/business switchers, nav labels, notifications,
- * search palette, usage indicator, and user menu display.
+ * Used for business switchers, nav labels, notifications,
+ * search palette, usage indicator, and fallback user display.
  *
- * These are NOT authenticated data and do NOT drive Calls or any NestJS
- * API. They will be replaced by real vertical-slice APIs
- * (Organizations, Businesses, Auth, Billing, etc.) in later modules.
- *
- * Never import this file into Calls pages or `src/lib/api.ts`.
+ * Organization switcher is wired to real M02 APIs — do not feed it
+ * from this mock file. Calls remain on NestJS APIs via `src/lib/api.ts`.
  */
 
 export interface PortalOrganization {

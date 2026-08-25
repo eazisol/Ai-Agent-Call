@@ -253,8 +253,9 @@ test('register → verify → login → me → logout journey', async () => {
       }),
     (error) => error instanceof ApplicationError && error.code === 'EMAIL_NOT_VERIFIED',
   );
+  assert.equal(sent.length, 2, 'login before verify should resend verification email');
 
-  const verifyToken = tokenFromLink(sent[0].text);
+  const verifyToken = tokenFromLink(sent[1].text);
   const verified = await auth.verifyEmail(verifyToken);
   assert.ok(verified.user.emailVerifiedAt);
 
@@ -277,12 +278,13 @@ test('register → verify → login → me → logout journey', async () => {
 });
 
 test('duplicate email registration is rejected', async () => {
-  const { auth } = createHarness();
+  const { auth, sent } = createHarness();
   await auth.register({
     email: 'dup@example.com',
     password: 'correct-horse-battery',
     displayName: 'One',
   });
+  assert.equal(sent.length, 1);
 
   await assert.rejects(
     () =>
@@ -290,6 +292,21 @@ test('duplicate email registration is rejected', async () => {
         email: 'DUP@example.com',
         password: 'correct-horse-battery',
         displayName: 'Two',
+      }),
+    (error) =>
+      error instanceof ApplicationError && error.code === 'EMAIL_NOT_VERIFIED',
+  );
+  assert.equal(sent.length, 2, 'unverified re-register should resend verification email');
+
+  const verifyToken = tokenFromLink(sent[1].text);
+  await auth.verifyEmail(verifyToken);
+
+  await assert.rejects(
+    () =>
+      auth.register({
+        email: 'dup@example.com',
+        password: 'correct-horse-battery',
+        displayName: 'Three',
       }),
     (error) =>
       error instanceof ApplicationError && error.code === 'EMAIL_ALREADY_REGISTERED',

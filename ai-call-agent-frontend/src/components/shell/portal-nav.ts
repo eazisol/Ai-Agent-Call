@@ -12,7 +12,13 @@ export function toastComingSoon(description = "This section is not available yet
  * Everything else stays visual-only and toasts instead of 404ing.
  */
 export function isEnabledPortalRoute(href: string): boolean {
-  if (href === "/dashboard" || href === "/calls" || href === "/settings") {
+  if (
+    href === "/dashboard" ||
+    href === "/calls" ||
+    href === "/settings" ||
+    href === "/settings/organization" ||
+    href === "/onboarding/organization"
+  ) {
     return true;
   }
   if (href.startsWith("/calls/")) {

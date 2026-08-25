@@ -179,9 +179,6 @@ export function RequireOrganization({
     if (status === "empty" && !onOnboarding) {
       router.replace(ONBOARDING_PATH);
     }
-    if (status === "ready" && onOnboarding) {
-      router.replace("/dashboard");
-    }
   }, [status, onOnboarding, router]);
 
   if (status === "loading") {
@@ -197,14 +194,14 @@ export function RequireOrganization({
 
   if (status === "error") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background p-6">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background p-6">
         <LoadingState
           className="w-full max-w-md"
           label={error ?? "Could not load organizations."}
         />
         <button
           type="button"
-          className="absolute bottom-10 text-sm text-primary underline"
+          className="text-sm font-medium text-primary hover:underline"
           onClick={() => void refresh()}
         >
           Try again
@@ -219,17 +216,6 @@ export function RequireOrganization({
         <LoadingState
           className="w-full max-w-md border-0 bg-transparent"
           label="Taking you to create a workspace…"
-        />
-      </div>
-    );
-  }
-
-  if (status === "ready" && onOnboarding) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background p-6">
-        <LoadingState
-          className="w-full max-w-md border-0 bg-transparent"
-          label="Opening your workspace…"
         />
       </div>
     );

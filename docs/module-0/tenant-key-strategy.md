@@ -1,6 +1,6 @@
 # Module 0 tenant-key strategy
 
-**Status:** Accepted for M00. M02 scope locked 25 August 2026 — see `docs/module-2/scope-and-requirements.md`. Isolation proofs belong to M02 implementation (02.02–02.04).
+**Status:** Accepted for M00. M02 completed 25 August 2026 — see `docs/module-2/README.md`. Isolation proofs live in organization domain/e2e tests.
 
 ## Decision
 

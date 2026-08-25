@@ -85,5 +85,16 @@ function buildPortalBreadcrumbs(
     return [{ label: "Settings" }];
   }
 
+  if (pathname === "/settings/organization") {
+    return [
+      { label: "Settings", href: "/settings" },
+      { label: "Organization" },
+    ];
+  }
+
+  if (pathname === "/onboarding/organization") {
+    return [{ label: "Create organization" }];
+  }
+
   return [{ label: "EaziAICall" }];
 }

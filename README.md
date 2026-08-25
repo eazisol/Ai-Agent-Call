@@ -5,11 +5,12 @@ PostgreSQL, Redis, Twilio, OpenAI Realtime, Docker, and n8n. Module 0 preserves
 the working call prototype while making its repository, configuration, database,
 provider boundaries, webhook path, and validation workflow safer and repeatable.
 Module 1 delivers end-to-end authentication (register, verify, session cookies,
-password recovery, and portal route protection).
+password recovery, and portal route protection). Module 2 delivers organizations
+as the tenant boundary (create/list/switch workspace, membership isolation).
 
-> Organization tenancy, roles, and the commercial ElevenLabs flow begin in later
-> modules. The call-history API remains deliberately unavailable in production
-> until tenant authorization (M02+) replaces the prototype guard.
+> Team roles/invites (M03), businesses (M04), and the commercial ElevenLabs flow
+> begin in later modules. The call-history API remains deliberately unavailable in
+> production until later call modules replace the prototype guard.
 
 ## Architecture
 
@@ -113,6 +114,7 @@ calls are opt-in and are never part of the default tests.
 - [Target architecture and master module registry](AI_Receptionist_SaaS_Architecture_Module_Registry_Module_0.md)
 - [Module 0 implementation report](docs/module-0/implementation-report.md)
 - [Module 01 — Authentication](docs/module-1/README.md)
+- [Module 02 — Organizations / Tenants](docs/module-2/README.md)
 - [Baseline and validation evidence](docs/module-0/baseline-validation.md)
 - [Runtime architecture](docs/module-0/runtime-architecture.md)
 - [Database migration runbook](docs/module-0/migration-runbook.md)

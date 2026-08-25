@@ -6,7 +6,7 @@
 | Project | EaziAiCall |
 | Version | 1.1 |
 | Date | 24 August 2026 |
-| Status | Architecture baseline; Module 0 Completed; Module 1 Completed; Module 2 In Development |
+| Status | Architecture baseline; Module 0–2 Completed; next is Users, Team & Roles |
 | Planning method | Vertical Slice Development / Feature-Based Incremental Development |
 | Implementation tools | Cursor for production code; Lovable for approved UI/UX briefs |
 | Production source of truth | GitHub repository |
@@ -86,7 +86,7 @@ The current state below was verified on 24 August 2026 against the supplied `Ai-
 ### 3.4 Missing or not yet proven
 
 - ~~End-to-end authentication and account recovery.~~ **Delivered in M1** (register, verify, login, session cookies, password reset, portal gate).
-- Organization/workspace model and demonstrable tenant isolation.
+- ~~Organization/workspace model and demonstrable tenant isolation.~~ **Delivered in M2** (orgs, membership, active workspace, cross-tenant denial tests).
 - Team invitations, roles, and permissions.
 - Complete business and agent management.
 - ElevenLabs adapter and synchronization.
@@ -290,14 +290,14 @@ This is a deployment separation, not a requirement to create microservices. Each
 - **Commercial:** needed for a sellable, operable, and monetized launch or for the selected first industry vertical.
 - **Future:** scale, provider expansion, or controlled intelligence improvement.
 - **P0:** blocking/foundation; **P1:** high; **P2:** normal; **P3:** later.
-- **Status:** Module 0 is `Completed` (24 August 2026). Module 1 is `Completed` (25 August 2026). All others are `Not Started` until their Definition of Done is met.
+- **Status:** Module 0 is `Completed` (24 August 2026). Module 1 is `Completed` (25 August 2026). Module 2 is `Completed` (25 August 2026). All others are `Not Started` until their Definition of Done is met.
 - **Delivery:** Work owns requirements/architecture; Cursor owns implementation/tests; Lovable supports approved UI/UX modules.
 
 | ID | Module | Phase | Release class | Priority | Dependencies | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | M0 | Existing Project Audit & SaaS Foundation Refactor | 0 | MVP | P0 | None | Completed |
 | M1 | Authentication | 1 | MVP | P0 | M0 | Completed |
-| M2 | Organizations / Tenants | 1 | MVP | P0 | M1 | In Development |
+| M2 | Organizations / Tenants | 1 | MVP | P0 | M1 | Completed |
 | M3 | Users, Team & Roles | 1 | MVP | P0 | M1, M2 | Not Started |
 | M4 | Business Management | 1 | MVP | P0 | M2, M3 | Not Started |
 | M5 | Agent Management | 2 | MVP | P0 | M4 | Not Started |

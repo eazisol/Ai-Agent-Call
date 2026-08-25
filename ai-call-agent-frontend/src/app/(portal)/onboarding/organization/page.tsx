@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 
 export default function OrganizationOnboardingPage() {
   const router = useRouter();
-  const { createOrganization, status } = useOrganizationSession();
+  const { createOrganization } = useOrganizationSession();
   const [name, setName] = React.useState("");
   const [slug, setSlug] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
@@ -38,10 +38,6 @@ export default function OrganizationOnboardingPage() {
     }
     router.replace("/dashboard");
   };
-
-  if (status === "ready") {
-    return null;
-  }
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-6">

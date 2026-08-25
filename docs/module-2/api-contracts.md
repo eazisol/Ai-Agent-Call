@@ -29,3 +29,12 @@ Logout clears `eazi_org` along with access/refresh cookies.
 | `FORBIDDEN` | 403 | Member (non-owner) PATCH |
 | `ORGANIZATION_SLUG_TAKEN` | 409 | Explicit slug already used |
 | `INVALID_ORGANIZATION` / `INVALID_ORGANIZATION_SLUG` | 400 | Domain validation |
+
+## Frontend surfaces (M02.03)
+
+| Route | Purpose |
+| --- | --- |
+| `/onboarding/organization` | Create first or additional workspace |
+| `/settings/organization` | View/edit active org settings (owner-only edits) |
+
+Portal chrome: workspace switcher uses real list/active/switch APIs. Users with zero memberships are redirected to onboarding. No external providers.

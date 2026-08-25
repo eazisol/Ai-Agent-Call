@@ -100,7 +100,7 @@ export function UserMenu({ user }: { user?: PortalUser | undefined }) {
           Profile
         </DropdownMenuItem>
         <DropdownMenuItem
-          onSelect={() => toastComingSoon("Organization settings arrive with Organizations.")}
+          onSelect={() => router.push("/settings/organization")}
         >
           <Building2 className="size-4 text-muted-foreground" aria-hidden="true" />
           Organization Settings

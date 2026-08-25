@@ -46,4 +46,8 @@ Copy only `*.example` files. Never commit `.env`, `.env.local`, or `.env.docker`
 | `SMTP_HOST` / `SMTP_FROM` | Yes | Delivery required for verification and reset |
 | `SMTP_PORT` / `SMTP_SECURE` / `SMTP_USER` / `SMTP_PASSWORD` / `SMTP_TIMEOUT_MS` | No | Defaults documented in `.env.example` |
 
-See also [Module 01 docs](../module-1/README.md).
+See also [Module 01 docs](../module-1/README.md) and [Module 02 API contracts](../module-2/api-contracts.md).
+
+## External providers (M02)
+
+M02 has **no direct external-provider dependency**. Organization APIs are first-party NestJS only.

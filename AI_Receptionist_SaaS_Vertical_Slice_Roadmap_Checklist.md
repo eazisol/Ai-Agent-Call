@@ -55,7 +55,7 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
   - [x] M00 — Existing Project Audit & SaaS Foundation (MVP)
 - [ ] P01 — **SaaS Core**
   - [x] M01 — Authentication (MVP)
-  - [~] M02 — Organizations / Tenants (MVP)
+  - [x] M02 — Organizations / Tenants (MVP)
   - [ ] M03 — Users, Team & Roles (MVP)
   - [ ] M04 — Business Management (MVP)
 - [ ] P02 — **AI Agent Core**
@@ -318,38 +318,38 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 
 ### Submodule 02.03 — Frontend & Integrations
 
-- [ ] P01-M02-03-01 — Build/complete frontend requirement: Organization creation onboarding.
-- [ ] P01-M02-03-02 — Build/complete frontend requirement: Workspace selector.
-- [ ] P01-M02-03-03 — Build/complete frontend requirement: Organization settings page.
-- [ ] P01-M02-03-04 — Build/complete frontend requirement: No-organization empty state.
-- [ ] P01-M02-03-05 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P01-M02-03-06 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P01-M02-03-01 — Build/complete frontend requirement: Organization creation onboarding.
+- [x] P01-M02-03-02 — Build/complete frontend requirement: Workspace selector.
+- [x] P01-M02-03-03 — Build/complete frontend requirement: Organization settings page.
+- [x] P01-M02-03-04 — Build/complete frontend requirement: No-organization empty state.
+- [x] P01-M02-03-05 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P01-M02-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P01-M02-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+- [x] P01-M02-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
 
 ### Submodule 02.04 — Security & QA
 
-- [ ] P01-M02-04-01 — Every organization query scoped to authenticated membership.
-- [ ] P01-M02-04-02 — Cross-tenant access denied.
-- [ ] P01-M02-04-03 — Owner-only settings protected where applicable.
-- [ ] P01-M02-04-04 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P01-M02-04-01 — Every organization query scoped to authenticated membership.
+- [x] P01-M02-04-02 — Cross-tenant access denied.
+- [x] P01-M02-04-03 — Owner-only settings protected where applicable.
+- [x] P01-M02-04-04 — Verify tenant isolation for all tenant-owned records and actions.
 
-- [ ] P01-M02-04-05 — Test: User creates first organization.
-- [ ] P01-M02-04-06 — Test: Member can access own tenant.
-- [ ] P01-M02-04-07 — Test: Organization A cannot read/update Organization B.
-- [ ] P01-M02-04-08 — Test: Workspace switching preserves isolation.
-- [ ] P01-M02-04-09 — Run regression checks for directly affected existing modules.
-- [ ] P01-M02-04-10 — Complete manual QA of the end-to-end user journey.
+- [x] P01-M02-04-05 — Test: User creates first organization.
+- [x] P01-M02-04-06 — Test: Member can access own tenant.
+- [x] P01-M02-04-07 — Test: Organization A cannot read/update Organization B.
+- [x] P01-M02-04-08 — Test: Workspace switching preserves isolation.
+- [x] P01-M02-04-09 — Run regression checks for directly affected existing modules.
+- [x] P01-M02-04-10 — Complete manual QA of the end-to-end user journey.
 
 ### Submodule 02.05 — Documentation & Acceptance
 
-- [ ] P01-M02-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P01-M02-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P01-M02-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P01-M02-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P01-M02-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P01-M02-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 
-- [ ] P01-M02-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+- [x] P01-M02-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M02] Organizations / Tenants = COMPLETE ✅` only after every required checkbox above is verified.
+**Module Gate:** `[M02] Organizations / Tenants = COMPLETE ✅` — verified 25 August 2026.
 
 ## Module 03 — Users, Team & Roles `M03`
 
@@ -3198,7 +3198,7 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 
 - [x] ORDER-01 — M00 Existing Project Audit & SaaS Foundation — Target: MVP — Dependencies: None
 - [x] ORDER-02 — M01 Authentication — Target: MVP — Dependencies: M00
-- [ ] ORDER-03 — M02 Organizations / Tenants — Target: MVP — Dependencies: M01
+- [x] ORDER-03 — M02 Organizations / Tenants — Target: MVP — Dependencies: M01
 - [ ] ORDER-04 — M03 Users, Team & Roles — Target: MVP — Dependencies: M02
 - [ ] ORDER-05 — M04 Business Management — Target: MVP — Dependencies: M02, M03
 - [ ] ORDER-06 — M05 AI Agent Management — Target: MVP — Dependencies: M04
@@ -3243,7 +3243,7 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 
 - [x] MVP-GATE-M00 — M00 Existing Project Audit & SaaS Foundation completed and accepted.
 - [x] MVP-GATE-M01 — M01 Authentication completed and accepted.
-- [ ] MVP-GATE-M02 — M02 Organizations / Tenants completed and accepted.
+- [x] MVP-GATE-M02 — M02 Organizations / Tenants completed and accepted.
 - [ ] MVP-GATE-M03 — M03 Users, Team & Roles completed and accepted.
 - [ ] MVP-GATE-M04 — M04 Business Management completed and accepted.
 - [ ] MVP-GATE-M05 — M05 AI Agent Management completed and accepted.

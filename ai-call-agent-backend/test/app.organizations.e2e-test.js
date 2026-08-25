@@ -177,3 +177,68 @@ test('create organization rejects empty name with VALIDATION_ERROR', async () =>
   assert.equal(response.body.error.code, 'VALIDATION_ERROR');
   await app.close();
 });
+
+test('unauthenticated organization list is rejected', async () => {
+  const moduleRef = await Test.createTestingModule({
+    controllers: [OrganizationsController],
+    providers: [
+      {
+        provide: OrganizationsService,
+        useValue: {
+          listForUser: async () => {
+            throw new Error('should not be called');
+          },
+        },
+      },
+      AuthCookieService,
+      {
+        provide: ConfigService,
+        useValue: {
+          get: () => undefined,
+        },
+      },
+      AuthGuard,
+      {
+        provide: require('../dist/modules/auth/auth.service').AuthService,
+        useValue: {
+          meFromAccessToken: async () => {
+            throw new Error('no token');
+          },
+          refreshSession: async () => {
+            throw new Error('no refresh');
+          },
+        },
+      },
+    ],
+  }).compile();
+
+  const app = moduleRef.createNestApplication();
+  app.setGlobalPrefix('api/v1');
+  app.useGlobalFilters(new GlobalExceptionFilter());
+  await app.init();
+
+  const response = await request(app.getHttpServer())
+    .get('/api/v1/organizations')
+    .expect(401);
+  assert.equal(response.body.error.code, 'UNAUTHENTICATED');
+  await app.close();
+});
+
+test('PATCH returns FORBIDDEN when service denies non-owner', async () => {
+  const { ApplicationError } = require('../dist/common/errors/application-error');
+  const app = await createApp({
+    updateForOwner: async () => {
+      throw new ApplicationError(
+        'FORBIDDEN',
+        'Only organization owners can update settings.',
+        403,
+      );
+    },
+  });
+  const response = await request(app.getHttpServer())
+    .patch(`/api/v1/organizations/${sampleOrg.id}`)
+    .send({ name: 'Nope' })
+    .expect(403);
+  assert.equal(response.body.error.code, 'FORBIDDEN');
+  await app.close();
+});

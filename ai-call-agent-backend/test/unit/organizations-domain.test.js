@@ -195,3 +195,74 @@ test('non-owner cannot update organization settings', async () => {
   });
   assert.equal(updated.name, 'Shared Updated');
 });
+
+test('member can read own tenant but not update another org', async () => {
+  const ownerId = randomUUID();
+  const memberId = randomUUID();
+  const outsiderId = randomUUID();
+  const { service, members, organizations } = createHarness([
+    { id: ownerId, email: 'owner@example.com', displayName: 'Owner' },
+    { id: memberId, email: 'member@example.com', displayName: 'Member' },
+    { id: outsiderId, email: 'out@example.com', displayName: 'Out' },
+  ]);
+
+  const orgA = await service.create(ownerId, { name: 'Alpha', slug: 'alpha' });
+  const orgB = await service.create(outsiderId, { name: 'Beta', slug: 'beta' });
+  members.rows.push({
+    id: randomUUID(),
+    organization: organizations.rows.find((row) => row.id === orgA.id),
+    organizationId: orgA.id,
+    user: { id: memberId },
+    userId: memberId,
+    role: 'member',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+
+  const own = await service.getForUser(memberId, orgA.id);
+  assert.equal(own.id, orgA.id);
+  assert.equal(own.role, 'member');
+
+  await assert.rejects(
+    () => service.getForUser(memberId, orgB.id),
+    (error) =>
+      error instanceof ApplicationError &&
+      error.code === 'ORGANIZATION_NOT_FOUND',
+  );
+  await assert.rejects(
+    () => service.updateForOwner(memberId, orgB.id, { name: 'Nope' }),
+    (error) =>
+      error instanceof ApplicationError &&
+      error.code === 'ORGANIZATION_NOT_FOUND',
+  );
+});
+
+test('workspace switching context never exposes the other tenant', async () => {
+  const userA = randomUUID();
+  const userB = randomUUID();
+  const { service } = createHarness([
+    { id: userA, email: 'a@example.com', displayName: 'A' },
+    { id: userB, email: 'b@example.com', displayName: 'B' },
+  ]);
+
+  const orgA1 = await service.create(userA, { name: 'A One', slug: 'a-one' });
+  const orgA2 = await service.create(userA, { name: 'A Two', slug: 'a-two' });
+  const orgB = await service.create(userB, { name: 'B Only', slug: 'b-only' });
+
+  const listedA = await service.listForUser(userA);
+  assert.equal(listedA.length, 2);
+  assert.equal(
+    listedA.every((org) => org.id === orgA1.id || org.id === orgA2.id),
+    true,
+  );
+
+  // Simulate switch to A Two — still cannot read B
+  const active = await service.getForUser(userA, orgA2.id);
+  assert.equal(active.id, orgA2.id);
+  await assert.rejects(
+    () => service.getForUser(userA, orgB.id),
+    (error) =>
+      error instanceof ApplicationError &&
+      error.code === 'ORGANIZATION_NOT_FOUND',
+  );
+});
