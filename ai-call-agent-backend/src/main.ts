@@ -2,6 +2,7 @@ import { Logger, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { WsAdapter } from '@nestjs/platform-ws';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { CorrelationIdInterceptor } from './common/interceptors/correlation-id.interceptor';
@@ -11,6 +12,7 @@ async function bootstrap() {
   const config = app.get(ConfigService);
 
   app.useWebSocketAdapter(new WsAdapter(app));
+  app.use(cookieParser());
   app.setGlobalPrefix('api/v1', {
     exclude: [
       { path: 'health/live', method: RequestMethod.GET },

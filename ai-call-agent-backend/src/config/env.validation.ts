@@ -71,6 +71,45 @@ export const envValidationSchema = Joi.object({
 
   N8N_ENABLED: Joi.boolean().default(false),
   N8N_CALL_COMPLETED_WEBHOOK: Joi.string().uri().allow('', null),
+
+  AUTH_JWT_ACCESS_SECRET: Joi.string().min(32).required(),
+  AUTH_ACCESS_TTL_SECONDS: Joi.number().integer().min(60).max(3600).default(900),
+  AUTH_REFRESH_TTL_SECONDS: Joi.number()
+    .integer()
+    .min(3600)
+    .max(31_536_000)
+    .default(2_592_000),
+  AUTH_VERIFICATION_TTL_SECONDS: Joi.number()
+    .integer()
+    .min(300)
+    .max(604_800)
+    .default(86_400),
+  AUTH_RESET_TTL_SECONDS: Joi.number()
+    .integer()
+    .min(300)
+    .max(86_400)
+    .default(3_600),
+  AUTH_BCRYPT_ROUNDS: Joi.number().integer().min(10).max(15).default(12),
+  AUTH_PUBLIC_APP_URL: Joi.string().uri().optional(),
+  AUTH_ACCESS_COOKIE_NAME: Joi.string().default('eazi_access'),
+  AUTH_REFRESH_COOKIE_NAME: Joi.string().default('eazi_refresh'),
+  AUTH_ORG_COOKIE_NAME: Joi.string().default('eazi_org'),
+  AUTH_COOKIE_SECURE: Joi.boolean().optional(),
+  AUTH_COOKIE_SAME_SITE: Joi.string().valid('lax', 'strict', 'none').optional(),
+  AUTH_RATE_LIMIT_MAX: Joi.number().integer().min(5).max(1000).default(20),
+  AUTH_RATE_LIMIT_WINDOW_MS: Joi.number()
+    .integer()
+    .min(60_000)
+    .max(3_600_000)
+    .default(900_000),
+
+  SMTP_HOST: Joi.string().required(),
+  SMTP_PORT: Joi.number().port().default(587),
+  SMTP_SECURE: Joi.boolean().default(false),
+  SMTP_USER: Joi.string().allow('', null),
+  SMTP_PASSWORD: Joi.string().allow('', null),
+  SMTP_FROM: Joi.string().required(),
+  SMTP_TIMEOUT_MS: Joi.number().integer().min(1000).max(60_000).default(10_000),
 })
   .custom((environment: Record<string, unknown>, helpers) => {
     const production = environment.NODE_ENV === 'production';

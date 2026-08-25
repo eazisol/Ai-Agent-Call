@@ -11,6 +11,9 @@ const validEnvironment = {
   TWILIO_VALIDATE_SIGNATURES: false,
   VOICE_STREAM_SIGNING_SECRET:
     'test-signing-secret-with-at-least-32-characters',
+  AUTH_JWT_ACCESS_SECRET: 'test-auth-jwt-access-secret-32chars-min',
+  SMTP_HOST: 'smtp.example.com',
+  SMTP_FROM: 'noreply@example.com',
 };
 
 test('environment validation accepts a safe test configuration', () => {

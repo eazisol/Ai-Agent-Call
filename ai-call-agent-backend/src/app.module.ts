@@ -8,10 +8,12 @@ import { envValidationSchema } from './config/env.validation';
 import { HealthModule } from './health/health.module';
 import { ObjectStorageModule } from './infrastructure/object-storage/object-storage.module';
 import { RedisModule } from './infrastructure/redis/redis.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { BusinessesModule } from './modules/businesses/businesses.module';
 import { CallsModule } from './modules/calls/calls.module';
 import { N8nModule } from './modules/n8n/n8n.module';
 import { OpenaiRealtimeModule } from './modules/openai-realtime/openai-realtime.module';
+import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { TwilioModule } from './modules/twilio/twilio.module';
 import { VoiceStreamModule } from './modules/voice-stream/voice-stream.module';
 
@@ -38,9 +40,12 @@ import { VoiceStreamModule } from './modules/voice-stream/voice-stream.module';
           : false,
         autoLoadEntities: true,
         synchronize: false,
+        migrationsTableName: 'eazi_ai_call_migrations',
         logging: false,
       }),
     }),
+    AuthModule,
+    OrganizationsModule,
     BusinessesModule,
     CallsModule,
     OpenaiRealtimeModule,

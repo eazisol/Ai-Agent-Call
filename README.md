@@ -4,11 +4,12 @@ EaziAiCall is an AI receptionist SaaS foundation built with Next.js, NestJS,
 PostgreSQL, Redis, Twilio, OpenAI Realtime, Docker, and n8n. Module 0 preserves
 the working call prototype while making its repository, configuration, database,
 provider boundaries, webhook path, and validation workflow safer and repeatable.
+Module 1 delivers end-to-end authentication (register, verify, session cookies,
+password recovery, and portal route protection).
 
-> Module 0 is a foundation, not the completed SaaS. Authentication, organization
-> tenancy, roles, and the commercial ElevenLabs flow begin in later modules. The
-> call-history API is deliberately unavailable in production until authorization
-> is implemented.
+> Organization tenancy, roles, and the commercial ElevenLabs flow begin in later
+> modules. The call-history API remains deliberately unavailable in production
+> until tenant authorization (M02+) replaces the prototype guard.
 
 ## Architecture
 
@@ -111,12 +112,14 @@ calls are opt-in and are never part of the default tests.
 
 - [Target architecture and master module registry](AI_Receptionist_SaaS_Architecture_Module_Registry_Module_0.md)
 - [Module 0 implementation report](docs/module-0/implementation-report.md)
+- [Module 01 — Authentication](docs/module-1/README.md)
 - [Baseline and validation evidence](docs/module-0/baseline-validation.md)
 - [Runtime architecture](docs/module-0/runtime-architecture.md)
 - [Database migration runbook](docs/module-0/migration-runbook.md)
 - [Security and provider smoke-test runbook](docs/module-0/security-runbook.md)
 - [Tenant-key strategy](docs/module-0/tenant-key-strategy.md)
 - [Environment-variable strategy](docs/module-0/environment-strategy.md)
+- [Module 1 auth API contracts](docs/module-1/api-contracts.md)
 
 The internal directory names (`ai-call-agent-backend` and
 `ai-call-agent-frontend`), npm package names, database name (`ai_call_agent`),

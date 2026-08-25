@@ -16,4 +16,4 @@ COPY --from=builder /app/dist ./dist
 
 USER node
 EXPOSE 3000
-CMD ["sh", "-c", "node node_modules/typeorm/cli.js -d dist/database/data-source.js migration:run && node dist/main.js"]
+CMD ["sh", "-c", "node dist/database/bootstrap-eazi-migrations.js && node node_modules/typeorm/cli.js -d dist/database/data-source.js migration:run && node dist/main.js"]

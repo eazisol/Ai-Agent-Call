@@ -21,8 +21,9 @@
     "test:cov": "npm run build && node --test --experimental-test-coverage test/unit/*.test.js",
     "test:debug": "npm run build && node --inspect-brk --test test/unit/*.test.js",
     "test:e2e": "npm run build && node --test test/*.e2e-test.js",
-    "migration:show": "node --require ts-node/register ./node_modules/typeorm/cli.js -d src/database/data-source.ts migration:show",
-    "migration:run": "node --require ts-node/register ./node_modules/typeorm/cli.js -d src/database/data-source.ts migration:run",
+    "migration:bootstrap": "node --require ts-node/register ./src/database/bootstrap-eazi-migrations.ts",
+    "migration:show": "npm run migration:bootstrap && node --require ts-node/register ./node_modules/typeorm/cli.js -d src/database/data-source.ts migration:show",
+    "migration:run": "npm run migration:bootstrap && node --require ts-node/register ./node_modules/typeorm/cli.js -d src/database/data-source.ts migration:run",
     "migration:revert": "node --require ts-node/register ./node_modules/typeorm/cli.js -d src/database/data-source.ts migration:revert"
   },
   "dependencies": {
@@ -33,9 +34,13 @@
     "@nestjs/platform-ws": "^11.1.22",
     "@nestjs/typeorm": "^11.0.1",
     "@nestjs/websockets": "^11.1.22",
+    "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "cookie-parser": "^1.4.7",
     "joi": "^18.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^9.0.5",
     "openai": "^6.38.0",
     "pg": "^8.21.0",
     "reflect-metadata": "^0.2.2",
@@ -50,9 +55,13 @@
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.0",
+    "@types/nodemailer": "^8.0.1",
     "@types/supertest": "^7.0.0",
     "@types/ws": "^8.18.1",
     "eslint": "^9.18.0",
@@ -69,5 +78,8 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true
   }
 }

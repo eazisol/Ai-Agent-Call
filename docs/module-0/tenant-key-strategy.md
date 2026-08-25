@@ -1,6 +1,6 @@
 # Module 0 tenant-key strategy
 
-**Status:** Accepted for M00. Isolation proofs belong to M02.
+**Status:** Accepted for M00. M02 scope locked 25 August 2026 — see `docs/module-2/scope-and-requirements.md`. Isolation proofs belong to M02 implementation (02.02–02.04).
 
 ## Decision
 
@@ -8,9 +8,13 @@
 | --- | --- | --- |
 | `organization_id` | M02 | Primary tenant, membership, billing, and security boundary |
 | `business_id` | M04 | Operational owner of agents, numbers, knowledge, and calls |
-| PostgreSQL RLS | M02 decision | Optional extra control; application scoping is mandatory either way |
+| PostgreSQL RLS | Deferred past M02 MVP | Optional extra control; **application scoping is mandatory** in M02 |
 
 M00 does **not** add `organization_id`. The baseline schema keeps the prototype `business_id` foreign key on `calls` and `ai_configs` (`ON DELETE SET NULL` / `CASCADE` as in the foundation migration). Queries remain unscoped until authentication (M01) and organizations (M02) exist.
+
+M01 identity tables (`users`, `refresh_tokens`, `email_verification_tokens`, `password_reset_tokens`) are user-scoped only. See `docs/module-1/data-model.md`.
+
+M02 introduces `organizations` + `organization_members` and an active-workspace cookie (`eazi_org`). Client-supplied organization IDs are never trusted without membership context.
 
 ## M00 isolation posture (accepted exception)
 

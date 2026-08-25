@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { useAuthSession } from "@/components/auth/auth-session";
 import { cn } from "@/lib/utils";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
@@ -24,6 +25,7 @@ export interface AppShellProps {
 }
 
 export function AppShell({ breadcrumbs, children, contentClassName }: AppShellProps) {
+  const { portalUser } = useAuthSession();
   // Default expanded for SSR; after mount restore cookie or tablet-collapsed default.
   // Deferred update avoids hydration mismatch (cookie/viewport are client-only).
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
@@ -49,7 +51,7 @@ export function AppShell({ breadcrumbs, children, contentClassName }: AppShellPr
       </a>
       <AppSidebar />
       <SidebarInset>
-        <TopHeader breadcrumbs={breadcrumbs} />
+        <TopHeader breadcrumbs={breadcrumbs} user={portalUser ?? undefined} />
         <main id="main-content" tabIndex={-1} className="flex-1">
           <div
             className={cn(

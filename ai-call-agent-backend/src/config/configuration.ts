@@ -101,5 +101,49 @@ export default () => {
       enabled: booleanValue(process.env.N8N_ENABLED, false),
       callCompletedWebhook: process.env.N8N_CALL_COMPLETED_WEBHOOK,
     },
+    auth: {
+      jwtAccessSecret: process.env.AUTH_JWT_ACCESS_SECRET,
+      accessTtlSeconds: numberValue(process.env.AUTH_ACCESS_TTL_SECONDS, 900),
+      refreshTtlSeconds: numberValue(
+        process.env.AUTH_REFRESH_TTL_SECONDS,
+        2_592_000,
+      ),
+      verificationTtlSeconds: numberValue(
+        process.env.AUTH_VERIFICATION_TTL_SECONDS,
+        86_400,
+      ),
+      resetTtlSeconds: numberValue(process.env.AUTH_RESET_TTL_SECONDS, 3_600),
+      bcryptRounds: numberValue(process.env.AUTH_BCRYPT_ROUNDS, 12),
+      publicAppUrl:
+        process.env.AUTH_PUBLIC_APP_URL ??
+        process.env.CORS_ORIGINS?.split(',')[0]?.trim() ??
+        'http://localhost:3001',
+      accessCookieName: process.env.AUTH_ACCESS_COOKIE_NAME ?? 'eazi_access',
+      refreshCookieName: process.env.AUTH_REFRESH_COOKIE_NAME ?? 'eazi_refresh',
+      orgCookieName: process.env.AUTH_ORG_COOKIE_NAME ?? 'eazi_org',
+      cookieSecure: booleanValue(
+        process.env.AUTH_COOKIE_SECURE,
+        nodeEnv === 'production',
+      ),
+      cookieSameSite: (process.env.AUTH_COOKIE_SAME_SITE ??
+        (nodeEnv === 'production' ? 'none' : 'lax')) as
+        | 'lax'
+        | 'strict'
+        | 'none',
+      rateLimitMax: numberValue(process.env.AUTH_RATE_LIMIT_MAX, 20),
+      rateLimitWindowMs: numberValue(
+        process.env.AUTH_RATE_LIMIT_WINDOW_MS,
+        900_000,
+      ),
+    },
+    smtp: {
+      host: process.env.SMTP_HOST,
+      port: numberValue(process.env.SMTP_PORT, 587),
+      secure: booleanValue(process.env.SMTP_SECURE, false),
+      user: process.env.SMTP_USER,
+      password: process.env.SMTP_PASSWORD,
+      from: process.env.SMTP_FROM,
+      timeoutMs: numberValue(process.env.SMTP_TIMEOUT_MS, 10_000),
+    },
   };
 };
