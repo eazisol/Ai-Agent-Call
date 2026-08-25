@@ -11,7 +11,13 @@ import {
 import { User } from '../../auth/entities/user.entity';
 import { Organization } from './organization.entity';
 
-export type OrganizationMemberRole = 'owner' | 'member';
+export type OrganizationMemberRole =
+  | 'owner'
+  | 'admin'
+  | 'manager'
+  | 'viewer';
+
+export type InviteAssignableRole = 'admin' | 'manager' | 'viewer';
 
 @Entity('organization_members')
 @Unique('uq_organization_members_org_user', ['organization', 'user'])

@@ -10,20 +10,20 @@ import { FormField } from "@/components/patterns/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authApi } from "@/lib/auth-api";
-
-function safeNextPath(raw: string | null): string {
-  if (!raw || !raw.startsWith("/") || raw.startsWith("//")) {
-    return "/dashboard";
-  }
-  return raw;
-}
+import {
+  rememberInviteReturn,
+  resolvePostAuthPath,
+} from "@/lib/invite-return";
+import { withReturnTo } from "@/lib/safe-return-path";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setUser } = useAuthSession();
+  const nextPath = resolvePostAuthPath(searchParams.get("next"));
+  const emailPrefill = searchParams.get("email")?.trim() ?? "";
 
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState(emailPrefill);
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = React.useState<{
@@ -31,6 +31,23 @@ function LoginForm() {
     password?: string;
   }>({});
   const [submitting, setSubmitting] = React.useState(false);
+
+  React.useEffect(() => {
+    if (emailPrefill) {
+      setEmail(emailPrefill);
+    }
+  }, [emailPrefill]);
+
+  const registerHref = withReturnTo(
+    emailPrefill
+      ? `/register?email=${encodeURIComponent(emailPrefill)}&lockEmail=1`
+      : "/register",
+    nextPath,
+  );
+
+  React.useEffect(() => {
+    rememberInviteReturn(nextPath);
+  }, [nextPath]);
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -55,12 +72,18 @@ function LoginForm() {
     setSubmitting(false);
 
     if (!result.ok) {
+      if (result.code === "EMAIL_NOT_VERIFIED") {
+        setError(
+          "Verify your email to continue. We sent a new verification link.",
+        );
+        return;
+      }
       setError(result.message);
       return;
     }
 
     setUser(result.data.user);
-    router.replace(safeNextPath(searchParams.get("next")));
+    router.replace(nextPath);
   };
 
   return (
@@ -70,7 +93,10 @@ function LoginForm() {
       footer={
         <>
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-medium text-primary hover:underline">
+          <Link
+            href={registerHref}
+            className="font-medium text-primary hover:underline"
+          >
             Create one
           </Link>
         </>

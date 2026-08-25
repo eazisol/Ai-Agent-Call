@@ -81,6 +81,10 @@ function buildPortalBreadcrumbs(
     return [{ label: "Calls", href: "/calls" }, { label }];
   }
 
+  if (pathname === "/team") {
+    return [{ label: "Team" }];
+  }
+
   if (pathname === "/settings") {
     return [{ label: "Settings" }];
   }

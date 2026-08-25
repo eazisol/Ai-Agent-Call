@@ -89,6 +89,11 @@ export const envValidationSchema = Joi.object({
     .min(300)
     .max(86_400)
     .default(3_600),
+  AUTH_INVITE_TTL_SECONDS: Joi.number()
+    .integer()
+    .min(300)
+    .max(2_592_000)
+    .default(604_800),
   AUTH_BCRYPT_ROUNDS: Joi.number().integer().min(10).max(15).default(12),
   AUTH_PUBLIC_APP_URL: Joi.string().uri().optional(),
   AUTH_ACCESS_COOKIE_NAME: Joi.string().default('eazi_access'),

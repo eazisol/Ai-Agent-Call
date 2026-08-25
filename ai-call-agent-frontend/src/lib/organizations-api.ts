@@ -1,6 +1,6 @@
 import { buildApiUrl } from "./api-url.mjs";
 
-export type OrganizationRole = "owner" | "member";
+export type OrganizationRole = "owner" | "admin" | "manager" | "viewer";
 
 export type Organization = {
   id: string;

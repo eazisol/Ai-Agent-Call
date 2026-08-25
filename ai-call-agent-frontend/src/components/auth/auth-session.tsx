@@ -9,6 +9,7 @@ import {
   authUserInitials,
   type AuthUser,
 } from "@/lib/auth-api";
+import { resolvePostAuthPath } from "@/lib/invite-return";
 import type { PortalUser } from "@/mocks/portal-shell";
 
 type AuthStatus = "loading" | "authenticated" | "anonymous";
@@ -147,9 +148,11 @@ export function RedirectIfAuthenticated({
   const router = useRouter();
 
   React.useEffect(() => {
-    if (status === "authenticated") {
-      router.replace("/dashboard");
+    if (status !== "authenticated") {
+      return;
     }
+    const params = new URLSearchParams(window.location.search);
+    router.replace(resolvePostAuthPath(params.get("next")));
   }, [status, router]);
 
   if (status === "loading") {
@@ -168,7 +171,7 @@ export function RedirectIfAuthenticated({
       <div className="flex min-h-screen items-center justify-center bg-background p-6">
         <LoadingState
           className="w-full max-w-md border-0 bg-transparent"
-          label="Taking you to the portal…"
+          label="Continuing…"
         />
       </div>
     );

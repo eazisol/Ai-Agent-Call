@@ -8,6 +8,11 @@ import { AuthCard } from "@/components/auth/auth-card";
 import { Spinner } from "@/components/patterns/loading-state";
 import { Button } from "@/components/ui/button";
 import { authApi } from "@/lib/auth-api";
+import {
+  rememberInviteReturn,
+  resolvePostAuthPath,
+} from "@/lib/invite-return";
+import { withReturnTo } from "@/lib/safe-return-path";
 
 type VerifyState =
   | { kind: "pending-check" }
@@ -20,6 +25,7 @@ function VerifyEmailView() {
   const token = searchParams.get("token")?.trim() ?? "";
   const registered = searchParams.get("registered") === "1";
   const emailHint = searchParams.get("email")?.trim() || undefined;
+  const nextPath = resolvePostAuthPath(searchParams.get("next"));
 
   const [state, setState] = React.useState<VerifyState>(() => {
     if (token) {
@@ -33,6 +39,10 @@ function VerifyEmailView() {
       message: "This verification link is missing a token.",
     };
   });
+
+  React.useEffect(() => {
+    rememberInviteReturn(nextPath);
+  }, [nextPath]);
 
   React.useEffect(() => {
     if (!token) {
@@ -57,6 +67,11 @@ function VerifyEmailView() {
     };
   }, [token]);
 
+  const loginHref = withReturnTo(
+    emailHint ? `/login?email=${encodeURIComponent(emailHint)}` : "/login",
+    nextPath,
+  );
+
   if (state.kind === "pending-check") {
     return (
       <AuthCard
@@ -76,7 +91,10 @@ function VerifyEmailView() {
         title="Check your inbox"
         description="We sent a verification link to your email."
         footer={
-          <Link href="/login" className="font-medium text-primary hover:underline">
+          <Link
+            href={loginHref}
+            className="font-medium text-primary hover:underline"
+          >
             Back to sign in
           </Link>
         }
@@ -85,25 +103,43 @@ function VerifyEmailView() {
           {state.email
             ? `Look for a message sent to ${state.email}.`
             : "Open the link in the email to activate your account."}{" "}
-          You can sign in after verification completes.
+          {nextPath && nextPath !== "/dashboard"
+            ? "After you verify, sign in to continue joining your team."
+            : "You can sign in after verification completes."}
         </p>
       </AuthCard>
     );
   }
 
   if (state.kind === "success") {
+    const continueHref = withReturnTo(
+      `/login?email=${encodeURIComponent(state.email)}`,
+      nextPath,
+    );
     return (
       <AuthCard
         title="Email verified"
         description={`${state.email} is ready to use.`}
         footer={
-          <Link href="/login" className="font-medium text-primary hover:underline">
+          <Link
+            href={continueHref}
+            className="font-medium text-primary hover:underline"
+          >
             Sign in
           </Link>
         }
       >
+        <p className="mb-3 text-sm text-muted-foreground">
+          {nextPath && nextPath !== "/dashboard"
+            ? "Sign in to continue with your invitation."
+            : "Continue to sign in to access your workspace."}
+        </p>
         <Button asChild className="w-full">
-          <Link href="/login">Continue to sign in</Link>
+          <Link href={continueHref}>
+            {nextPath && nextPath !== "/dashboard"
+              ? "Sign in to continue"
+              : "Continue to sign in"}
+          </Link>
         </Button>
       </AuthCard>
     );
@@ -114,7 +150,7 @@ function VerifyEmailView() {
       title="Verification failed"
       description="We could not verify this email link."
       footer={
-        <Link href="/login" className="font-medium text-primary hover:underline">
+        <Link href={loginHref} className="font-medium text-primary hover:underline">
           Back to sign in
         </Link>
       }

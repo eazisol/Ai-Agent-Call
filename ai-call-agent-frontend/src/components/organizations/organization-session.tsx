@@ -8,6 +8,7 @@ import {
   organizationsApi,
   type Organization,
 } from "@/lib/organizations-api";
+import { readInviteReturn } from "@/lib/invite-return";
 
 type OrgStatus = "loading" | "ready" | "empty" | "error";
 
@@ -176,7 +177,15 @@ export function RequireOrganization({
   const onOnboarding = pathname === ONBOARDING_PATH;
 
   React.useEffect(() => {
-    if (status === "empty" && !onOnboarding) {
+    if (status !== "empty") {
+      return;
+    }
+    const inviteReturn = readInviteReturn();
+    if (inviteReturn) {
+      router.replace(inviteReturn);
+      return;
+    }
+    if (!onOnboarding) {
       router.replace(ONBOARDING_PATH);
     }
   }, [status, onOnboarding, router]);
@@ -210,15 +219,22 @@ export function RequireOrganization({
     );
   }
 
-  if (status === "empty" && !onOnboarding) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background p-6">
-        <LoadingState
-          className="w-full max-w-md border-0 bg-transparent"
-          label="Taking you to create a workspace…"
-        />
-      </div>
-    );
+  if (status === "empty") {
+    const inviteReturn = readInviteReturn();
+    if (inviteReturn || !onOnboarding) {
+      return (
+        <div className="flex min-h-screen items-center justify-center bg-background p-6">
+          <LoadingState
+            className="w-full max-w-md border-0 bg-transparent"
+            label={
+              inviteReturn
+                ? "Taking you back to your invitation…"
+                : "Taking you to create a workspace…"
+            }
+          />
+        </div>
+      );
+    }
   }
 
   return children;

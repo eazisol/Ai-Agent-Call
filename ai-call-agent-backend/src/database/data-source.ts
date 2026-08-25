@@ -10,6 +10,7 @@ import { CallRecording } from '../modules/calls/entities/call-recording.entity';
 import { Call } from '../modules/calls/entities/call.entity';
 import { EmailLog } from '../modules/calls/entities/email-log.entity';
 import { ProviderEvent } from '../modules/calls/entities/provider-event.entity';
+import { OrganizationInvitation } from '../modules/organizations/entities/organization-invitation.entity';
 import { OrganizationMember } from '../modules/organizations/entities/organization-member.entity';
 import { Organization } from '../modules/organizations/entities/organization.entity';
 import { AiConfig } from '../modules/openai-realtime/entities/ai-config.entity';
@@ -17,6 +18,7 @@ import { FoundationBaseline1724500000000 } from './migrations/1724500000000-Foun
 import { AuthIdentity1756040000000 } from './migrations/1756040000000-AuthIdentity';
 import { UsersEmailCaseInsensitive1756041000000 } from './migrations/1756041000000-UsersEmailCaseInsensitive';
 import { Organizations1756050000000 } from './migrations/1756050000000-Organizations';
+import { TeamRolesAndInvitations1756060000000 } from './migrations/1756060000000-TeamRolesAndInvitations';
 import { loadBackendEnv } from './load-backend-env';
 
 loadBackendEnv();
@@ -37,6 +39,7 @@ export default new DataSource({
     PasswordResetToken,
     Organization,
     OrganizationMember,
+    OrganizationInvitation,
     Business,
     Call,
     CallMessage,
@@ -51,6 +54,7 @@ export default new DataSource({
     AuthIdentity1756040000000,
     UsersEmailCaseInsensitive1756041000000,
     Organizations1756050000000,
+    TeamRolesAndInvitations1756060000000,
   ],
   migrationsTableName: 'eazi_ai_call_migrations',
   synchronize: false,

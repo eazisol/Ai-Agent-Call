@@ -2,18 +2,28 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { AuthCard } from "@/components/auth/auth-card";
 import { FormField } from "@/components/patterns/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authApi } from "@/lib/auth-api";
+import {
+  rememberInviteReturn,
+  resolvePostAuthPath,
+} from "@/lib/invite-return";
+import { withReturnTo } from "@/lib/safe-return-path";
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextPath = resolvePostAuthPath(searchParams.get("next"));
+  const emailPrefill = searchParams.get("email")?.trim() ?? "";
+  const lockEmail = searchParams.get("lockEmail") === "1" && Boolean(emailPrefill);
+
   const [displayName, setDisplayName] = React.useState("");
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState(emailPrefill);
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = React.useState<{
@@ -23,13 +33,31 @@ export default function RegisterPage() {
   }>({});
   const [submitting, setSubmitting] = React.useState(false);
 
+  React.useEffect(() => {
+    if (emailPrefill) {
+      setEmail(emailPrefill);
+    }
+  }, [emailPrefill]);
+
+  React.useEffect(() => {
+    rememberInviteReturn(nextPath);
+  }, [nextPath]);
+
+  const loginHref = withReturnTo(
+    emailPrefill
+      ? `/login?email=${encodeURIComponent(emailPrefill)}`
+      : "/login",
+    nextPath,
+  );
+
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const nextErrors: typeof fieldErrors = {};
     if (!displayName.trim()) {
       nextErrors.displayName = "Display name is required.";
     }
-    if (!email.trim()) {
+    const emailValue = lockEmail ? emailPrefill : email.trim();
+    if (!emailValue) {
       nextErrors.email = "Email is required.";
     }
     if (password.length < 8) {
@@ -44,29 +72,57 @@ export default function RegisterPage() {
     setError(null);
     const result = await authApi.register({
       displayName: displayName.trim(),
-      email: email.trim(),
+      email: emailValue,
       password,
+      ...(nextPath && nextPath !== "/dashboard" ? { returnTo: nextPath } : {}),
     });
     setSubmitting(false);
 
     if (!result.ok) {
+      if (result.code === "EMAIL_ALREADY_REGISTERED") {
+        setError("An account already exists for this email. Sign in to continue.");
+        return;
+      }
+      if (result.code === "EMAIL_NOT_VERIFIED") {
+        const verifyParams = new URLSearchParams({
+          registered: "1",
+          email: emailValue,
+        });
+        if (nextPath && nextPath !== "/dashboard") {
+          verifyParams.set("next", nextPath);
+        }
+        router.push(`/verify-email?${verifyParams.toString()}`);
+        return;
+      }
       setError(result.message);
       return;
     }
 
-    router.push(
-      `/verify-email?registered=1&email=${encodeURIComponent(result.data.user.email)}`,
-    );
+    const verifyParams = new URLSearchParams({
+      registered: "1",
+      email: result.data.user.email,
+    });
+    if (nextPath && nextPath !== "/dashboard") {
+      verifyParams.set("next", nextPath);
+    }
+    router.push(`/verify-email?${verifyParams.toString()}`);
   };
 
   return (
     <AuthCard
       title="Create account"
-      description="Register with your work email to get started."
+      description={
+        lockEmail
+          ? "Register with your invited email to join the team."
+          : "Register with your work email to get started."
+      }
       footer={
         <>
           Already registered?{" "}
-          <Link href="/login" className="font-medium text-primary hover:underline">
+          <Link
+            href={loginHref}
+            className="font-medium text-primary hover:underline"
+          >
             Sign in
           </Link>
         </>
@@ -93,13 +149,23 @@ export default function RegisterPage() {
           htmlFor="register-email"
           required
           error={fieldErrors.email}
+          description={
+            lockEmail
+              ? "This email is locked to your invitation."
+              : undefined
+          }
         >
           <Input
             id="register-email"
             type="email"
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              if (!lockEmail) {
+                setEmail(e.target.value);
+              }
+            }}
+            readOnly={lockEmail}
             disabled={submitting}
             aria-invalid={Boolean(fieldErrors.email)}
           />
@@ -123,7 +189,15 @@ export default function RegisterPage() {
         </FormField>
         {error ? (
           <p role="alert" className="text-sm text-destructive-strong">
-            {error}
+            {error}{" "}
+            {error.includes("Sign in") ? (
+              <Link
+                href={loginHref}
+                className="font-medium text-primary hover:underline"
+              >
+                Sign in
+              </Link>
+            ) : null}
           </p>
         ) : null}
         <Button type="submit" className="w-full" disabled={submitting}>
@@ -131,5 +205,19 @@ export default function RegisterPage() {
         </Button>
       </form>
     </AuthCard>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <AuthCard title="Create account" description="Loading…">
+          <p className="text-sm text-muted-foreground">Loading…</p>
+        </AuthCard>
+      }
+    >
+      <RegisterForm />
+    </React.Suspense>
   );
 }

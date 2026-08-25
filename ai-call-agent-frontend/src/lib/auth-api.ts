@@ -95,6 +95,7 @@ export const authApi = {
     email: string;
     password: string;
     displayName: string;
+    returnTo?: string;
   }) =>
     request<{ user: AuthUser }>("auth/register", {
       method: "POST",

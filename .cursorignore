@@ -1,0 +1,211 @@
+# EaziAICall — Cursor Ignore
+# Place this file at the repository root as: .cursorignore
+# Goal: keep Cursor focused on production source, architecture, migrations,
+# tests, and docs while excluding dependencies, generated output, secrets,
+# caches, runtime data, large binaries, and reference-only code.
+
+# ============================================================
+# 1) Dependencies / package manager caches
+# ============================================================
+**/node_modules/
+**/.npm/
+**/.pnpm-store/
+**/.yarn/cache/
+**/.yarn/unplugged/
+**/.pnp.*
+**/vendor/
+
+# ============================================================
+# 2) Next.js / React / frontend generated output
+# ============================================================
+**/.next/
+**/out/
+**/.vercel/
+**/.turbo/
+**/.parcel-cache/
+**/.vite/
+**/.cache/
+**/storybook-static/
+
+# ============================================================
+# 3) NestJS / Node / TypeScript build output
+# ============================================================
+**/dist/
+**/build/
+**/lib/
+**/coverage/
+**/.nyc_output/
+**/*.tsbuildinfo
+
+# ============================================================
+# 4) Test / tooling caches and generated reports
+# ============================================================
+**/test-results/
+**/playwright-report/
+**/blob-report/
+**/cypress/videos/
+**/cypress/screenshots/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.eslintcache
+
+# ============================================================
+# 5) Logs / temp / runtime files
+# ============================================================
+**/*.log
+**/logs/
+**/tmp/
+**/temp/
+**/.tmp/
+**/*.pid
+**/*.pid.lock
+**/*.seed
+**/*.swp
+**/*.swo
+**/*~
+**/.DS_Store
+**/Thumbs.db
+
+# ============================================================
+# 6) Secrets / real environment files
+#    Keep sanitized *.example files indexable.
+# ============================================================
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+.env.staging
+.env.staging.local
+.env.docker
+
+**/.env
+**/.env.local
+**/.env.development
+**/.env.development.local
+**/.env.test
+**/.env.test.local
+**/.env.production
+**/.env.production.local
+**/.env.staging
+**/.env.staging.local
+**/.env.docker
+
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/*.crt
+**/*.cer
+**/id_rsa
+**/id_rsa.*
+**/credentials.json
+**/service-account*.json
+**/*secret*.json
+**/*credentials*.json
+
+# ============================================================
+# 7) Local databases / runtime persistence / Docker volumes
+# ============================================================
+**/*.sqlite
+**/*.sqlite3
+**/*.db
+**/data/
+**/pgdata/
+**/postgres-data/
+**/redis-data/
+**/redis-data-*/
+**/n8n-data/
+**/.n8n/
+**/minio-data/
+**/storage-data/
+**/uploads/
+**/recordings/
+
+# ============================================================
+# 8) Large binary / media files that do not help code reasoning
+# ============================================================
+**/*.mp3
+**/*.wav
+**/*.m4a
+**/*.aac
+**/*.flac
+**/*.ogg
+**/*.mp4
+**/*.mov
+**/*.avi
+**/*.mkv
+**/*.webm
+**/*.zip
+**/*.7z
+**/*.rar
+**/*.tar
+**/*.tar.gz
+**/*.tgz
+**/*.iso
+
+# ============================================================
+# 9) Generated source / framework artifacts
+#    Do not ignore real TypeORM migrations.
+# ============================================================
+**/routeTree.gen.ts
+**/*.generated.ts
+**/*.generated.tsx
+**/generated/
+**/__generated__/
+
+# ============================================================
+# 10) IDE / OS metadata
+# ============================================================
+**/.idea/
+**/.vs/
+**/.vscode/.ropeproject/
+**/*.suo
+**/*.user
+**/*.userosscache
+**/*.sln.docstates
+
+# ============================================================
+# 11) Git internals
+# ============================================================
+.git/
+**/.git/
+
+# ============================================================
+# 12) Reference-only Lovable UI
+# ============================================================
+# This folder is a design/reference source, not the production Next.js app.
+# Ignoring it prevents Cursor from mixing TanStack/Vite/Lovable runtime code
+# into EaziAICall production implementation.
+EaziAICall-Lovable-UI/
+
+# ============================================================
+# 13) Backups / exports / copied artifacts
+# ============================================================
+**/*.bak
+**/*.backup
+**/*.old
+**/*.orig
+**/* copy.*
+**/* Copy.*
+**/exports/
+**/backups/
+
+# ============================================================
+# KEEP INDEXED (intentionally NOT ignored)
+# ============================================================
+# - ai-call-agent-backend/src/**
+# - ai-call-agent-backend/test/**
+# - ai-call-agent-backend/migrations/** (or equivalent)
+# - ai-call-agent-frontend/src/**
+# - ai-call-agent-frontend/test/**
+# - docs/**
+# - docker-compose*.yml
+# - package.json / package-lock.json
+# - tsconfig*.json
+# - *.example environment files
+# - README files

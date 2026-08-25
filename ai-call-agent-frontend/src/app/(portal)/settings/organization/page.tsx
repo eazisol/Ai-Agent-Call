@@ -49,7 +49,7 @@ export default function OrganizationSettingsPage() {
     );
   }
 
-  const canEdit = active.role === "owner";
+  const canEdit = active.role === "owner" || active.role === "admin";
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -86,7 +86,7 @@ export default function OrganizationSettingsPage() {
         <p className="mt-1 text-sm text-muted-foreground">
           {canEdit
             ? "Update the name and slug for your active workspace."
-            : "You can view this workspace. Only owners can change settings."}
+            : "You can view this workspace. Only owners and admins can change settings."}
         </p>
       </div>
 

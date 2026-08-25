@@ -8,6 +8,7 @@ import {
   type OrganizationMemberRole,
 } from './entities/organization-member.entity';
 import { Organization } from './entities/organization.entity';
+import { assertCan } from './organization-permissions';
 
 export interface OrganizationView {
   id: string;
@@ -117,13 +118,7 @@ export class OrganizationsService {
     input: UpdateOrganizationInput,
   ): Promise<OrganizationView> {
     const membership = await this.requireMembership(userId, organizationId);
-    if (membership.role !== 'owner') {
-      throw new ApplicationError(
-        'FORBIDDEN',
-        'Only organization owners can update settings.',
-        403,
-      );
-    }
+    assertCan(membership.role, 'update_organization');
 
     const organization = membership.organization;
     if (input.name !== undefined) {
@@ -152,7 +147,7 @@ export class OrganizationsService {
     }
 
     const saved = await this.organizations.save(organization);
-    return this.toView(saved, 'owner');
+    return this.toView(saved, membership.role);
   }
 
   async requireMembership(

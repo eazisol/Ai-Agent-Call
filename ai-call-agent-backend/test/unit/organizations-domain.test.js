@@ -164,31 +164,51 @@ test('list and get are membership scoped; foreign org is not found', async () =>
   );
 });
 
-test('non-owner cannot update organization settings', async () => {
+test('viewer cannot update organization settings; admin can', async () => {
   const ownerId = randomUUID();
-  const memberId = randomUUID();
+  const viewerId = randomUUID();
+  const adminId = randomUUID();
   const { service, members, organizations } = createHarness([
     { id: ownerId, email: 'owner@example.com', displayName: 'Owner' },
-    { id: memberId, email: 'member@example.com', displayName: 'Member' },
+    { id: viewerId, email: 'viewer@example.com', displayName: 'Viewer' },
+    { id: adminId, email: 'admin@example.com', displayName: 'Admin' },
   ]);
 
   const org = await service.create(ownerId, { name: 'Shared', slug: 'shared' });
   const organization = organizations.rows[0];
-  members.rows.push({
-    id: randomUUID(),
-    organization,
-    organizationId: org.id,
-    user: { id: memberId },
-    userId: memberId,
-    role: 'member',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+  members.rows.push(
+    {
+      id: randomUUID(),
+      organization,
+      organizationId: org.id,
+      user: { id: viewerId },
+      userId: viewerId,
+      role: 'viewer',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: randomUUID(),
+      organization,
+      organizationId: org.id,
+      user: { id: adminId },
+      userId: adminId,
+      role: 'admin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  );
 
   await assert.rejects(
-    () => service.updateForOwner(memberId, org.id, { name: 'Hacked' }),
+    () => service.updateForOwner(viewerId, org.id, { name: 'Hacked' }),
     (error) => error instanceof ApplicationError && error.code === 'FORBIDDEN',
   );
+
+  const byAdmin = await service.updateForOwner(adminId, org.id, {
+    name: 'Shared Admin',
+  });
+  assert.equal(byAdmin.name, 'Shared Admin');
+  assert.equal(byAdmin.role, 'admin');
 
   const updated = await service.updateForOwner(ownerId, org.id, {
     name: 'Shared Updated',
@@ -196,7 +216,7 @@ test('non-owner cannot update organization settings', async () => {
   assert.equal(updated.name, 'Shared Updated');
 });
 
-test('member can read own tenant but not update another org', async () => {
+test('viewer can read own tenant but not update another org', async () => {
   const ownerId = randomUUID();
   const memberId = randomUUID();
   const outsiderId = randomUUID();
@@ -214,14 +234,14 @@ test('member can read own tenant but not update another org', async () => {
     organizationId: orgA.id,
     user: { id: memberId },
     userId: memberId,
-    role: 'member',
+    role: 'viewer',
     createdAt: new Date(),
     updatedAt: new Date(),
   });
 
   const own = await service.getForUser(memberId, orgA.id);
   assert.equal(own.id, orgA.id);
-  assert.equal(own.role, 'member');
+  assert.equal(own.role, 'viewer');
 
   await assert.rejects(
     () => service.getForUser(memberId, orgB.id),

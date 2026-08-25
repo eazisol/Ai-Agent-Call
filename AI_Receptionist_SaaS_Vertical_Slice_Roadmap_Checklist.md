@@ -56,7 +56,7 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 - [ ] P01 — **SaaS Core**
   - [x] M01 — Authentication (MVP)
   - [x] M02 — Organizations / Tenants (MVP)
-  - [ ] M03 — Users, Team & Roles (MVP)
+  - [x] M03 — Users, Team & Roles (MVP)
   - [ ] M04 — Business Management (MVP)
 - [ ] P02 — **AI Agent Core**
   - [ ] M05 — AI Agent Management (MVP)
@@ -355,77 +355,77 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 
 **Target:** MVP
 
-**Dependencies:** M02
+**Dependencies:** M01, M02
 
 
 ### Submodule 03.01 — Scope & Technical Design
 
-- [ ] P01-M03-01-01 — Confirm the objective and boundaries of **Users, Team & Roles**.
-- [ ] P01-M03-01-02 — Invite team member
-- [ ] P01-M03-01-03 — Accept invitation
-- [ ] P01-M03-01-04 — List members
-- [ ] P01-M03-01-05 — Owner/Admin/Manager/Viewer roles
-- [ ] P01-M03-01-06 — Change role
-- [ ] P01-M03-01-07 — Remove member
-- [ ] P01-M03-01-08 — Pending invitations
-- [ ] P01-M03-01-09 — RBAC permission checks
-- [ ] P01-M03-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P01-M03-01-01 — Confirm the objective and boundaries of **Users, Team & Roles**.
+- [x] P01-M03-01-02 — Invite team member
+- [x] P01-M03-01-03 — Accept invitation
+- [x] P01-M03-01-04 — List members
+- [x] P01-M03-01-05 — Owner/Admin/Manager/Viewer roles
+- [x] P01-M03-01-06 — Change role
+- [x] P01-M03-01-07 — Remove member
+- [x] P01-M03-01-08 — Pending invitations
+- [x] P01-M03-01-09 — RBAC permission checks
+- [x] P01-M03-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
 ### Submodule 03.02 — Backend, Persistence & API
 
-- [ ] P01-M03-02-01 — Implement/confirm data requirement: `organization_members`.
-- [ ] P01-M03-02-02 — Implement/confirm data requirement: `invitations`.
-- [ ] P01-M03-02-03 — Implement/confirm data requirement: `roles/permission mapping if persisted`.
-- [ ] P01-M03-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P01-M03-02-05 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [x] P01-M03-02-01 — Implement/confirm data requirement: `organization_members`.
+- [x] P01-M03-02-02 — Implement/confirm data requirement: `invitations`.
+- [x] P01-M03-02-03 — Implement/confirm data requirement: `roles/permission mapping if persisted`.
+- [x] P01-M03-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P01-M03-02-05 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
 
-- [ ] P01-M03-02-06 — Create/update the NestJS module boundaries, services and domain logic for **Users, Team & Roles**.
-- [ ] P01-M03-02-07 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
-- [ ] P01-M03-02-08 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P01-M03-02-06 — Create/update the NestJS module boundaries, services and domain logic for **Users, Team & Roles**.
+- [x] P01-M03-02-07 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [x] P01-M03-02-08 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P01-M03-02-09 — Implement/verify API contract: `GET /api/v1/organizations/:id/members`.
-- [ ] P01-M03-02-10 — Implement/verify API contract: `POST /api/v1/organizations/:id/invitations`.
-- [ ] P01-M03-02-11 — Implement/verify API contract: `PATCH /api/v1/organizations/:id/members/:memberId`.
-- [ ] P01-M03-02-12 — Implement/verify API contract: `DELETE /api/v1/organizations/:id/members/:memberId`.
-- [ ] P01-M03-02-13 — Add DTO/schema validation and consistent API error responses.
+- [x] P01-M03-02-09 — Implement/verify API contract: `GET /api/v1/organizations/:id/members`.
+- [x] P01-M03-02-10 — Implement/verify API contract: `POST /api/v1/organizations/:id/invitations`.
+- [x] P01-M03-02-11 — Implement/verify API contract: `PATCH /api/v1/organizations/:id/members/:memberId`.
+- [x] P01-M03-02-12 — Implement/verify API contract: `DELETE /api/v1/organizations/:id/members/:memberId`.
+- [x] P01-M03-02-13 — Add DTO/schema validation and consistent API error responses.
 
 ### Submodule 03.03 — Frontend & Integrations
 
-- [ ] P01-M03-03-01 — Build/complete frontend requirement: Team list.
-- [ ] P01-M03-03-02 — Build/complete frontend requirement: Invite-member modal/page.
-- [ ] P01-M03-03-03 — Build/complete frontend requirement: Pending invitations.
-- [ ] P01-M03-03-04 — Build/complete frontend requirement: Role selector.
-- [ ] P01-M03-03-05 — Build/complete frontend requirement: Remove-member confirmation.
-- [ ] P01-M03-03-06 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P01-M03-03-07 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P01-M03-03-01 — Build/complete frontend requirement: Team list.
+- [x] P01-M03-03-02 — Build/complete frontend requirement: Invite-member modal/page.
+- [x] P01-M03-03-03 — Build/complete frontend requirement: Pending invitations.
+- [x] P01-M03-03-04 — Build/complete frontend requirement: Role selector.
+- [x] P01-M03-03-05 — Build/complete frontend requirement: Remove-member confirmation.
+- [x] P01-M03-03-06 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P01-M03-03-07 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P01-M03-03-08 — Integrate and verify: Email invitation delivery..
-- [ ] P01-M03-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [x] P01-M03-03-08 — Integrate and verify: Email invitation delivery..
+- [x] P01-M03-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
 ### Submodule 03.04 — Security & QA
 
-- [ ] P01-M03-04-01 — Prevent privilege escalation.
-- [ ] P01-M03-04-02 — Prevent removing final owner without ownership transfer flow.
-- [ ] P01-M03-04-03 — Tenant-scoped membership checks.
-- [ ] P01-M03-04-04 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P01-M03-04-01 — Prevent privilege escalation.
+- [x] P01-M03-04-02 — Prevent removing final owner without ownership transfer flow.
+- [x] P01-M03-04-03 — Tenant-scoped membership checks.
+- [x] P01-M03-04-04 — Verify tenant isolation for all tenant-owned records and actions.
 
-- [ ] P01-M03-04-05 — Test: Owner invites member.
-- [ ] P01-M03-04-06 — Test: Invite accepted.
-- [ ] P01-M03-04-07 — Test: Role enforcement.
-- [ ] P01-M03-04-08 — Test: Unauthorized role change blocked.
-- [ ] P01-M03-04-09 — Test: Removed member loses tenant access.
-- [ ] P01-M03-04-10 — Run regression checks for directly affected existing modules.
-- [ ] P01-M03-04-11 — Complete manual QA of the end-to-end user journey.
+- [x] P01-M03-04-05 — Test: Owner invites member.
+- [x] P01-M03-04-06 — Test: Invite accepted.
+- [x] P01-M03-04-07 — Test: Role enforcement.
+- [x] P01-M03-04-08 — Test: Unauthorized role change blocked.
+- [x] P01-M03-04-09 — Test: Removed member loses tenant access.
+- [x] P01-M03-04-10 — Run regression checks for directly affected existing modules.
+- [x] P01-M03-04-11 — Complete manual QA of the end-to-end user journey.
 
 ### Submodule 03.05 — Documentation & Acceptance
 
-- [ ] P01-M03-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P01-M03-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P01-M03-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P01-M03-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P01-M03-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P01-M03-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 
-- [ ] P01-M03-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
+- [x] P01-M03-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-15` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M03] Users, Team & Roles = COMPLETE ✅` only after every required checkbox above is verified.
+**Module Gate:** `[M03] Users, Team & Roles = COMPLETE ✅` — verified 25 August 2026.
 
 ## Module 04 — Business Management `M04`
 

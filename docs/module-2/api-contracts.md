@@ -10,7 +10,7 @@ All routes require a valid M01 session (`AuthGuard`). Prefix `/api/v1`.
 | POST | `/organizations/active` | Body `{ organizationId }`; sets cookie after membership check |
 | DELETE | `/organizations/active` | Clears `eazi_org` cookie |
 | GET | `/organizations/:id` | Read one org (member); 404 if not a member |
-| PATCH | `/organizations/:id` | Update `name` / `slug` (owner only); 403 if member |
+| PATCH | `/organizations/:id` | Update `name` / `slug` (**owner + admin** as of M03); 403 if manager/viewer |
 
 ## Cookies
 
@@ -26,7 +26,7 @@ Logout clears `eazi_org` along with access/refresh cookies.
 | --- | --- | --- |
 | `VALIDATION_ERROR` | 400 | DTO validation |
 | `ORGANIZATION_NOT_FOUND` | 404 | Missing membership / unknown id |
-| `FORBIDDEN` | 403 | Member (non-owner) PATCH |
+| `FORBIDDEN` | 403 | Manager/viewer (or non-privileged) PATCH |
 | `ORGANIZATION_SLUG_TAKEN` | 409 | Explicit slug already used |
 | `INVALID_ORGANIZATION` / `INVALID_ORGANIZATION_SLUG` | 400 | Domain validation |
 
@@ -35,6 +35,6 @@ Logout clears `eazi_org` along with access/refresh cookies.
 | Route | Purpose |
 | --- | --- |
 | `/onboarding/organization` | Create first or additional workspace |
-| `/settings/organization` | View/edit active org settings (owner-only edits) |
+| `/settings/organization` | View/edit active org settings (owner/admin edits as of M03) |
 
 Portal chrome: workspace switcher uses real list/active/switch APIs. Users with zero memberships are redirected to onboarding. No external providers.

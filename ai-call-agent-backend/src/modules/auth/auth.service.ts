@@ -32,6 +32,7 @@ export interface RegisterInput {
   email: string;
   password: string;
   displayName: string;
+  returnTo?: string;
 }
 
 export interface LoginInput {
@@ -92,7 +93,7 @@ export class AuthService {
     const existing = await this.users.findOne({ where: { email } });
     if (existing) {
       if (!existing.emailVerifiedAt) {
-        await this.issueVerificationEmail(existing);
+        await this.issueVerificationEmail(existing, input.returnTo);
         throw new ApplicationError(
           'EMAIL_NOT_VERIFIED',
           'Verify your email before signing in. We sent a new verification link.',
@@ -116,7 +117,7 @@ export class AuthService {
       }),
     );
 
-    await this.issueVerificationEmail(user);
+    await this.issueVerificationEmail(user, input.returnTo);
     this.logger.log(`Registered user ${user.id}`);
     return { user: this.toUserView(user) };
   }
@@ -342,7 +343,10 @@ export class AuthService {
       .execute();
   }
 
-  private async issueVerificationEmail(user: User): Promise<void> {
+  private async issueVerificationEmail(
+    user: User,
+    returnTo?: string,
+  ): Promise<void> {
     await this.emailVerificationTokens
       .createQueryBuilder()
       .update(EmailVerificationToken)
@@ -361,7 +365,7 @@ export class AuthService {
       }),
     );
 
-    const link = this.appLink('/verify-email', rawToken);
+    const link = this.appLink('/verify-email', rawToken, returnTo);
     await this.emailDelivery.send({
       to: user.email,
       subject: 'Verify your EaziAiCall email',
@@ -398,11 +402,29 @@ export class AuthService {
     });
   }
 
-  private appLink(path: string, token: string): string {
+  private appLink(path: string, token: string, returnTo?: string): string {
     const base =
       this.config.get<string>('auth.publicAppUrl') ?? 'http://localhost:3001';
     const url = new URL(path, base.endsWith('/') ? base : `${base}/`);
     url.searchParams.set('token', token);
+    const safeReturn = this.safeInternalReturnTo(returnTo);
+    if (safeReturn) {
+      url.searchParams.set('next', safeReturn);
+    }
     return url.toString();
+  }
+
+  private safeInternalReturnTo(raw?: string): string | undefined {
+    if (!raw) {
+      return undefined;
+    }
+    const value = raw.trim();
+    if (!value.startsWith('/') || value.startsWith('//')) {
+      return undefined;
+    }
+    if (value.includes('://') || value.includes('\\')) {
+      return undefined;
+    }
+    return value.slice(0, 512);
   }
 }

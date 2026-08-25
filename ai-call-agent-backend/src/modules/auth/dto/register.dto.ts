@@ -1,4 +1,11 @@
-import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsOptional,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class RegisterDto {
   @IsEmail()
@@ -14,4 +21,11 @@ export class RegisterDto {
   @MinLength(1)
   @MaxLength(120)
   displayName!: string;
+
+  /** Internal relative return path only (open-redirect safe). */
+  @IsOptional()
+  @IsString()
+  @MaxLength(512)
+  @Matches(/^\/(?!\/).*$/)
+  returnTo?: string;
 }

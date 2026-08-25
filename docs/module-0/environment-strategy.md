@@ -37,6 +37,7 @@ Copy only `*.example` files. Never commit `.env`, `.env.local`, or `.env.docker`
 | `AUTH_REFRESH_TTL_SECONDS` | No | Default 2592000 |
 | `AUTH_VERIFICATION_TTL_SECONDS` | No | Default 86400 |
 | `AUTH_RESET_TTL_SECONDS` | No | Default 3600 |
+| `AUTH_INVITE_TTL_SECONDS` | No | Default 604800 (7 days); M03 team invitation token TTL |
 | `AUTH_BCRYPT_ROUNDS` | No | Default 12 (min 10) |
 | `AUTH_PUBLIC_APP_URL` | No | Links in verify/reset emails (default first CORS origin / localhost:3001) |
 | `AUTH_ACCESS_COOKIE_NAME` / `AUTH_REFRESH_COOKIE_NAME` | No | Defaults `eazi_access` / `eazi_refresh` |
@@ -46,8 +47,10 @@ Copy only `*.example` files. Never commit `.env`, `.env.local`, or `.env.docker`
 | `SMTP_HOST` / `SMTP_FROM` | Yes | Delivery required for verification and reset |
 | `SMTP_PORT` / `SMTP_SECURE` / `SMTP_USER` / `SMTP_PASSWORD` / `SMTP_TIMEOUT_MS` | No | Defaults documented in `.env.example` |
 
-See also [Module 01 docs](../module-1/README.md) and [Module 02 API contracts](../module-2/api-contracts.md).
+See also [Module 01 docs](../module-1/README.md), [Module 02 API contracts](../module-2/api-contracts.md), and [Module 03 README](../module-3/README.md).
 
-## External providers (M02)
+## External providers (M02 / M03)
 
 M02 has **no direct external-provider dependency**. Organization APIs are first-party NestJS only.
+
+M03 reuses **SMTP** (`EmailDeliveryPort`) for team invitation emails (same adapter as M01 verification/reset).

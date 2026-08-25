@@ -15,6 +15,7 @@ export function isEnabledPortalRoute(href: string): boolean {
   if (
     href === "/dashboard" ||
     href === "/calls" ||
+    href === "/team" ||
     href === "/settings" ||
     href === "/settings/organization" ||
     href === "/onboarding/organization"

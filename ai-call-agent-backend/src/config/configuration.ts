@@ -113,6 +113,10 @@ export default () => {
         86_400,
       ),
       resetTtlSeconds: numberValue(process.env.AUTH_RESET_TTL_SECONDS, 3_600),
+      inviteTtlSeconds: numberValue(
+        process.env.AUTH_INVITE_TTL_SECONDS,
+        604_800,
+      ),
       bcryptRounds: numberValue(process.env.AUTH_BCRYPT_ROUNDS, 12),
       publicAppUrl:
         process.env.AUTH_PUBLIC_APP_URL ??
