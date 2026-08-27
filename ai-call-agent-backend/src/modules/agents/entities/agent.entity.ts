@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { RECOMMENDED_LANGUAGE_CODES } from '../../../common/i18n/language-catalogue';
 import { Business } from '../../businesses/entities/business.entity';
 import { AgentConfig } from './agent-config.entity';
 import { AgentPrompt } from './agent-prompt.entity';
@@ -17,19 +18,17 @@ import { AgentProviderMapping } from './agent-provider-mapping.entity';
 export const AGENT_STATUSES = ['active', 'inactive', 'archived'] as const;
 export type AgentStatus = (typeof AGENT_STATUSES)[number];
 
-export const AGENT_LANGUAGES = [
-  'en',
-  'es',
-  'fr',
-  'de',
-  'pt',
-  'ar',
-  'hi',
-  'ur',
-] as const;
-export type AgentLanguage = (typeof AGENT_LANGUAGES)[number];
+/** @deprecated Use language catalogue; kept as recommended starter codes. */
+export const AGENT_LANGUAGES = [...RECOMMENDED_LANGUAGE_CODES] as const;
+export type AgentLanguage = string;
 
-@Entity('agents')
+export const AGENT_LANGUAGE_MODES = ['single', 'multilingual'] as const;
+export type AgentLanguageMode = (typeof AGENT_LANGUAGE_MODES)[number];
+
+export const AGENT_VOICE_PREFERENCES = ['female', 'male', 'neutral'] as const;
+export type AgentVoicePreference = (typeof AGENT_VOICE_PREFERENCES)[number];
+
+@Entity('ai_agents')
 export class Agent {
   @PrimaryGeneratedColumn('uuid')
   id!: string;

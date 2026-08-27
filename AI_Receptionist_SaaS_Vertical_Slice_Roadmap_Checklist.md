@@ -6,6 +6,8 @@
 
 **Roadmap Update v3 (25 August 2026):** Added a mandatory per-module Manual QA Handoff guide under every `XX.05 — Documentation & Acceptance` submodule, plus `VS-GLOBAL-16`. M00–M03 receive this requirement retroactively as documentation backfill.
 
+**Roadmap Update v4 (27 August 2026):** Refined **M07 Knowledge Base**, **M08 Voice Library**, and **M09 Voice Cloning** around the locked ownership model: **Business owns reusable assets; Agents receive assignments/configuration**. No physical duplication of the same knowledge source or cloned voice per agent. Documentation/roadmap refinement only — M07/M08/M09 remain Not Started; no production code, migrations, or APIs from this update.
+
 > Checklist syntax: `- [ ] ID — detailed task`. Change `[ ]` to `[x]` only after the item is verified.
 
 ## Streamlined Execution Model — v2
@@ -93,8 +95,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
   - [x] M03 — Users, Team & Roles (MVP)
   - [x] M04 — Business Management (MVP)
 - [ ] P02 — **AI Agent Core**
-  - [~] M05 — AI Agent Management (MVP) — 05.01 locked 27 August 2026
-  - [ ] M06 — ElevenLabs Voice Agent Provider (MVP)
+  - [x] M05 — AI Agent Management (MVP) — COMPLETE 27 August 2026
+  - [~] M06 — ElevenLabs Voice Agent Provider (MVP) — 06.01 complete 27 August 2026
 - [ ] P03 — **Knowledge & Voice**
   - [ ] M07 — Knowledge Base (MVP)
   - [ ] M08 — Voice Library (MVP)
@@ -581,62 +583,68 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 ### Submodule 05.02 — Backend, Persistence & API
 
-- [ ] P02-M05-02-01 — Implement/confirm data requirement: `agents`.
-- [ ] P02-M05-02-02 — Implement/confirm data requirement: `agent_configs`.
-- [ ] P02-M05-02-03 — Implement/confirm data requirement: `agent_prompts`.
-- [ ] P02-M05-02-04 — Implement/confirm data requirement: `agent_provider_mappings`.
-- [ ] P02-M05-02-05 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P02-M05-02-06 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [x] P02-M05-02-01 — Implement/confirm data requirement: `agents`.
+- [x] P02-M05-02-02 — Implement/confirm data requirement: `agent_configs`.
+- [x] P02-M05-02-03 — Implement/confirm data requirement: `agent_prompts`.
+- [x] P02-M05-02-04 — Implement/confirm data requirement: `agent_provider_mappings`.
+- [x] P02-M05-02-05 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P02-M05-02-06 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
 
-- [ ] P02-M05-02-07 — Create/update the NestJS module boundaries, services and domain logic for **AI Agent Management**.
-- [ ] P02-M05-02-08 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
-- [ ] P02-M05-02-09 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P02-M05-02-07 — Create/update the NestJS module boundaries, services and domain logic for **AI Agent Management**.
+- [x] P02-M05-02-08 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [x] P02-M05-02-09 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P02-M05-02-10 — Implement/verify API contract: `POST /api/v1/agents`.
-- [ ] P02-M05-02-11 — Implement/verify API contract: `GET /api/v1/agents`.
-- [ ] P02-M05-02-12 — Implement/verify API contract: `GET /api/v1/agents/:id`.
-- [ ] P02-M05-02-13 — Implement/verify API contract: `PATCH /api/v1/agents/:id`.
-- [ ] P02-M05-02-14 — Implement/verify API contract: `POST /api/v1/agents/:id/activate`.
-- [ ] P02-M05-02-15 — Implement/verify API contract: `POST /api/v1/agents/:id/deactivate`.
-- [ ] P02-M05-02-16 — Add DTO/schema validation and consistent API error responses.
+- [x] P02-M05-02-10 — Implement/verify API contract: `POST /api/v1/agents`.
+- [x] P02-M05-02-11 — Implement/verify API contract: `GET /api/v1/agents`.
+- [x] P02-M05-02-12 — Implement/verify API contract: `GET /api/v1/agents/:id`.
+- [x] P02-M05-02-13 — Implement/verify API contract: `PATCH /api/v1/agents/:id`.
+- [x] P02-M05-02-14 — Implement/verify API contract: `POST /api/v1/agents/:id/activate`.
+- [x] P02-M05-02-15 — Implement/verify API contract: `POST /api/v1/agents/:id/deactivate`.
+- [x] P02-M05-02-16 — Add DTO/schema validation and consistent API error responses.
+
+**05.02 note:** Backend delivered 27 August 2026 — migration `AiAgentManagement1756080000000`, Nest `AgentsModule`, unit + e2e tests.
 
 ### Submodule 05.03 — Frontend & Integrations
 
-- [ ] P02-M05-03-01 — Build/complete frontend requirement: Agent list.
-- [ ] P02-M05-03-02 — Build/complete frontend requirement: Create-agent wizard.
-- [ ] P02-M05-03-03 — Build/complete frontend requirement: Agent details.
-- [ ] P02-M05-03-04 — Build/complete frontend requirement: Behavior/instructions editor.
-- [ ] P02-M05-03-05 — Build/complete frontend requirement: Escalation settings.
-- [ ] P02-M05-03-06 — Build/complete frontend requirement: Activation status.
-- [ ] P02-M05-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P02-M05-03-08 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P02-M05-03-01 — Build/complete frontend requirement: Agent list.
+- [x] P02-M05-03-02 — Build/complete frontend requirement: Create-agent wizard.
+- [x] P02-M05-03-03 — Build/complete frontend requirement: Agent details.
+- [x] P02-M05-03-04 — Build/complete frontend requirement: Behavior/instructions editor.
+- [x] P02-M05-03-05 — Build/complete frontend requirement: Escalation settings.
+- [x] P02-M05-03-06 — Build/complete frontend requirement: Activation status.
+- [x] P02-M05-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P02-M05-03-08 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P02-M05-03-09 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+- [x] P02-M05-03-09 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+
+**05.03 note:** Agents portal delivered 27 August 2026 — `/agents*` routes, `agents-api.ts`, language/voice fields, nav enabled; no provider calls.
 
 ### Submodule 05.04 — Security & QA
 
-- [ ] P02-M05-04-01 — Business/organization ownership checks.
-- [ ] P02-M05-04-02 — Role-based agent management.
-- [ ] P02-M05-04-03 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P02-M05-04-01 — Business/organization ownership checks.
+- [x] P02-M05-04-02 — Role-based agent management.
+- [x] P02-M05-04-03 — Verify tenant isolation for all tenant-owned records and actions.
 
-- [ ] P02-M05-04-04 — Test: Create agent under correct business.
-- [ ] P02-M05-04-05 — Test: Update behavior.
-- [ ] P02-M05-04-06 — Test: Activation/deactivation.
-- [ ] P02-M05-04-07 — Test: Cross-tenant access blocked.
-- [ ] P02-M05-04-08 — Run regression checks for directly affected existing modules.
-- [ ] P02-M05-04-09 — Complete manual QA of the end-to-end user journey.
+- [x] P02-M05-04-04 — Test: Create agent under correct business.
+- [x] P02-M05-04-05 — Test: Update behavior.
+- [x] P02-M05-04-06 — Test: Activation/deactivation.
+- [x] P02-M05-04-07 — Test: Cross-tenant access blocked.
+- [x] P02-M05-04-08 — Run regression checks for directly affected existing modules.
+- [x] P02-M05-04-09 — Complete manual QA of the end-to-end user journey.
+
+**05.04 note:** Evidence in `docs/module-5/security-and-qa.md` — 27 August 2026 (typecheck + 74 unit / 35 e2e; FE typecheck).
 
 ### Submodule 05.05 — Documentation & Acceptance
 
-- [ ] P02-M05-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P02-M05-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P02-M05-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P02-M05-05-04 — Create/update the **Manual QA Handoff** guide for **AI Agent Management** at `docs/module-5/M05_AI_Agent_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [x] P02-M05-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P02-M05-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P02-M05-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P02-M05-05-04 — Create/update the **Manual QA Handoff** guide for **AI Agent Management** at `docs/module-5/M05_AI_Agent_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
 
-- [ ] P02-M05-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
+- [x] P02-M05-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M05] AI Agent Management` — **In development** (05.01 ✅ 27 August 2026; gate open after 05.02–05.05).
+**Module Gate:** `[M05] AI Agent Management = COMPLETE ✅` — verified 27 August 2026.
 
 ## Module 06 — ElevenLabs Voice Agent Provider `M06`
 
@@ -647,16 +655,18 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 ### Submodule 06.01 — Scope & Technical Design
 
-- [ ] P02-M06-01-01 — Confirm the objective and boundaries of **ElevenLabs Voice Agent Provider**.
-- [ ] P02-M06-01-02 — Implement VoiceAgentProvider contract
-- [ ] P02-M06-01-03 — Create ElevenLabs agent
-- [ ] P02-M06-01-04 — Update ElevenLabs agent
-- [ ] P02-M06-01-05 — Delete/deactivate provider agent
-- [ ] P02-M06-01-06 — Fetch provider status
-- [ ] P02-M06-01-07 — Store provider mapping
-- [ ] P02-M06-01-08 — Retry failed sync
-- [ ] P02-M06-01-09 — Normalize provider errors
-- [ ] P02-M06-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P02-M06-01-01 — Confirm the objective and boundaries of **ElevenLabs Voice Agent Provider**.
+- [x] P02-M06-01-02 — Implement VoiceAgentProvider contract
+- [x] P02-M06-01-03 — Create ElevenLabs agent
+- [x] P02-M06-01-04 — Update ElevenLabs agent
+- [x] P02-M06-01-05 — Delete/deactivate provider agent
+- [x] P02-M06-01-06 — Fetch provider status
+- [x] P02-M06-01-07 — Store provider mapping
+- [x] P02-M06-01-08 — Retry failed sync
+- [x] P02-M06-01-09 — Normalize provider errors
+- [x] P02-M06-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+**06.01 note:** Scope locked in `docs/module-6/scope-and-requirements.md` (27 August 2026). Sync port split from realtime WebSocket port; no live ElevenLabs calls in 06.01.
 
 ### Submodule 06.02 — Backend, Persistence & API
 
@@ -710,12 +720,87 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [ ] P02-M06-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M06] ElevenLabs Voice Agent Provider = COMPLETE ✅` only after every required checkbox above is verified.
+**Module Gate:** `[M06] ElevenLabs Voice Agent Provider` — **In development** (06.01 ✅ 27 August 2026; gate open after 06.02–06.05).
 ---
 
 # PHASE 03 — Knowledge & Voice
 
 - [ ] P03-GATE — Phase 03 is complete only when every required module below is accepted.
+
+### Phase 03 Architecture Lock — Shared Business Assets + Per-Agent Assignment (v4)
+
+**Canonical ownership model (locked for M07 / M08 / M09):**
+
+```text
+Organization
+  ↓
+Business
+  ├── Shared Knowledge Assets
+  ├── Shared Voice Library
+  ├── Shared Cloned Voices
+  │
+  └── Agents
+       ├── Agent A → assigned knowledge + selected voice
+       ├── Agent B → assigned knowledge + selected voice
+       └── Agent C → assigned knowledge + selected voice
+```
+
+**Core principle:** Business owns reusable assets. Agents receive assignments / configuration. Do **not** physically duplicate the same knowledge source or cloned voice for every agent.
+
+**Agent is a consumer/configuration target.** Knowledge and voices are reusable Business assets.
+
+```text
+Business
+├── Knowledge Sources
+├── Voice Assets
+├── Voice Clones
+└── Agents
+
+Assignments:
+Agent
+├── agent_knowledge_sources → many knowledge sources
+└── agent_voice_config → selected voice (normally one active voice)
+```
+
+**Cardinality:**
+
+| Relationship | Rule |
+| --- | --- |
+| One agent → knowledge sources | many (assignment mapping) |
+| One agent → active voice | normally one selected voice at a time |
+| One knowledge source → agents | many (same Business) |
+| One voice / cloned voice → agents | many (same Business, authorized) |
+
+**Example (ABC Dental):** Shared knowledge (Clinic Hours, Services, Pricing, Insurance FAQ, Emergency Policy) and shared voices (Sarah, James, Owner Custom Clone) live once on the Business. Receptionist, Appointment, and After-hours agents each receive a subset of sources and one selected voice — FAQ and Owner Custom Clone exist once and are reused.
+
+**Global ownership rules (apply to M07, M08, M09):**
+
+- Reusable assets are scoped to **Business** (Business already belongs to Organization).
+- Tenant ownership must remain **derivable through Business**; do not duplicate `organization_id` where Business ownership already safely defines tenant ownership unless the existing architecture genuinely requires it.
+- Every asset must be inaccessible across unrelated businesses/organizations.
+- Agents may only use assets belonging to their own Business.
+- One asset may be assigned to multiple agents within the same Business.
+- Deleting/unassigning an asset from one agent must **not** delete it for other agents.
+- Destructive deletion of a shared asset must account for active agent assignments (detect, confirm, block until unassigned, or follow an explicit safe reassignment/unassignment flow).
+- Provider mappings remain implementation details behind EaziAICall canonical records.
+
+**ElevenLabs / provider boundary:**
+
+- EaziAICall PostgreSQL remains the **source of truth**.
+- ElevenLabs (and future providers) are external adapters.
+- Knowledge: EaziAICall source → provider sync/mapping.
+- Voice: EaziAICall voice reference → provider voice mapping.
+- Cloned voice: EaziAICall canonical clone record → provider clone ID.
+- Prefer provider-neutral mapping/config concepts; do **not** hardcode core schemas around `elevenlabs_voice_id` / `elevenlabs_knowledge_id`.
+- Provider deletion/failure must not silently corrupt canonical application records.
+- M07/M08/M09 must remain usable with ElevenLabs, Retell, OpenAI/custom, and other future providers.
+
+**Languages relation (align M04/M05):**
+
+- Business → supported languages; Agent → single-language or multilingual subset.
+- Voice selection should validate compatibility with agent languages, provider model, selected voice, and provider capabilities where applicable.
+- Knowledge source reuse is not dependent on one language unless a source itself has language metadata or translation behavior.
+- Do **not** start translation/localization functionality in M07–M09 unless explicitly defined later.
 
 
 ## Module 07 — Knowledge Base `M07`
@@ -724,56 +809,75 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 **Dependencies:** M05, M06
 
+**Status:** Not Started — roadmap refined 27 August 2026 for Business-owned shared knowledge + per-agent assignment. Do not mark In Development or Complete until implementation begins and gates pass.
+
+**Architecture (locked):** Business-owned shared knowledge assets + per-agent knowledge assignments. A Business may own Clinic Hours, Pricing, FAQ, Policies once; Agent A may receive Hours + FAQ while Agent B receives Pricing + FAQ — the FAQ exists once and is reusable.
+
 
 ### Submodule 07.01 — Scope & Technical Design
 
-- [ ] P03-M07-01-01 — Confirm the objective and boundaries of **Knowledge Base**.
-- [ ] P03-M07-01-02 — Upload file
-- [ ] P03-M07-01-03 — Add URL
-- [ ] P03-M07-01-04 — Add plain text
-- [ ] P03-M07-01-05 — Add FAQ content
-- [ ] P03-M07-01-06 — List knowledge sources
-- [ ] P03-M07-01-07 — Store original source
-- [ ] P03-M07-01-08 — Sync to provider KB
-- [ ] P03-M07-01-09 — Display sync status
-- [ ] P03-M07-01-10 — Delete source
-- [ ] P03-M07-01-11 — Resync failed source
+- [ ] P03-M07-01-01 — Confirm the objective and boundaries of **Knowledge Base** as **Business-owned shared knowledge assets + per-agent knowledge assignments** (Agent is consumer; do not require duplicate uploads per agent).
+- [ ] P03-M07-01-02 — Upload file as a **Business** knowledge source (create/upload under the Business knowledge area).
+- [ ] P03-M07-01-03 — Add URL as a **Business** knowledge source.
+- [ ] P03-M07-01-04 — Add plain text as a **Business** knowledge source.
+- [ ] P03-M07-01-05 — Add FAQ content as a **Business** knowledge source (reusable across agents).
+- [ ] P03-M07-01-06 — List **Business** knowledge sources (shared library for the Business).
+- [ ] P03-M07-01-07 — Store original source (canonical EaziAICall record; provider sync is a mapping, not the source of truth).
+- [ ] P03-M07-01-08 — Sync source to provider knowledge system (provider-neutral adapter; ElevenLabs is one provider).
+- [ ] P03-M07-01-09 — Display provider sync state on the Business source (and surface status where agents consume it).
+- [ ] P03-M07-01-10 — Delete/archive Business knowledge source with **safe handling of active agent assignments** (do not silently orphan or cascade-delete other agents’ access without an explicit safe flow).
+- [ ] P03-M07-01-11 — Resync failed source (canonical source remains; provider mapping/retry is separate).
 - [ ] P03-M07-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [ ] P03-M07-01-13 — View a Business knowledge source (metadata, content summary, sync state, agents currently using it where useful).
+- [ ] P03-M07-01-14 — Update a Business knowledge source where applicable (content/metadata) without creating per-agent duplicates.
+- [ ] P03-M07-01-15 — Assign a knowledge source to one or more agents within the same Business.
+- [ ] P03-M07-01-16 — Unassign a knowledge source from an agent (assignment removal only — does **not** delete the Business source).
+- [ ] P03-M07-01-17 — List knowledge sources assigned to an agent.
+- [ ] P03-M07-01-18 — Reuse one Business source across multiple same-Business agents (one canonical `knowledge_sources` row; multiple assignment rows).
+- [ ] P03-M07-01-19 — Document ownership rules: Business-scoped assets; tenant ownership derivable via Business; cross-business access blocked; agents may only use own-Business sources.
 
 ### Submodule 07.02 — Backend, Persistence & API
 
-- [ ] P03-M07-02-01 — Implement/confirm data requirement: `knowledge_bases`.
-- [ ] P03-M07-02-02 — Implement/confirm data requirement: `knowledge_sources`.
-- [ ] P03-M07-02-03 — Implement/confirm data requirement: `knowledge_sync_logs`.
+- [ ] P03-M07-02-01 — Implement/confirm data requirement: `knowledge_bases` (or equivalent Business-scoped container naming consistent with repository conventions).
+- [ ] P03-M07-02-02 — Implement/confirm data requirement: `knowledge_sources` belonging to **Business** (do **not** require duplicate source rows per agent).
+- [ ] P03-M07-02-03 — Implement/confirm data requirement: `knowledge_sync_logs` (provider sync state/history against canonical sources).
 - [ ] P03-M07-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P03-M07-02-05 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [ ] P03-M07-02-05 — Confirm Business ownership keys and foreign-key behavior for tenant-owned records (tenant ownership derivable through Business → Organization; do not duplicate `organization_id` unless architecture genuinely requires it).
 
-- [ ] P03-M07-02-06 — Create/update the NestJS module boundaries, services and domain logic for **Knowledge Base**.
-- [ ] P03-M07-02-07 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [ ] P03-M07-02-06 — Create/update the NestJS module boundaries, services and domain logic for **Knowledge Base** (separate Business knowledge management from agent assignment).
+- [ ] P03-M07-02-07 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (provider-neutral mapping; no core schema hardcoding of `elevenlabs_knowledge_id`).
 - [ ] P03-M07-02-08 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P03-M07-02-09 — Implement/verify API contract: `POST /api/v1/agents/:id/knowledge/files`.
-- [ ] P03-M07-02-10 — Implement/verify API contract: `POST /api/v1/agents/:id/knowledge/url`.
-- [ ] P03-M07-02-11 — Implement/verify API contract: `POST /api/v1/agents/:id/knowledge/text`.
-- [ ] P03-M07-02-12 — Implement/verify API contract: `GET /api/v1/agents/:id/knowledge`.
-- [ ] P03-M07-02-13 — Implement/verify API contract: `DELETE /api/v1/knowledge/:id`.
+- [ ] P03-M07-02-09 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/files` (architectural target; exact REST naming may follow repository conventions).
+- [ ] P03-M07-02-10 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/url`.
+- [ ] P03-M07-02-11 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/text` (and FAQ as applicable).
+- [ ] P03-M07-02-12 — Implement/verify agent assignment list API intent: `GET /api/v1/agents/:agentId/knowledge` (sources assigned to the agent — not a substitute for the Business library list).
+- [ ] P03-M07-02-13 — Implement/verify API contract: `DELETE /api/v1/knowledge/:id` (Business source delete/archive with safe assignment handling).
 - [ ] P03-M07-02-14 — Implement/verify API contract: `POST /api/v1/knowledge/:id/resync`.
-- [ ] P03-M07-02-15 — Add DTO/schema validation and consistent API error responses.
+- [ ] P03-M07-02-15 — Add DTO/schema validation and consistent API error responses (provider errors must not leak secrets).
+- [ ] P03-M07-02-16 — Implement/confirm data requirement: `agent_knowledge_sources` assignment/mapping table (unique assignment per agent/source; deleting an assignment does not delete the source).
+- [ ] P03-M07-02-17 — Implement/verify Business knowledge list API intent: `GET /api/v1/businesses/:businessId/knowledge`.
+- [ ] P03-M07-02-18 — Implement/verify source detail API intent: `GET /api/v1/knowledge/:id`.
+- [ ] P03-M07-02-19 — Implement/verify agent assignment APIs intent: `POST /api/v1/agents/:agentId/knowledge/:knowledgeId` and `DELETE /api/v1/agents/:agentId/knowledge/:knowledgeId`.
+- [ ] P03-M07-02-20 — Enforce business-ownership validation on assign: agent and knowledge source must belong to the same Business; block cross-business assignment.
 
 ### Submodule 07.03 — Frontend & Integrations
 
-- [ ] P03-M07-03-01 — Build/complete frontend requirement: Knowledge list.
-- [ ] P03-M07-03-02 — Build/complete frontend requirement: Upload component.
-- [ ] P03-M07-03-03 — Build/complete frontend requirement: URL form.
-- [ ] P03-M07-03-04 — Build/complete frontend requirement: Text/FAQ form.
-- [ ] P03-M07-03-05 — Build/complete frontend requirement: Sync status badges.
-- [ ] P03-M07-03-06 — Build/complete frontend requirement: Delete/resync actions.
+- [ ] P03-M07-03-01 — Build/complete **Business Knowledge** area: shared knowledge list (not an agent-only list that forces re-upload).
+- [ ] P03-M07-03-02 — Build/complete frontend requirement: Upload component (Business knowledge create).
+- [ ] P03-M07-03-03 — Build/complete frontend requirement: URL form (Business knowledge create).
+- [ ] P03-M07-03-04 — Build/complete frontend requirement: Text/FAQ form (Business knowledge create).
+- [ ] P03-M07-03-05 — Build/complete frontend requirement: Sync status badges on Business sources.
+- [ ] P03-M07-03-06 — Build/complete frontend requirement: Edit/delete/resync actions for Business sources (with assignment-aware destructive confirmations).
 - [ ] P03-M07-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data.
 - [ ] P03-M07-03-08 — Verify responsive, loading, empty, validation, success and error states.
 
 - [ ] P03-M07-03-09 — Integrate and verify: S3-compatible storage.
-- [ ] P03-M07-03-10 — Integrate and verify: ElevenLabs knowledge/RAG synchronization.
+- [ ] P03-M07-03-10 — Integrate and verify: provider knowledge/RAG synchronization via abstraction (ElevenLabs as first provider; remain provider-swappable).
 - [ ] P03-M07-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [ ] P03-M07-03-12 — Agent configuration UI: multi-select assigned knowledge sources (e.g. ☑ Clinic Hours, ☑ Services, ☐ Pricing) without repeated uploads per agent.
+- [ ] P03-M07-03-13 — Provide “Manage Business Knowledge” navigation from agent knowledge configuration where appropriate.
+- [ ] P03-M07-03-14 — Where useful, show which agents currently use a Business knowledge source.
 
 ### Submodule 07.04 — Security & QA
 
@@ -781,22 +885,28 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [ ] P03-M07-04-02 — Tenant-scoped object keys.
 - [ ] P03-M07-04-03 — Signed/private storage access.
 - [ ] P03-M07-04-04 — URL validation.
-- [ ] P03-M07-04-05 — Verify tenant isolation for all tenant-owned records and actions.
+- [ ] P03-M07-04-05 — Verify tenant isolation for all tenant-owned records and actions (Business A cannot access Business B knowledge).
 
-- [ ] P03-M07-04-06 — Test: Upload→store→sync.
-- [ ] P03-M07-04-07 — Test: URL/text sync.
-- [ ] P03-M07-04-08 — Test: Delete.
-- [ ] P03-M07-04-09 — Test: Failed sync retry.
-- [ ] P03-M07-04-10 — Test: Cross-tenant source access blocked.
+- [ ] P03-M07-04-06 — Test: Upload→store→sync (Business source).
+- [ ] P03-M07-04-07 — Test: URL/text sync (Business source).
+- [ ] P03-M07-04-08 — Test: Delete/archive Business source with safe assignment handling.
+- [ ] P03-M07-04-09 — Test: Failed sync retry / resync.
+- [ ] P03-M07-04-10 — Test: Cross-tenant / cross-business source access blocked.
 - [ ] P03-M07-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P03-M07-04-12 — Complete manual QA of the end-to-end user journey.
+- [ ] P03-M07-04-13 — Test: Agent cannot receive another Business’s knowledge source.
+- [ ] P03-M07-04-14 — Test: Same source can be assigned to multiple same-Business agents.
+- [ ] P03-M07-04-15 — Test: Duplicate agent/source mapping blocked.
+- [ ] P03-M07-04-16 — Test: Unassigning Agent A does not affect Agent B’s assignment or the shared source.
+- [ ] P03-M07-04-17 — Test: Source deletion safely handles active assignments (detect/confirm/block or explicit safe flow).
+- [ ] P03-M07-04-18 — Test: Provider sync state remains source-safe; provider errors do not leak secrets.
 
 ### Submodule 07.05 — Documentation & Acceptance
 
 - [ ] P03-M07-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P03-M07-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P03-M07-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P03-M07-05-04 — Create/update the **Manual QA Handoff** guide for **Knowledge Base** at `docs/module-7/M07_Knowledge_Base_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [ ] P03-M07-05-04 — Create/update the **Manual QA Handoff** guide for **Knowledge Base** at `docs/module-7/M07_Knowledge_Base_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** Business knowledge library, agent assignment/unassignment, reuse of one source across agents, tenant/business isolation, sync/resync, and deletion behavior with active assignments. Do not create the final QA guide until this module is being completed.
 
 
 - [ ] P03-M07-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
@@ -809,66 +919,79 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 **Dependencies:** M05, M06
 
+**Status:** Not Started — roadmap refined 27 August 2026 for Shared Business Voice Library + per-agent voice selection. Do not mark In Development or Complete until implementation begins and gates pass.
+
+**Architecture (locked):** Shared Business Voice Library + per-agent voice selection. A voice is **not** duplicated because Agent A and Agent B use it; agent config references/selects the voice. Library may include provider voices available to the Business and eligible custom/cloned voices once M09 exists.
+
 
 ### Submodule 08.01 — Scope & Technical Design
 
-- [ ] P03-M08-01-01 — Confirm the objective and boundaries of **Voice Library**.
-- [ ] P03-M08-01-02 — Fetch available voices
-- [ ] P03-M08-01-03 — Search/filter voices
-- [ ] P03-M08-01-04 — Preview voice
-- [ ] P03-M08-01-05 — Assign voice to agent
-- [ ] P03-M08-01-06 — Persist provider voice mapping
-- [ ] P03-M08-01-07 — Show assigned voice
+- [ ] P03-M08-01-01 — Confirm the objective and boundaries of **Voice Library** as **Shared Business Voice Library + per-agent voice selection** (VOICE ASSET vs AGENT VOICE ASSIGNMENT).
+- [ ] P03-M08-01-02 — Fetch/list available provider voices and make eligible voices available through the Business Voice Library.
+- [ ] P03-M08-01-03 — Search/filter voices (including language/accent/style metadata and Male / Female / Neutral·Any as **presentation/preference filters**, aligned with M05 — avoid modeling biological agent gender as core Agent identity).
+- [ ] P03-M08-01-04 — Preview voice.
+- [ ] P03-M08-01-05 — Select/assign a voice to an agent (agent references the shared voice asset; change assigned voice without duplicating the asset).
+- [ ] P03-M08-01-06 — Persist provider-neutral voice mapping/config behind the canonical EaziAICall voice reference.
+- [ ] P03-M08-01-07 — Show current assigned voice on the agent; reuse the same voice across multiple same-Business agents.
 - [ ] P03-M08-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [ ] P03-M08-01-09 — Identify provider voice metadata (provider-neutral catalogue fields; provider-specific IDs in mapping/adapters only).
+- [ ] P03-M08-01-10 — Provider / language / model compatibility validation where applicable (clear error or warning on incompatible selection).
+- [ ] P03-M08-01-11 — Document that cloned/custom voices (M09) appear in the Business library as eligible voice assets without per-agent recreation.
 
 ### Submodule 08.02 — Backend, Persistence & API
 
-- [ ] P03-M08-02-01 — Implement/confirm data requirement: `voices or cached provider_voice metadata`.
-- [ ] P03-M08-02-02 — Implement/confirm data requirement: `voice_configs`.
+- [ ] P03-M08-02-01 — Implement/confirm data requirement: `voices` (or `business_voices` / cached provider-neutral voice metadata) — canonical voice **asset** records; do not force exact schema prematurely if provider investigation is required, but lock VOICE ASSET vs ASSIGNMENT separation.
+- [ ] P03-M08-02-02 — Implement/confirm data requirement: `voice_configs` / `agent_voice_configs` — per-agent selected voice assignment (`agent_id`, `voice_id`, provider mapping/config where needed).
 - [ ] P03-M08-02-03 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P03-M08-02-04 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [ ] P03-M08-02-04 — Confirm Business/tenant ownership keys and foreign-key behavior for tenant-owned or Business-scoped voice records (custom/cloned voices must not leak across businesses).
 
 - [ ] P03-M08-02-05 — Create/update the NestJS module boundaries, services and domain logic for **Voice Library**.
-- [ ] P03-M08-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [ ] P03-M08-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (no core hardcoding of `elevenlabs_voice_id`).
 - [ ] P03-M08-02-07 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P03-M08-02-08 — Implement/verify API contract: `GET /api/v1/voices`.
-- [ ] P03-M08-02-09 — Implement/verify API contract: `POST /api/v1/agents/:id/voice`.
-- [ ] P03-M08-02-10 — Add DTO/schema validation and consistent API error responses.
+- [ ] P03-M08-02-08 — Implement/verify API contract intent: `GET /api/v1/voices` (and/or Business-scoped library listing — architectural target; exact REST naming may follow conventions).
+- [ ] P03-M08-02-09 — Implement/verify API contract intent: `POST /api/v1/agents/:id/voice` (select/change agent’s selected voice; does not duplicate the voice asset).
+- [ ] P03-M08-02-10 — Add DTO/schema validation and consistent API error responses (invalid/unavailable voice; compatibility failures; no provider credential exposure).
+- [ ] P03-M08-02-11 — Enforce Business/tenant-safe voice assignment: agents may only select voices eligible for their Business; block cross-tenant custom voice access.
 
 ### Submodule 08.03 — Frontend & Integrations
 
-- [ ] P03-M08-03-01 — Build/complete frontend requirement: Voice library.
-- [ ] P03-M08-03-02 — Build/complete frontend requirement: Filters.
+- [ ] P03-M08-03-01 — Build/complete frontend requirement: **Business Voice Library** (available voices, metadata, cloned/custom indicator where applicable later).
+- [ ] P03-M08-03-02 — Build/complete frontend requirement: Filters (language/accent/style; Male / Female / Neutral·Any as preference filters).
 - [ ] P03-M08-03-03 — Build/complete frontend requirement: Audio preview.
-- [ ] P03-M08-03-04 — Build/complete frontend requirement: Selected state.
-- [ ] P03-M08-03-05 — Build/complete frontend requirement: Assign/save action.
+- [ ] P03-M08-03-04 — Build/complete frontend requirement: Selected state on agent (current assigned voice).
+- [ ] P03-M08-03-05 — Build/complete frontend requirement: Assign/save / Browse Voice Library from agent Voice configuration.
 - [ ] P03-M08-03-06 — Connect the UI to real APIs and remove temporary production-blocking mock data.
 - [ ] P03-M08-03-07 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P03-M08-03-08 — Integrate and verify: ElevenLabs voice catalogue.
+- [ ] P03-M08-03-08 — Integrate and verify: provider voice catalogue via abstraction (ElevenLabs as first catalogue provider; remain provider-swappable).
 - [ ] P03-M08-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [ ] P03-M08-03-10 — UX clarity: Agent A and Agent B may both use the same voice (e.g. Sarah) with no duplication required.
 
 ### Submodule 08.04 — Security & QA
 
-- [ ] P03-M08-04-01 — No provider secret exposed in client preview flow.
-- [ ] P03-M08-04-02 — Tenant-scoped assignment.
-- [ ] P03-M08-04-03 — Verify tenant isolation for all tenant-owned records and actions.
+- [ ] P03-M08-04-01 — No provider secret / credential exposed in client preview flow.
+- [ ] P03-M08-04-02 — Tenant/Business-scoped assignment (same voice reusable within Business; changing Agent A’s voice does not modify Agent B).
+- [ ] P03-M08-04-03 — Verify tenant isolation for all tenant-owned records and actions (cross-tenant custom voice access blocked).
 
-- [ ] P03-M08-04-04 — Test: List voices.
+- [ ] P03-M08-04-04 — Test: List voices (Business Voice Library).
 - [ ] P03-M08-04-05 — Test: Preview.
-- [ ] P03-M08-04-06 — Test: Assign voice.
-- [ ] P03-M08-04-07 — Test: Persist mapping.
-- [ ] P03-M08-04-08 — Test: Invalid provider voice rejected.
+- [ ] P03-M08-04-06 — Test: Assign voice to agent.
+- [ ] P03-M08-04-07 — Test: Persist mapping / agent voice config (asset not duplicated).
+- [ ] P03-M08-04-08 — Test: Invalid / unavailable provider voice rejected or handled clearly.
 - [ ] P03-M08-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P03-M08-04-10 — Complete manual QA of the end-to-end user journey.
+- [ ] P03-M08-04-11 — Test: Same voice reusable across multiple same-Business agents.
+- [ ] P03-M08-04-12 — Test: Changing Agent A voice does not modify Agent B.
+- [ ] P03-M08-04-13 — Test: Incompatible voice/language/model produces clear error or warning.
+- [ ] P03-M08-04-14 — Test: Cross-tenant / cross-business custom voice access blocked.
 
 ### Submodule 08.05 — Documentation & Acceptance
 
 - [ ] P03-M08-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P03-M08-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P03-M08-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P03-M08-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Library** at `docs/module-8/M08_Voice_Library_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [ ] P03-M08-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Library** at `docs/module-8/M08_Voice_Library_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** Business voice library, voice preview, per-agent assignment, reuse across agents, and language/provider compatibility. Do not create the final QA guide until this module is being completed.
 
 
 - [ ] P03-M08-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
@@ -881,76 +1004,90 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 **Dependencies:** M05, M06, M08
 
+**Status:** Not Started — roadmap refined 27 August 2026 for Business-owned reusable cloned voices + per-agent assignment. Do not mark In Development or Complete until implementation begins and gates pass.
+
+**Architecture (locked):** Business-owned reusable cloned voices + per-agent assignment. A cloned voice must **not** be recreated for every agent. Example: Business creates Owner Custom Clone once; Receptionist and Appointment Agent both reference the same authorized Business voice asset.
+
 
 ### Submodule 09.01 — Scope & Technical Design
 
-- [ ] P03-M09-01-01 — Confirm the objective and boundaries of **Voice Cloning**.
-- [ ] P03-M09-01-02 — Capture explicit consent
-- [ ] P03-M09-01-03 — Upload or record voice samples
-- [ ] P03-M09-01-04 — Submit clone request
-- [ ] P03-M09-01-05 — Track processing status
-- [ ] P03-M09-01-06 — Preview cloned voice
-- [ ] P03-M09-01-07 — Assign clone to agent
-- [ ] P03-M09-01-08 — Delete/revoke clone where supported
-- [ ] P03-M09-01-09 — Audit consent and actions
+- [ ] P03-M09-01-01 — Confirm the objective and boundaries of **Voice Cloning** as **Business-owned reusable cloned voices + per-agent assignment** (one canonical Business clone asset; many agent selections).
+- [ ] P03-M09-01-02 — Capture explicit consent for creation/use of the cloned voice **asset** (who consented, when, what source/sample, Business context, provider, retention/revocation state). Do not duplicate consent unnecessarily for every agent assignment unless future legal/product requirements specifically require additional per-use consent.
+- [ ] P03-M09-01-03 — Upload or record voice samples (private, Business-scoped storage).
+- [ ] P03-M09-01-04 — Submit / create clone request (Business-owned clone lifecycle).
+- [ ] P03-M09-01-05 — Track processing status.
+- [ ] P03-M09-01-06 — Preview cloned voice.
+- [ ] P03-M09-01-07 — Assign cloned voice to one or more agents (via Business voice asset / agent voice config — reuse across eligible Business agents; do not model one clone row per agent unless a provider mapping requires an internal detail while preserving one canonical Business asset).
+- [ ] P03-M09-01-08 — Revoke/delete clone with **safe handling while assigned** (detect assignments; require confirmation; either block destructive deletion until unassigned **or** follow an explicitly designed safe reassignment/unassignment flow — exact UX may be locked during M09 implementation).
+- [ ] P03-M09-01-09 — Audit consent and sensitive actions (clone create/delete/revoke and agent voice assignment remain auditable).
 - [ ] P03-M09-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [ ] P03-M09-01-11 — Store resulting cloned voice as a Business-owned voice asset eligible for the M08 Business Voice Library.
+- [ ] P03-M09-01-12 — Unassign/change agent voice selection without destroying the shared Business clone asset.
+- [ ] P03-M09-01-13 — Provider sync/mapping for clones (EaziAICall canonical clone record → provider clone ID; provider failure must not silently corrupt canonical records).
+- [ ] P03-M09-01-14 — Document: no automatic voice cloning without explicit consent.
 
 ### Submodule 09.02 — Backend, Persistence & API
 
-- [ ] P03-M09-02-01 — Implement/confirm data requirement: `voice_clones`.
-- [ ] P03-M09-02-02 — Implement/confirm data requirement: `voice_consents`.
-- [ ] P03-M09-02-03 — Implement/confirm data requirement: `voice_samples`.
-- [ ] P03-M09-02-04 — Implement/confirm data requirement: `voice_configs`.
+- [ ] P03-M09-02-01 — Implement/confirm data requirement: `voice_clones` (Business-owned; one canonical asset — not one row per agent).
+- [ ] P03-M09-02-02 — Implement/confirm data requirement: `voice_consents` (belongs to clone asset creation/use; records who/when/source/Business/provider/retention-revocation).
+- [ ] P03-M09-02-03 — Implement/confirm data requirement: `voice_samples` (restricted, private storage).
+- [ ] P03-M09-02-04 — Implement/confirm data requirement: `voice_configs` / `agent_voice_configs` (agent → selected voice assignment; many agents may reference the same clone/voice asset).
 - [ ] P03-M09-02-05 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P03-M09-02-06 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [ ] P03-M09-02-06 — Confirm Business ownership keys and foreign-key behavior for tenant-owned records (Business → Voice Clone → Consent / Samples → Voice Asset → many Agent assignments).
 
 - [ ] P03-M09-02-07 — Create/update the NestJS module boundaries, services and domain logic for **Voice Cloning**.
-- [ ] P03-M09-02-08 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [ ] P03-M09-02-08 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (provider-neutral mapping; no core hardcoding of ElevenLabs-only IDs).
 - [ ] P03-M09-02-09 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P03-M09-02-10 — Implement/verify API contract: `POST /api/v1/voices/clone`.
-- [ ] P03-M09-02-11 — Implement/verify API contract: `GET /api/v1/voices/:id/status`.
-- [ ] P03-M09-02-12 — Implement/verify API contract: `DELETE /api/v1/voices/:id`.
-- [ ] P03-M09-02-13 — Implement/verify API contract: `POST /api/v1/agents/:id/voice`.
+- [ ] P03-M09-02-10 — Implement/verify API contract intent: `POST /api/v1/voices/clone` (or Business-scoped equivalent — creates Business-owned clone, not per-agent clone).
+- [ ] P03-M09-02-11 — Implement/verify API contract intent: `GET /api/v1/voices/:id/status`.
+- [ ] P03-M09-02-12 — Implement/verify API contract intent: `DELETE /api/v1/voices/:id` (safe revoke/delete with active-assignment handling).
+- [ ] P03-M09-02-13 — Implement/verify API contract intent: `POST /api/v1/agents/:id/voice` (assign/change selected voice to an existing Business clone/voice asset).
 - [ ] P03-M09-02-14 — Add DTO/schema validation and consistent API error responses.
+- [ ] P03-M09-02-15 — Implement/confirm linkage to `voices` / `business_voices` so the resulting clone is a reusable Business voice asset.
+- [ ] P03-M09-02-16 — Enforce cross-business clone access blocked; agents may only be assigned clones owned by their Business.
 
 ### Submodule 09.03 — Frontend & Integrations
 
-- [ ] P03-M09-03-01 — Build/complete frontend requirement: Consent screen.
+- [ ] P03-M09-03-01 — Build/complete frontend requirement: Consent screen (asset-level consent; clear Business ownership context).
 - [ ] P03-M09-03-02 — Build/complete frontend requirement: Upload/record samples.
 - [ ] P03-M09-03-03 — Build/complete frontend requirement: Processing state.
 - [ ] P03-M09-03-04 — Build/complete frontend requirement: Preview.
-- [ ] P03-M09-03-05 — Build/complete frontend requirement: Assign clone.
-- [ ] P03-M09-03-06 — Build/complete frontend requirement: Delete/revoke confirmation.
+- [ ] P03-M09-03-05 — Build/complete frontend requirement: Assign clone to agent(s) from Business Voice Library / agent Voice selection (reuse across agents).
+- [ ] P03-M09-03-06 — Build/complete frontend requirement: Delete/revoke confirmation that surfaces active agent assignments and requires a safe flow.
 - [ ] P03-M09-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data.
 - [ ] P03-M09-03-08 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P03-M09-03-09 — Integrate and verify: S3-compatible sample storage where permitted.
-- [ ] P03-M09-03-10 — Integrate and verify: ElevenLabs voice cloning.
+- [ ] P03-M09-03-09 — Integrate and verify: S3-compatible sample storage where permitted (private; sensitive sample URLs not publicly exposed).
+- [ ] P03-M09-03-10 — Integrate and verify: provider voice cloning via abstraction (ElevenLabs as first cloning provider; remain provider-swappable).
 - [ ] P03-M09-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [ ] P03-M09-03-12 — UX clarity: one Business clone (e.g. Owner Custom Clone) selectable by multiple agents without recreating the clone.
 
 ### Submodule 09.04 — Security & QA
 
-- [ ] P03-M09-04-01 — Explicit consent required before submission.
-- [ ] P03-M09-04-02 — Restrict sample access.
-- [ ] P03-M09-04-03 — Retention/deletion rules.
-- [ ] P03-M09-04-04 — Audit log.
-- [ ] P03-M09-04-05 — Verify tenant isolation for all tenant-owned records and actions.
+- [ ] P03-M09-04-01 — Explicit consent required before submission; no automatic cloning without consent.
+- [ ] P03-M09-04-02 — Restrict sample access; private storage; sensitive sample URLs not publicly exposed.
+- [ ] P03-M09-04-03 — Retention/deletion rules for samples and clones.
+- [ ] P03-M09-04-04 — Audit log for consent and sensitive actions (including agent assignment of cloned voices).
+- [ ] P03-M09-04-05 — Verify tenant/Business isolation for all tenant-owned records and actions (cross-business clone access blocked; provider credentials server-side only).
 
 - [ ] P03-M09-04-06 — Test: Consent required.
 - [ ] P03-M09-04-07 — Test: Valid sample upload.
-- [ ] P03-M09-04-08 — Test: Clone request/status.
-- [ ] P03-M09-04-09 — Test: Assign clone.
-- [ ] P03-M09-04-10 — Test: Unauthorized clone access blocked.
+- [ ] P03-M09-04-08 — Test: Clone request/status (Business-owned asset).
+- [ ] P03-M09-04-09 — Test: Assign clone to agent(s); reuse across eligible Business agents.
+- [ ] P03-M09-04-10 — Test: Unauthorized / cross-business clone access blocked.
 - [ ] P03-M09-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P03-M09-04-12 — Complete manual QA of the end-to-end user journey.
+- [ ] P03-M09-04-13 — Test: Unassign/change agent voice does not destroy the shared Business clone.
+- [ ] P03-M09-04-14 — Test: Destructive delete/revoke while assigned detects assignments and requires safe confirmation flow (block until unassigned or explicit reassignment).
+- [ ] P03-M09-04-15 — Test: Provider credentials never exposed; sample URLs not publicly accessible.
 
 ### Submodule 09.05 — Documentation & Acceptance
 
 - [ ] P03-M09-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P03-M09-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P03-M09-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P03-M09-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Cloning** at `docs/module-9/M09_Voice_Cloning_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [ ] P03-M09-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Cloning** at `docs/module-9/M09_Voice_Cloning_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** consent, sample handling, clone creation, reusable Business clone, agent assignment, revocation/deletion with assignment safety, and security/privacy. Do not create the final QA guide until this module is being completed.
 
 
 - [ ] P03-M09-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.

@@ -1,64 +1,30 @@
-# Module 05 — API contracts (design)
+# Module 05 — API contracts
 
 | Field | Value |
 | --- | --- |
 | Module | M05 — AI Agent Management |
-| Status | Designed — 27 August 2026 |
+| Status | Implemented — 27 August 2026 |
 | Base | `/api/v1` |
-| Auth | Session cookies + `AuthGuard` |
+| Auth | Session + `AuthGuard` |
 | Context | `eazi_org` + `eazi_biz` required |
 
 ## Endpoints
 
-### `POST /agents`
+| Method | Path | Notes |
+| --- | --- | --- |
+| `POST` | `/agents` | Create under active business; wraps `{ agent }` |
+| `GET` | `/agents` | List; `?includeArchived=true` |
+| `GET` | `/agents/:id` | Detail |
+| `PATCH` | `/agents/:id` | Update behavior / escalation / unarchive via `status` |
+| `POST` | `/agents/:id/activate` | `status = active` |
+| `POST` | `/agents/:id/deactivate` | `status = inactive` |
+| `POST` | `/agents/:id/archive` | `status = archived` |
+| `DELETE` | `/agents/:id` | Hard delete when allowed |
 
-Create agent under active business.
+## Error codes
 
-**Body (illustrative):**
+`ACTIVE_ORGANIZATION_REQUIRED`, `ACTIVE_BUSINESS_REQUIRED`, `AGENT_NOT_FOUND`, `AGENT_ARCHIVED`, `AGENT_HAS_DEPENDENTS`, `AGENT_NAME_CONFLICT`, `FORBIDDEN`, `VALIDATION_ERROR`, `INVALID_AGENT`, `INVALID_LANGUAGE`, `BUSINESS_ARCHIVED`.
 
-```json
-{
-  "name": "Front Desk",
-  "roleLabel": "Receptionist",
-  "personality": "Warm, concise, professional",
-  "greeting": "Thanks for calling. How can I help you today?",
-  "instructions": "Answer FAQs. Collect caller name and reason for calling.",
-  "language": "en",
-  "escalationEnabled": false,
-  "escalationKeywords": [],
-  "escalationContactPhone": null,
-  "escalationContactEmail": null,
-  "escalationMessage": null
-}
-```
+## Provider
 
-**Response:** `201` agent detail (includes nested config + prompts).
-
-### `GET /agents`
-
-List for active business. Query: `includeArchived=true` optional.
-
-### `GET /agents/:id`
-
-Single agent detail (nested config + prompts). Provider mappings omitted or empty array in M05.
-
-### `PATCH /agents/:id`
-
-Partial update of name, role/personality, greeting, instructions, language, escalation stub fields, and unarchive via `status` when privileged.
-
-### `POST /agents/:id/activate`
-
-Sets `status` to `active`.
-
-### `POST /agents/:id/deactivate`
-
-Sets `status` to `inactive`.
-
-### Supporting
-
-- `POST /agents/:id/archive` — `status = archived`
-- `DELETE /agents/:id` — hard delete when allowed
-
-## Response envelope
-
-Use M00 global error envelope and correlation id. Success payloads follow existing Nest JSON style used by businesses (plain objects or `{ data }` — match M04 implementation convention in 05.02).
+None — no ElevenLabs calls in M05.

@@ -3,6 +3,10 @@ import { EmailVerificationToken } from '../modules/auth/entities/email-verificat
 import { PasswordResetToken } from '../modules/auth/entities/password-reset-token.entity';
 import { RefreshToken } from '../modules/auth/entities/refresh-token.entity';
 import { User } from '../modules/auth/entities/user.entity';
+import { AgentConfig } from '../modules/agents/entities/agent-config.entity';
+import { AgentPrompt } from '../modules/agents/entities/agent-prompt.entity';
+import { AgentProviderMapping } from '../modules/agents/entities/agent-provider-mapping.entity';
+import { Agent } from '../modules/agents/entities/agent.entity';
 import { BusinessHour } from '../modules/businesses/entities/business-hour.entity';
 import { BusinessSettings } from '../modules/businesses/entities/business-settings.entity';
 import { Business } from '../modules/businesses/entities/business.entity';
@@ -22,6 +26,10 @@ import { UsersEmailCaseInsensitive1756041000000 } from './migrations/17560410000
 import { Organizations1756050000000 } from './migrations/1756050000000-Organizations';
 import { TeamRolesAndInvitations1756060000000 } from './migrations/1756060000000-TeamRolesAndInvitations';
 import { BusinessManagement1756070000000 } from './migrations/1756070000000-BusinessManagement';
+import { AiAgentManagement1756080000000 } from './migrations/1756080000000-AiAgentManagement';
+import { BusinessLanguages1756081000000 } from './migrations/1756081000000-BusinessLanguages';
+import { LanguageDetectionConfig1756082000000 } from './migrations/1756082000000-LanguageDetectionConfig';
+import { AgentLanguageVoiceConfig1756083000000 } from './migrations/1756083000000-AgentLanguageVoiceConfig';
 import { loadBackendEnv } from './load-backend-env';
 
 loadBackendEnv();
@@ -46,6 +54,10 @@ export default new DataSource({
     Business,
     BusinessSettings,
     BusinessHour,
+    Agent,
+    AgentConfig,
+    AgentPrompt,
+    AgentProviderMapping,
     Call,
     CallMessage,
     CallRecording,
@@ -61,6 +73,10 @@ export default new DataSource({
     Organizations1756050000000,
     TeamRolesAndInvitations1756060000000,
     BusinessManagement1756070000000,
+    AiAgentManagement1756080000000,
+    BusinessLanguages1756081000000,
+    LanguageDetectionConfig1756082000000,
+    AgentLanguageVoiceConfig1756083000000,
   ],
   migrationsTableName: 'eazi_ai_call_migrations',
   synchronize: false,

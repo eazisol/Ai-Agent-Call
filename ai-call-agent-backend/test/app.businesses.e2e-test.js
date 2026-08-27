@@ -32,6 +32,9 @@ const sampleBusiness = {
   phone: null,
   timezone: 'America/New_York',
   defaultLanguage: 'en',
+  languages: ['en'],
+  languageDetectionEnabled: false,
+  languageSwitchingEnabled: false,
   status: 'active',
   settings: {
     addressLine1: null,

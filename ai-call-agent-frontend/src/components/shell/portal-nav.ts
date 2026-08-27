@@ -18,13 +18,19 @@ export function isEnabledPortalRoute(href: string): boolean {
     href === "/team" ||
     href === "/businesses" ||
     href === "/businesses/new" ||
+    href === "/agents" ||
+    href === "/agents/new" ||
     href === "/settings" ||
     href === "/settings/organization" ||
     href === "/onboarding/organization"
   ) {
     return true;
   }
-  if (href.startsWith("/calls/") || href.startsWith("/businesses/")) {
+  if (
+    href.startsWith("/calls/") ||
+    href.startsWith("/businesses/") ||
+    href.startsWith("/agents/")
+  ) {
     return true;
   }
   return false;

@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Module | M05 — AI Agent Management |
-| Status | Designed — 27 August 2026 |
+| Status | Implemented — 27 August 2026 (05.03) |
 | Implementation | 05.03 |
 
 ## Routes
@@ -18,10 +18,20 @@
 
 ## Portal chrome
 
-- Enable **AI Agents** in `portal-nav` / sidebar (remove coming-soon for `/agents*`).
-- Gate pages when no active business: CTA to `/businesses` or business switcher.
-- Use real API client (no production mock agent list).
-- Loading, validation, success, and error toasts consistent with M03/M04.
+- **AI Agents** enabled in portal nav (`/agents*`).
+- Gate pages when no active business: CTA to `/businesses`.
+- Real API client: `src/lib/agents-api.ts` (no mock agent list).
+- Loading, validation, success, and error states aligned with M03/M04.
+
+## Delivered routes (05.03)
+
+| Route | Page |
+| --- | --- |
+| `/agents` | List + archived toggle |
+| `/agents/new` | Wizard: identity → behavior/language/voice → escalation → review |
+| `/agents/[id]` | Overview + activate/deactivate/archive/unarchive/delete |
+| `/agents/[id]/behavior` | Name, role, personality, greeting, instructions, language/voice |
+| `/agents/[id]/escalation` | Escalation stub settings |
 
 ## Wizard (create)
 

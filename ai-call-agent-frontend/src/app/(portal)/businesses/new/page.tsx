@@ -10,17 +10,16 @@ import {
   BusinessHoursEditor,
   closedWeek,
 } from "@/components/businesses/business-hours-editor";
+import { BusinessLanguagesFields } from "@/components/businesses/business-languages-fields";
 import { FormField } from "@/components/patterns/form-field";
+import { TimezoneCombobox } from "@/components/forms/timezone-combobox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import {
   BUSINESS_INDUSTRIES,
-  BUSINESS_LANGUAGES,
-  COMMON_TIMEZONES,
   canCreateBusiness,
   formatIndustry,
-  formatLanguage,
   type BusinessHour,
   type BusinessIndustry,
   type BusinessLanguage,
@@ -46,7 +45,13 @@ export default function CreateBusinessPage() {
   const [phone, setPhone] = React.useState("");
   const [website, setWebsite] = React.useState("");
   const [timezone, setTimezone] = React.useState("America/New_York");
-  const [language, setLanguage] = React.useState<BusinessLanguage>("en");
+  const [languages, setLanguages] = React.useState<BusinessLanguage[]>(["en"]);
+  const [defaultLanguage, setDefaultLanguage] =
+    React.useState<BusinessLanguage>("en");
+  const [languageDetectionEnabled, setLanguageDetectionEnabled] =
+    React.useState(false);
+  const [languageSwitchingEnabled, setLanguageSwitchingEnabled] =
+    React.useState(false);
   const [city, setCity] = React.useState("");
   const [country, setCountry] = React.useState("");
   const [hours, setHours] = React.useState<BusinessHour[]>(closedWeek);
@@ -87,7 +92,17 @@ export default function CreateBusinessPage() {
       phone: phone.trim() || null,
       website: website.trim() || null,
       timezone,
-      defaultLanguage: language,
+      defaultLanguage,
+      languages: Array.from(
+        new Set(
+          (Array.isArray(languages) ? languages : [])
+            .concat(defaultLanguage)
+            .map((code) => String(code).trim())
+            .filter(Boolean),
+        ),
+      ),
+      languageDetectionEnabled,
+      languageSwitchingEnabled,
       settings: {
         city: city.trim() || null,
         country: country.trim() || null,
@@ -172,44 +187,20 @@ export default function CreateBusinessPage() {
                 placeholder="Clinic, salon…"
               />
             </FormField>
-          ) : (
-            <FormField label="Default language" htmlFor="biz-language">
-              <select
-                id="biz-language"
-                className={selectClassName}
-                value={language}
-                disabled={submitting}
-                onChange={(e) =>
-                  setLanguage(e.target.value as BusinessLanguage)
-                }
-              >
-                {BUSINESS_LANGUAGES.map((value) => (
-                  <option key={value} value={value}>
-                    {formatLanguage(value)}
-                  </option>
-                ))}
-              </select>
-            </FormField>
-          )}
+          ) : null}
         </div>
 
-        {industry === "other" ? (
-          <FormField label="Default language" htmlFor="biz-language-other">
-            <select
-              id="biz-language-other"
-              className={selectClassName}
-              value={language}
-              disabled={submitting}
-              onChange={(e) => setLanguage(e.target.value as BusinessLanguage)}
-            >
-              {BUSINESS_LANGUAGES.map((value) => (
-                <option key={value} value={value}>
-                  {formatLanguage(value)}
-                </option>
-              ))}
-            </select>
-          </FormField>
-        ) : null}
+        <BusinessLanguagesFields
+          languages={languages}
+          defaultLanguage={defaultLanguage}
+          languageDetectionEnabled={languageDetectionEnabled}
+          languageSwitchingEnabled={languageSwitchingEnabled}
+          onLanguagesChange={setLanguages}
+          onDefaultLanguageChange={setDefaultLanguage}
+          onLanguageDetectionChange={setLanguageDetectionEnabled}
+          onLanguageSwitchingChange={setLanguageSwitchingEnabled}
+          disabled={submitting}
+        />
 
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField label="Email" htmlFor="biz-email" required error={emailError}>
@@ -245,19 +236,12 @@ export default function CreateBusinessPage() {
         </FormField>
 
         <FormField label="Timezone" htmlFor="biz-timezone" required>
-          <select
+          <TimezoneCombobox
             id="biz-timezone"
-            className={selectClassName}
             value={timezone}
             disabled={submitting}
-            onChange={(e) => setTimezone(e.target.value)}
-          >
-            {COMMON_TIMEZONES.map((zone) => (
-              <option key={zone} value={zone}>
-                {zone}
-              </option>
-            ))}
-          </select>
+            onChange={setTimezone}
+          />
         </FormField>
 
         <div className="grid gap-4 sm:grid-cols-2">

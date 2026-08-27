@@ -8,6 +8,7 @@ import { envValidationSchema } from './config/env.validation';
 import { HealthModule } from './health/health.module';
 import { ObjectStorageModule } from './infrastructure/object-storage/object-storage.module';
 import { RedisModule } from './infrastructure/redis/redis.module';
+import { AgentsModule } from './modules/agents/agents.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BusinessesModule } from './modules/businesses/businesses.module';
 import { CallsModule } from './modules/calls/calls.module';
@@ -47,6 +48,7 @@ import { VoiceStreamModule } from './modules/voice-stream/voice-stream.module';
     AuthModule,
     OrganizationsModule,
     BusinessesModule,
+    AgentsModule,
     CallsModule,
     OpenaiRealtimeModule,
     VoiceStreamModule,

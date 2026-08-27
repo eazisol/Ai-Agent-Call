@@ -78,6 +78,7 @@ function createHarness(membersSeed = []) {
   const hours = createMemoryRepo(hoursRows);
   const calls = createMemoryRepo([]);
   const aiConfigs = createMemoryRepo([]);
+  const agents = createMemoryRepo([]);
 
   businesses.find = async ({ where = {}, relations, order } = {}) => {
     let found = businessRows.filter((row) => matchesWhere(row, where));
@@ -178,9 +179,10 @@ function createHarness(membersSeed = []) {
     hours,
     calls,
     aiConfigs,
+    agents,
   );
 
-  return { service, businesses, settings, hours, calls, aiConfigs };
+  return { service, businesses, settings, hours, calls, aiConfigs, agents };
 }
 
 const baseCreate = {
@@ -220,6 +222,36 @@ test('create business under org with settings and default closed hours', async (
   );
   assert.equal(settings.rows.length, 1);
   assert.equal(hours.rows.length, 7);
+});
+
+test('supports multiple languages with a default from the selection', async () => {
+  const ownerId = randomUUID();
+  const orgId = randomUUID();
+  const { service } = createHarness([
+    { userId: ownerId, organizationId: orgId, role: 'owner' },
+  ]);
+
+  const business = await service.create(ownerId, orgId, {
+    ...baseCreate,
+    languages: ['en', 'ur', 'fr'],
+    defaultLanguage: 'ur',
+  });
+  assert.deepEqual(business.languages, ['en', 'ur', 'fr']);
+  assert.equal(business.defaultLanguage, 'ur');
+  assert.equal(business.languageDetectionEnabled, true);
+  assert.equal(business.languageSwitchingEnabled, true);
+
+  await assert.rejects(
+    () =>
+      service.create(ownerId, orgId, {
+        ...baseCreate,
+        name: 'Other Biz',
+        languages: ['ur', 'fr'],
+        defaultLanguage: 'en',
+      }),
+    (error) =>
+      error instanceof ApplicationError && error.code === 'INVALID_LANGUAGE',
+  );
 });
 
 test('list is org-scoped and excludes archived by default', async () => {
@@ -387,5 +419,87 @@ test('archived business cannot be set active', async () => {
     () => service.resolveActiveForUser(ownerId, orgId, business.id),
     (error) =>
       error instanceof ApplicationError && error.code === 'BUSINESS_ARCHIVED',
+  );
+});
+
+test('single language forces detection and switching off', async () => {
+  const ownerId = randomUUID();
+  const orgId = randomUUID();
+  const { service } = createHarness([
+    { userId: ownerId, organizationId: orgId, role: 'owner' },
+  ]);
+
+  const business = await service.create(ownerId, orgId, {
+    ...baseCreate,
+    languages: ['en'],
+    defaultLanguage: 'en',
+  });
+  assert.deepEqual(business.languages, ['en']);
+  assert.equal(business.languageDetectionEnabled, false);
+  assert.equal(business.languageSwitchingEnabled, false);
+
+  await assert.rejects(
+    () =>
+      service.create(ownerId, orgId, {
+        ...baseCreate,
+        name: 'Single Detect Bad',
+        languages: ['en'],
+        defaultLanguage: 'en',
+        languageDetectionEnabled: true,
+      }),
+    (error) =>
+      error instanceof ApplicationError && error.code === 'INVALID_LANGUAGE',
+  );
+});
+
+test('can add catalogue language beyond recommended eight', async () => {
+  const ownerId = randomUUID();
+  const orgId = randomUUID();
+  const { service } = createHarness([
+    { userId: ownerId, organizationId: orgId, role: 'owner' },
+  ]);
+
+  const created = await service.create(ownerId, orgId, {
+    ...baseCreate,
+    languages: ['en'],
+    defaultLanguage: 'en',
+  });
+  const updated = await service.updateForUser(ownerId, orgId, created.id, {
+    languages: ['en', 'it'],
+    defaultLanguage: 'en',
+  });
+  assert.deepEqual(updated.languages, ['en', 'it']);
+  assert.equal(updated.languageDetectionEnabled, true);
+});
+
+test('rejects invalid language code and default outside selection', async () => {
+  const ownerId = randomUUID();
+  const orgId = randomUUID();
+  const { service } = createHarness([
+    { userId: ownerId, organizationId: orgId, role: 'owner' },
+  ]);
+
+  await assert.rejects(
+    () =>
+      service.create(ownerId, orgId, {
+        ...baseCreate,
+        name: 'Bad Code',
+        languages: ['xx'],
+        defaultLanguage: 'xx',
+      }),
+    (error) =>
+      error instanceof ApplicationError && error.code === 'INVALID_LANGUAGE',
+  );
+
+  await assert.rejects(
+    () =>
+      service.create(ownerId, orgId, {
+        ...baseCreate,
+        name: 'Bad Default',
+        languages: ['en', 'fr'],
+        defaultLanguage: 'ur',
+      }),
+    (error) =>
+      error instanceof ApplicationError && error.code === 'INVALID_LANGUAGE',
   );
 });

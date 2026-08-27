@@ -113,6 +113,34 @@ function buildPortalBreadcrumbs(
     return crumbs;
   }
 
+  if (pathname === "/agents") {
+    return [{ label: "AI Agents" }];
+  }
+
+  if (pathname === "/agents/new") {
+    return [
+      { label: "AI Agents", href: "/agents" },
+      { label: "Create" },
+    ];
+  }
+
+  if (pathname.startsWith("/agents/")) {
+    const parts = pathname.split("/").filter(Boolean);
+    const rawId = parts[1];
+    const label =
+      rawId && rawId.length > 12 ? `${rawId.slice(0, 8)}…` : rawId || "Agent";
+    const crumbs: Crumb[] = [
+      { label: "AI Agents", href: "/agents" },
+      { label, href: `/agents/${rawId}` },
+    ];
+    if (parts[2] === "behavior") {
+      crumbs.push({ label: "Behavior" });
+    } else if (parts[2] === "escalation") {
+      crumbs.push({ label: "Escalation" });
+    }
+    return crumbs;
+  }
+
   if (pathname === "/settings") {
     return [{ label: "Settings" }];
   }

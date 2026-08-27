@@ -16,6 +16,7 @@ import {
   formatIndustry,
   type Business,
 } from "@/lib/businesses-api";
+import { formatTimezoneLabel } from "@/lib/timezones";
 
 export default function BusinessesPage() {
   const { active: org } = useOrganizationSession();
@@ -127,7 +128,9 @@ function BusinessRow({
       <td className="px-4 py-3 text-muted-foreground">
         {formatIndustry(business.industry, business.industryLabel)}
       </td>
-      <td className="px-4 py-3 text-muted-foreground">{business.timezone}</td>
+      <td className="px-4 py-3 text-muted-foreground">
+        {formatTimezoneLabel(business.timezone)}
+      </td>
       <td className="px-4 py-3 capitalize">{business.status}</td>
       <td className="px-4 py-3 text-right">
         <Button asChild variant="ghost" size="sm">

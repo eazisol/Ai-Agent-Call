@@ -2,6 +2,7 @@ import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsEmail,
   IsIn,
   IsOptional,
@@ -11,9 +12,9 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
+import { IsCatalogueLanguageCode } from '../../../common/i18n/is-catalogue-language.decorator';
 import {
   BUSINESS_INDUSTRIES,
-  BUSINESS_LANGUAGES,
   BUSINESS_STATUSES,
 } from '../entities/business.entity';
 import {
@@ -59,8 +60,24 @@ export class UpdateBusinessDto {
   timezone?: string;
 
   @IsOptional()
-  @IsIn([...BUSINESS_LANGUAGES])
-  defaultLanguage?: (typeof BUSINESS_LANGUAGES)[number];
+  @IsString()
+  @IsCatalogueLanguageCode()
+  defaultLanguage?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(50)
+  @Type(() => String)
+  @IsCatalogueLanguageCode({ each: true })
+  languages?: string[];
+
+  @IsOptional()
+  @IsBoolean()
+  languageDetectionEnabled?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  languageSwitchingEnabled?: boolean;
 
   @IsOptional()
   @IsIn([...BUSINESS_STATUSES])

@@ -19,6 +19,7 @@ import {
   type Business,
   type BusinessHour,
 } from "@/lib/businesses-api";
+import { formatTimezoneLabel } from "@/lib/timezones";
 
 export default function BusinessHoursPage() {
   const params = useParams();
@@ -99,7 +100,8 @@ export default function BusinessHoursPage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Business hours</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Weekly schedule in {business.timezone}. One open interval per day.
+          Weekly schedule in {formatTimezoneLabel(business.timezone)}. One open
+          interval per day.
         </p>
       </div>
 

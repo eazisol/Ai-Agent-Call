@@ -15,6 +15,8 @@ import { AiConfig } from '../../openai-realtime/entities/ai-config.entity';
 import { BusinessHour } from './business-hour.entity';
 import { BusinessSettings } from './business-settings.entity';
 
+import { RECOMMENDED_LANGUAGE_CODES } from '../../../common/i18n/language-catalogue';
+
 export const BUSINESS_INDUSTRIES = [
   'healthcare',
   'restaurant',
@@ -26,18 +28,11 @@ export const BUSINESS_INDUSTRIES = [
 
 export type BusinessIndustry = (typeof BUSINESS_INDUSTRIES)[number];
 
-export const BUSINESS_LANGUAGES = [
-  'en',
-  'es',
-  'fr',
-  'de',
-  'pt',
-  'ar',
-  'hi',
-  'ur',
-] as const;
+/** @deprecated Use language catalogue; kept as recommended starter codes. */
+export const BUSINESS_LANGUAGES = [...RECOMMENDED_LANGUAGE_CODES] as const;
 
-export type BusinessLanguage = (typeof BUSINESS_LANGUAGES)[number];
+/** Canonical language identity = catalogue / BCP-47-compatible code string. */
+export type BusinessLanguage = string;
 
 export const BUSINESS_STATUSES = ['active', 'archived'] as const;
 
@@ -81,6 +76,29 @@ export class Business {
 
   @Column({ name: 'default_language', length: 20, default: 'en' })
   defaultLanguage!: BusinessLanguage;
+
+  /** Supported languages for this business; must include defaultLanguage. */
+  @Column({
+    name: 'languages',
+    type: 'jsonb',
+    default: () => "'[\"en\"]'::jsonb",
+  })
+  languages!: BusinessLanguage[];
+
+  /**
+   * When true, the voice agent should auto-detect caller language among
+   * `languages` and respond in that language. Default language is fallback only.
+   * Provider wiring (e.g. ElevenLabs) is M06.
+   */
+  @Column({ name: 'language_detection_enabled', type: 'boolean', default: false })
+  languageDetectionEnabled!: boolean;
+
+  /**
+   * When true, mid-call language switching is allowed among `languages`
+   * where the voice provider supports it. Provider wiring is M06.
+   */
+  @Column({ name: 'language_switching_enabled', type: 'boolean', default: false })
+  languageSwitchingEnabled!: boolean;
 
   @Column({ length: 20, default: 'active' })
   status!: BusinessStatus;

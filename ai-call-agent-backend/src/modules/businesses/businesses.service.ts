@@ -2,6 +2,11 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { ApplicationError } from '../../common/errors/application-error';
+import {
+  isCatalogueLanguageCode,
+  normalizeLanguageCode,
+} from '../../common/i18n/language-catalogue';
+import { Agent } from '../agents/entities/agent.entity';
 import { Call } from '../calls/entities/call.entity';
 import { AiConfig } from '../openai-realtime/entities/ai-config.entity';
 import type { OrganizationMemberRole } from '../organizations/entities/organization-member.entity';
@@ -17,7 +22,6 @@ import { BusinessHour } from './entities/business-hour.entity';
 import { BusinessSettings } from './entities/business-settings.entity';
 import {
   BUSINESS_INDUSTRIES,
-  BUSINESS_LANGUAGES,
   Business,
   type BusinessIndustry,
   type BusinessLanguage,
@@ -51,6 +55,9 @@ export interface BusinessView {
   phone: string | null;
   timezone: string;
   defaultLanguage: BusinessLanguage;
+  languages: BusinessLanguage[];
+  languageDetectionEnabled: boolean;
+  languageSwitchingEnabled: boolean;
   status: BusinessStatus;
   settings: BusinessSettingsView;
   hours: BusinessHourView[];
@@ -75,6 +82,8 @@ export class BusinessesService {
     private readonly calls: Repository<Call>,
     @InjectRepository(AiConfig)
     private readonly aiConfigs: Repository<AiConfig>,
+    @InjectRepository(Agent)
+    private readonly agents: Repository<Agent>,
   ) {}
 
   async create(
@@ -104,6 +113,9 @@ export class BusinessesService {
           phoneNumber: fields.phone,
           timezone: fields.timezone,
           defaultLanguage: fields.defaultLanguage,
+          languages: fields.languages,
+          languageDetectionEnabled: fields.languageDetectionEnabled,
+          languageSwitchingEnabled: fields.languageSwitchingEnabled,
           status: 'active',
           businessPrompt: null,
         }),
@@ -234,8 +246,40 @@ export class BusinessesService {
     if (input.timezone !== undefined) {
       business.timezone = this.requireTimezone(input.timezone);
     }
-    if (input.defaultLanguage !== undefined) {
-      business.defaultLanguage = this.requireLanguage(input.defaultLanguage);
+    if (
+      input.defaultLanguage !== undefined ||
+      input.languages !== undefined ||
+      input.languageDetectionEnabled !== undefined ||
+      input.languageSwitchingEnabled !== undefined
+    ) {
+      const nextDefault =
+        input.defaultLanguage !== undefined
+          ? this.requireLanguage(input.defaultLanguage)
+          : business.defaultLanguage;
+      const nextLanguages =
+        input.languages !== undefined
+          ? this.requireLanguages(input.languages)
+          : this.normalizeStoredLanguages(
+              business.languages,
+              business.defaultLanguage,
+            );
+      const languagePolicy = this.resolveLanguagePolicy({
+        defaultLanguage: nextDefault,
+        languages: nextLanguages,
+        languageDetectionEnabled:
+          input.languageDetectionEnabled ?? business.languageDetectionEnabled,
+        languageSwitchingEnabled:
+          input.languageSwitchingEnabled ?? business.languageSwitchingEnabled,
+        explicitDetection: input.languageDetectionEnabled !== undefined,
+        explicitSwitching: input.languageSwitchingEnabled !== undefined,
+      });
+      business.defaultLanguage = languagePolicy.defaultLanguage;
+      // Clone so TypeORM always detects jsonb change (no shared refs).
+      business.languages = [...languagePolicy.languages];
+      business.languageDetectionEnabled =
+        languagePolicy.languageDetectionEnabled;
+      business.languageSwitchingEnabled =
+        languagePolicy.languageSwitchingEnabled;
     }
     if (input.status !== undefined) {
       business.status = input.status;
@@ -366,7 +410,7 @@ export class BusinessesService {
   }
 
   private async countDependents(businessId: string): Promise<number> {
-    const [callCount, configCount] = await Promise.all([
+    const [callCount, configCount, agentCount] = await Promise.all([
       this.calls
         .createQueryBuilder('call')
         .where('call.business_id = :businessId', { businessId })
@@ -375,8 +419,12 @@ export class BusinessesService {
         .createQueryBuilder('config')
         .where('config.business_id = :businessId', { businessId })
         .getCount(),
+      this.agents
+        .createQueryBuilder('agent')
+        .where('agent.business_id = :businessId', { businessId })
+        .getCount(),
     ]);
-    return callCount + configCount;
+    return callCount + configCount + agentCount;
   }
 
   private normalizeCoreFields(
@@ -396,13 +444,151 @@ export class BusinessesService {
         phone: this.normalizePhone(create.phone),
         website: this.normalizeWebsite(create.website),
         timezone: this.requireTimezone(create.timezone),
-        defaultLanguage: this.requireLanguage(create.defaultLanguage),
+        ...this.resolveLanguagePolicy({
+          defaultLanguage: this.requireLanguage(create.defaultLanguage),
+          languages: create.languages?.length
+            ? create.languages
+            : [create.defaultLanguage],
+          languageDetectionEnabled: create.languageDetectionEnabled,
+          languageSwitchingEnabled: create.languageSwitchingEnabled,
+          explicitDetection: create.languageDetectionEnabled !== undefined,
+          explicitSwitching: create.languageSwitchingEnabled !== undefined,
+        }),
       };
     }
     throw new ApplicationError(
       'INVALID_BUSINESS',
       'Invalid business payload.',
     );
+  }
+
+  private resolveLanguagePolicy(input: {
+    defaultLanguage: BusinessLanguage;
+    languages: BusinessLanguage[] | string[];
+    languageDetectionEnabled?: boolean;
+    languageSwitchingEnabled?: boolean;
+    explicitDetection?: boolean;
+    explicitSwitching?: boolean;
+  }): {
+    defaultLanguage: BusinessLanguage;
+    languages: BusinessLanguage[];
+    languageDetectionEnabled: boolean;
+    languageSwitchingEnabled: boolean;
+  } {
+    const unique = this.requireLanguages(input.languages);
+    if (!unique.includes(input.defaultLanguage)) {
+      throw new ApplicationError(
+        'INVALID_LANGUAGE',
+        'Default language must be one of the selected languages.',
+      );
+    }
+
+    const multi = unique.length > 1;
+    const languageDetectionEnabled = input.explicitDetection
+      ? input.languageDetectionEnabled === true
+      : multi;
+    const languageSwitchingEnabled = input.explicitSwitching
+      ? input.languageSwitchingEnabled === true
+      : multi;
+
+    if (!multi && languageDetectionEnabled) {
+      throw new ApplicationError(
+        'INVALID_LANGUAGE',
+        'Language detection requires at least two supported languages.',
+      );
+    }
+    if (!multi && languageSwitchingEnabled) {
+      throw new ApplicationError(
+        'INVALID_LANGUAGE',
+        'Language switching requires at least two supported languages.',
+      );
+    }
+    if (languageSwitchingEnabled && !languageDetectionEnabled) {
+      throw new ApplicationError(
+        'INVALID_LANGUAGE',
+        'Language switching requires language detection to be enabled.',
+      );
+    }
+
+    return {
+      defaultLanguage: input.defaultLanguage,
+      languages: unique,
+      languageDetectionEnabled,
+      languageSwitchingEnabled,
+    };
+  }
+
+  private resolveLanguagePair(
+    defaultLanguage: BusinessLanguage,
+    languages: BusinessLanguage[],
+  ): { defaultLanguage: BusinessLanguage; languages: BusinessLanguage[] } {
+    const policy = this.resolveLanguagePolicy({
+      defaultLanguage,
+      languages,
+      explicitDetection: true,
+      explicitSwitching: true,
+      languageDetectionEnabled: false,
+      languageSwitchingEnabled: false,
+    });
+    return {
+      defaultLanguage: policy.defaultLanguage,
+      languages: policy.languages,
+    };
+  }
+
+  private requireLanguages(languages: string[]): BusinessLanguage[] {
+    if (!languages?.length) {
+      throw new ApplicationError(
+        'INVALID_LANGUAGE',
+        'Select at least one language.',
+      );
+    }
+    const unique: BusinessLanguage[] = [];
+    const seen = new Set<string>();
+    for (const language of languages) {
+      const normalized = this.requireLanguage(language);
+      if (!seen.has(normalized)) {
+        seen.add(normalized);
+        unique.push(normalized);
+      }
+    }
+    return unique;
+  }
+
+  private normalizeStoredLanguages(
+    languages: BusinessLanguage[] | null | undefined | string,
+    defaultLanguage: BusinessLanguage,
+  ): BusinessLanguage[] {
+    const fallback = this.requireLanguage(defaultLanguage || 'en');
+    let raw: unknown = languages;
+
+    // Repair double-encoded / scalar jsonb reads.
+    if (typeof raw === 'string') {
+      const trimmed = raw.trim();
+      if (trimmed.startsWith('[')) {
+        try {
+          raw = JSON.parse(trimmed) as unknown;
+        } catch {
+          raw = [trimmed];
+        }
+      } else if (trimmed) {
+        raw = [trimmed];
+      } else {
+        raw = [];
+      }
+    }
+
+    const list = Array.isArray(raw)
+      ? raw.filter((item): item is string => typeof item === 'string')
+      : [];
+
+    const unique =
+      list.length > 0 ? this.requireLanguages(list) : [fallback];
+
+    if (!unique.includes(fallback)) {
+      return [...unique, fallback];
+    }
+    return unique;
   }
 
   private requireName(name: string): string {
@@ -494,13 +680,14 @@ export class BusinessesService {
   }
 
   private requireLanguage(language: string): BusinessLanguage {
-    if (!BUSINESS_LANGUAGES.includes(language as BusinessLanguage)) {
+    const normalized = normalizeLanguageCode(language);
+    if (!isCatalogueLanguageCode(normalized)) {
       throw new ApplicationError(
         'INVALID_LANGUAGE',
-        'Default language must be one of the supported MVP languages.',
+        'Language must be a supported catalogue language code (e.g. en, ur, fr).',
       );
     }
-    return language as BusinessLanguage;
+    return normalized;
   }
 
   private normalizeSettings(
@@ -668,6 +855,12 @@ export class BusinessesService {
       phone: business.phoneNumber,
       timezone: business.timezone,
       defaultLanguage: business.defaultLanguage,
+      languages: this.normalizeStoredLanguages(
+        business.languages,
+        business.defaultLanguage,
+      ),
+      languageDetectionEnabled: business.languageDetectionEnabled === true,
+      languageSwitchingEnabled: business.languageSwitchingEnabled === true,
       status: business.status,
       settings: {
         addressLine1: settings?.addressLine1 ?? null,

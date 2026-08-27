@@ -12,6 +12,7 @@
 | Doc | Covers |
 | --- | --- |
 | [scope-and-requirements.md](./scope-and-requirements.md) | Locked MVP scope, RBAC, cookies, out of scope |
+| [language-policy.md](./language-policy.md) | Multi-language + default fallback + auto-detect/switch |
 | [data-model.md](./data-model.md) | `businesses`, `business_settings`, `business_hours` |
 | [domain-logic.md](./domain-logic.md) | Service rules, validation, archive/delete |
 | [api-contracts.md](./api-contracts.md) | `/api/v1/businesses*`, `eazi_biz` |

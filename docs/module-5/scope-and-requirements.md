@@ -42,14 +42,16 @@ An agent is what later modules map to ElevenLabs (M06), attach knowledge (M07), 
 | Tenant / ownership | Agent rows require **`business_id`** FK → `businesses`. Org isolation via join to `businesses.organization_id` + active **`eazi_org`** membership. Never trust client org/business ids without server checks |
 | Active context | Agent APIs require valid session **and** active org (`eazi_org`) **and** active business (`eazi_biz`). Missing/invalid business → **`ACTIVE_BUSINESS_REQUIRED`** (or clear equivalent). Active business must belong to active org and not be archived |
 | Provider sync | **Local CRUD + config only.** No live ElevenLabs/OpenAI provider calls in M05. Sync is **M06** |
-| Legacy `ai_configs` | **Leave alone** for prototype OpenAI Realtime. SaaS agents use **new** tables: `agents`, `agent_configs`, `agent_prompts`, `agent_provider_mappings` |
+| Legacy `ai_configs` | **Leave alone** for prototype OpenAI Realtime. SaaS agents use **new** tables: `ai_agents`, `agent_configs`, `agent_prompts`, `agent_provider_mappings` |
+| Physical table name | **`ai_agents`** (not `agents`) — shared DB also hosts n8n’s `public.agents` |
 | Provider mappings table | **Schema created in M05** so M06 can attach mappings; M05 does **not** provision external agents or write sync success. Rows may be absent until M06; optional future stub is out of M05 write path |
 | API shape | Flat routes under `/api/v1/agents*` (checklist). Server derives org + business from cookies |
 | Status model | `status`: **`active`** \| **`inactive`** \| **`archived`**. Create defaults to **`active`**. Activate → `active`; deactivate → `inactive`; archive → `archived`. List excludes `archived` unless `?includeArchived=true` |
 | Archive / delete | Soft archive preferred. **`DELETE`** only when no blocking dependents (M05: none beyond cascading child tables; future modules add phone/call checks). Else **`409 AGENT_HAS_DEPENDENTS`** |
 | Activate cookie | **No** `eazi_agent` cookie. Activation is agent status only |
 | Escalation | **Stub fields only** — persisted for UI/API completeness; **no** call-time enforcement in M05 |
-| Language | Same MVP list as M04: `en`, `es`, `fr`, `de`, `pt`, `ar`, `hi`, `ur` |
+| Language | Catalogue codes (recommended 8 + Add language). Agent may inherit business policy or customize a subset. Modes: `single` / `multilingual`. See [language-policy](../module-4/language-policy.md). |
+| Voice preference | Provider-neutral `voice_preference` (`female` \| `male` \| `neutral`). Voice Library / cloning = M08 / M09. |
 | Role / personality | `role_label` (short, required) + `personality` (text, optional) stored on prompts/config as designed in data model |
 | Greeting / instructions | Required greeting (reasonable max length); instructions/system prompt required on create (or empty string rejected — min length locked in 05.02 DTOs) |
 | RBAC | Mirror M04: list/view all members; create/update owner+admin+manager; archive/hard-delete owner+admin; activate/deactivate same as update (owner+admin+manager) |
@@ -95,7 +97,7 @@ Supporting (recommended in 05.02):
 
 See [data-model.md](./data-model.md). Summary:
 
-- **`agents`** — identity, `business_id`, `name`, `status`, timestamps
+- **`ai_agents`** — identity, `business_id`, `name`, `status`, timestamps (physical name avoids n8n `agents` collision)
 - **`agent_configs`** — 1:1 language and operational flags / future voice placeholders
 - **`agent_prompts`** — 1:1 role, personality, greeting, instructions
 - **`agent_provider_mappings`** — 1:N ready for M06; unused by M05 runtime
@@ -126,6 +128,7 @@ Documented for P02-M05-01-13:
 
 - Live ElevenLabs (or any) provider create/update/delete/sync (**M06**)
 - Writing/updating `agent_provider_mappings.external_*` / sync success (**M06**)
+- ElevenLabs-specific language detection / switching API wiring (**M06** — M05 only stores provider-neutral flags)
 - Knowledge base attach/sync (**M07**)
 - Voice library / voice assignment UX beyond nullable placeholder column if any (**M08**)
 - Voice cloning (**M09**)

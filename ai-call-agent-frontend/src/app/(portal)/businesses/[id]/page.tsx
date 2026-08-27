@@ -12,9 +12,10 @@ import {
   businessesApi,
   DAY_LABELS,
   formatIndustry,
-  formatLanguage,
+  formatLanguages,
   type Business,
 } from "@/lib/businesses-api";
+import { formatTimezoneLabel } from "@/lib/timezones";
 
 export default function BusinessDetailPage() {
   const params = useParams();
@@ -85,10 +86,23 @@ export default function BusinessDetailPage() {
         <Detail label="Email" value={business.email} />
         <Detail label="Phone" value={business.phone ?? "—"} />
         <Detail label="Website" value={business.website ?? "—"} />
-        <Detail label="Timezone" value={business.timezone} />
+        <Detail label="Timezone" value={formatTimezoneLabel(business.timezone)} />
         <Detail
-          label="Language"
-          value={formatLanguage(business.defaultLanguage)}
+          label="Languages"
+          value={formatLanguages(
+            business.languages ?? [business.defaultLanguage],
+            business.defaultLanguage,
+          )}
+        />
+        <Detail
+          label="Language detection"
+          value={
+            business.languageDetectionEnabled
+              ? business.languageSwitchingEnabled
+                ? "Auto-detect + mid-call switch"
+                : "Auto-detect only"
+              : "Default / fallback only"
+          }
         />
         <Detail
           label="Location"

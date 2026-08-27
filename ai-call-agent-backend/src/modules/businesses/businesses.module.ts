@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Agent } from '../agents/entities/agent.entity';
 import { AuthModule } from '../auth/auth.module';
 import { Call } from '../calls/entities/call.entity';
 import { AiConfig } from '../openai-realtime/entities/ai-config.entity';
@@ -18,6 +19,7 @@ import { Business } from './entities/business.entity';
       BusinessHour,
       Call,
       AiConfig,
+      Agent,
     ]),
     AuthModule,
     OrganizationsModule,

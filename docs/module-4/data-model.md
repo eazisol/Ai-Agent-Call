@@ -21,7 +21,10 @@
 | `email` | varchar(150) | Required |
 | `phone_number` | varchar(30) | Optional |
 | `timezone` | varchar(80) | IANA; default `UTC` |
-| `default_language` | varchar(20) | MVP list; default `en` |
+| `default_language` | varchar(20) | Initial/fallback only; must be in `languages` |
+| `languages` | jsonb | Supported language codes the agent may use |
+| `language_detection_enabled` | boolean | Auto-detect caller language among `languages` (runtime in M06) |
+| `language_switching_enabled` | boolean | Mid-call switch among `languages` when provider allows (M06) |
 | `status` | varchar(20) | `active` \| `archived` |
 | `business_prompt` | text | Legacy; retained for M05 — not editable via M04 API |
 | `created_at` / `updated_at` | timestamptz | |

@@ -6,7 +6,9 @@ import { useParams } from "next/navigation";
 import { useOrganizationSession } from "@/components/organizations/organization-session";
 import { useBusinessSession } from "@/components/businesses/business-session";
 import { BusinessSubnav } from "@/components/businesses/business-subnav";
+import { BusinessLanguagesFields } from "@/components/businesses/business-languages-fields";
 import { FormField } from "@/components/patterns/form-field";
+import { TimezoneCombobox } from "@/components/forms/timezone-combobox";
 import { ErrorState } from "@/components/patterns/error-state";
 import { LoadingState } from "@/components/patterns/loading-state";
 import { Button } from "@/components/ui/button";
@@ -14,13 +16,10 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import {
   BUSINESS_INDUSTRIES,
-  BUSINESS_LANGUAGES,
-  COMMON_TIMEZONES,
   businessesApi,
   canArchiveBusiness,
   canUpdateBusiness,
   formatIndustry,
-  formatLanguage,
   type Business,
   type BusinessIndustry,
   type BusinessLanguage,
@@ -55,7 +54,13 @@ export default function BusinessSettingsPage() {
   const [phone, setPhone] = React.useState("");
   const [website, setWebsite] = React.useState("");
   const [timezone, setTimezone] = React.useState("UTC");
-  const [language, setLanguage] = React.useState<BusinessLanguage>("en");
+  const [languages, setLanguages] = React.useState<BusinessLanguage[]>(["en"]);
+  const [defaultLanguage, setDefaultLanguage] =
+    React.useState<BusinessLanguage>("en");
+  const [languageDetectionEnabled, setLanguageDetectionEnabled] =
+    React.useState(false);
+  const [languageSwitchingEnabled, setLanguageSwitchingEnabled] =
+    React.useState(false);
   const [city, setCity] = React.useState("");
   const [region, setRegion] = React.useState("");
   const [country, setCountry] = React.useState("");
@@ -71,7 +76,16 @@ export default function BusinessSettingsPage() {
     setPhone(row.phone ?? "");
     setWebsite(row.website ?? "");
     setTimezone(row.timezone);
-    setLanguage(row.defaultLanguage);
+    const loadedLanguages = Array.isArray(row.languages)
+      ? row.languages.filter(Boolean)
+      : [];
+    const withDefault = loadedLanguages.includes(row.defaultLanguage)
+      ? loadedLanguages
+      : [...loadedLanguages, row.defaultLanguage].filter(Boolean);
+    setLanguages(withDefault.length ? withDefault : [row.defaultLanguage]);
+    setDefaultLanguage(row.defaultLanguage);
+    setLanguageDetectionEnabled(row.languageDetectionEnabled === true);
+    setLanguageSwitchingEnabled(row.languageSwitchingEnabled === true);
     setCity(row.settings.city ?? "");
     setRegion(row.settings.region ?? "");
     setCountry(row.settings.country ?? "");
@@ -107,6 +121,14 @@ export default function BusinessSettingsPage() {
     setSubmitting(true);
     setError(null);
     setSuccess(null);
+    const selectedLanguages = Array.from(
+      new Set(
+        (Array.isArray(languages) ? languages : [])
+          .concat(defaultLanguage)
+          .map((code) => String(code).trim())
+          .filter(Boolean),
+      ),
+    );
     const result = await businessesApi.update(business.id, {
       name: name.trim(),
       industry,
@@ -115,7 +137,14 @@ export default function BusinessSettingsPage() {
       phone: phone.trim() || null,
       website: website.trim() || null,
       timezone,
-      defaultLanguage: language,
+      defaultLanguage,
+      languages: selectedLanguages,
+      languageDetectionEnabled:
+        selectedLanguages.length > 1 && languageDetectionEnabled,
+      languageSwitchingEnabled:
+        selectedLanguages.length > 1 &&
+        languageDetectionEnabled &&
+        languageSwitchingEnabled,
       settings: {
         addressLine1: address1.trim() || null,
         city: city.trim() || null,
@@ -230,23 +259,6 @@ export default function BusinessSettingsPage() {
               ))}
             </select>
           </FormField>
-          <FormField label="Language" htmlFor="settings-language">
-            <select
-              id="settings-language"
-              className={selectClassName}
-              value={language}
-              disabled={submitting || !canEdit}
-              onChange={(e) =>
-                setLanguage(e.target.value as BusinessLanguage)
-              }
-            >
-              {BUSINESS_LANGUAGES.map((value) => (
-                <option key={value} value={value}>
-                  {formatLanguage(value)}
-                </option>
-              ))}
-            </select>
-          </FormField>
         </div>
 
         {industry === "other" ? (
@@ -259,6 +271,20 @@ export default function BusinessSettingsPage() {
             />
           </FormField>
         ) : null}
+
+        <BusinessLanguagesFields
+          languages={languages}
+          defaultLanguage={defaultLanguage}
+          languageDetectionEnabled={languageDetectionEnabled}
+          languageSwitchingEnabled={languageSwitchingEnabled}
+          onLanguagesChange={setLanguages}
+          onDefaultLanguageChange={setDefaultLanguage}
+          onLanguageDetectionChange={setLanguageDetectionEnabled}
+          onLanguageSwitchingChange={setLanguageSwitchingEnabled}
+          disabled={submitting || !canEdit}
+          languagesId="settings-languages"
+          defaultId="settings-default-language"
+        />
 
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField label="Email" htmlFor="settings-email" required>
@@ -290,30 +316,12 @@ export default function BusinessSettingsPage() {
         </FormField>
 
         <FormField label="Timezone" htmlFor="settings-timezone">
-          <select
+          <TimezoneCombobox
             id="settings-timezone"
-            className={selectClassName}
-            value={
-              COMMON_TIMEZONES.includes(
-                timezone as (typeof COMMON_TIMEZONES)[number],
-              )
-                ? timezone
-                : timezone
-            }
+            value={timezone}
             disabled={submitting || !canEdit}
-            onChange={(e) => setTimezone(e.target.value)}
-          >
-            {!COMMON_TIMEZONES.includes(
-              timezone as (typeof COMMON_TIMEZONES)[number],
-            ) ? (
-              <option value={timezone}>{timezone}</option>
-            ) : null}
-            {COMMON_TIMEZONES.map((zone) => (
-              <option key={zone} value={zone}>
-                {zone}
-              </option>
-            ))}
-          </select>
+            onChange={setTimezone}
+          />
         </FormField>
 
         <FormField label="Address" htmlFor="settings-address">

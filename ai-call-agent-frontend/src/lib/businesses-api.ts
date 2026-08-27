@@ -1,6 +1,16 @@
 ﻿import { buildApiUrl } from "./api-url.mjs";
 import type { OrganizationRole } from "./organizations-api";
 
+import {
+  BUSINESS_LANGUAGES,
+  formatLanguage as catalogueFormatLanguage,
+  type BusinessLanguage,
+} from "./language-catalogue";
+
+export type { BusinessLanguage } from "./language-catalogue";
+export { BUSINESS_LANGUAGES } from "./language-catalogue";
+
+
 export type BusinessIndustry =
   | "healthcare"
   | "restaurant"
@@ -8,16 +18,6 @@ export type BusinessIndustry =
   | "professional_services"
   | "hospitality"
   | "other";
-
-export type BusinessLanguage =
-  | "en"
-  | "es"
-  | "fr"
-  | "de"
-  | "pt"
-  | "ar"
-  | "hi"
-  | "ur";
 
 export type BusinessStatus = "active" | "archived";
 
@@ -28,17 +28,6 @@ export const BUSINESS_INDUSTRIES: BusinessIndustry[] = [
   "professional_services",
   "hospitality",
   "other",
-];
-
-export const BUSINESS_LANGUAGES: BusinessLanguage[] = [
-  "en",
-  "es",
-  "fr",
-  "de",
-  "pt",
-  "ar",
-  "hi",
-  "ur",
 ];
 
 export type BusinessSettings = {
@@ -68,6 +57,9 @@ export type Business = {
   phone: string | null;
   timezone: string;
   defaultLanguage: BusinessLanguage;
+  languages: BusinessLanguage[];
+  languageDetectionEnabled: boolean;
+  languageSwitchingEnabled: boolean;
   status: BusinessStatus;
   settings: BusinessSettings;
   hours: BusinessHour[];
@@ -84,6 +76,9 @@ export type CreateBusinessInput = {
   website?: string | null;
   timezone: string;
   defaultLanguage: BusinessLanguage;
+  languages: BusinessLanguage[];
+  languageDetectionEnabled?: boolean;
+  languageSwitchingEnabled?: boolean;
   settings?: Partial<BusinessSettings>;
   hours?: BusinessHour[];
 };
@@ -198,17 +193,24 @@ export function formatIndustry(industry: BusinessIndustry, label?: string | null
 }
 
 export function formatLanguage(code: BusinessLanguage): string {
-  const names: Record<BusinessLanguage, string> = {
-    en: "English",
-    es: "Spanish",
-    fr: "French",
-    de: "German",
-    pt: "Portuguese",
-    ar: "Arabic",
-    hi: "Hindi",
-    ur: "Urdu",
-  };
-  return names[code];
+  return catalogueFormatLanguage(code);
+}
+
+export function formatLanguages(
+  languages: BusinessLanguage[],
+  defaultLanguage?: BusinessLanguage,
+): string {
+  const unique = [...new Set(languages.length ? languages : defaultLanguage ? [defaultLanguage] : [])];
+  if (!unique.length) {
+    return "—";
+  }
+  return unique
+    .map((code) =>
+      defaultLanguage && code === defaultLanguage
+        ? `${formatLanguage(code)} (default)`
+        : formatLanguage(code),
+    )
+    .join(", ");
 }
 
 export const DAY_LABELS = [
@@ -283,3 +285,5 @@ export const businessesApi = {
   clearActive: () =>
     request<{ cleared: true }>("businesses/active", { method: "DELETE" }),
 };
+
+

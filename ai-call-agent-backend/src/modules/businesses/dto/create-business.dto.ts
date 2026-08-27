@@ -17,9 +17,9 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
+import { IsCatalogueLanguageCode } from '../../../common/i18n/is-catalogue-language.decorator';
 import {
   BUSINESS_INDUSTRIES,
-  BUSINESS_LANGUAGES,
 } from '../entities/business.entity';
 
 const TIME_HH_MM = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -113,8 +113,24 @@ export class CreateBusinessDto {
   @MaxLength(80)
   timezone!: string;
 
-  @IsIn([...BUSINESS_LANGUAGES])
-  defaultLanguage!: (typeof BUSINESS_LANGUAGES)[number];
+  @IsString()
+  @IsCatalogueLanguageCode()
+  defaultLanguage!: string;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(50)
+  @Type(() => String)
+  @IsCatalogueLanguageCode({ each: true })
+  languages?: string[];
+
+  @IsOptional()
+  @IsBoolean()
+  languageDetectionEnabled?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  languageSwitchingEnabled?: boolean;
 
   @IsOptional()
   @ValidateNested()

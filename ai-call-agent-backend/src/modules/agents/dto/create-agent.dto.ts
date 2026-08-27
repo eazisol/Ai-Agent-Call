@@ -10,7 +10,11 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { AGENT_LANGUAGES } from '../entities/agent.entity';
+import { IsCatalogueLanguageCode } from '../../../common/i18n/is-catalogue-language.decorator';
+import {
+  AGENT_LANGUAGE_MODES,
+  AGENT_VOICE_PREFERENCES,
+} from '../entities/agent.entity';
 
 const PHONE_PATTERN = /^\+?[0-9()\-\s.]{7,30}$/;
 
@@ -40,8 +44,37 @@ export class CreateAgentDto {
   @MaxLength(20000)
   instructions!: string;
 
-  @IsIn([...AGENT_LANGUAGES])
-  language!: (typeof AGENT_LANGUAGES)[number];
+  /** When true (default), inherit language settings from the business. */
+  @IsOptional()
+  @IsBoolean()
+  useBusinessLanguageSettings?: boolean;
+
+  @IsOptional()
+  @IsIn([...AGENT_LANGUAGE_MODES])
+  languageMode?: (typeof AGENT_LANGUAGE_MODES)[number];
+
+  @IsOptional()
+  @IsString()
+  @IsCatalogueLanguageCode()
+  language?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(50)
+  @IsCatalogueLanguageCode({ each: true })
+  languages?: string[];
+
+  @IsOptional()
+  @IsBoolean()
+  languageDetectionEnabled?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  languageSwitchingEnabled?: boolean;
+
+  @IsOptional()
+  @IsIn([...AGENT_VOICE_PREFERENCES])
+  voicePreference?: (typeof AGENT_VOICE_PREFERENCES)[number];
 
   @IsOptional()
   @IsBoolean()
