@@ -15,7 +15,7 @@ export {
 export { AdminShell } from "./admin-shell";
 export { SidebarNav } from "./sidebar-nav";
 export { OrganizationSwitcher } from "./organization-switcher";
-export { BusinessSwitcher, type BusinessSwitcherProps } from "./business-switcher";
+export { BusinessSwitcher } from "./business-switcher";
 export { TopHeader } from "./top-header";
 export { SearchTrigger, SearchPalette } from "./global-search";
 export { NotificationMenu } from "./notifications-menu";

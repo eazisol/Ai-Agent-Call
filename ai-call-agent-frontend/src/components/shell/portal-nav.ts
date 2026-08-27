@@ -16,13 +16,15 @@ export function isEnabledPortalRoute(href: string): boolean {
     href === "/dashboard" ||
     href === "/calls" ||
     href === "/team" ||
+    href === "/businesses" ||
+    href === "/businesses/new" ||
     href === "/settings" ||
     href === "/settings/organization" ||
     href === "/onboarding/organization"
   ) {
     return true;
   }
-  if (href.startsWith("/calls/")) {
+  if (href.startsWith("/calls/") || href.startsWith("/businesses/")) {
     return true;
   }
   return false;

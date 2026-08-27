@@ -8,6 +8,8 @@
 | --- | --- | --- |
 | `organization_id` | M02 | Primary tenant, membership, billing, and security boundary |
 | `business_id` | M04 | Operational owner of agents, numbers, knowledge, and calls |
+| `agent_id` (via `business_id`) | M05 | Agents live under a business; APIs require `eazi_org` + `eazi_biz` (no `eazi_agent` cookie in M05) |
+| M04 status | Completed — 27 August 2026 | See `docs/module-4/README.md` |
 | PostgreSQL RLS | Deferred past M02 MVP | Optional extra control; **application scoping is mandatory** in M02 |
 
 M00 does **not** add `organization_id`. The baseline schema keeps the prototype `business_id` foreign key on `calls` and `ai_configs` (`ON DELETE SET NULL` / `CASCADE` as in the foundation migration). Queries remain unscoped until authentication (M01) and organizations (M02) exist.
@@ -15,6 +17,8 @@ M00 does **not** add `organization_id`. The baseline schema keeps the prototype 
 M01 identity tables (`users`, `refresh_tokens`, `email_verification_tokens`, `password_reset_tokens`) are user-scoped only. See `docs/module-1/data-model.md`.
 
 M02 introduces `organizations` + `organization_members` and an active-workspace cookie (`eazi_org`). Client-supplied organization IDs are never trusted without membership context.
+
+M04 (04.02) extends `businesses` with `organization_id`, adds `business_settings` / `business_hours`, and an active-business cookie (`eazi_biz`). API queries always filter by active org membership; legacy rows without `organization_id` are not exposed.
 
 ## M00 isolation posture (accepted exception)
 

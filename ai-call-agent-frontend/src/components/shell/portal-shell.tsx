@@ -85,6 +85,34 @@ function buildPortalBreadcrumbs(
     return [{ label: "Team" }];
   }
 
+  if (pathname === "/businesses") {
+    return [{ label: "Businesses" }];
+  }
+
+  if (pathname === "/businesses/new") {
+    return [
+      { label: "Businesses", href: "/businesses" },
+      { label: "Create" },
+    ];
+  }
+
+  if (pathname.startsWith("/businesses/")) {
+    const parts = pathname.split("/").filter(Boolean);
+    const rawId = parts[1];
+    const label =
+      rawId && rawId.length > 12 ? `${rawId.slice(0, 8)}…` : rawId || "Business";
+    const crumbs: Crumb[] = [
+      { label: "Businesses", href: "/businesses" },
+      { label, href: `/businesses/${rawId}` },
+    ];
+    if (parts[2] === "settings") {
+      crumbs.push({ label: "Settings" });
+    } else if (parts[2] === "hours") {
+      crumbs.push({ label: "Hours" });
+    }
+    return crumbs;
+  }
+
   if (pathname === "/settings") {
     return [{ label: "Settings" }];
   }

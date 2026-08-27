@@ -4,6 +4,8 @@ import * as React from "react";
 import { Building2, Check, ChevronsUpDown, Plus, Search, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { useOptionalBusinessSession } from "@/components/businesses/business-session";
+import { useOptionalOrganizationSession } from "@/components/organizations/organization-session";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -14,15 +16,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { useOptionalOrganizationSession } from "@/components/organizations/organization-session";
 import type { Organization } from "@/lib/organizations-api";
 
 /**
  * OrganizationSwitcher — real workspace context from Organizations API.
+ * Switching org clears active business cookie server-side; business session refreshes.
  */
 export function OrganizationSwitcher() {
   const router = useRouter();
   const session = useOptionalOrganizationSession();
+  const businessSession = useOptionalBusinessSession();
   const [query, setQuery] = React.useState("");
   const [switching, setSwitching] = React.useState(false);
 
@@ -37,7 +40,10 @@ export function OrganizationSwitcher() {
       return;
     }
     setSwitching(true);
-    await session.switchOrganization(orgId);
+    const ok = await session.switchOrganization(orgId);
+    if (ok) {
+      await businessSession?.refresh();
+    }
     setSwitching(false);
   };
 

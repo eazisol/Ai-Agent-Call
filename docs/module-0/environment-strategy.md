@@ -42,6 +42,7 @@ Copy only `*.example` files. Never commit `.env`, `.env.local`, or `.env.docker`
 | `AUTH_PUBLIC_APP_URL` | No | Links in verify/reset emails (default first CORS origin / localhost:3001) |
 | `AUTH_ACCESS_COOKIE_NAME` / `AUTH_REFRESH_COOKIE_NAME` | No | Defaults `eazi_access` / `eazi_refresh` |
 | `AUTH_ORG_COOKIE_NAME` | No | Active workspace cookie; default `eazi_org` (M02) |
+| `AUTH_BIZ_COOKIE_NAME` | No | Active business cookie; default `eazi_biz` (M04) |
 | `AUTH_COOKIE_SECURE` / `AUTH_COOKIE_SAME_SITE` | No | Secure defaults to production; SameSite `lax` locally |
 | `AUTH_RATE_LIMIT_MAX` / `AUTH_RATE_LIMIT_WINDOW_MS` | No | Defaults 20 / 900000 |
 | `SMTP_HOST` / `SMTP_FROM` | Yes | Delivery required for verification and reset |
@@ -49,8 +50,10 @@ Copy only `*.example` files. Never commit `.env`, `.env.local`, or `.env.docker`
 
 See also [Module 01 docs](../module-1/README.md), [Module 02 API contracts](../module-2/api-contracts.md), and [Module 03 README](../module-3/README.md).
 
-## External providers (M02 / M03)
+## External providers (M02 / M03 / M04)
 
 M02 has **no direct external-provider dependency**. Organization APIs are first-party NestJS only.
 
 M03 reuses **SMTP** (`EmailDeliveryPort`) for team invitation emails (same adapter as M01 verification/reset).
+
+M04 has **no direct external-provider dependency**. Business APIs are first-party NestJS only.

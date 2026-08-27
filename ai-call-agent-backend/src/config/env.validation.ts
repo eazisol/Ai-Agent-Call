@@ -99,6 +99,7 @@ export const envValidationSchema = Joi.object({
   AUTH_ACCESS_COOKIE_NAME: Joi.string().default('eazi_access'),
   AUTH_REFRESH_COOKIE_NAME: Joi.string().default('eazi_refresh'),
   AUTH_ORG_COOKIE_NAME: Joi.string().default('eazi_org'),
+  AUTH_BIZ_COOKIE_NAME: Joi.string().default('eazi_biz'),
   AUTH_COOKIE_SECURE: Joi.boolean().optional(),
   AUTH_COOKIE_SAME_SITE: Joi.string().valid('lax', 'strict', 'none').optional(),
   AUTH_RATE_LIMIT_MAX: Joi.number().integer().min(5).max(1000).default(20),

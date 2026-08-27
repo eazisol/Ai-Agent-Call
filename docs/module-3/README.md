@@ -5,7 +5,7 @@
 | Module | M03 — Users, Team & Roles |
 | Status | Completed — 25 August 2026 |
 | Depends on | M01, M02 |
-| Next | M04 — Business Management |
+| Next | M05 — AI Agent Management |
 
 ## Documents
 

@@ -6,7 +6,7 @@
 | Change type | Post-acceptance UX/security refinement |
 | Date | 25 August 2026 |
 | M03 status | Remains **COMPLETE ✅** |
-| M04 status | **NOT STARTED** |
+| M04 status | **COMPLETE ✅** (27 August 2026) |
 
 ## User journeys
 

@@ -87,13 +87,13 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] P00 — **Foundation**
   - [x] M00 — Existing Project Audit & SaaS Foundation (MVP)
-- [ ] P01 — **SaaS Core**
+- [x] P01 — **SaaS Core**
   - [x] M01 — Authentication (MVP)
   - [x] M02 — Organizations / Tenants (MVP)
   - [x] M03 — Users, Team & Roles (MVP)
-  - [ ] M04 — Business Management (MVP)
+  - [x] M04 — Business Management (MVP)
 - [ ] P02 — **AI Agent Core**
-  - [ ] M05 — AI Agent Management (MVP)
+  - [~] M05 — AI Agent Management (MVP) — 05.01 locked 27 August 2026
   - [ ] M06 — ElevenLabs Voice Agent Provider (MVP)
 - [ ] P03 — **Knowledge & Voice**
   - [ ] M07 — Knowledge Base (MVP)
@@ -230,7 +230,7 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 # PHASE 01 — SaaS Core
 
-- [ ] P01-GATE — Phase 01 is complete only when every required module below is accepted.
+- [x] P01-GATE — Phase 01 is complete only when every required module below is accepted.
 
 
 ## Module 01 — Authentication `M01`
@@ -478,75 +478,75 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 ### Submodule 04.01 — Scope & Technical Design
 
-- [ ] P01-M04-01-01 — Confirm the objective and boundaries of **Business Management**.
-- [ ] P01-M04-01-02 — List businesses
-- [ ] P01-M04-01-03 — Create business
-- [ ] P01-M04-01-04 — View business
-- [ ] P01-M04-01-05 — Update business
-- [ ] P01-M04-01-06 — Archive/delete according to policy
-- [ ] P01-M04-01-07 — Industry selection
-- [ ] P01-M04-01-08 — Contact information
-- [ ] P01-M04-01-09 — Business hours
-- [ ] P01-M04-01-10 — Timezone
-- [ ] P01-M04-01-11 — Default language
-- [ ] P01-M04-01-12 — Business status/settings
-- [ ] P01-M04-01-13 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P01-M04-01-01 — Confirm the objective and boundaries of **Business Management**.
+- [x] P01-M04-01-02 — List businesses
+- [x] P01-M04-01-03 — Create business
+- [x] P01-M04-01-04 — View business
+- [x] P01-M04-01-05 — Update business
+- [x] P01-M04-01-06 — Archive/delete according to policy
+- [x] P01-M04-01-07 — Industry selection
+- [x] P01-M04-01-08 — Contact information
+- [x] P01-M04-01-09 — Business hours
+- [x] P01-M04-01-10 — Timezone
+- [x] P01-M04-01-11 — Default language
+- [x] P01-M04-01-12 — Business status/settings
+- [x] P01-M04-01-13 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
 ### Submodule 04.02 — Backend, Persistence & API
 
-- [ ] P01-M04-02-01 — Implement/confirm data requirement: `businesses`.
-- [ ] P01-M04-02-02 — Implement/confirm data requirement: `business_settings`.
-- [ ] P01-M04-02-03 — Implement/confirm data requirement: `business_hours`.
-- [ ] P01-M04-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P01-M04-02-05 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [x] P01-M04-02-01 — Implement/confirm data requirement: `businesses`.
+- [x] P01-M04-02-02 — Implement/confirm data requirement: `business_settings`.
+- [x] P01-M04-02-03 — Implement/confirm data requirement: `business_hours`.
+- [x] P01-M04-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P01-M04-02-05 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
 
-- [ ] P01-M04-02-06 — Create/update the NestJS module boundaries, services and domain logic for **Business Management**.
-- [ ] P01-M04-02-07 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
-- [ ] P01-M04-02-08 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P01-M04-02-06 — Create/update the NestJS module boundaries, services and domain logic for **Business Management**.
+- [x] P01-M04-02-07 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [x] P01-M04-02-08 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P01-M04-02-09 — Implement/verify API contract: `POST /api/v1/businesses`.
-- [ ] P01-M04-02-10 — Implement/verify API contract: `GET /api/v1/businesses`.
-- [ ] P01-M04-02-11 — Implement/verify API contract: `GET /api/v1/businesses/:id`.
-- [ ] P01-M04-02-12 — Implement/verify API contract: `PATCH /api/v1/businesses/:id`.
-- [ ] P01-M04-02-13 — Implement/verify API contract: `DELETE or archive /api/v1/businesses/:id`.
-- [ ] P01-M04-02-14 — Add DTO/schema validation and consistent API error responses.
+- [x] P01-M04-02-09 — Implement/verify API contract: `POST /api/v1/businesses`.
+- [x] P01-M04-02-10 — Implement/verify API contract: `GET /api/v1/businesses`.
+- [x] P01-M04-02-11 — Implement/verify API contract: `GET /api/v1/businesses/:id`.
+- [x] P01-M04-02-12 — Implement/verify API contract: `PATCH /api/v1/businesses/:id`.
+- [x] P01-M04-02-13 — Implement/verify API contract: `DELETE or archive /api/v1/businesses/:id`.
+- [x] P01-M04-02-14 — Add DTO/schema validation and consistent API error responses.
 
 ### Submodule 04.03 — Frontend & Integrations
 
-- [ ] P01-M04-03-01 — Build/complete frontend requirement: Business list.
-- [ ] P01-M04-03-02 — Build/complete frontend requirement: Create-business flow.
-- [ ] P01-M04-03-03 — Build/complete frontend requirement: Business details.
-- [ ] P01-M04-03-04 — Build/complete frontend requirement: Business settings.
-- [ ] P01-M04-03-05 — Build/complete frontend requirement: Business-hours editor.
-- [ ] P01-M04-03-06 — Build/complete frontend requirement: Empty/loading/error states.
-- [ ] P01-M04-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P01-M04-03-08 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P01-M04-03-01 — Build/complete frontend requirement: Business list.
+- [x] P01-M04-03-02 — Build/complete frontend requirement: Create-business flow.
+- [x] P01-M04-03-03 — Build/complete frontend requirement: Business details.
+- [x] P01-M04-03-04 — Build/complete frontend requirement: Business settings.
+- [x] P01-M04-03-05 — Build/complete frontend requirement: Business-hours editor.
+- [x] P01-M04-03-06 — Build/complete frontend requirement: Empty/loading/error states.
+- [x] P01-M04-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P01-M04-03-08 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P01-M04-03-09 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+- [x] P01-M04-03-09 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
 
 ### Submodule 04.04 — Security & QA
 
-- [ ] P01-M04-04-01 — Organization-scoped business access.
-- [ ] P01-M04-04-02 — Role-based create/update/archive rights.
-- [ ] P01-M04-04-03 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P01-M04-04-01 — Organization-scoped business access.
+- [x] P01-M04-04-02 — Role-based create/update/archive rights.
+- [x] P01-M04-04-03 — Verify tenant isolation for all tenant-owned records and actions.
 
-- [ ] P01-M04-04-04 — Test: Business CRUD within tenant.
-- [ ] P01-M04-04-05 — Test: Invalid timezone/hours validation.
-- [ ] P01-M04-04-06 — Test: Cross-tenant business access blocked.
-- [ ] P01-M04-04-07 — Run regression checks for directly affected existing modules.
-- [ ] P01-M04-04-08 — Complete manual QA of the end-to-end user journey.
+- [x] P01-M04-04-04 — Test: Business CRUD within tenant.
+- [x] P01-M04-04-05 — Test: Invalid timezone/hours validation.
+- [x] P01-M04-04-06 — Test: Cross-tenant business access blocked.
+- [x] P01-M04-04-07 — Run regression checks for directly affected existing modules.
+- [x] P01-M04-04-08 — Complete manual QA of the end-to-end user journey.
 
 ### Submodule 04.05 — Documentation & Acceptance
 
-- [ ] P01-M04-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P01-M04-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P01-M04-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P01-M04-05-04 — Create/update the **Manual QA Handoff** guide for **Business Management** at `docs/module-4/M04_Business_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [x] P01-M04-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P01-M04-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P01-M04-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P01-M04-05-04 — Create/update the **Manual QA Handoff** guide for **Business Management** at `docs/module-4/M04_Business_Management_manual-qa-guide.md`
 
 
-- [ ] P01-M04-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
+- [x] P01-M04-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M04] Business Management = COMPLETE ✅` only after every required checkbox above is verified.
+**Module Gate:** `[M04] Business Management = COMPLETE ✅` — verified 27 August 2026.
 ---
 
 # PHASE 02 — AI Agent Core
@@ -563,19 +563,21 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 ### Submodule 05.01 — Scope & Technical Design
 
-- [ ] P02-M05-01-01 — Confirm the objective and boundaries of **AI Agent Management**.
-- [ ] P02-M05-01-02 — List agents
-- [ ] P02-M05-01-03 — Create agent
-- [ ] P02-M05-01-04 — View agent
-- [ ] P02-M05-01-05 — Update agent
-- [ ] P02-M05-01-06 — Archive/delete agent
-- [ ] P02-M05-01-07 — Set role/personality
-- [ ] P02-M05-01-08 — Set greeting
-- [ ] P02-M05-01-09 — Set language
-- [ ] P02-M05-01-10 — Set instructions/prompts
-- [ ] P02-M05-01-11 — Set escalation rules
-- [ ] P02-M05-01-12 — Activate/deactivate
-- [ ] P02-M05-01-13 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P02-M05-01-01 — Confirm the objective and boundaries of **AI Agent Management**.
+- [x] P02-M05-01-02 — List agents
+- [x] P02-M05-01-03 — Create agent
+- [x] P02-M05-01-04 — View agent
+- [x] P02-M05-01-05 — Update agent
+- [x] P02-M05-01-06 — Archive/delete agent
+- [x] P02-M05-01-07 — Set role/personality
+- [x] P02-M05-01-08 — Set greeting
+- [x] P02-M05-01-09 — Set language
+- [x] P02-M05-01-10 — Set instructions/prompts
+- [x] P02-M05-01-11 — Set escalation rules
+- [x] P02-M05-01-12 — Activate/deactivate
+- [x] P02-M05-01-13 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+**05.01 note:** Scope locked in `docs/module-5/scope-and-requirements.md` (27 August 2026).
 
 ### Submodule 05.02 — Backend, Persistence & API
 
@@ -634,7 +636,7 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [ ] P02-M05-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M05] AI Agent Management = COMPLETE ✅` only after every required checkbox above is verified.
+**Module Gate:** `[M05] AI Agent Management` — **In development** (05.01 ✅ 27 August 2026; gate open after 05.02–05.05).
 
 ## Module 06 — ElevenLabs Voice Agent Provider `M06`
 

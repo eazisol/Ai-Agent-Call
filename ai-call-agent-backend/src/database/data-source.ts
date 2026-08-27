@@ -3,6 +3,8 @@ import { EmailVerificationToken } from '../modules/auth/entities/email-verificat
 import { PasswordResetToken } from '../modules/auth/entities/password-reset-token.entity';
 import { RefreshToken } from '../modules/auth/entities/refresh-token.entity';
 import { User } from '../modules/auth/entities/user.entity';
+import { BusinessHour } from '../modules/businesses/entities/business-hour.entity';
+import { BusinessSettings } from '../modules/businesses/entities/business-settings.entity';
 import { Business } from '../modules/businesses/entities/business.entity';
 import { CallMessage } from '../modules/calls/entities/call-message.entity';
 import { CallProviderMapping } from '../modules/calls/entities/call-provider-mapping.entity';
@@ -19,6 +21,7 @@ import { AuthIdentity1756040000000 } from './migrations/1756040000000-AuthIdenti
 import { UsersEmailCaseInsensitive1756041000000 } from './migrations/1756041000000-UsersEmailCaseInsensitive';
 import { Organizations1756050000000 } from './migrations/1756050000000-Organizations';
 import { TeamRolesAndInvitations1756060000000 } from './migrations/1756060000000-TeamRolesAndInvitations';
+import { BusinessManagement1756070000000 } from './migrations/1756070000000-BusinessManagement';
 import { loadBackendEnv } from './load-backend-env';
 
 loadBackendEnv();
@@ -41,6 +44,8 @@ export default new DataSource({
     OrganizationMember,
     OrganizationInvitation,
     Business,
+    BusinessSettings,
+    BusinessHour,
     Call,
     CallMessage,
     CallRecording,
@@ -55,6 +60,7 @@ export default new DataSource({
     UsersEmailCaseInsensitive1756041000000,
     Organizations1756050000000,
     TeamRolesAndInvitations1756060000000,
+    BusinessManagement1756070000000,
   ],
   migrationsTableName: 'eazi_ai_call_migrations',
   synchronize: false,

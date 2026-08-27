@@ -7,10 +7,12 @@ provider boundaries, webhook path, and validation workflow safer and repeatable.
 Module 1 delivers end-to-end authentication (register, verify, session cookies,
 password recovery, and portal route protection). Module 2 delivers organizations
 as the tenant boundary (create/list/switch workspace, membership isolation).
+Module 3 delivers team roles and invitations. Module 4 delivers business
+management (CRUD, hours, settings, active-business context) under each org.
 
-> Team roles/invites (M03), businesses (M04), and the commercial ElevenLabs flow
-> begin in later modules. The call-history API remains deliberately unavailable in
-> production until later call modules replace the prototype guard.
+> AI agents (M05), telephony, and the commercial ElevenLabs flow begin in later
+> modules. The call-history API remains deliberately unavailable in production
+> until later call modules replace the prototype guard.
 
 ## Architecture
 

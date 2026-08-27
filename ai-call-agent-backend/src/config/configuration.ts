@@ -125,6 +125,7 @@ export default () => {
       accessCookieName: process.env.AUTH_ACCESS_COOKIE_NAME ?? 'eazi_access',
       refreshCookieName: process.env.AUTH_REFRESH_COOKIE_NAME ?? 'eazi_refresh',
       orgCookieName: process.env.AUTH_ORG_COOKIE_NAME ?? 'eazi_org',
+      bizCookieName: process.env.AUTH_BIZ_COOKIE_NAME ?? 'eazi_biz',
       cookieSecure: booleanValue(
         process.env.AUTH_COOKIE_SECURE,
         nodeEnv === 'production',

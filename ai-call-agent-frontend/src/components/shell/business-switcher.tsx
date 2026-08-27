@@ -1,6 +1,8 @@
 "use client";
 
-import { Check, ChevronsUpDown, LayoutGrid, Store } from "lucide-react";
+import * as React from "react";
+import { Check, ChevronsUpDown, Plus, Store } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import {
   DropdownMenu,
@@ -11,37 +13,68 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { useOptionalBusinessSession } from "@/components/businesses/business-session";
 import {
-  allBusinessesId,
-  businesses,
-  currentBusinessId,
-  type PortalBusiness,
-} from "@/mocks/portal-shell";
-import { toastComingSoon } from "./portal-nav";
+  formatIndustry,
+  type Business,
+} from "@/lib/businesses-api";
 
 /**
- * BusinessSwitcher — UI chrome only. Does not alter Calls API queries.
+ * BusinessSwitcher — active business context from Businesses API (`eazi_biz`).
+ * Does not alter Calls API queries in M04.
  */
-export interface BusinessSwitcherProps {
-  businesses?: PortalBusiness[];
-  currentId?: string;
-  onSwitch?: (businessId: string) => void;
-}
+export function BusinessSwitcher() {
+  const router = useRouter();
+  const session = useOptionalBusinessSession();
+  const [switching, setSwitching] = React.useState(false);
 
-export function BusinessSwitcher({
-  businesses: items = businesses,
-  currentId = currentBusinessId,
-  onSwitch,
-}: BusinessSwitcherProps) {
-  const current =
-    currentId === allBusinessesId
-      ? { id: allBusinessesId, name: "All businesses", industry: `${items.length} businesses` }
-      : items.find((b) => b.id === currentId);
+  const businesses = (session?.businesses ?? []).filter(
+    (row) => row.status === "active",
+  );
+  const active = session?.active ?? null;
 
-  const select = (id: string) => {
-    if (onSwitch) onSwitch(id);
-    else toastComingSoon("Business context switching arrives with Businesses.");
+  const onSwitch = async (businessId: string) => {
+    if (!session || businessId === active?.id || switching) {
+      return;
+    }
+    setSwitching(true);
+    await session.switchBusiness(businessId);
+    setSwitching(false);
   };
+
+  if (!session || session.status === "loading") {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton disabled className="opacity-70">
+            <Store className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <span className="truncate text-sm text-muted-foreground">
+              Loading businesses…
+            </span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
+  }
+
+  if (businesses.length === 0) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            onClick={() => router.push("/businesses/new")}
+            aria-label="Create business"
+            className="text-sidebar-foreground/80"
+          >
+            <Plus className="size-4 shrink-0" aria-hidden="true" />
+            <span className="flex-1 truncate">Create business</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
+  }
+
+  const label = active?.name ?? "Select business";
 
   return (
     <SidebarMenu>
@@ -49,42 +82,55 @@ export function BusinessSwitcher({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
-              tooltip={`Business: ${current?.name ?? "Select"}`}
-              aria-label={`Business context: ${current?.name}. Change business`}
+              tooltip={`Business: ${label}`}
+              aria-label={`Business context: ${label}. Change business`}
               className="text-sidebar-foreground/80"
+              disabled={switching}
             >
               <Store className="size-4 shrink-0" aria-hidden="true" />
-              <span className="flex-1 truncate">{current?.name}</span>
+              <span className="flex-1 truncate">{label}</span>
               <ChevronsUpDown
                 className="ml-auto size-3.5 shrink-0 text-muted-foreground"
                 aria-hidden="true"
               />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="start" sideOffset={8}>
+          <DropdownMenuContent className="w-64" align="start" sideOffset={8}>
             <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
-              Business context
+              Switch business
             </DropdownMenuLabel>
-            <DropdownMenuItem onSelect={() => select(allBusinessesId)} className="gap-2.5">
-              <LayoutGrid className="size-4 text-muted-foreground" aria-hidden="true" />
-              <span className="flex-1 truncate">All businesses</span>
-              {currentId === allBusinessesId ? (
-                <Check className="size-4 shrink-0 text-primary" aria-label="Current context" />
-              ) : null}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            {items.map((biz) => (
-              <DropdownMenuItem key={biz.id} onSelect={() => select(biz.id)} className="gap-2.5">
-                <Store className="size-4 text-muted-foreground" aria-hidden="true" />
+            {businesses.map((biz: Business) => (
+              <DropdownMenuItem
+                key={biz.id}
+                onSelect={() => void onSwitch(biz.id)}
+                className="gap-2.5"
+              >
+                <Store
+                  className="size-4 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <span className="grid flex-1 leading-tight">
                   <span className="truncate">{biz.name}</span>
-                  <span className="truncate text-xs text-muted-foreground">{biz.industry}</span>
+                  <span className="truncate text-xs text-muted-foreground">
+                    {formatIndustry(biz.industry, biz.industryLabel)}
+                  </span>
                 </span>
-                {biz.id === currentId ? (
-                  <Check className="size-4 shrink-0 text-primary" aria-label="Current business" />
+                {biz.id === active?.id ? (
+                  <Check
+                    className="size-4 shrink-0 text-primary"
+                    aria-label="Current business"
+                  />
                 ) : null}
               </DropdownMenuItem>
             ))}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => router.push("/businesses")}>
+              Manage businesses
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => router.push("/businesses/new")}>
+              <Plus className="size-4 text-muted-foreground" aria-hidden="true" />
+              Create business
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

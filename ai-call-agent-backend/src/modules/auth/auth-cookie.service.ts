@@ -48,11 +48,35 @@ export class AuthCookieService {
         this.config.get<number>('auth.refreshTtlSeconds') ?? 2_592_000,
       ),
     );
+    // Businesses are org-scoped; switching workspace invalidates prior business.
+    this.clearActiveBusiness(response);
   }
 
   clearActiveOrganization(response: Response): void {
     response.clearCookie(
       this.activeOrganizationCookieName(),
+      this.cookieOptions(0),
+    );
+    this.clearActiveBusiness(response);
+  }
+
+  activeBusinessCookieName(): string {
+    return this.config.get<string>('auth.bizCookieName') ?? 'eazi_biz';
+  }
+
+  setActiveBusiness(response: Response, businessId: string): void {
+    response.cookie(
+      this.activeBusinessCookieName(),
+      businessId,
+      this.cookieOptions(
+        this.config.get<number>('auth.refreshTtlSeconds') ?? 2_592_000,
+      ),
+    );
+  }
+
+  clearActiveBusiness(response: Response): void {
+    response.clearCookie(
+      this.activeBusinessCookieName(),
       this.cookieOptions(0),
     );
   }

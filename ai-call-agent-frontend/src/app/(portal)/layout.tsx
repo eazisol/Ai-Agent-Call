@@ -7,6 +7,7 @@ import {
   AuthSessionProvider,
   RequireAuth,
 } from "@/components/auth/auth-session";
+import { BusinessSessionProvider } from "@/components/businesses/business-session";
 import {
   OrganizationSessionProvider,
   RequireOrganization,
@@ -15,7 +16,7 @@ import { PortalShell } from "@/components/shell/portal-shell";
 
 /**
  * Customer Portal layout.
- * Auth → organization session → portal chrome (skipped for first-org onboarding).
+ * Auth → organization session → business session → portal chrome (skipped for first-org onboarding).
  */
 export default function PortalLayout({ children }: { children: ReactNode }) {
   return (
@@ -23,7 +24,9 @@ export default function PortalLayout({ children }: { children: ReactNode }) {
       <RequireAuth>
         <OrganizationSessionProvider>
           <RequireOrganization>
-            <PortalChrome>{children}</PortalChrome>
+            <BusinessSessionProvider>
+              <PortalChrome>{children}</PortalChrome>
+            </BusinessSessionProvider>
           </RequireOrganization>
         </OrganizationSessionProvider>
       </RequireAuth>

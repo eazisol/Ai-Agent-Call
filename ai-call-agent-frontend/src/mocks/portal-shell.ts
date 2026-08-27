@@ -15,6 +15,7 @@ import {
   PhoneForwarded,
   RefreshCw,
   Settings,
+  Store,
   UserPlus,
   Users,
   UsersRound,
@@ -26,11 +27,11 @@ import {
 /**
  * Temporary Customer Portal shell/chrome fixtures ONLY.
  *
- * Used for business switchers, nav labels, notifications,
- * search palette, usage indicator, and fallback user display.
+ * Used for nav labels, notifications, search palette, usage indicator,
+ * and fallback user display.
  *
- * Organization switcher is wired to real M02 APIs — do not feed it
- * from this mock file. Calls remain on NestJS APIs via `src/lib/api.ts`.
+ * Organization and Business switchers are wired to real M02/M04 APIs —
+ * do not feed them from this mock file.
  */
 
 export interface PortalOrganization {
@@ -53,16 +54,13 @@ export interface PortalBusiness {
   industry: string;
 }
 
-/** "all" = cross-business context (Dashboard, Analytics). */
+/** @deprecated M04 uses live businesses API — kept for search fixture typing only. */
 export const allBusinessesId = "all";
 
-export const businesses: PortalBusiness[] = [
-  { id: "biz_bella", name: "Bella Cucina", industry: "Restaurant" },
-  { id: "biz_harbor", name: "Harbor Dental", industry: "Dental clinic" },
-  { id: "biz_glow", name: "Glow Studio", industry: "Salon & spa" },
-  { id: "biz_summit", name: "Summit Legal", industry: "Law firm" },
-];
+/** @deprecated Prefer businessesApi.list() */
+export const businesses: PortalBusiness[] = [];
 
+/** @deprecated */
 export const currentBusinessId = allBusinessesId;
 
 export interface PortalUser {
@@ -122,6 +120,7 @@ export const portalNavGroups: ShellNavGroup[] = [
     label: "Main",
     items: [
       { id: "dashboard", label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+      { id: "businesses", label: "Businesses", href: "/businesses", icon: Store },
       { id: "agents", label: "AI Agents", href: "/agents", icon: Bot },
       { id: "calls", label: "Calls", href: "/calls", icon: Phone },
       { id: "customers", label: "Customers", href: "/customers", icon: Users },
@@ -129,7 +128,7 @@ export const portalNavGroups: ShellNavGroup[] = [
   },
   {
     id: "business",
-    label: "Business",
+    label: "Tools",
     items: [
       {
         id: "bookings",

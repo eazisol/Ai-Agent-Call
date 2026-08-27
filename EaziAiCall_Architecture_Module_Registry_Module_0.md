@@ -299,8 +299,8 @@ This is a deployment separation, not a requirement to create microservices. Each
 | M1 | Authentication | 1 | MVP | P0 | M0 | Completed |
 | M2 | Organizations / Tenants | 1 | MVP | P0 | M1 | Completed |
 | M3 | Users, Team & Roles | 1 | MVP | P0 | M1, M2 | Completed |
-| M4 | Business Management | 1 | MVP | P0 | M2, M3 | Not Started |
-| M5 | Agent Management | 2 | MVP | P0 | M4 | Not Started |
+| M4 | Business Management | 1 | MVP | P0 | M2, M3 | Completed |
+| M5 | Agent Management | 2 | MVP | P0 | M4 | In Progress — 05.01 locked 27 August 2026 |
 | M6 | ElevenLabs Voice-Agent Provider | 2 | MVP | P0 | M0, M5 | Not Started |
 | M7 | Knowledge Base | 3 | MVP | P0 | M4, M5, M6 | Not Started |
 | M8 | Voice Library | 3 | MVP | P0 | M5, M6 | Not Started |
