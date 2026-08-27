@@ -116,6 +116,17 @@ export const envValidationSchema = Joi.object({
   SMTP_PASSWORD: Joi.string().allow('', null),
   SMTP_FROM: Joi.string().required(),
   SMTP_TIMEOUT_MS: Joi.number().integer().min(1000).max(60_000).default(10_000),
+
+  ELEVENLABS_API_KEY: Joi.string().allow('', null).optional(),
+  ELEVENLABS_API_BASE_URL: Joi.string().uri().optional(),
+  ELEVENLABS_TIMEOUT_MS: Joi.number()
+    .integer()
+    .min(1000)
+    .max(120_000)
+    .default(20_000),
+  ELEVENLABS_DEFAULT_VOICE_FEMALE: Joi.string().allow('', null).optional(),
+  ELEVENLABS_DEFAULT_VOICE_MALE: Joi.string().allow('', null).optional(),
+  ELEVENLABS_DEFAULT_VOICE_NEUTRAL: Joi.string().allow('', null).optional(),
 })
   .custom((environment: Record<string, unknown>, helpers) => {
     const production = environment.NODE_ENV === 'production';

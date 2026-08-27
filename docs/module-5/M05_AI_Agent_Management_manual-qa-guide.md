@@ -158,10 +158,9 @@ See [api-contracts.md](./api-contracts.md). **No provider secrets.** `providerMa
 
 ## 13. Known limitations
 
-- No live voice provider sync (M06)  
+- Live voice provider sync is delivered in **M06** (use that QA guide for sync flows)  
 - Voice selection/preview/cloning not available (M08/M09)  
 - Escalation does not fire on calls yet  
-- Provider capability warnings not shown until M06  
 
 ## 14. Evidence expectations
 

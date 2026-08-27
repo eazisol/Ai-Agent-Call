@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { ApplicationError } from '../../common/errors/application-error';
@@ -10,6 +10,11 @@ import { Business } from '../businesses/entities/business.entity';
 import type { OrganizationMemberRole } from '../organizations/entities/organization-member.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { assertAgentCan } from './agent-permissions';
+import {
+  AgentProviderSyncService,
+  mapProviderMappings,
+  type ProviderMappingView,
+} from './agent-provider-sync.service';
 import type { CreateAgentDto } from './dto/create-agent.dto';
 import type { UpdateAgentDto } from './dto/update-agent.dto';
 import { AgentConfig } from './entities/agent-config.entity';
@@ -46,7 +51,7 @@ export interface AgentView {
   escalationContactPhone: string | null;
   escalationContactEmail: string | null;
   escalationMessage: string | null;
-  providerMappings: never[];
+  providerMappings: ProviderMappingView[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -62,6 +67,8 @@ export class AgentsService {
     private readonly agents: Repository<Agent>,
     @InjectRepository(Business)
     private readonly businesses: Repository<Business>,
+    @Inject(forwardRef(() => AgentProviderSyncService))
+    private readonly providerSync: AgentProviderSyncService,
   ) {}
 
   async create(
@@ -156,6 +163,7 @@ export class AgentsService {
       .createQueryBuilder('agent')
       .leftJoinAndSelect('agent.config', 'config')
       .leftJoinAndSelect('agent.prompts', 'prompts')
+      .leftJoinAndSelect('agent.providerMappings', 'providerMappings')
       .where('agent.businessId = :businessId', { businessId })
       .orderBy('agent.createdAt', 'ASC');
 
@@ -414,9 +422,17 @@ export class AgentsService {
     businessId: string,
     agentId: string,
   ): Promise<AgentView> {
-    return this.updateForUser(userId, organizationId, businessId, agentId, {
-      status: 'archived',
-    });
+    const view = await this.updateForUser(
+      userId,
+      organizationId,
+      businessId,
+      agentId,
+      {
+        status: 'archived',
+      },
+    );
+    await this.providerSync.bestEffortDeactivateRemote(agentId);
+    return view;
   }
 
   async deleteForUser(
@@ -444,6 +460,7 @@ export class AgentsService {
       );
     }
 
+    await this.providerSync.bestEffortDeleteRemote(agent.id);
     await this.agents.delete({ id: agent.id });
     this.logger.log(
       `Deleted agent ${agent.id} for business ${businessId} by user ${userId}`,
@@ -487,7 +504,7 @@ export class AgentsService {
   ): Promise<Agent> {
     const agent = await this.agents.findOne({
       where: { id: agentId, businessId },
-      relations: { config: true, prompts: true },
+      relations: { config: true, prompts: true, providerMappings: true },
     });
     if (!agent) {
       throw new ApplicationError('AGENT_NOT_FOUND', 'Agent not found.', 404);
@@ -909,7 +926,7 @@ export class AgentsService {
       escalationContactPhone: config.escalationContactPhone,
       escalationContactEmail: config.escalationContactEmail,
       escalationMessage: config.escalationMessage,
-      providerMappings: [],
+      providerMappings: mapProviderMappings(agent.providerMappings),
       createdAt: agent.createdAt,
       updatedAt: agent.updatedAt,
     };

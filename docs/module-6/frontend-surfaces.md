@@ -1,26 +1,32 @@
-# Module 06 — Frontend surfaces (design)
+# Module 06 — Frontend surfaces
 
 | Field | Value |
 | --- | --- |
 | Module | M06 — ElevenLabs Voice Agent Provider |
-| Status | Designed — 27 August 2026 |
-| Implementation | 06.03 |
+| Status | Implemented — 06.03 27 August 2026 |
 
 ## Surfaces
 
 | Surface | Purpose |
 | --- | --- |
-| Agent overview (`/agents/[id]`) | Provider sync status badge (Not provisioned / Pending / Synced / Error) |
-| Sync / Retry button | Visible to owner/admin/manager; calls `POST …/sync` |
-| Error panel | Shows sanitized `lastError` only; no raw JSON dumps |
-| Compatibility warnings | Soft callouts after sync when languages/voice limited by provider |
+| Agent list (`/agents`) | Provider sync status column from `providerMappings` |
+| Agent overview (`/agents/[id]`) | `AgentProviderSyncPanel` — status badge, last synced, provider id, remote check |
+| Sync / Retry button | Owner/admin/manager; `POST /agents/:id/sync` (45s timeout) |
+| Error panel | Sanitized `lastError` / API message only |
+| Compatibility warnings | Soft callouts from sync response `warnings[]` |
 
-## UX rules
+## UX rules (implemented)
 
-- Do not block editing local agent config when provider is in `error`.  
+- Local agent editing is not blocked by provider `error`.  
 - Loading / disabled states during sync.  
 - Empty: “Not synced yet” + Sync CTA.  
-- Never display API keys or ElevenLabs dashboard secrets.
+- Archived agents cannot sync until unarchived.  
+- Viewers see status but not Sync CTA.  
+- Never display API keys or ElevenLabs secrets (none in frontend env).
+
+## API client
+
+`agentsApi.sync` / `agentsApi.providerStatus` in `src/lib/agents-api.ts` — cookie session only; no provider credentials in browser.
 
 ## Out of UI scope for M06
 

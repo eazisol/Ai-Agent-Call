@@ -22,12 +22,14 @@ import { AuthGuard } from '../auth/auth.guard';
 import { AgentsService } from './agents.service';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
+import { AgentProviderSyncService } from './agent-provider-sync.service';
 
 @Controller('agents')
 @UseGuards(AuthGuard)
 export class AgentsController {
   constructor(
     private readonly agents: AgentsService,
+    private readonly providerSync: AgentProviderSyncService,
     private readonly cookies: AuthCookieService,
   ) {}
 
@@ -117,6 +119,40 @@ export class AgentsController {
       id,
     );
     return { agent };
+  }
+
+  @Post(':id/sync')
+  @HttpCode(200)
+  async sync(
+    @Req() request: AuthenticatedRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    const userId = this.requireUserId(request);
+    const organizationId = this.requireActiveOrganization(request);
+    const businessId = this.requireActiveBusiness(request);
+    return this.providerSync.syncForUser(
+      userId,
+      organizationId,
+      businessId,
+      id,
+    );
+  }
+
+  @Get(':id/provider-status')
+  async providerStatus(
+    @Req() request: AuthenticatedRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    const userId = this.requireUserId(request);
+    const organizationId = this.requireActiveOrganization(request);
+    const businessId = this.requireActiveBusiness(request);
+    const status = await this.providerSync.getStatusForUser(
+      userId,
+      organizationId,
+      businessId,
+      id,
+    );
+    return { status };
   }
 
   @Get(':id')

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
 import { AgentSubnav } from "@/components/agents/agent-subnav";
+import { AgentProviderSyncPanel } from "@/components/agents/agent-provider-sync-panel";
 import { useOrganizationSession } from "@/components/organizations/organization-session";
 import { useBusinessSession } from "@/components/businesses/business-session";
 import { ErrorState } from "@/components/patterns/error-state";
@@ -230,6 +231,12 @@ export default function AgentDetailPage() {
           <Detail label="Greeting" value={agent.greeting} />
         </div>
       </dl>
+
+      <AgentProviderSyncPanel
+        agent={agent}
+        role={org?.role}
+        onAgentUpdated={setAgent}
+      />
 
       <div className="flex flex-wrap gap-2">
         <Button asChild variant="outline">

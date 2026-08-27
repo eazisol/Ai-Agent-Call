@@ -16,7 +16,10 @@ import {
   agentStatusBadge,
   agentsApi,
   canCreateAgent,
+  elevenLabsMapping,
   formatAgentStatus,
+  formatProviderSyncStatus,
+  providerSyncStatusBadge,
   type Agent,
 } from "@/lib/agents-api";
 
@@ -134,11 +137,15 @@ export default function AgentsPage() {
               <th className="px-4 py-3 font-medium">Role</th>
               <th className="px-4 py-3 font-medium">Language</th>
               <th className="px-4 py-3 font-medium">Status</th>
+              <th className="px-4 py-3 font-medium">Provider</th>
               <th className="px-4 py-3 font-medium"> </th>
             </tr>
           </thead>
           <tbody>
-            {agents.map((agent) => (
+            {agents.map((agent) => {
+              const mapping = elevenLabsMapping(agent);
+              const syncStatus = mapping?.syncStatus ?? "not_provisioned";
+              return (
               <tr key={agent.id} className="border-b last:border-0">
                 <td className="px-4 py-3">
                   <Link
@@ -161,13 +168,19 @@ export default function AgentsPage() {
                     {formatAgentStatus(agent.status)}
                   </StatusBadge>
                 </td>
+                <td className="px-4 py-3">
+                  <StatusBadge status={providerSyncStatusBadge(syncStatus)}>
+                    {formatProviderSyncStatus(syncStatus)}
+                  </StatusBadge>
+                </td>
                 <td className="px-4 py-3 text-right">
                   <Button asChild variant="ghost" size="sm">
                     <Link href={`/agents/${agent.id}`}>Open</Link>
                   </Button>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

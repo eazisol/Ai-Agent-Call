@@ -73,6 +73,17 @@ export default () => {
         process.env.OPENAI_DEFAULT_INSTRUCTIONS ??
         'You are a helpful AI receptionist. Speak clearly and professionally.',
     },
+    elevenlabs: {
+      apiKey: process.env.ELEVENLABS_API_KEY ?? '',
+      baseUrl: process.env.ELEVENLABS_API_BASE_URL ?? 'https://api.elevenlabs.io',
+      timeoutMs: numberValue(process.env.ELEVENLABS_TIMEOUT_MS, 20_000),
+      voiceFemale:
+        process.env.ELEVENLABS_DEFAULT_VOICE_FEMALE ?? 'EXAVITQu4vr4xnSDxMaL',
+      voiceMale:
+        process.env.ELEVENLABS_DEFAULT_VOICE_MALE ?? 'pNInz6obpgDQGcFmaJgB',
+      voiceNeutral:
+        process.env.ELEVENLABS_DEFAULT_VOICE_NEUTRAL ?? 'JBFqnCBsd6RMkjVDRZzb',
+    },
     twilio: {
       accountSid: process.env.TWILIO_ACCOUNT_SID,
       authToken: process.env.TWILIO_AUTH_TOKEN,

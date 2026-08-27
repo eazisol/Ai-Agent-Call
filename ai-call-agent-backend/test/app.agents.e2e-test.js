@@ -8,6 +8,9 @@ const {
 } = require('../dist/modules/agents/agents.controller');
 const { AgentsService } = require('../dist/modules/agents/agents.service');
 const {
+  AgentProviderSyncService,
+} = require('../dist/modules/agents/agent-provider-sync.service');
+const {
   AuthCookieService,
 } = require('../dist/modules/auth/auth-cookie.service');
 const { AuthGuard } = require('../dist/modules/auth/auth.guard');
@@ -80,6 +83,35 @@ async function createApp(serviceOverrides = {}, cookieOverrides = {}) {
           }),
           deleteForUser: async () => ({ deleted: true }),
           ...serviceOverrides,
+        },
+      },
+      {
+        provide: AgentProviderSyncService,
+        useValue: {
+          syncForUser: async () => ({
+            agent: sampleAgent,
+            sync: {
+              provider: 'elevenlabs',
+              syncStatus: 'synced',
+              externalAgentId: 'el-agent-1',
+              lastSyncedAt: new Date().toISOString(),
+              lastError: null,
+              warnings: [],
+            },
+          }),
+          getStatusForUser: async () => ({
+            provider: 'elevenlabs',
+            syncStatus: 'synced',
+            externalAgentId: 'el-agent-1',
+            lastSyncedAt: new Date().toISOString(),
+            lastError: null,
+            remote: {
+              checked: true,
+              exists: true,
+              name: 'Front Desk',
+              rawStatus: 'available',
+            },
+          }),
         },
       },
       AuthCookieService,
@@ -200,6 +232,13 @@ test('POST /agents without eazi_biz returns ACTIVE_BUSINESS_REQUIRED', async () 
         provide: AgentsService,
         useValue: { create: async () => sampleAgent },
       },
+      {
+        provide: AgentProviderSyncService,
+        useValue: {
+          syncForUser: async () => ({}),
+          getStatusForUser: async () => ({}),
+        },
+      },
       AuthCookieService,
       {
         provide: ConfigService,
@@ -277,5 +316,26 @@ test('FORBIDDEN from service surfaces as 403', async () => {
     .send(createBody)
     .expect(403);
   assert.equal(response.body.error.code, 'FORBIDDEN');
+  await app.close();
+});
+
+test('POST /agents/:id/sync returns sync summary', async () => {
+  const app = await createApp();
+  const response = await request(app.getHttpServer())
+    .post(`/api/v1/agents/${sampleAgent.id}/sync`)
+    .expect(200);
+  assert.equal(response.body.sync.provider, 'elevenlabs');
+  assert.equal(response.body.sync.syncStatus, 'synced');
+  assert.equal(response.body.sync.externalAgentId, 'el-agent-1');
+  await app.close();
+});
+
+test('GET /agents/:id/provider-status returns status', async () => {
+  const app = await createApp();
+  const response = await request(app.getHttpServer())
+    .get(`/api/v1/agents/${sampleAgent.id}/provider-status`)
+    .expect(200);
+  assert.equal(response.body.status.provider, 'elevenlabs');
+  assert.equal(response.body.status.remote.exists, true);
   await app.close();
 });

@@ -1,9 +1,9 @@
-# Module 06 — API contracts (design)
+# Module 06 — API contracts
 
 | Field | Value |
 | --- | --- |
 | Module | M06 — ElevenLabs Voice Agent Provider |
-| Status | Designed — 27 August 2026 |
+| Status | Implemented — 06.02 27 August 2026 |
 | Base | `/api/v1` |
 | Auth | Session + `AuthGuard` |
 | Context | `eazi_org` + `eazi_biz` |
@@ -12,13 +12,16 @@
 
 | Method | Path | RBAC | Notes |
 | --- | --- | --- | --- |
-| `POST` | `/agents/:id/sync` | update_agent | Provision or re-sync; returns agent + provider mapping summary + optional warnings |
-| `GET` | `/agents/:id/provider-status` | view_agent | Local mapping + optional lightweight remote check |
+| `POST` | `/agents/:id/sync` | update_agent | Provision or re-sync; returns `{ agent, sync }` |
+| `GET` | `/agents/:id/provider-status` | view_agent | Local mapping + optional remote check; `{ status }` |
 
-### Response shapes (intent)
+Agent list/get responses include `providerMappings[]` from `agent_provider_mappings`.
+
+### Sync success
 
 ```json
 {
+  "agent": { "...": "AgentView" },
   "sync": {
     "provider": "elevenlabs",
     "syncStatus": "synced",
@@ -30,18 +33,47 @@
 }
 ```
 
-`externalAgentId` may be omitted for viewers if product prefers (default: **show id is OK**; never show API keys).
+### Provider status
+
+```json
+{
+  "status": {
+    "provider": "elevenlabs",
+    "syncStatus": "synced",
+    "externalAgentId": "…",
+    "lastSyncedAt": "…",
+    "lastError": null,
+    "remote": {
+      "checked": true,
+      "exists": true,
+      "name": "…",
+      "rawStatus": "available"
+    }
+  }
+}
+```
 
 ### Error codes (additive)
 
-`PROVIDER_SYNC_FAILED`, `PROVIDER_UNAVAILABLE`, `PROVIDER_AUTH_FAILED`, `PROVIDER_NOT_CONFIGURED`, plus existing `AGENT_NOT_FOUND`, `FORBIDDEN`, `ACTIVE_BUSINESS_REQUIRED`.
+`PROVIDER_SYNC_FAILED`, `PROVIDER_UNAVAILABLE`, `PROVIDER_AUTH_FAILED`, `PROVIDER_NOT_CONFIGURED`, `PROVIDER_SYNC_IN_PROGRESS`, plus existing `AGENT_NOT_FOUND`, `AGENT_ARCHIVED`, `FORBIDDEN`, `ACTIVE_BUSINESS_REQUIRED`.
 
 ## Internal
 
-- Application service methods used by HTTP layer and future job runners.  
-- Port methods: create / update / deactivate / delete / getStatus.
+- `AgentProviderSyncService.syncForUser` / `getStatusForUser`
+- `bestEffortDeactivateRemote` / `bestEffortDeleteRemote` (archive / hard delete hooks)
+- Port: create / update / deactivate / delete / getStatus
+
+## Configuration (server-side only)
+
+| Env | Notes |
+| --- | --- |
+| `ELEVENLABS_API_KEY` | Optional in boot; required at sync → `PROVIDER_NOT_CONFIGURED` |
+| `ELEVENLABS_API_BASE_URL` | Default `https://api.elevenlabs.io` |
+| `ELEVENLABS_TIMEOUT_MS` | Default `20000` |
+| `ELEVENLABS_DEFAULT_VOICE_*` | Female / male / neutral heuristic voice ids |
 
 ## Non-goals
 
-- Public webhooks from ElevenLabs in M06 (defer unless required for status).  
-- Browser → ElevenLabs direct calls.
+- Public webhooks from ElevenLabs in M06.  
+- Browser → ElevenLabs direct calls.  
+- Auto-sync on every agent PATCH.

@@ -48,6 +48,9 @@ function createHarness({
         clone.prompts =
           promptRows.find((row) => row.agentId === found.id) ?? null;
       }
+      if (relations?.providerMappings) {
+        clone.providerMappings = [];
+      }
       return clone;
     },
     delete: async (criteria) => {
@@ -91,6 +94,7 @@ function createHarness({
               ...row,
               config: configRows.find((c) => c.agentId === row.id) ?? null,
               prompts: promptRows.find((p) => p.agentId === row.id) ?? null,
+              providerMappings: [],
             }));
         },
       };
@@ -160,14 +164,20 @@ function createHarness({
     },
   };
 
+  const providerSync = {
+    bestEffortDeactivateRemote: async () => undefined,
+    bestEffortDeleteRemote: async () => undefined,
+  };
+
   const service = new AgentsService(
     dataSource,
     organizations,
     agents,
     businesses,
+    providerSync,
   );
 
-  return { service, agentRows, configRows, promptRows };
+  return { service, agentRows, configRows, promptRows, providerSync };
 }
 
 const orgId = '11111111-1111-4111-8111-111111111111';

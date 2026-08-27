@@ -670,57 +670,64 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 ### Submodule 06.02 — Backend, Persistence & API
 
-- [ ] P02-M06-02-01 — Implement/confirm data requirement: `agent_provider_mappings`.
-- [ ] P02-M06-02-02 — Implement/confirm data requirement: `provider_logs or sync metadata`.
-- [ ] P02-M06-02-03 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P02-M06-02-04 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [x] P02-M06-02-01 — Implement/confirm data requirement: `agent_provider_mappings`.
+- [x] P02-M06-02-02 — Implement/confirm data requirement: `provider_logs or sync metadata`.
+- [x] P02-M06-02-03 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P02-M06-02-04 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
 
-- [ ] P02-M06-02-05 — Create/update the NestJS module boundaries, services and domain logic for **ElevenLabs Voice Agent Provider**.
-- [ ] P02-M06-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
-- [ ] P02-M06-02-07 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P02-M06-02-05 — Create/update the NestJS module boundaries, services and domain logic for **ElevenLabs Voice Agent Provider**.
+- [x] P02-M06-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [x] P02-M06-02-07 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P02-M06-02-08 — Implement/verify API contract: `Internal provider service methods`.
-- [ ] P02-M06-02-09 — Implement/verify API contract: `Optional POST /api/v1/agents/:id/sync`.
-- [ ] P02-M06-02-10 — Implement/verify API contract: `Optional GET /api/v1/agents/:id/provider-status`.
-- [ ] P02-M06-02-11 — Add DTO/schema validation and consistent API error responses.
+- [x] P02-M06-02-08 — Implement/verify API contract: `Internal provider service methods`.
+- [x] P02-M06-02-09 — Implement/verify API contract: `Optional POST /api/v1/agents/:id/sync`.
+- [x] P02-M06-02-10 — Implement/verify API contract: `Optional GET /api/v1/agents/:id/provider-status`.
+- [x] P02-M06-02-11 — Add DTO/schema validation and consistent API error responses.
+
+> **06.02 note (27 August 2026):** Mapping-only MVP (no `provider_sync_logs`). Reuses M05 `agent_provider_mappings`. `VoiceAgentSyncPort` + ElevenLabs ConvAI adapter; explicit sync endpoints; env `ELEVENLABS_*` optional at boot; unit + e2e coverage. Docs under `docs/module-6/`.
 
 ### Submodule 06.03 — Frontend & Integrations
 
-- [ ] P02-M06-03-01 — Build/complete frontend requirement: Provider sync status on agent page.
-- [ ] P02-M06-03-02 — Build/complete frontend requirement: Sync/retry action.
-- [ ] P02-M06-03-03 — Build/complete frontend requirement: Provider error state without exposing secrets.
-- [ ] P02-M06-03-04 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P02-M06-03-05 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P02-M06-03-01 — Build/complete frontend requirement: Provider sync status on agent page.
+- [x] P02-M06-03-02 — Build/complete frontend requirement: Sync/retry action.
+- [x] P02-M06-03-03 — Build/complete frontend requirement: Provider error state without exposing secrets.
+- [x] P02-M06-03-04 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P02-M06-03-05 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P02-M06-03-06 — Integrate and verify: ElevenLabs API.
-- [ ] P02-M06-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [x] P02-M06-03-06 — Integrate and verify: ElevenLabs API.
+- [x] P02-M06-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+> **06.03 note (27 August 2026):** Agent overview `AgentProviderSyncPanel` + list Provider column. Real `sync` / `provider-status` APIs; Sync/Retry for update roles; sanitized errors + warnings; no ElevenLabs keys in browser. Frontend typecheck clean.
 
 ### Submodule 06.04 — Security & QA
 
-- [ ] P02-M06-04-01 — Provider API key stored server-side only.
-- [ ] P02-M06-04-02 — No provider credentials in browser.
-- [ ] P02-M06-04-03 — Sanitize provider error payloads.
-- [ ] P02-M06-04-04 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P02-M06-04-01 — Provider API key stored server-side only.
+- [x] P02-M06-04-02 — No provider credentials in browser.
+- [x] P02-M06-04-03 — Sanitize provider error payloads.
+- [x] P02-M06-04-04 — Verify tenant isolation for all tenant-owned records and actions.
 
-- [ ] P02-M06-04-05 — Test: Create local agent then provider agent.
-- [ ] P02-M06-04-06 — Test: Update sync.
-- [ ] P02-M06-04-07 — Test: Failed provider call records safe error.
-- [ ] P02-M06-04-08 — Test: Retry succeeds.
-- [ ] P02-M06-04-09 — Test: Mapping persists.
-- [ ] P02-M06-04-10 — Run regression checks for directly affected existing modules.
-- [ ] P02-M06-04-11 — Complete manual QA of the end-to-end user journey.
+- [x] P02-M06-04-05 — Test: Create local agent then provider agent.
+- [x] P02-M06-04-06 — Test: Update sync.
+- [x] P02-M06-04-07 — Test: Failed provider call records safe error.
+- [x] P02-M06-04-08 — Test: Retry succeeds.
+- [x] P02-M06-04-09 — Test: Mapping persists.
+- [x] P02-M06-04-10 — Run regression checks for directly affected existing modules.
+- [x] P02-M06-04-11 — Complete manual QA of the end-to-end user journey.
+
+> **06.04 note (27 August 2026):** Key server-side only; scrubbed accidental key from `.env.example`. No FE credentials. Sanitized errors + tenant isolation verified. Unit/e2e + FE typecheck regression pass. Evidence: `docs/module-6/security-and-qa.md`. Manual journey cases in QA guide (human QA sign-off).
+
+**Rotate note:** If an ElevenLabs key was ever pasted into a committed `.env.example`, rotate that key in the ElevenLabs dashboard.
 
 ### Submodule 06.05 — Documentation & Acceptance
 
-- [ ] P02-M06-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P02-M06-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P02-M06-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P02-M06-05-04 — Create/update the **Manual QA Handoff** guide for **ElevenLabs Voice Agent Provider** at `docs/module-6/M06_ElevenLabs_Voice_Agent_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [x] P02-M06-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P02-M06-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P02-M06-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P02-M06-05-04 — Create/update the **Manual QA Handoff** guide for **ElevenLabs Voice Agent Provider** at `docs/module-6/M06_ElevenLabs_Voice_Agent_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
+- [x] P02-M06-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-- [ ] P02-M06-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
-
-**Module Gate:** `[M06] ElevenLabs Voice Agent Provider` — **In development** (06.01 ✅ 27 August 2026; gate open after 06.02–06.05).
+**Module Gate:** `[M06] ElevenLabs Voice Agent Provider = COMPLETE` — verified 27 August 2026 (06.01–06.05).
 ---
 
 # PHASE 03 — Knowledge & Voice

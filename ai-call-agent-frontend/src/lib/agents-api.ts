@@ -1,9 +1,46 @@
-﻿import { buildApiUrl } from "./api-url.mjs";
+import { buildApiUrl } from "./api-url.mjs";
 import type { OrganizationRole } from "./organizations-api";
 
 export type AgentStatus = "active" | "inactive" | "archived";
 export type AgentLanguageMode = "single" | "multilingual";
 export type AgentVoicePreference = "female" | "male" | "neutral";
+
+export type AgentProviderSyncStatus =
+  | "not_provisioned"
+  | "pending"
+  | "synced"
+  | "error";
+
+export type ProviderMapping = {
+  provider: string;
+  syncStatus: AgentProviderSyncStatus;
+  externalAgentId: string | null;
+  lastSyncedAt: string | null;
+  lastError: string | null;
+};
+
+export type AgentSyncResult = {
+  provider: string;
+  syncStatus: AgentProviderSyncStatus;
+  externalAgentId: string | null;
+  lastSyncedAt: string | null;
+  lastError: string | null;
+  warnings: string[];
+};
+
+export type AgentProviderStatus = {
+  provider: string;
+  syncStatus: AgentProviderSyncStatus;
+  externalAgentId: string | null;
+  lastSyncedAt: string | null;
+  lastError: string | null;
+  remote: {
+    checked: boolean;
+    exists: boolean | null;
+    name: string | null;
+    rawStatus: string | null;
+  };
+};
 
 export type Agent = {
   id: string;
@@ -28,7 +65,7 @@ export type Agent = {
   escalationContactPhone: string | null;
   escalationContactEmail: string | null;
   escalationMessage: string | null;
-  providerMappings: unknown[];
+  providerMappings: ProviderMapping[];
   createdAt: string;
   updatedAt: string;
 };
@@ -98,7 +135,7 @@ function errorMessage(
 
 async function request<T>(
   path: string,
-  init?: RequestInit,
+  init?: RequestInit & { timeoutMs?: number },
 ): Promise<ApiResult<T>> {
   try {
     const headers = new Headers(init?.headers);
@@ -107,12 +144,14 @@ async function request<T>(
       headers.set("Content-Type", "application/json");
     }
 
+    const { timeoutMs, ...fetchInit } = init ?? {};
     const response = await fetch(apiUrl(path), {
-      ...init,
+      ...fetchInit,
       credentials: "include",
       cache: "no-store",
       headers,
-      signal: init?.signal ?? AbortSignal.timeout(15_000),
+      signal:
+        fetchInit.signal ?? AbortSignal.timeout(timeoutMs ?? 15_000),
     });
 
     const body = await parseJson(response);
@@ -159,6 +198,11 @@ export function canDeleteAgent(role: OrganizationRole | undefined): boolean {
   return canArchiveAgent(role);
 }
 
+/** Sync to voice provider — same roles as update_agent. */
+export function canSyncAgent(role: OrganizationRole | undefined): boolean {
+  return canUpdateAgent(role);
+}
+
 export function formatAgentStatus(status: AgentStatus): string {
   if (status === "active") return "Active";
   if (status === "inactive") return "Inactive";
@@ -170,6 +214,35 @@ export function agentStatusBadge(
 ): "success" | "warning" | "neutral" {
   if (status === "active") return "success";
   if (status === "inactive") return "warning";
+  return "neutral";
+}
+
+export function elevenLabsMapping(
+  agent: Agent | null | undefined,
+): ProviderMapping | null {
+  if (!agent?.providerMappings?.length) {
+    return null;
+  }
+  return (
+    agent.providerMappings.find((m) => m.provider === "elevenlabs") ?? null
+  );
+}
+
+export function formatProviderSyncStatus(
+  status: AgentProviderSyncStatus | undefined | null,
+): string {
+  if (status === "synced") return "Synced";
+  if (status === "pending") return "Syncing…";
+  if (status === "error") return "Sync error";
+  return "Not synced yet";
+}
+
+export function providerSyncStatusBadge(
+  status: AgentProviderSyncStatus | undefined | null,
+): "success" | "warning" | "error" | "info" | "neutral" {
+  if (status === "synced") return "success";
+  if (status === "pending") return "info";
+  if (status === "error") return "error";
   return "neutral";
 }
 
@@ -213,4 +286,16 @@ export const agentsApi = {
     request<{ deleted: true }>(`agents/${encodeURIComponent(id)}`, {
       method: "DELETE",
     }),
+
+  sync: (id: string) =>
+    request<{ agent: Agent; sync: AgentSyncResult }>(
+      `agents/${encodeURIComponent(id)}/sync`,
+      { method: "POST", timeoutMs: 45_000 },
+    ),
+
+  providerStatus: (id: string) =>
+    request<{ status: AgentProviderStatus }>(
+      `agents/${encodeURIComponent(id)}/provider-status`,
+      { timeoutMs: 20_000 },
+    ),
 };
