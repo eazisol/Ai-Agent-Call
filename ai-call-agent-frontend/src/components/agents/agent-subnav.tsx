@@ -10,7 +10,7 @@ export function AgentSubnav({
   active,
 }: {
   agentId: string;
-  active: "overview" | "behavior" | "escalation" | "knowledge";
+  active: "overview" | "behavior" | "escalation" | "knowledge" | "voice";
 }) {
   const items = [
     { id: "overview" as const, href: `/agents/${agentId}`, label: "Overview" },
@@ -28,6 +28,11 @@ export function AgentSubnav({
       id: "knowledge" as const,
       href: `/agents/${agentId}/knowledge`,
       label: "Knowledge",
+    },
+    {
+      id: "voice" as const,
+      href: `/agents/${agentId}/voice`,
+      label: "Voice",
     },
   ];
 

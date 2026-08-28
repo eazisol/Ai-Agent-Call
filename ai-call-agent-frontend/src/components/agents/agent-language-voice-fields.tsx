@@ -348,12 +348,16 @@ export function AgentLanguageVoiceFields({
           </label>
         ))}
         <p className="text-xs text-muted-foreground">
-          Presentation preference for the agent’s voice. Specific voice selection
-          and previews will come from the Voice Library later.
+          Presentation preference when no library voice is assigned. Pick a
+          specific voice on the agent Voice tab.
         </p>
         <p className="rounded-md border border-dashed border-input px-3 py-2 text-xs text-muted-foreground">
-          Custom cloned voices will be available from Voice Library / Voice
-          Cloning.
+          Browse the{" "}
+          <a href="/voices" className="font-medium text-foreground underline">
+            Business Voice Library
+          </a>{" "}
+          to preview and assign voices. Custom cloned voices arrive in Voice
+          Cloning (M09).
         </p>
       </fieldset>
     </div>

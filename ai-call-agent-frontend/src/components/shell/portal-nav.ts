@@ -22,6 +22,7 @@ export function isEnabledPortalRoute(href: string): boolean {
     href === "/agents/new" ||
     href === "/knowledge" ||
     href === "/knowledge/new" ||
+    href === "/voices" ||
     href === "/settings" ||
     href === "/settings/organization" ||
     href === "/onboarding/organization"
@@ -32,7 +33,8 @@ export function isEnabledPortalRoute(href: string): boolean {
     href.startsWith("/calls/") ||
     href.startsWith("/businesses/") ||
     href.startsWith("/agents/") ||
-    href.startsWith("/knowledge/")
+    href.startsWith("/knowledge/") ||
+    href.startsWith("/voices")
   ) {
     return true;
   }

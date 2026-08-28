@@ -30,6 +30,7 @@ const agentView = {
   languageSwitchingEnabled: false,
   voicePreference: 'neutral',
   voiceId: null,
+  voiceSummary: null,
   escalationEnabled: false,
   escalationKeywords: [],
   escalationContactPhone: null,
@@ -106,11 +107,17 @@ function createSyncHarness(voiceOverrides = {}) {
     requireMembership: async () => ({ role: 'owner' }),
   };
 
+  const voices = {
+    resolveExternalVoiceId: async (voiceId) =>
+      voiceId === 'voice-assigned-1' ? 'el-voice-sarah' : null,
+  };
+
   const service = new AgentProviderSyncService(
     dataSource,
     organizations,
     voiceSync,
     agents,
+    voices,
     mappings,
   );
 
@@ -209,11 +216,16 @@ test('sync updates when mapping already has external id', async () => {
     throw new Error('should not create');
   };
 
+  const voices = {
+    resolveExternalVoiceId: async () => null,
+  };
+
   const service2 = new AgentProviderSyncService(
     dataSource,
     organizations,
     voiceSync,
     agents,
+    voices,
     mappings,
   );
 

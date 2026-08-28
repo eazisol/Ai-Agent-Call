@@ -67,6 +67,12 @@ export default () => {
         10 * 1024 * 1024,
       ),
     },
+    voices: {
+      catalogCacheTtlSeconds: numberValue(
+        process.env.VOICE_CATALOG_CACHE_TTL_SECONDS,
+        3600,
+      ),
+    },
     providers: {
       telephony: process.env.TELEPHONY_PROVIDER ?? 'twilio',
       voiceAgent: process.env.VOICE_AGENT_PROVIDER ?? 'openai_realtime',

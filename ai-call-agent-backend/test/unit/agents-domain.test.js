@@ -163,12 +163,17 @@ function createHarness({ membersSeed = [], businessSeed = [] } = {}) {
     bestEffortDeleteRemote: async () => undefined,
   };
 
+  const voices = {
+    getSummariesForIds: async () => new Map(),
+  };
+
   const service = new AgentsService(
     dataSource,
     organizations,
     agents,
     businesses,
     providerSync,
+    voices,
   );
 
   return { service, agentRows, configRows, promptRows, providerSync };

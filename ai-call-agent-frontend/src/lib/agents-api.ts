@@ -1,5 +1,6 @@
-import { buildApiUrl } from "./api-url.mjs";
+﻿import { buildApiUrl } from "./api-url.mjs";
 import type { OrganizationRole } from "./organizations-api";
+import type { VoiceSummary } from "./voices-api";
 
 export type AgentStatus = "active" | "inactive" | "archived";
 export type AgentLanguageMode = "single" | "multilingual";
@@ -60,6 +61,7 @@ export type Agent = {
   languageSwitchingEnabled: boolean;
   voicePreference: AgentVoicePreference;
   voiceId: string | null;
+  voiceSummary: VoiceSummary | null;
   escalationEnabled: boolean;
   escalationKeywords: string[];
   escalationContactPhone: string | null;
@@ -198,7 +200,7 @@ export function canDeleteAgent(role: OrganizationRole | undefined): boolean {
   return canArchiveAgent(role);
 }
 
-/** Sync to voice provider — same roles as update_agent. */
+/** Sync to voice provider â€” same roles as update_agent. */
 export function canSyncAgent(role: OrganizationRole | undefined): boolean {
   return canUpdateAgent(role);
 }
@@ -232,7 +234,7 @@ export function formatProviderSyncStatus(
   status: AgentProviderSyncStatus | undefined | null,
 ): string {
   if (status === "synced") return "Synced";
-  if (status === "pending") return "Syncing…";
+  if (status === "pending") return "Syncingâ€¦";
   if (status === "error") return "Sync error";
   return "Not synced yet";
 }

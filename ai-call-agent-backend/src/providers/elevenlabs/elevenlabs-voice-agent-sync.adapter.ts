@@ -178,12 +178,13 @@ export class ElevenLabsVoiceAgentSyncAdapter implements VoiceAgentSyncPort {
     };
   }
 
-  private resolveVoiceId(
-    preference: ProviderAgentCreateInput['voicePreference'],
-  ): string {
+  private resolveVoiceId(input: ProviderAgentCreateInput): string {
+    if (input.voiceExternalId?.trim()) {
+      return input.voiceExternalId.trim();
+    }
     const cfg = this.readConfig();
-    if (preference === 'female') return cfg.voiceFemale;
-    if (preference === 'male') return cfg.voiceMale;
+    if (input.voicePreference === 'female') return cfg.voiceFemale;
+    if (input.voicePreference === 'male') return cfg.voiceMale;
     return cfg.voiceNeutral;
   }
 
@@ -248,7 +249,7 @@ export class ElevenLabsVoiceAgentSyncAdapter implements VoiceAgentSyncPort {
           },
         },
         tts: {
-          voice_id: this.resolveVoiceId(input.voicePreference),
+          voice_id: this.resolveVoiceId(input),
         },
       },
     };

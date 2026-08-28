@@ -9,6 +9,10 @@ import {
 import { Business } from '../businesses/entities/business.entity';
 import type { OrganizationMemberRole } from '../organizations/entities/organization-member.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
+import {
+  VoicesService,
+  type VoiceSummaryView,
+} from '../voices/voices.service';
 import { assertAgentCan } from './agent-permissions';
 import {
   AgentProviderSyncService,
@@ -46,6 +50,7 @@ export interface AgentView {
   languageSwitchingEnabled: boolean;
   voicePreference: AgentVoicePreference;
   voiceId: string | null;
+  voiceSummary: VoiceSummaryView | null;
   escalationEnabled: boolean;
   escalationKeywords: string[];
   escalationContactPhone: string | null;
@@ -69,6 +74,8 @@ export class AgentsService {
     private readonly businesses: Repository<Business>,
     @Inject(forwardRef(() => AgentProviderSyncService))
     private readonly providerSync: AgentProviderSyncService,
+    @Inject(forwardRef(() => VoicesService))
+    private readonly voices: VoicesService,
   ) {}
 
   async create(
@@ -175,8 +182,18 @@ export class AgentsService {
     const business = await this.businesses.findOne({
       where: { id: businessId, organizationId },
     });
+    const voiceIds = rows
+      .map((row) => row.config?.voiceId)
+      .filter((id): id is string => Boolean(id));
+    const voiceMap = await this.voices.getSummariesForIds(voiceIds, businessId);
     return rows.map((row) =>
-      this.toView(row, organizationId, membership.role, business),
+      this.toView(
+        row,
+        organizationId,
+        membership.role,
+        business,
+        row.config?.voiceId ? voiceMap.get(row.config.voiceId) ?? null : null,
+      ),
     );
   }
 
@@ -200,7 +217,21 @@ export class AgentsService {
     );
 
     const agent = await this.findOwnedAgent(businessId, agentId);
-    return this.toView(agent, organizationId, membership.role, business);
+    let voiceSummary: VoiceSummaryView | null = null;
+    if (agent.config?.voiceId) {
+      const voiceMap = await this.voices.getSummariesForIds(
+        [agent.config.voiceId],
+        businessId,
+      );
+      voiceSummary = voiceMap.get(agent.config.voiceId) ?? null;
+    }
+    return this.toView(
+      agent,
+      organizationId,
+      membership.role,
+      business,
+      voiceSummary,
+    );
   }
 
   async updateForUser(
@@ -870,6 +901,7 @@ export class AgentsService {
     organizationId: string,
     _role: OrganizationMemberRole,
     business: Business | null,
+    voiceSummary: VoiceSummaryView | null = null,
   ): AgentView {
     const config = agent.config;
     const prompts = agent.prompts;
@@ -914,6 +946,7 @@ export class AgentsService {
       languageSwitchingEnabled: effective.languageSwitchingEnabled,
       voicePreference: config.voicePreference ?? 'neutral',
       voiceId: config.voiceId,
+      voiceSummary,
       escalationEnabled: config.escalationEnabled,
       escalationKeywords: Array.isArray(config.escalationKeywords)
         ? config.escalationKeywords

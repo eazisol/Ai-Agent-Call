@@ -8,6 +8,7 @@ import {
   type VoiceAgentSyncPort,
 } from '../../providers/voice-agent-sync.port';
 import { OrganizationsService } from '../organizations/organizations.service';
+import { VoicesService } from '../voices/voices.service';
 import { assertAgentCan } from './agent-permissions';
 import { AgentsService, type AgentView } from './agents.service';
 import {
@@ -62,6 +63,8 @@ export class AgentProviderSyncService {
     private readonly voiceSync: VoiceAgentSyncPort,
     @Inject(forwardRef(() => AgentsService))
     private readonly agents: AgentsService,
+    @Inject(forwardRef(() => VoicesService))
+    private readonly voices: VoicesService,
     @InjectRepository(AgentProviderMapping)
     private readonly mappings: Repository<AgentProviderMapping>,
   ) {}
@@ -102,7 +105,7 @@ export class AgentProviderSyncService {
       );
     }
 
-    const input = this.toProviderInput(agent);
+    const input = await this.toProviderInput(agent);
     let mapping = await this.beginPending(agentId);
 
     try {
@@ -262,7 +265,12 @@ export class AgentProviderSyncService {
     }
   }
 
-  private toProviderInput(agent: AgentView): ProviderAgentCreateInput {
+  private async toProviderInput(
+    agent: AgentView,
+  ): Promise<ProviderAgentCreateInput> {
+    const voiceExternalId = await this.voices.resolveExternalVoiceId(
+      agent.voiceId,
+    );
     return {
       name: agent.name,
       roleLabel: agent.roleLabel,
@@ -274,6 +282,7 @@ export class AgentProviderSyncService {
       languageDetectionEnabled: agent.languageDetectionEnabled,
       languageSwitchingEnabled: agent.languageSwitchingEnabled,
       voicePreference: agent.voicePreference,
+      voiceExternalId,
     };
   }
 

@@ -135,6 +135,7 @@ export default function AgentsPage() {
               <th className="px-4 py-3 font-medium">Name</th>
               <th className="px-4 py-3 font-medium">Role</th>
               <th className="px-4 py-3 font-medium">Language</th>
+              <th className="px-4 py-3 font-medium">Voice</th>
               <th className="px-4 py-3 font-medium">Status</th>
               <th className="px-4 py-3 font-medium">Provider</th>
               <th className="px-4 py-3 font-medium"> </th>
@@ -161,6 +162,12 @@ export default function AgentsPage() {
                   {agent.useBusinessLanguageSettings
                     ? "Business defaults"
                     : agent.languages.map(formatLanguage).join(", ")}
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {agent.voiceSummary?.displayName ??
+                    (agent.voiceId
+                      ? "Assigned"
+                      : `Preference: ${agent.voicePreference}`)}
                 </td>
                 <td className="px-4 py-3">
                   <StatusBadge status={agentStatusBadge(agent.status)}>

@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ElevenLabsVoiceAgentSyncAdapter } from '../../providers/elevenlabs/elevenlabs-voice-agent-sync.adapter';
 import { VOICE_AGENT_SYNC_PORT } from '../../providers/voice-agent-sync.port';
 import { AuthModule } from '../auth/auth.module';
 import { Business } from '../businesses/entities/business.entity';
 import { OrganizationsModule } from '../organizations/organizations.module';
+import { VoicesModule } from '../voices/voices.module';
 import { AgentProviderSyncService } from './agent-provider-sync.service';
 import { AgentsController } from './agents.controller';
 import { AgentsService } from './agents.service';
@@ -24,6 +25,7 @@ import { Agent } from './entities/agent.entity';
     ]),
     AuthModule,
     OrganizationsModule,
+    forwardRef(() => VoicesModule),
   ],
   controllers: [AgentsController],
   providers: [

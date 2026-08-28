@@ -209,6 +209,21 @@ export default function AgentDetailPage() {
       <dl className="grid gap-4 rounded-xl border bg-card p-6 sm:grid-cols-2">
         <Detail label="Languages" value={languageSummary} />
         <Detail
+          label="Assigned voice"
+          value={
+            agent.voiceSummary?.displayName ??
+            (agent.voiceId
+              ? "Assigned (details unavailable)"
+              : `Not selected — preference: ${
+                  agent.voicePreference === "female"
+                    ? "Female"
+                    : agent.voicePreference === "male"
+                      ? "Male"
+                      : "Neutral / Any"
+                }`)
+          }
+        />
+        <Detail
           label="Voice preference"
           value={
             agent.voicePreference === "female"
@@ -238,6 +253,9 @@ export default function AgentDetailPage() {
       />
 
       <div className="flex flex-wrap gap-2">
+        <Button asChild variant="outline">
+          <Link href={`/agents/${agent.id}/voice`}>Voice settings</Link>
+        </Button>
         <Button asChild variant="outline">
           <Link href={`/agents/${agent.id}/behavior`}>Edit behavior</Link>
         </Button>

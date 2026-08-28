@@ -139,8 +139,18 @@ function buildPortalBreadcrumbs(
       crumbs.push({ label: "Escalation" });
     } else if (parts[2] === "knowledge") {
       crumbs.push({ label: "Knowledge" });
+    } else if (parts[2] === "voice") {
+      crumbs.push({ label: "Voice" });
     }
     return crumbs;
+  }
+
+  if (pathname === "/voices") {
+    return [{ label: "Voice Library" }];
+  }
+
+  if (pathname.startsWith("/voices")) {
+    return [{ label: "Voice Library", href: "/voices" }];
   }
 
   if (pathname === "/knowledge") {

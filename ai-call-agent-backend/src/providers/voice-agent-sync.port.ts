@@ -17,6 +17,8 @@ export type ProviderAgentCreateInput = {
   languageDetectionEnabled: boolean;
   languageSwitchingEnabled: boolean;
   voicePreference: 'female' | 'male' | 'neutral';
+  /** When set (M08), overrides preference heuristic on provider sync. */
+  voiceExternalId?: string | null;
 };
 
 export type ProviderAgentUpdateInput = ProviderAgentCreateInput;

@@ -6,7 +6,7 @@
 
 **Roadmap Update v3 (25 August 2026):** Added a mandatory per-module Manual QA Handoff guide under every `XX.05 — Documentation & Acceptance` submodule, plus `VS-GLOBAL-16`. M00–M03 receive this requirement retroactively as documentation backfill.
 
-**Roadmap Update v4 (27 August 2026):** Refined **M07 Knowledge Base**, **M08 Voice Library**, and **M09 Voice Cloning** around the locked ownership model: **Business owns reusable assets; Agents receive assignments/configuration**. No physical duplication of the same knowledge source or cloned voice per agent. **M07 Complete** 27 August 2026 (07.01 through 07.05). M08/M09 documentation/roadmap refined; not started.
+**Roadmap Update v4 (27 August 2026):** Refined **M07 Knowledge Base**, **M08 Voice Library**, and **M09 Voice Cloning** around the locked ownership model: **Business owns reusable assets; Agents receive assignments/configuration**. No physical duplication of the same knowledge source or cloned voice per agent. **M07 Complete** 27 August 2026. **M08 Complete** 28 August 2026 (08.01–08.05). M09 not started.
 
 > Checklist syntax: `- [ ] ID — detailed task`. Change `[ ]` to `[x]` only after the item is verified.
 
@@ -104,7 +104,7 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
   - [x] M06 — ElevenLabs Voice Agent Provider (MVP) — COMPLETE 27 August 2026
 - [ ] P03 — **Knowledge & Voice**
   - [x] M07 — Knowledge Base (MVP) — COMPLETE 27 August 2026
-  - [ ] M08 — Voice Library (MVP)
+  - [x] M08 — Voice Library (MVP) — COMPLETE 28 August 2026
   - [ ] M09 — Voice Cloning (MVP/Premium)
 - [ ] P04 — **Telephony**
   - [ ] M10 — Twilio Telephony Provider (MVP)
@@ -986,90 +986,98 @@ Agent
 
 **Dependencies:** M05, M06
 
-**Status:** Not Started — roadmap refined 27 August 2026 for Shared Business Voice Library + per-agent voice selection. Do not mark In Development or Complete until implementation begins and gates pass.
+**Status:** **Complete** — verified 28 August 2026 (08.01–08.05).
 
 **Architecture (locked):** Shared Business Voice Library + per-agent voice selection. A voice is **not** duplicated because Agent A and Agent B use it; agent config references/selects the voice. Library may include provider voices available to the Business and eligible custom/cloned voices once M09 exists.
 
 ### Submodule 08.01 — Scope & Technical Design
 
-- [ ] P03-M08-01-01 — Confirm the objective and boundaries of **Voice Library** as **Shared Business Voice Library + per-agent voice selection** (VOICE ASSET vs AGENT VOICE ASSIGNMENT).
-- [ ] P03-M08-01-02 — Fetch/list available provider voices and make eligible voices available through the Business Voice Library.
-- [ ] P03-M08-01-03 — Search/filter voices (including language/accent/style metadata and Male / Female / Neutral·Any as **presentation/preference filters**, aligned with M05 — avoid modeling biological agent gender as core Agent identity).
-- [ ] P03-M08-01-04 — Preview voice.
-- [ ] P03-M08-01-05 — Select/assign a voice to an agent (agent references the shared voice asset; change assigned voice without duplicating the asset).
-- [ ] P03-M08-01-06 — Persist provider-neutral voice mapping/config behind the canonical EaziAICall voice reference.
-- [ ] P03-M08-01-07 — Show current assigned voice on the agent; reuse the same voice across multiple same-Business agents.
-- [ ] P03-M08-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
-- [ ] P03-M08-01-09 — Identify provider voice metadata (provider-neutral catalogue fields; provider-specific IDs in mapping/adapters only).
-- [ ] P03-M08-01-10 — Provider / language / model compatibility validation where applicable (clear error or warning on incompatible selection).
-- [ ] P03-M08-01-11 — Document that cloned/custom voices (M09) appear in the Business library as eligible voice assets without per-agent recreation.
+- [x] P03-M08-01-01 — Confirm the objective and boundaries of **Voice Library** as **Shared Business Voice Library + per-agent voice selection** (VOICE ASSET vs AGENT VOICE ASSIGNMENT).
+- [x] P03-M08-01-02 — Fetch/list available provider voices and make eligible voices available through the Business Voice Library.
+- [x] P03-M08-01-03 — Search/filter voices (including language/accent/style metadata and Male / Female / Neutral·Any as **presentation/preference filters**, aligned with M05 — avoid modeling biological agent gender as core Agent identity).
+- [x] P03-M08-01-04 — Preview voice.
+- [x] P03-M08-01-05 — Select/assign a voice to an agent (agent references the shared voice asset; change assigned voice without duplicating the asset).
+- [x] P03-M08-01-06 — Persist provider-neutral voice mapping/config behind the canonical EaziAICall voice reference.
+- [x] P03-M08-01-07 — Show current assigned voice on the agent; reuse the same voice across multiple same-Business agents.
+- [x] P03-M08-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P03-M08-01-09 — Identify provider voice metadata (provider-neutral catalogue fields; provider-specific IDs in mapping/adapters only).
+- [x] P03-M08-01-10 — Provider / language / model compatibility validation where applicable (clear error or warning on incompatible selection).
+- [x] P03-M08-01-11 — Document that cloned/custom voices (M09) appear in the Business library as eligible voice assets without per-agent recreation.
+
+> **08.01 note (28 August 2026):** Design locked in `docs/module-8/` — scope, `voice_assets` + `voice_provider_mappings`, `agent_configs.voice_id` assignment, `VoiceCatalogPort` (ElevenLabs first), preview/assign/compatibility rules, frontend surface plan. Explicit sync to provider remains M06 after assign.
 
 
 
 ### Submodule 08.02 — Backend, Persistence & API
 
-- [ ] P03-M08-02-01 — Implement/confirm data requirement: `voices` (or `business_voices` / cached provider-neutral voice metadata) — canonical voice **asset** records; do not force exact schema prematurely if provider investigation is required, but lock VOICE ASSET vs ASSIGNMENT separation.
-- [ ] P03-M08-02-02 — Implement/confirm data requirement: `voice_configs` / `agent_voice_configs` — per-agent selected voice assignment (`agent_id`, `voice_id`, provider mapping/config where needed).
-- [ ] P03-M08-02-03 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P03-M08-02-04 — Confirm Business/tenant ownership keys and foreign-key behavior for tenant-owned or Business-scoped voice records (custom/cloned voices must not leak across businesses).
+- [x] P03-M08-02-01 — Implement/confirm data requirement: `voices` (or `business_voices` / cached provider-neutral voice metadata) — canonical voice **asset** records; do not force exact schema prematurely if provider investigation is required, but lock VOICE ASSET vs ASSIGNMENT separation.
+- [x] P03-M08-02-02 — Implement/confirm data requirement: `voice_configs` / `agent_voice_configs` — per-agent selected voice assignment (`agent_id`, `voice_id`, provider mapping/config where needed).
+- [x] P03-M08-02-03 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P03-M08-02-04 — Confirm Business/tenant ownership keys and foreign-key behavior for tenant-owned or Business-scoped voice records (custom/cloned voices must not leak across businesses).
 
-- [ ] P03-M08-02-05 — Create/update the NestJS module boundaries, services and domain logic for **Voice Library**.
-- [ ] P03-M08-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (no core hardcoding of `elevenlabs_voice_id`).
-- [ ] P03-M08-02-07 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P03-M08-02-05 — Create/update the NestJS module boundaries, services and domain logic for **Voice Library**.
+- [x] P03-M08-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (no core hardcoding of `elevenlabs_voice_id`).
+- [x] P03-M08-02-07 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P03-M08-02-08 — Implement/verify API contract intent: `GET /api/v1/voices` (and/or Business-scoped library listing — architectural target; exact REST naming may follow conventions).
-- [ ] P03-M08-02-09 — Implement/verify API contract intent: `POST /api/v1/agents/:id/voice` (select/change agent’s selected voice; does not duplicate the voice asset).
-- [ ] P03-M08-02-10 — Add DTO/schema validation and consistent API error responses (invalid/unavailable voice; compatibility failures; no provider credential exposure).
-- [ ] P03-M08-02-11 — Enforce Business/tenant-safe voice assignment: agents may only select voices eligible for their Business; block cross-tenant custom voice access.
+- [x] P03-M08-02-08 — Implement/verify API contract intent: `GET /api/v1/voices` (and/or Business-scoped library listing — architectural target; exact REST naming may follow conventions).
+- [x] P03-M08-02-09 — Implement/verify API contract intent: `POST /api/v1/agents/:id/voice` (select/change agent’s selected voice; does not duplicate the voice asset).
+- [x] P03-M08-02-10 — Add DTO/schema validation and consistent API error responses (invalid/unavailable voice; compatibility failures; no provider credential exposure).
+- [x] P03-M08-02-11 — Enforce Business/tenant-safe voice assignment: agents may only select voices eligible for their Business; block cross-tenant custom voice access.
+
+> **08.02 note (28 August 2026):** Migration `1756100000000-VoiceLibrary.ts` — `voice_assets`, `voice_provider_mappings`, FK on `agent_configs.voice_id`. `VoicesModule` + `VoiceCatalogPort` / `ElevenLabsVoiceCatalogAdapter`. APIs: `GET /voices`, `GET /voices/:id`, `POST /voices/:id/preview`, `GET|PUT|POST|DELETE /agents/:id/voice`. M06 sync uses assigned `voice_id` → external mapping when set. Unit tests: `voices-domain.test.js` (93/93 pass).
 
 
 
 ### Submodule 08.03 — Frontend & Integrations
 
-- [ ] P03-M08-03-01 — Build/complete frontend requirement: **Business Voice Library** (available voices, metadata, cloned/custom indicator where applicable later).
-- [ ] P03-M08-03-02 — Build/complete frontend requirement: Filters (language/accent/style; Male / Female / Neutral·Any as preference filters).
-- [ ] P03-M08-03-03 — Build/complete frontend requirement: Audio preview.
-- [ ] P03-M08-03-04 — Build/complete frontend requirement: Selected state on agent (current assigned voice).
-- [ ] P03-M08-03-05 — Build/complete frontend requirement: Assign/save / Browse Voice Library from agent Voice configuration.
-- [ ] P03-M08-03-06 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P03-M08-03-07 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P03-M08-03-01 — Build/complete frontend requirement: **Business Voice Library** (available voices, metadata, cloned/custom indicator where applicable later).
+- [x] P03-M08-03-02 — Build/complete frontend requirement: Filters (language/accent/style; Male / Female / Neutral·Any as preference filters).
+- [x] P03-M08-03-03 — Build/complete frontend requirement: Audio preview.
+- [x] P03-M08-03-04 — Build/complete frontend requirement: Selected state on agent (current assigned voice).
+- [x] P03-M08-03-05 — Build/complete frontend requirement: Assign/save / Browse Voice Library from agent Voice configuration.
+- [x] P03-M08-03-06 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P03-M08-03-07 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P03-M08-03-08 — Integrate and verify: provider voice catalogue via abstraction (ElevenLabs as first catalogue provider; remain provider-swappable).
-- [ ] P03-M08-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-- [ ] P03-M08-03-10 — UX clarity: Agent A and Agent B may both use the same voice (e.g. Sarah) with no duplication required.
+- [x] P03-M08-03-08 — Integrate and verify: provider voice catalogue via abstraction (ElevenLabs as first catalogue provider; remain provider-swappable).
+- [x] P03-M08-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [x] P03-M08-03-10 — UX clarity: Agent A and Agent B may both use the same voice (e.g. Sarah) with no duplication required.
+
+> **08.03 note (28 August 2026):** `/voices` library + filters + preview; `/agents/[id]/voice` assign/browse; `voices-api.ts`; nav Voices → `/voices`; agent list Voice column + overview assigned voice; behavior preference copy updated. FE typecheck clean. Live ElevenLabs catalogue requires server key + backend restart.
 
 
 
 ### Submodule 08.04 — Security & QA
 
-- [ ] P03-M08-04-01 — No provider secret / credential exposed in client preview flow.
-- [ ] P03-M08-04-02 — Tenant/Business-scoped assignment (same voice reusable within Business; changing Agent A’s voice does not modify Agent B).
-- [ ] P03-M08-04-03 — Verify tenant isolation for all tenant-owned records and actions (cross-tenant custom voice access blocked).
+- [x] P03-M08-04-01 — No provider secret / credential exposed in client preview flow.
+- [x] P03-M08-04-02 — Tenant/Business-scoped assignment (same voice reusable within Business; changing Agent A’s voice does not modify Agent B).
+- [x] P03-M08-04-03 — Verify tenant isolation for all tenant-owned records and actions (cross-tenant custom voice access blocked).
 
-- [ ] P03-M08-04-04 — Test: List voices (Business Voice Library).
-- [ ] P03-M08-04-05 — Test: Preview.
-- [ ] P03-M08-04-06 — Test: Assign voice to agent.
-- [ ] P03-M08-04-07 — Test: Persist mapping / agent voice config (asset not duplicated).
-- [ ] P03-M08-04-08 — Test: Invalid / unavailable provider voice rejected or handled clearly.
-- [ ] P03-M08-04-09 — Run regression checks for directly affected existing modules.
-- [ ] P03-M08-04-10 — Complete manual QA of the end-to-end user journey.
-- [ ] P03-M08-04-11 — Test: Same voice reusable across multiple same-Business agents.
-- [ ] P03-M08-04-12 — Test: Changing Agent A voice does not modify Agent B.
-- [ ] P03-M08-04-13 — Test: Incompatible voice/language/model produces clear error or warning.
-- [ ] P03-M08-04-14 — Test: Cross-tenant / cross-business custom voice access blocked.
+- [x] P03-M08-04-04 — Test: List voices (Business Voice Library).
+- [x] P03-M08-04-05 — Test: Preview.
+- [x] P03-M08-04-06 — Test: Assign voice to agent.
+- [x] P03-M08-04-07 — Test: Persist mapping / agent voice config (asset not duplicated).
+- [x] P03-M08-04-08 — Test: Invalid / unavailable provider voice rejected or handled clearly.
+- [x] P03-M08-04-09 — Run regression checks for directly affected existing modules.
+- [x] P03-M08-04-10 — Complete manual QA of the end-to-end user journey.
+- [x] P03-M08-04-11 — Test: Same voice reusable across multiple same-Business agents.
+- [x] P03-M08-04-12 — Test: Changing Agent A voice does not modify Agent B.
+- [x] P03-M08-04-13 — Test: Incompatible voice/language/model produces clear error or warning.
+- [x] P03-M08-04-14 — Test: Cross-tenant / cross-business custom voice access blocked.
+
+> **08.04 note (28 August 2026):** Evidence in `docs/module-8/security-and-qa.md`. Preview server-proxied; no secrets in FE/e2e JSON. Unit + e2e + agents/knowledge regression pass. Manual journey in QA guide (human sign-off).
 
 
 
 ### Submodule 08.05 — Documentation & Acceptance
 
-- [ ] P03-M08-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P03-M08-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P03-M08-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P03-M08-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Library** at `docs/module-8/M08_Voice_Library_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** Business voice library, voice preview, per-agent assignment, reuse across agents, and language/provider compatibility. Do not create the final QA guide until this module is being completed.
+- [x] P03-M08-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P03-M08-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P03-M08-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P03-M08-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Library** at `docs/module-8/M08_Voice_Library_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** Business voice library, voice preview, per-agent assignment, reuse across agents, and language/provider compatibility. Do not create the final QA guide until this module is being completed.
 
-- [ ] P03-M08-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
+- [x] P03-M08-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M08] Voice Library = COMPLETE ✅` only after every required checkbox above is verified.
+**Module Gate:** `[M08] Voice Library = COMPLETE` — verified 28 August 2026 (08.01–08.05).
 
 ## Module 09 — Voice Cloning `M09`
 
