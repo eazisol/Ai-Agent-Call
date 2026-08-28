@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TwilioService } from './twilio.service';
-import { CallsService } from '../calls/calls.service';
+import { CallLifecycleService } from '../calls/call-lifecycle.service';
+import { InboundCallOrchestratorService } from '../calls/inbound-call-orchestrator.service';
 import { TELEPHONY_PROVIDER_PORT } from '../../providers/telephony-provider.port';
 import {
   callEndedPayload,
@@ -15,44 +16,42 @@ describe('TwilioService', () => {
     buildIncomingCallResponse: jest.fn(() => '<Response />'),
     validateWebhook: jest.fn(() => true),
   };
-  const callsService = {
-    createFromProvider: jest.fn(),
+  const lifecycle = {
+    findExistingByTwilioSid: jest.fn(),
     recordProviderEvent: jest.fn(),
     markCompleted: jest.fn(),
     markFailed: jest.fn(),
+    markInProgress: jest.fn(),
+    appendCallEvent: jest.fn(),
+  };
+  const orchestrator = {
+    handleTwilioInbound: jest.fn(),
   };
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    callsService.recordProviderEvent.mockResolvedValue(true);
+    lifecycle.findExistingByTwilioSid.mockResolvedValue(null);
+    lifecycle.recordProviderEvent.mockResolvedValue(true);
+    orchestrator.handleTwilioInbound.mockResolvedValue('<Response />');
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TwilioService,
         { provide: TELEPHONY_PROVIDER_PORT, useValue: telephony },
-        { provide: CallsService, useValue: callsService },
+        { provide: CallLifecycleService, useValue: lifecycle },
+        { provide: InboundCallOrchestratorService, useValue: orchestrator },
       ],
     }).compile();
 
     service = module.get(TwilioService);
   });
 
-  it('creates a call record and returns TwiML from the provider port', async () => {
+  it('delegates incoming calls to the orchestrator', async () => {
     const twiml = await service.handleIncomingCall(incomingCallPayload);
 
-    expect(callsService.createFromProvider).toHaveBeenCalledWith({
-      provider: 'twilio',
-      externalCallId: incomingCallPayload.CallSid,
-      callerNumber: incomingCallPayload.From,
-      receiverNumber: incomingCallPayload.To,
-    });
-    expect(callsService.recordProviderEvent).toHaveBeenCalledWith(
-      expect.objectContaining({
-        eventType: 'call-started',
-        externalEventId: `${incomingCallPayload.CallSid}:call-started`,
-      }),
+    expect(orchestrator.handleTwilioInbound).toHaveBeenCalledWith(
+      incomingCallPayload,
     );
-    expect(telephony.buildIncomingCallResponse).toHaveBeenCalled();
     expect(twiml).toBe('<Response />');
   });
 
@@ -66,11 +65,16 @@ describe('TwilioService', () => {
   });
 
   it('marks the call completed on call-ended events', async () => {
+    lifecycle.findExistingByTwilioSid.mockResolvedValue({
+      id: 'call-1',
+      twilioCallSid: callEndedPayload.CallSid,
+    });
+
     await expect(service.handleCallEnded(callEndedPayload)).resolves.toEqual({
       success: true,
     });
 
-    expect(callsService.markCompleted).toHaveBeenCalledWith(
+    expect(lifecycle.markCompleted).toHaveBeenCalledWith(
       'twilio',
       callEndedPayload.CallSid,
       42,
@@ -78,11 +82,16 @@ describe('TwilioService', () => {
   });
 
   it('marks failed calls from status callbacks', async () => {
+    lifecycle.findExistingByTwilioSid.mockResolvedValue({
+      id: 'call-1',
+      twilioCallSid: statusCallbackFailedPayload.CallSid,
+    });
+
     await expect(
       service.handleStatusCallback(statusCallbackFailedPayload),
     ).resolves.toEqual({ success: true });
 
-    expect(callsService.markFailed).toHaveBeenCalledWith(
+    expect(lifecycle.markFailed).toHaveBeenCalledWith(
       'twilio',
       statusCallbackFailedPayload.CallSid,
       'failed',

@@ -89,6 +89,9 @@ export const envValidationSchema = Joi.object({
     .max(5_242_880)
     .default(1_048_576),
 
+  INBOUND_CALL_DEV_STREAM_FALLBACK: Joi.boolean().default(false),
+  ELEVENLABS_WEBHOOK_SECRET: Joi.string().allow('', null),
+
   N8N_ENABLED: Joi.boolean().default(false),
   N8N_CALL_COMPLETED_WEBHOOK: Joi.string().uri().allow('', null),
 

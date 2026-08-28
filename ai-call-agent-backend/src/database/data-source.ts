@@ -14,6 +14,7 @@ import { CallMessage } from '../modules/calls/entities/call-message.entity';
 import { CallProviderMapping } from '../modules/calls/entities/call-provider-mapping.entity';
 import { CallRecording } from '../modules/calls/entities/call-recording.entity';
 import { Call } from '../modules/calls/entities/call.entity';
+import { CallEvent } from '../modules/calls/entities/call-event.entity';
 import { EmailLog } from '../modules/calls/entities/email-log.entity';
 import { ProviderEvent } from '../modules/calls/entities/provider-event.entity';
 import { OrganizationInvitation } from '../modules/organizations/entities/organization-invitation.entity';
@@ -47,6 +48,7 @@ import { TwilioTelephonyProvider1756120000000 } from './migrations/1756120000000
 import { PhoneNumber } from '../modules/phone-numbers/entities/phone-number.entity';
 import { PhoneNumberAssignment } from '../modules/phone-numbers/entities/phone-number-assignment.entity';
 import { PhoneNumberManagement1756130000000 } from './migrations/1756130000000-PhoneNumberManagement';
+import { IncomingAiCalls1756140000000 } from './migrations/1756140000000-IncomingAiCalls';
 
 loadBackendEnv();
 
@@ -86,6 +88,7 @@ export default new DataSource({
     PhoneNumber,
     PhoneNumberAssignment,
     Call,
+    CallEvent,
     CallMessage,
     CallRecording,
     EmailLog,
@@ -109,6 +112,7 @@ export default new DataSource({
     VoiceCloning1756110000000,
     TwilioTelephonyProvider1756120000000,
     PhoneNumberManagement1756130000000,
+    IncomingAiCalls1756140000000,
   ],
   migrationsTableName: 'eazi_ai_call_migrations',
   synchronize: false,

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TwilioTelephonyAdapter } from '../../providers/twilio/twilio-telephony.adapter';
 import { TELEPHONY_PROVIDER_PORT } from '../../providers/telephony-provider.port';
@@ -18,7 +18,7 @@ import { TwilioService } from './twilio.service';
   imports: [
     AuthModule,
     OrganizationsModule,
-    CallsModule,
+    forwardRef(() => CallsModule),
     VoiceStreamModule,
     TypeOrmModule.forFeature([TelephonyProviderMapping]),
   ],

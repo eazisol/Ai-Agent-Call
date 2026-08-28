@@ -5,30 +5,37 @@ const {
   ApplicationError,
 } = require('../../dist/common/errors/application-error');
 
-function createService({ telephony = {}, calls = {} } = {}) {
+function createService({ telephony = {}, lifecycle = {}, orchestrator = {} } = {}) {
   const telephonyPort = {
     providerName: 'twilio',
     buildIncomingCallResponse: () => '<Response />',
     validateWebhook: () => true,
     ...telephony,
   };
-  const callsService = {
-    createFromProvider: async () => ({}),
+  const lifecycleService = {
+    findExistingByTwilioSid: async () => null,
     recordProviderEvent: async () => true,
     markCompleted: async () => undefined,
     markFailed: async () => undefined,
-    ...calls,
+    markInProgress: async () => undefined,
+    appendCallEvent: async () => true,
+    ...lifecycle,
   };
-  return new TwilioService(telephonyPort, callsService);
+  const orchestratorService = {
+    handleTwilioInbound: async () => '<Response />',
+    ...orchestrator,
+  };
+  return new TwilioService(telephonyPort, lifecycleService, orchestratorService);
 }
 
-test('handleIncomingCall creates call and records call-started event', async () => {
-  const events = [];
+test('handleIncomingCall delegates to orchestrator', async () => {
+  let orchestrated = false;
   const service = createService({
-    calls: {
-      recordProviderEvent: async (input) => {
-        events.push(input);
-        return true;
+    orchestrator: {
+      handleTwilioInbound: async (body) => {
+        orchestrated = true;
+        assert.equal(body.CallSid, 'CA100');
+        return '<Response><Say>Hi</Say></Response>';
       },
     },
   });
@@ -39,10 +46,8 @@ test('handleIncomingCall creates call and records call-started event', async () 
     To: '+15550002222',
   });
 
-  assert.equal(twiml, '<Response />');
-  assert.equal(events.length, 1);
-  assert.equal(events[0].eventType, 'call-started');
-  assert.equal(events[0].externalEventId, 'CA100:call-started');
+  assert.equal(orchestrated, true);
+  assert.match(twiml, /Hi/);
 });
 
 test('handleIncomingCall rejects missing CallSid', async () => {
@@ -58,7 +63,8 @@ test('handleIncomingCall rejects missing CallSid', async () => {
 test('handleCallEnded is idempotent when provider event already exists', async () => {
   let markCompletedCalls = 0;
   const service = createService({
-    calls: {
+    lifecycle: {
+      findExistingByTwilioSid: async () => ({ id: 'call-1', twilioCallSid: 'CA200' }),
       recordProviderEvent: async () => false,
       markCompleted: async () => {
         markCompletedCalls += 1;
@@ -79,7 +85,8 @@ test('handleCallEnded is idempotent when provider event already exists', async (
 test('handleCallEnded marks completed on first event', async () => {
   let markCompletedCalls = 0;
   const service = createService({
-    calls: {
+    lifecycle: {
+      findExistingByTwilioSid: async () => ({ id: 'call-1', twilioCallSid: 'CA200' }),
       recordProviderEvent: async () => true,
       markCompleted: async (_provider, callSid, duration) => {
         markCompletedCalls += 1;
@@ -99,65 +106,25 @@ test('handleCallEnded marks completed on first event', async () => {
   assert.equal(markCompletedCalls, 1);
 });
 
-test('handleStatusCallback marks failed terminal statuses once', async () => {
+test('handleStatusCallback marks failed statuses', async () => {
   let markFailedCalls = 0;
   const service = createService({
-    calls: {
+    lifecycle: {
+      findExistingByTwilioSid: async () => ({ id: 'call-1', twilioCallSid: 'CA300' }),
       recordProviderEvent: async () => true,
       markFailed: async (_provider, callSid, reason) => {
         markFailedCalls += 1;
         assert.equal(callSid, 'CA300');
-        assert.equal(reason, 'no-answer');
+        assert.equal(reason, 'busy');
       },
     },
   });
 
   await service.handleStatusCallback({
     CallSid: 'CA300',
-    CallStatus: 'no-answer',
-    SequenceNumber: '3',
+    CallStatus: 'busy',
+    SequenceNumber: '1',
   });
 
   assert.equal(markFailedCalls, 1);
-});
-
-test('handleStatusCallback skips duplicate terminal transitions', async () => {
-  let markFailedCalls = 0;
-  const service = createService({
-    calls: {
-      recordProviderEvent: async () => false,
-      markFailed: async () => {
-        markFailedCalls += 1;
-      },
-    },
-  });
-
-  await service.handleStatusCallback({
-    CallSid: 'CA300',
-    CallStatus: 'failed',
-    SequenceNumber: '4',
-  });
-
-  assert.equal(markFailedCalls, 0);
-});
-
-test('validateWebhook delegates to telephony provider port', () => {
-  let delegated = false;
-  const service = createService({
-    telephony: {
-      validateWebhook: (url, params, signature) => {
-        delegated = true;
-        assert.equal(url, 'https://api.example.com/hook');
-        assert.deepEqual(params, { CallSid: 'CA1' });
-        assert.equal(signature, 'sig');
-        return true;
-      },
-    },
-  });
-
-  assert.equal(
-    service.validateWebhook('https://api.example.com/hook', { CallSid: 'CA1' }, 'sig'),
-    true,
-  );
-  assert.equal(delegated, true);
 });

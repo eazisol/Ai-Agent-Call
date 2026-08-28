@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Plug } from "lucide-react";
+import { Mic, Plug } from "lucide-react";
 
 import { TelephonyProviderStatusPanel } from "@/components/settings/telephony-provider-status-panel";
 import { useOrganizationSession } from "@/components/organizations/organization-session";
@@ -44,12 +44,57 @@ export default function IntegrationsSettingsPage() {
 
       <TelephonyProviderStatusPanel role={active.role} />
 
+      <section className="rounded-xl border bg-card p-6">
+        <div className="flex items-start gap-3">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted">
+            <Mic className="size-5 text-muted-foreground" aria-hidden="true" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-sm font-semibold text-foreground">
+              Voice conversations (ElevenLabs)
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Inbound calls route from Twilio to ElevenLabs ConvAI after the
+              platform resolves the called number to a business, agent, knowledge
+              base, and voice. Conversation lifecycle webhooks update call status
+              in the portal.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Ensure agents are synced, knowledge is published, and voices are
+              assigned before expecting successful handoffs. Review activity in{" "}
+              <Link
+                href="/calls"
+                className="font-medium text-foreground underline-offset-4 hover:underline"
+              >
+                Call history
+              </Link>
+              .
+            </p>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <Button asChild variant="outline" size="sm">
+                <Link href="/agents">Agents</Link>
+              </Button>
+              <Button asChild variant="outline" size="sm">
+                <Link href="/voices">Voices</Link>
+              </Button>
+              <Button asChild variant="outline" size="sm">
+                <Link href="/knowledge">Knowledge</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <p className="text-sm text-muted-foreground">
         When Twilio is connected, manage business phone numbers from{" "}
-        <Link href="/phone-numbers" className="font-medium text-foreground underline-offset-4 hover:underline">
+        <Link
+          href="/phone-numbers"
+          className="font-medium text-foreground underline-offset-4 hover:underline"
+        >
           Phone numbers
         </Link>
-        . Search, purchase, import, assign to agents, and release numbers there.
+        . Assign numbers to agents so inbound callers reach the correct AI
+        receptionist.
       </p>
     </div>
   );

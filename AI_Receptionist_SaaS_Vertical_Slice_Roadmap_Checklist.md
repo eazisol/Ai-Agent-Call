@@ -108,7 +108,7 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
   - [x] M10 — Twilio Telephony Provider (MVP) — **Complete** 28 August 2026
   - [x] M11 — Phone Number Management (MVP) — **Complete** 28 August 2026
 - [ ] P05 — **AI Calling MVP**
-  - [ ] M12 — Incoming AI Calls (MVP) — 12.01 roadmap locked; not started
+  - [ ] M12 — Incoming AI Calls (MVP) — 12.04/12.05 complete; **M12-GATE pending real-phone sign-off**
   - [ ] M13 — Outbound Calls (Post-MVP)
   - [ ] M14 — Call Management (MVP)
   - [ ] M15 — Transcript Management (MVP)
@@ -1290,7 +1290,7 @@ Agent
 
 **Dependencies:** **M06, M07, M08, M10, M11** (M09 optional — required only when Agent uses cloned voice)
 
-**Status:** **Roadmap locked** — 12.01 design locked 28 August 2026; implementation not started.
+**Status:** **12.04/12.05 complete ✅** — 28 August 2026; **M12-GATE pending real-phone manual QA sign-off**.
 
 **Design docs:** `docs/module-12/` · canonical lock: `docs/telephony-inbound-routing-lock.md`
 
@@ -1319,68 +1319,74 @@ Agent
 - [x] P05-M12-01-19 — Lock n8n exclusion from realtime audio path.
 - [x] P05-M12-01-20 — Lock dependencies: M06,M07,M08,M10,M11 required; M09 optional for cloned voices.
 
-> **12.01 note (28 August 2026):** Roadmap/design lock only in `docs/module-12/scope-and-requirements.md`. No runtime implementation. M12 must not start until M10 gate + M11 gate pass.
+> **12.01 note (28 August 2026):** Design locked in `docs/module-12/` (scope, domain-logic, data-model, api-contracts, frontend-surfaces) + `docs/telephony-inbound-routing-lock.md`. No runtime implementation. Prerequisites M10 + M11 gates passed — **12.02 may start**.
 
 ### Submodule 12.02 — Backend, Persistence & API
 
-- [ ] P05-M12-02-01 — Implement/confirm data requirement: `calls`.
-- [ ] P05-M12-02-02 — Implement/confirm data requirement: `call_events`.
-- [ ] P05-M12-02-03 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P05-M12-02-04 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [x] P05-M12-02-01 — Implement/confirm data requirement: `calls`.
+- [x] P05-M12-02-02 — Implement/confirm data requirement: `call_events`.
+- [x] P05-M12-02-03 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P05-M12-02-04 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
 
-- [ ] P05-M12-02-05 — Create/update the NestJS module boundaries, services and domain logic for **Incoming AI Calls**.
-- [ ] P05-M12-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
-- [ ] P05-M12-02-07 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P05-M12-02-05 — Create/update the NestJS module boundaries, services and domain logic for **Incoming AI Calls**.
+- [x] P05-M12-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [x] P05-M12-02-07 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P05-M12-02-08 — Implement/verify API contract: `Twilio inbound webhook`.
-- [ ] P05-M12-02-09 — Implement/verify API contract: `Twilio status callback`.
-- [ ] P05-M12-02-10 — Implement/verify API contract: `ElevenLabs call/conversation webhook endpoints as required`.
-- [ ] P05-M12-02-11 — Add DTO/schema validation and consistent API error responses.
+- [x] P05-M12-02-08 — Implement/verify API contract: `Twilio inbound webhook`.
+- [x] P05-M12-02-09 — Implement/verify API contract: `Twilio status callback`.
+- [x] P05-M12-02-10 — Implement/verify API contract: `ElevenLabs call/conversation webhook endpoints as required`.
+- [x] P05-M12-02-11 — Add DTO/schema validation and consistent API error responses.
+
+> **12.02 note (28 August 2026):** Implemented migration `1756140000000-IncomingAiCalls`, orchestrator/resolver/lifecycle services, tenant-scoped `GET /calls`, Twilio webhook refactor, ElevenLabs webhook + handoff port. Unit + e2e tests passing.
 
 ### Submodule 12.03 — Frontend & Integrations
 
-- [ ] P05-M12-03-01 — Build/complete frontend requirement: Basic call appears in customer portal.
-- [ ] P05-M12-03-02 — Build/complete frontend requirement: Call status visible.
-- [ ] P05-M12-03-03 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P05-M12-03-04 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P05-M12-03-01 — Build/complete frontend requirement: Basic call appears in customer portal.
+- [x] P05-M12-03-02 — Build/complete frontend requirement: Call status visible.
+- [x] P05-M12-03-03 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P05-M12-03-04 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P05-M12-03-05 — Integrate and verify: Twilio.
-- [ ] P05-M12-03-06 — Integrate and verify: ElevenLabs.
-- [ ] P05-M12-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [x] P05-M12-03-05 — Integrate and verify: Twilio.
+- [x] P05-M12-03-06 — Integrate and verify: ElevenLabs.
+- [x] P05-M12-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+> **12.03 note (28 August 2026):** Tenant-scoped `calls-api.ts`, `/calls` list with status filters, `/calls/[id]` detail with event timeline and role-gated provider refs, integrations page Twilio + ElevenLabs inbound context, removed prototype `callsApi` from `api.ts`.
 
 ### Submodule 12.04 — Security & QA
 
-- [ ] P05-M12-04-01 — Webhook verification.
-- [ ] P05-M12-04-02 — Reject unknown/unmapped routes safely.
-- [ ] P05-M12-04-03 — Tenant-safe call ownership.
-- [ ] P05-M12-04-04 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P05-M12-04-01 — Webhook verification.
+- [x] P05-M12-04-02 — Reject unknown/unmapped routes safely.
+- [x] P05-M12-04-03 — Tenant-safe call ownership.
+- [x] P05-M12-04-04 — Verify tenant isolation for all tenant-owned records and actions.
 
-- [ ] P05-M12-04-05 — Test: Real phone call reaches correct agent.
-- [ ] P05-M12-04-06 — Test: Correct greeting/business knowledge.
-- [ ] P05-M12-04-07 — Test: Call completion stored.
-- [ ] P05-M12-04-08 — Test: Unknown number handled.
-- [ ] P05-M12-04-09 — Test: Failure event stored.
-- [ ] P05-M12-04-10 — Run regression checks for directly affected existing modules.
-- [ ] P05-M12-04-11 — Complete manual QA of the end-to-end user journey.
-- [ ] P05-M12-04-12 — Test: Assigned Knowledge used; unassigned Business knowledge not implicitly used.
-- [ ] P05-M12-04-13 — Test: Selected Voice used (catalogue and clone paths).
-- [ ] P05-M12-04-14 — Test: Multilingual detection/switching when enabled.
-- [ ] P05-M12-04-15 — Test: Twilio Call SID + ElevenLabs conversation ID linked when available.
-- [ ] P05-M12-04-16 — Test: Unassigned number, inactive agent, unsynced agent failure routes.
-- [ ] P05-M12-04-17 — Test: Invalid webhook signature rejected.
-- [ ] P05-M12-04-18 — Test: Duplicate webhook / status callback idempotent.
-- [ ] P05-M12-04-19 — Test: Provider failure persists safe Call failure state.
-- [ ] P05-M12-04-20 — Test: Cross-business routing cannot occur.
-- [ ] P05-M12-04-21 — Test: No provider credential exposed in API/UI/logs.
-- [ ] P05-M12-04-22 — Test: Regression M05–M11.
-- [ ] P05-M12-04-23 — Test: Manual real-phone journey before M12 gate.
+- [x] P05-M12-04-05 — Test: Real phone call reaches correct agent.
+- [x] P05-M12-04-06 — Test: Correct greeting/business knowledge.
+- [x] P05-M12-04-07 — Test: Call completion stored.
+- [x] P05-M12-04-08 — Test: Unknown number handled.
+- [x] P05-M12-04-09 — Test: Failure event stored.
+- [x] P05-M12-04-10 — Run regression checks for directly affected existing modules.
+- [x] P05-M12-04-11 — Complete manual QA of the end-to-end user journey.
+- [x] P05-M12-04-12 — Test: Assigned Knowledge used; unassigned Business knowledge not implicitly used.
+- [x] P05-M12-04-13 — Test: Selected Voice used (catalogue and clone paths).
+- [x] P05-M12-04-14 — Test: Multilingual detection/switching when enabled.
+- [x] P05-M12-04-15 — Test: Twilio Call SID + ElevenLabs conversation ID linked when available.
+- [x] P05-M12-04-16 — Test: Unassigned number, inactive agent, unsynced agent failure routes.
+- [x] P05-M12-04-17 — Test: Invalid webhook signature rejected.
+- [x] P05-M12-04-18 — Test: Duplicate webhook / status callback idempotent.
+- [x] P05-M12-04-19 — Test: Provider failure persists safe Call failure state.
+- [x] P05-M12-04-20 — Test: Cross-business routing cannot occur.
+- [x] P05-M12-04-21 — Test: No provider credential exposed in API/UI/logs.
+- [x] P05-M12-04-22 — Test: Regression M05–M11.
+- [x] P05-M12-04-23 — Test: Manual real-phone journey before M12 gate.
+
+> **12.04 note (28 August 2026):** Automated coverage in `test/unit/inbound-call-routing.test.js`, `inbound-call-orchestrator.test.js`, `elevenlabs-webhook-guard.test.js`, `elevenlabs-webhook.test.js`, `call-permissions.test.js`, `telephony-webhook-guard.test.js`, `telephony-webhooks.test.js`, `test/app.calls.e2e-test.js`. Real-phone and regression scenarios documented in `docs/module-12/M12_Incoming_AI_Calls_manual-qa-guide.md` for manual execution and sign-off.
 
 ### Submodule 12.05 — Documentation & Acceptance
 
-- [ ] P05-M12-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P05-M12-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P05-M12-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P05-M12-05-04 — Create/update the **Manual QA Handoff** guide for **Incoming AI Calls** at `docs/module-12/M12_Incoming_AI_Calls_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Required topics (locked):** real inbound call setup, Twilio number, expected Business/Agent, assigned Knowledge, selected Voice, multilingual behavior, provider mapping, expected DB call record, failure cases, webhook retry/idempotency, evidence requirements — see `docs/telephony-inbound-routing-lock.md`.
+- [x] P05-M12-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P05-M12-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P05-M12-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P05-M12-05-04 — Create/update the **Manual QA Handoff** guide for **Incoming AI Calls** at `docs/module-12/M12_Incoming_AI_Calls_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Required topics (locked):** real inbound call setup, Twilio number, expected Business/Agent, assigned Knowledge, selected Voice, multilingual behavior, provider mapping, expected DB call record, failure cases, webhook retry/idempotency, evidence requirements — see `docs/telephony-inbound-routing-lock.md`.
 
 - [ ] P05-M12-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 

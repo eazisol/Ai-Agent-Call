@@ -129,6 +129,14 @@ export default () => {
         1_048_576,
       ),
     },
+    inboundCall: {
+      devStreamFallback: booleanValue(
+        process.env.INBOUND_CALL_DEV_STREAM_FALLBACK,
+        nodeEnv === 'development',
+      ),
+      elevenLabsWebhookSecret:
+        process.env.ELEVENLABS_WEBHOOK_SECRET ?? '',
+    },
     n8n: {
       enabled: booleanValue(process.env.N8N_ENABLED, false),
       callCompletedWebhook: process.env.N8N_CALL_COMPLETED_WEBHOOK,

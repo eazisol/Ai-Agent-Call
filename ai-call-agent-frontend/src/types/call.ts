@@ -1,20 +1,11 @@
-export type CallStatus = "started" | "in_progress" | "completed" | "failed";
+export type {
+  CallDetailResponse,
+  CallDirection,
+  CallEventView,
+  CallListItem,
+  CallListResponse,
+  CallStatus,
+} from "@/lib/calls-api";
 
-export interface Call {
-  id: string;
-  twilioCallSid: string;
-  callerNumber?: string;
-  receiverNumber?: string;
-  status: CallStatus;
-  startedAt?: string;
-  endedAt?: string;
-  duration?: number;
-  summary?: string;
-  conclusion?: string;
-  sentiment?: string;
-  createdAt: string;
-  providerMappings?: Array<{
-    provider: string;
-    externalCallId: string;
-  }>;
-}
+/** @deprecated Use CallListItem from calls-api for tenant-scoped call views. */
+export type Call = import("@/lib/calls-api").CallListItem;

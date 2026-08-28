@@ -75,8 +75,9 @@ export function TelephonyProviderStatusPanel({ role }: Props) {
             Telephony provider (Twilio)
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Server-side Twilio credentials and webhook routing. Manage business
-            phone inventory from Phone numbers in the portal nav.
+            Server-side Twilio credentials and inbound webhook routing. Incoming
+            calls are handed off to ElevenLabs after platform routing resolves
+            the business line and agent.
           </p>
         </div>
         <StatusBadge status={telephonyStatusBadge(status)}>

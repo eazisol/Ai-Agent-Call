@@ -329,7 +329,7 @@ This is a deployment separation, not a requirement to create microservices. Each
 | M9 | Voice Cloning & Consent | 3 | MVP Optional | P1 | M3, M5, M6, M8 | Complete — 28 August 2026 |
 | M10 | Twilio Telephony Provider | 4 | MVP | P0 | M0 | **Complete** (28 August 2026) |
 | M11 | Phone Number Management | 4 | MVP | P0 | M4, M5, M10 | **Complete** — 28 August 2026 |
-| M12 | Incoming AI Calls | 5 | MVP | P0 | M6, M7, M8, M10, M11 (M9 optional) | Not Started (12.01 roadmap locked) |
+| M12 | Incoming AI Calls | 5 | MVP | P0 | M6, M7, M8, M10, M11 (M9 optional) | 12.04/12.05 complete — M12-GATE pending sign-off — 28 August 2026 |
 | M13 | Outbound Calls | 5 | Commercial | P1 | M12, M20, M23 | Not Started |
 | M14 | Call Management | 5 | MVP | P0 | M12 | Not Started |
 | M15 | Transcripts | 5 | MVP | P0 | M12, M14 | Not Started |

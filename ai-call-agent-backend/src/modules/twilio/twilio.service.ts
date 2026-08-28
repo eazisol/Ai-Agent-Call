@@ -2,10 +2,10 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ApplicationError } from '../../common/errors/application-error';
 import {
   TELEPHONY_PROVIDER_PORT,
-  type IncomingCallContext,
   type TelephonyProviderPort,
 } from '../../providers/telephony-provider.port';
-import { CallsService } from '../calls/calls.service';
+import { CallLifecycleService } from '../calls/call-lifecycle.service';
+import { InboundCallOrchestratorService } from '../calls/inbound-call-orchestrator.service';
 import { TwilioWebhookDto } from './dto/twilio-webhook.dto';
 
 /** Validated Twilio form body; extra string fields may still be present at runtime. */
@@ -25,29 +25,28 @@ export class TwilioService {
   constructor(
     @Inject(TELEPHONY_PROVIDER_PORT)
     private readonly telephony: TelephonyProviderPort,
-    private readonly calls: CallsService,
+    private readonly lifecycle: CallLifecycleService,
+    private readonly inboundOrchestrator: InboundCallOrchestratorService,
   ) {}
 
   async handleIncomingCall(body: TwilioWebhookBody): Promise<string> {
-    const externalCallId = this.requiredCallSid(body);
-    await this.calls.createFromProvider({
-      provider: this.telephony.providerName,
-      externalCallId,
-      callerNumber: body.From,
-      receiverNumber: body.To,
-    });
-    await this.calls.recordProviderEvent({
-      provider: this.telephony.providerName,
-      externalEventId: `${externalCallId}:call-started`,
-      eventType: 'call-started',
-      payload: this.stringPayload(body),
-    });
-    this.logger.log(`Accepted incoming Twilio call ${externalCallId}`);
-    return this.telephony.buildIncomingCallResponse({
-      externalCallId,
-      callerNumber: body.From,
-      receiverNumber: body.To,
-    });
+    this.requiredCallSid(body);
+    try {
+      const twiml = await this.inboundOrchestrator.handleTwilioInbound(body);
+      this.logger.log(
+        `Accepted incoming Twilio call ${body.CallSid} with orchestrated routing`,
+      );
+      return twiml;
+    } catch (error) {
+      if (error instanceof Error && error.message === 'INVALID_WEBHOOK_PAYLOAD') {
+        throw new ApplicationError(
+          'INVALID_WEBHOOK_PAYLOAD',
+          'CallSid is required.',
+          400,
+        );
+      }
+      throw error;
+    }
   }
 
   async handleCallEnded(body: TwilioWebhookBody): Promise<{ success: true }> {
@@ -58,14 +57,16 @@ export class TwilioService {
       body.Timestamp ?? body.CallDuration ?? 'unknown',
     ].join(':');
 
-    const isNew = await this.calls.recordProviderEvent({
+    const call = await this.lifecycle.findExistingByTwilioSid(externalCallId);
+    const isNew = await this.lifecycle.recordProviderEvent({
       provider: this.telephony.providerName,
       externalEventId,
       eventType: 'call-ended',
       payload: this.stringPayload(body),
+      call: call ?? undefined,
     });
     if (isNew) {
-      await this.calls.markCompleted(
+      await this.lifecycle.markCompleted(
         this.telephony.providerName,
         externalCallId,
         this.duration(body.CallDuration),
@@ -86,22 +87,37 @@ export class TwilioService {
       body.SequenceNumber ?? body.Timestamp ?? 'unknown',
     ].join(':');
 
-    const isNew = await this.calls.recordProviderEvent({
+    const call = await this.lifecycle.findExistingByTwilioSid(externalCallId);
+    const isNew = await this.lifecycle.recordProviderEvent({
       provider: this.telephony.providerName,
       externalEventId,
       eventType: `call-status:${status}`,
       payload: this.stringPayload(body),
+      call: call ?? undefined,
     });
 
     if (isNew) {
-      if (status === 'completed') {
-        await this.calls.markCompleted(
+      if (status === 'in-progress' || status === 'answered') {
+        await this.lifecycle.markInProgress(
+          this.telephony.providerName,
+          externalCallId,
+        );
+        if (call) {
+          await this.lifecycle.appendCallEvent({
+            callId: call.id,
+            eventType: 'CALL_CONNECTED',
+            source: 'twilio',
+            externalEventId: `${externalCallId}:connected:${status}`,
+          });
+        }
+      } else if (status === 'completed') {
+        await this.lifecycle.markCompleted(
           this.telephony.providerName,
           externalCallId,
           this.duration(body.CallDuration),
         );
       } else if (TERMINAL_FAILURE_STATUSES.has(status)) {
-        await this.calls.markFailed(
+        await this.lifecycle.markFailed(
           this.telephony.providerName,
           externalCallId,
           status,
@@ -121,7 +137,9 @@ export class TwilioService {
     return this.telephony.validateWebhook(url, params, signature);
   }
 
-  buildIncomingCallResponse(context: IncomingCallContext): string {
+  buildIncomingCallResponse(
+    context: Parameters<TelephonyProviderPort['buildIncomingCallResponse']>[0],
+  ): string {
     return this.telephony.buildIncomingCallResponse(context);
   }
 
