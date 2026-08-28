@@ -450,7 +450,7 @@ export class AgentsService {
     });
 
     const agent = await this.findOwnedAgent(businessId, agentId);
-    const dependents = await this.countNonCascadingDependents(agent.id);
+    const dependents = this.countNonCascadingDependents();
     if (dependents > 0) {
       throw new ApplicationError(
         'AGENT_HAS_DEPENDENTS',
@@ -467,7 +467,7 @@ export class AgentsService {
     return { deleted: true };
   }
 
-  private async countNonCascadingDependents(_agentId: string): Promise<number> {
+  private countNonCascadingDependents(): number {
     // M05: child tables cascade. Phone/call FKs arrive in later modules.
     return 0;
   }
@@ -629,7 +629,7 @@ export class AgentsService {
     );
     this.assertSubsetOfBusiness(languages, businessLanguages);
     const language = this.requireLanguage(
-      input.language ?? input.business.defaultLanguage ?? languages[0]!,
+      input.language ?? input.business.defaultLanguage ?? languages[0],
     );
     if (!languages.includes(language)) {
       throw new ApplicationError(

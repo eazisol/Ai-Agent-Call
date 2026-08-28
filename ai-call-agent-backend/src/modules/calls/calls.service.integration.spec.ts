@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 import { randomUUID } from 'node:crypto';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
@@ -50,7 +51,6 @@ describe('CallsService integration', () => {
       implementation: () => randomUUID(),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const dataSource: DataSource = db.adapters.createTypeormDataSource({
       type: 'postgres',
       entities: [

@@ -74,9 +74,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         body: {
           error: {
             code:
-              statusCode === HttpStatus.BAD_REQUEST
-                ? 'VALIDATION_ERROR'
-                : `HTTP_${statusCode}`,
+              statusCode === 400 ? 'VALIDATION_ERROR' : `HTTP_${statusCode}`,
             message,
             correlationId,
             details,

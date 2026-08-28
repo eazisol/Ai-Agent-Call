@@ -4,6 +4,7 @@
  *
  * Does not modify or delete rows in public.migrations (n8n ownership).
  */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 import { Client } from 'pg';
 import { formatPgError, loadBackendEnv } from './load-backend-env';
 

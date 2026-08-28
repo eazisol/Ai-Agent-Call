@@ -90,7 +90,7 @@ export class KnowledgeSyncService {
     knowledge: KnowledgeSourceView;
     sync: KnowledgeSyncResultView;
   }> {
-    return this.runSync(userId, organizationId, businessId, knowledgeId, false);
+    return this.runSync(userId, organizationId, businessId, knowledgeId);
   }
 
   async resyncForUser(
@@ -102,7 +102,7 @@ export class KnowledgeSyncService {
     knowledge: KnowledgeSourceView;
     sync: KnowledgeSyncResultView;
   }> {
-    return this.runSync(userId, organizationId, businessId, knowledgeId, true);
+    return this.runSync(userId, organizationId, businessId, knowledgeId);
   }
 
   async getStatusForUser(
@@ -223,7 +223,6 @@ export class KnowledgeSyncService {
     organizationId: string,
     businessId: string,
     knowledgeId: string,
-    _forceResync: boolean,
   ): Promise<{
     knowledge: KnowledgeSourceView;
     sync: KnowledgeSyncResultView;

@@ -3,7 +3,7 @@
  * Distinct from VoiceAgentProviderPort (realtime WebSocket / OpenAI prototype).
  */
 
-export type VoiceAgentSyncProviderName = 'elevenlabs' | string;
+export type VoiceAgentSyncProviderName = string;
 
 export type ProviderAgentCreateInput = {
   name: string;

@@ -94,11 +94,12 @@ export class ElevenLabsVoiceAgentSyncAdapter implements VoiceAgentSyncPort {
     return { externalAgentId: externalId, warnings };
   }
 
-  async deactivate(externalId: string): Promise<void> {
+  deactivate(externalId: string): Promise<void> {
     // ConvAI has no dedicated deactivate; leave remote agent intact on local archive.
     this.logger.log(
       `ElevenLabs deactivate skipped for ${externalId} (no soft-disable API; remote retained)`,
     );
+    return Promise.resolve();
   }
 
   async delete(externalId: string): Promise<void> {

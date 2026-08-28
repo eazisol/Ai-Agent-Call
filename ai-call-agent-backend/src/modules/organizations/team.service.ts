@@ -15,7 +15,6 @@ import {
   OrganizationMember,
   type OrganizationMemberRole,
 } from './entities/organization-member.entity';
-import { Organization } from './entities/organization.entity';
 import {
   assertCan,
   canAssignRole,
@@ -334,7 +333,7 @@ export class TeamService {
       );
     }
 
-    if (!canAssignRole(actor.role, role as OrganizationMemberRole)) {
+    if (!canAssignRole(actor.role, role)) {
       throw new ApplicationError(
         'FORBIDDEN',
         'You cannot assign that role.',
@@ -350,7 +349,7 @@ export class TeamService {
       );
     }
 
-    target.role = role as Exclude<OrganizationMemberRole, 'owner'>;
+    target.role = role;
     const saved = await this.members.save(target);
     return this.toMemberView(saved);
   }

@@ -9,7 +9,6 @@ import {
 import { Agent } from '../agents/entities/agent.entity';
 import { Call } from '../calls/entities/call.entity';
 import { AiConfig } from '../openai-realtime/entities/ai-config.entity';
-import type { OrganizationMemberRole } from '../organizations/entities/organization-member.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { assertBusinessCan } from './business-permissions';
 import type {
@@ -172,7 +171,7 @@ export class BusinessesService {
       order: { createdAt: 'ASC' },
     });
 
-    return rows.map((row) => this.toView(row, membership.role));
+    return rows.map((row) => this.toView(row));
   }
 
   async getForUser(
@@ -187,7 +186,7 @@ export class BusinessesService {
     assertBusinessCan(membership.role, 'view_business');
 
     const business = await this.findOwnedBusiness(organizationId, businessId);
-    return this.toView(business, membership.role);
+    return this.toView(business);
   }
 
   async updateForUser(
@@ -379,7 +378,7 @@ export class BusinessesService {
         400,
       );
     }
-    return this.toView(business, membership.role);
+    return this.toView(business);
   }
 
   isValidIanaTimezone(timezone: string): boolean {
@@ -461,7 +460,7 @@ export class BusinessesService {
 
   private resolveLanguagePolicy(input: {
     defaultLanguage: BusinessLanguage;
-    languages: BusinessLanguage[] | string[];
+    languages: BusinessLanguage[];
     languageDetectionEnabled?: boolean;
     languageSwitchingEnabled?: boolean;
     explicitDetection?: boolean;
@@ -801,10 +800,7 @@ export class BusinessesService {
     return value;
   }
 
-  private toView(
-    business: Business,
-    _role: OrganizationMemberRole,
-  ): BusinessView {
+  private toView(business: Business): BusinessView {
     if (!business.organizationId) {
       throw new ApplicationError(
         'BUSINESS_NOT_FOUND',

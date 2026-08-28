@@ -3,7 +3,7 @@
  * Distinct from VoiceAgentSyncPort (M06 agent provisioning).
  */
 
-export type KnowledgeSyncProviderName = 'elevenlabs' | string;
+export type KnowledgeSyncProviderName = string;
 
 export type KnowledgePublishInput = {
   name: string;

@@ -1,4 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import type { Response } from 'express';
 import { ApplicationError } from '../../common/errors/application-error';
 import { AuthCookieService } from './auth-cookie.service';
 import { type AuthenticatedRequest, readCookie } from './auth-request';
@@ -13,7 +14,7 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
-    const response = context.switchToHttp().getResponse();
+    const response = context.switchToHttp().getResponse<Response>();
 
     const accessToken = readCookie(request, this.cookies.accessCookieName());
     if (accessToken) {
