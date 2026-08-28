@@ -102,8 +102,7 @@ function createHarness(membersSeed = []) {
   const organizations = {
     requireMembership: async (userId, organizationId) => {
       const membership = membersSeed.find(
-        (row) =>
-          row.userId === userId && row.organizationId === organizationId,
+        (row) => row.userId === userId && row.organizationId === organizationId,
       );
       if (!membership) {
         throw new ApplicationError(

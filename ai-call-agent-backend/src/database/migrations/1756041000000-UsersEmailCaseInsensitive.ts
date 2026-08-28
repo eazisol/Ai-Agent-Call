@@ -4,9 +4,7 @@ import type { MigrationInterface, QueryRunner } from 'typeorm';
  * Persist identity emails case-insensitively:
  * User@Example.com and user@example.com are the same account key.
  */
-export class UsersEmailCaseInsensitive1756041000000
-  implements MigrationInterface
-{
+export class UsersEmailCaseInsensitive1756041000000 implements MigrationInterface {
   name = 'UsersEmailCaseInsensitive1756041000000';
 
   async up(queryRunner: QueryRunner): Promise<void> {

@@ -19,7 +19,8 @@ export class AuthRateLimitService {
 
   consume(bucketKey: string): void {
     const limit = this.config.get<number>('auth.rateLimitMax') ?? 20;
-    const windowMs = this.config.get<number>('auth.rateLimitWindowMs') ?? 900_000;
+    const windowMs =
+      this.config.get<number>('auth.rateLimitWindowMs') ?? 900_000;
     const now = Date.now();
     const existing = this.buckets.get(bucketKey);
 

@@ -34,12 +34,6 @@ function RegisterForm() {
   const [submitting, setSubmitting] = React.useState(false);
 
   React.useEffect(() => {
-    if (emailPrefill) {
-      setEmail(emailPrefill);
-    }
-  }, [emailPrefill]);
-
-  React.useEffect(() => {
     rememberInviteReturn(nextPath);
   }, [nextPath]);
 

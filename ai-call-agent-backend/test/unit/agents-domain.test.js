@@ -1,9 +1,7 @@
 const assert = require('node:assert/strict');
 const { randomUUID } = require('node:crypto');
 const test = require('node:test');
-const {
-  AgentsService,
-} = require('../../dist/modules/agents/agents.service');
+const { AgentsService } = require('../../dist/modules/agents/agents.service');
 const {
   ApplicationError,
 } = require('../../dist/common/errors/application-error');
@@ -12,10 +10,7 @@ function matchesWhere(row, where) {
   return Object.entries(where).every(([key, value]) => row[key] === value);
 }
 
-function createHarness({
-  membersSeed = [],
-  businessSeed = [],
-} = {}) {
+function createHarness({ membersSeed = [], businessSeed = [] } = {}) {
   const agentRows = [];
   const configRows = [];
   const promptRows = [];
@@ -110,8 +105,7 @@ function createHarness({
   const organizations = {
     requireMembership: async (userId, organizationId) => {
       const membership = membersSeed.find(
-        (row) =>
-          row.userId === userId && row.organizationId === organizationId,
+        (row) => row.userId === userId && row.organizationId === organizationId,
       );
       if (!membership) {
         throw new ApplicationError(
@@ -227,8 +221,7 @@ test('viewer cannot create agent', async () => {
 
   await assert.rejects(
     () => service.create(userId, orgId, bizId, baseCreate),
-    (error) =>
-      error instanceof ApplicationError && error.code === 'FORBIDDEN',
+    (error) => error instanceof ApplicationError && error.code === 'FORBIDDEN',
   );
 });
 
@@ -370,8 +363,7 @@ test('manager cannot archive', async () => {
   const created = await service.create(userId, orgId, bizId, baseCreate);
   await assert.rejects(
     () => service.archiveForUser(userId, orgId, bizId, created.id),
-    (error) =>
-      error instanceof ApplicationError && error.code === 'FORBIDDEN',
+    (error) => error instanceof ApplicationError && error.code === 'FORBIDDEN',
   );
 });
 
@@ -382,12 +374,7 @@ test('hard delete removes agent', async () => {
   });
 
   const created = await service.create(userId, orgId, bizId, baseCreate);
-  const result = await service.deleteForUser(
-    userId,
-    orgId,
-    bizId,
-    created.id,
-  );
+  const result = await service.deleteForUser(userId, orgId, bizId, created.id);
   assert.deepEqual(result, { deleted: true });
   assert.equal(agentRows.length, 0);
 });
@@ -620,12 +607,7 @@ test('viewer can list/view but cannot update or activate', async () => {
   const created = await service.create(userId, orgId, bizId, baseCreate);
   const listed = await service.listForUser(viewerId, orgId, bizId, false);
   assert.equal(listed.length, 1);
-  const viewed = await service.getForUser(
-    viewerId,
-    orgId,
-    bizId,
-    created.id,
-  );
+  const viewed = await service.getForUser(viewerId, orgId, bizId, created.id);
   assert.equal(viewed.id, created.id);
 
   await assert.rejects(
@@ -633,13 +615,11 @@ test('viewer can list/view but cannot update or activate', async () => {
       service.updateForUser(viewerId, orgId, bizId, created.id, {
         greeting: 'Nope',
       }),
-    (error) =>
-      error instanceof ApplicationError && error.code === 'FORBIDDEN',
+    (error) => error instanceof ApplicationError && error.code === 'FORBIDDEN',
   );
   await assert.rejects(
     () => service.deactivateForUser(viewerId, orgId, bizId, created.id),
-    (error) =>
-      error instanceof ApplicationError && error.code === 'FORBIDDEN',
+    (error) => error instanceof ApplicationError && error.code === 'FORBIDDEN',
   );
 });
 

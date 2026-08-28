@@ -11,11 +11,7 @@ import {
 import { User } from '../../auth/entities/user.entity';
 import { Organization } from './organization.entity';
 
-export type OrganizationMemberRole =
-  | 'owner'
-  | 'admin'
-  | 'manager'
-  | 'viewer';
+export type OrganizationMemberRole = 'owner' | 'admin' | 'manager' | 'viewer';
 
 export type InviteAssignableRole = 'admin' | 'manager' | 'viewer';
 

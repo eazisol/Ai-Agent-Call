@@ -30,7 +30,10 @@ export class AuthTokenService {
         algorithms: ['HS256'],
       }) as jwt.JwtPayload;
 
-      if (typeof payload.sub !== 'string' || typeof payload.email !== 'string') {
+      if (
+        typeof payload.sub !== 'string' ||
+        typeof payload.email !== 'string'
+      ) {
         throw new ApplicationError(
           'INVALID_ACCESS_TOKEN',
           'Access token is invalid.',

@@ -11,10 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApplicationError } from '../../common/errors/application-error';
 import { AuthCookieService } from '../auth/auth-cookie.service';
-import {
-  type AuthenticatedRequest,
-  readCookie,
-} from '../auth/auth-request';
+import { type AuthenticatedRequest, readCookie } from '../auth/auth-request';
 import { AuthGuard } from '../auth/auth.guard';
 import { KnowledgeService } from './knowledge.service';
 

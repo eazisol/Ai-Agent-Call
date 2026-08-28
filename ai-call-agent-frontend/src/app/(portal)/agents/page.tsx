@@ -11,6 +11,7 @@ import { ErrorState } from "@/components/patterns/error-state";
 import { LoadingState } from "@/components/patterns/loading-state";
 import { StatusBadge } from "@/components/patterns/status-badge";
 import { Button } from "@/components/ui/button";
+import { useEffectTask } from "@/hooks/use-effect-task";
 import { formatLanguage } from "@/lib/language-catalogue";
 import {
   agentStatusBadge,
@@ -55,9 +56,7 @@ export default function AgentsPage() {
     setAgents(result.data.agents);
   }, [bizStatus, business, includeArchived]);
 
-  React.useEffect(() => {
-    void load();
-  }, [load]);
+  useEffectTask(load, [load]);
 
   if (bizStatus === "loading" || (loading && business)) {
     return <LoadingState label="Loading agents…" />;

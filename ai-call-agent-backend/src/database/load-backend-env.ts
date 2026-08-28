@@ -46,7 +46,11 @@ export function formatPgError(error: unknown): string {
   }
 
   // AggregateError / empty message on Windows connection refused
-  if (!error.message && 'errors' in error && Array.isArray((error as AggregateError).errors)) {
+  if (
+    !error.message &&
+    'errors' in error &&
+    Array.isArray((error as AggregateError).errors)
+  ) {
     const nested = (error as AggregateError).errors
       .map((item) => formatPgError(item))
       .join('; ');

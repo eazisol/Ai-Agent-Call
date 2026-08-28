@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffectTask } from "@/hooks/use-effect-task";
 import * as React from "react";
 
 import { useOrganizationSession } from "@/components/organizations/organization-session";
@@ -88,9 +89,7 @@ export function BusinessSessionProvider({
     setStatus("ready");
   }, [org, orgStatus]);
 
-  React.useEffect(() => {
-    void refresh();
-  }, [refresh]);
+  useEffectTask(refresh, [refresh]);
 
   const switchBusiness = React.useCallback(async (businessId: string) => {
     const result = await businessesApi.setActive(businessId);

@@ -20,10 +20,20 @@ export class BusinessSettings {
   @JoinColumn({ name: 'business_id' })
   business!: Business;
 
-  @Column({ name: 'address_line1', type: 'varchar', length: 200, nullable: true })
+  @Column({
+    name: 'address_line1',
+    type: 'varchar',
+    length: 200,
+    nullable: true,
+  })
   addressLine1!: string | null;
 
-  @Column({ name: 'address_line2', type: 'varchar', length: 200, nullable: true })
+  @Column({
+    name: 'address_line2',
+    type: 'varchar',
+    length: 200,
+    nullable: true,
+  })
   addressLine2!: string | null;
 
   @Column({ type: 'varchar', length: 100, nullable: true })

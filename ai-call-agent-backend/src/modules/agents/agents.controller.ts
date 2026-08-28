@@ -14,10 +14,7 @@ import {
 } from '@nestjs/common';
 import { ApplicationError } from '../../common/errors/application-error';
 import { AuthCookieService } from '../auth/auth-cookie.service';
-import {
-  type AuthenticatedRequest,
-  readCookie,
-} from '../auth/auth-request';
+import { type AuthenticatedRequest, readCookie } from '../auth/auth-request';
 import { AuthGuard } from '../auth/auth.guard';
 import { AgentsService } from './agents.service';
 import { CreateAgentDto } from './dto/create-agent.dto';
@@ -200,12 +197,7 @@ export class AgentsController {
     const userId = this.requireUserId(request);
     const organizationId = this.requireActiveOrganization(request);
     const businessId = this.requireActiveBusiness(request);
-    return this.agents.deleteForUser(
-      userId,
-      organizationId,
-      businessId,
-      id,
-    );
+    return this.agents.deleteForUser(userId, organizationId, businessId, id);
   }
 
   private requireUserId(request: AuthenticatedRequest): string {

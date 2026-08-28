@@ -1,8 +1,7 @@
-ï»¿import { buildApiUrl } from "./api-url.mjs";
+import { buildApiUrl } from "./api-url.mjs";
 import type { OrganizationRole } from "./organizations-api";
 
 import {
-  BUSINESS_LANGUAGES,
   formatLanguage as catalogueFormatLanguage,
   type BusinessLanguage,
 } from "./language-catalogue";
@@ -202,7 +201,7 @@ export function formatLanguages(
 ): string {
   const unique = [...new Set(languages.length ? languages : defaultLanguage ? [defaultLanguage] : [])];
   if (!unique.length) {
-    return "â€”";
+    return "—";
   }
   return unique
     .map((code) =>
@@ -240,7 +239,7 @@ export const COMMON_TIMEZONES = [
   "Australia/Sydney",
 ] as const;
 
-/** Businesses client â€” credentials cookies only; no request body logging. */
+/** Businesses client — credentials cookies only; no request body logging. */
 export const businessesApi = {
   list: (includeArchived = false) =>
     request<{ businesses: Business[] }>(

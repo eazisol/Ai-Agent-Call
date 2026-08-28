@@ -218,7 +218,9 @@ export class AgentsService {
       allowArchivedBusiness: true,
     });
 
-    const keys = Object.entries(input).filter(([, value]) => value !== undefined);
+    const keys = Object.entries(input).filter(
+      ([, value]) => value !== undefined,
+    );
     if (keys.length === 0) {
       throw new ApplicationError(
         'INVALID_AGENT',
@@ -246,11 +248,7 @@ export class AgentsService {
     const config = agent.config;
     const prompts = agent.prompts;
     if (!config || !prompts) {
-      throw new ApplicationError(
-        'AGENT_NOT_FOUND',
-        'Agent not found.',
-        404,
-      );
+      throw new ApplicationError('AGENT_NOT_FOUND', 'Agent not found.', 404);
     }
 
     const business = await this.businesses.findOne({
@@ -280,7 +278,8 @@ export class AgentsService {
         input.languageDetectionEnabled !== undefined ||
         input.languageSwitchingEnabled !== undefined;
 
-      let useBusinessLanguageSettings = config.useBusinessLanguageSettings ?? true;
+      let useBusinessLanguageSettings =
+        config.useBusinessLanguageSettings ?? true;
       if (input.useBusinessLanguageSettings === true) {
         useBusinessLanguageSettings = true;
       } else if (customizeRequested) {
@@ -714,9 +713,7 @@ export class AgentsService {
   }
 
   private requireVoicePreference(value: string): AgentVoicePreference {
-    if (
-      !AGENT_VOICE_PREFERENCES.includes(value as AgentVoicePreference)
-    ) {
+    if (!AGENT_VOICE_PREFERENCES.includes(value as AgentVoicePreference)) {
       throw new ApplicationError(
         'INVALID_AGENT',
         'Voice preference must be female, male, or neutral.',
@@ -770,10 +767,7 @@ export class AgentsService {
   private requireInstructions(instructions: string): string {
     const trimmed = instructions.trim();
     if (!trimmed) {
-      throw new ApplicationError(
-        'INVALID_AGENT',
-        'Instructions are required.',
-      );
+      throw new ApplicationError('INVALID_AGENT', 'Instructions are required.');
     }
     if (trimmed.length > 20000) {
       throw new ApplicationError(
@@ -894,9 +888,10 @@ export class AgentsService {
           useBusinessLanguageSettings: false,
           languageMode: config.languageMode ?? 'single',
           language: config.language,
-          languages: Array.isArray(config.languages) && config.languages.length
-            ? config.languages
-            : [config.language],
+          languages:
+            Array.isArray(config.languages) && config.languages.length
+              ? config.languages
+              : [config.language],
           languageDetectionEnabled: config.languageDetectionEnabled === true,
           languageSwitchingEnabled: config.languageSwitchingEnabled === true,
         };

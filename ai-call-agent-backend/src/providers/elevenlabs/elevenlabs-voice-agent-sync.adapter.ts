@@ -70,7 +70,11 @@ export class ElevenLabsVoiceAgentSyncAdapter implements VoiceAgentSyncPort {
     this.requireConfigured();
     const body = this.buildPayload(input);
     const warnings = this.collectWarnings(input);
-    const response = await this.request('POST', '/v1/convai/agents/create', body);
+    const response = await this.request(
+      'POST',
+      '/v1/convai/agents/create',
+      body,
+    );
     const externalAgentId = this.extractAgentId(response);
     return { externalAgentId, warnings };
   }
@@ -216,10 +220,7 @@ export class ElevenLabsVoiceAgentSyncAdapter implements VoiceAgentSyncPort {
         );
       }
     }
-    if (
-      input.languageSwitchingEnabled &&
-      input.languages.length > 1
-    ) {
+    if (input.languageSwitchingEnabled && input.languages.length > 1) {
       warnings.push(
         'Mid-call language switching is enabled locally; provider support depends on the selected ElevenLabs model and configuration.',
       );
@@ -231,7 +232,9 @@ export class ElevenLabsVoiceAgentSyncAdapter implements VoiceAgentSyncPort {
     return code;
   }
 
-  private buildPayload(input: ProviderAgentCreateInput): Record<string, unknown> {
+  private buildPayload(
+    input: ProviderAgentCreateInput,
+  ): Record<string, unknown> {
     const language = this.primaryLanguage(input);
     return {
       name: input.name.slice(0, 100),

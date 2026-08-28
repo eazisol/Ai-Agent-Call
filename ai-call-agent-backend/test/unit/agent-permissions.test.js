@@ -15,8 +15,7 @@ test('viewer can list/view but cannot create or archive agents', () => {
   assert.equal(canAgentAction('viewer', 'archive_agent'), false);
   assert.throws(
     () => assertAgentCan('viewer', 'create_agent'),
-    (error) =>
-      error instanceof ApplicationError && error.code === 'FORBIDDEN',
+    (error) => error instanceof ApplicationError && error.code === 'FORBIDDEN',
   );
 });
 
@@ -27,8 +26,7 @@ test('manager can create/update/activate but cannot archive', () => {
   assert.equal(canAgentAction('manager', 'archive_agent'), false);
   assert.throws(
     () => assertAgentCan('manager', 'delete_agent'),
-    (error) =>
-      error instanceof ApplicationError && error.code === 'FORBIDDEN',
+    (error) => error instanceof ApplicationError && error.code === 'FORBIDDEN',
   );
 });
 

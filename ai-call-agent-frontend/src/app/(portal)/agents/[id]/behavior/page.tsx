@@ -21,6 +21,7 @@ import {
   canUpdateAgent,
   type Agent,
 } from "@/lib/agents-api";
+import { useEffectTask } from "@/hooks/use-effect-task";
 
 export default function AgentBehaviorPage() {
   const params = useParams();
@@ -80,9 +81,7 @@ export default function AgentBehaviorPage() {
     hydrate(result.data.agent);
   }, [hydrate, id]);
 
-  React.useEffect(() => {
-    void load();
-  }, [load]);
+  useEffectTask(load, [load]);
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

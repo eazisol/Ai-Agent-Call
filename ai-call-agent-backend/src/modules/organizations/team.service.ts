@@ -612,9 +612,7 @@ export class TeamService {
     };
   }
 
-  private emptyPreview(
-    status: InvitationPreviewStatus,
-  ): InvitationPreviewView {
+  private emptyPreview(status: InvitationPreviewStatus): InvitationPreviewView {
     return {
       status,
       organizationId: null,
@@ -688,8 +686,7 @@ export class TeamService {
   }
 
   private inviteExpiresAt(): Date {
-    const ttl =
-      this.config.get<number>('auth.inviteTtlSeconds') ?? 604_800;
+    const ttl = this.config.get<number>('auth.inviteTtlSeconds') ?? 604_800;
     return new Date(Date.now() + ttl * 1000);
   }
 
@@ -734,9 +731,7 @@ export class TeamService {
     };
   }
 
-  private toInvitationView(
-    invitation: OrganizationInvitation,
-  ): InvitationView {
+  private toInvitationView(invitation: OrganizationInvitation): InvitationView {
     return {
       id: invitation.id,
       email: invitation.email,

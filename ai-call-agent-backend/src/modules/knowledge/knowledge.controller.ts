@@ -18,10 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { ApplicationError } from '../../common/errors/application-error';
 import { AuthCookieService } from '../auth/auth-cookie.service';
-import {
-  type AuthenticatedRequest,
-  readCookie,
-} from '../auth/auth-request';
+import { type AuthenticatedRequest, readCookie } from '../auth/auth-request';
 import { AuthGuard } from '../auth/auth.guard';
 import {
   CreateKnowledgeFaqDto,
@@ -199,12 +196,7 @@ export class KnowledgeController {
     const userId = this.requireUserId(request);
     const organizationId = this.requireActiveOrganization(request);
     const businessId = this.requireActiveBusiness(request);
-    return this.knowledge.deleteForUser(
-      userId,
-      organizationId,
-      businessId,
-      id,
-    );
+    return this.knowledge.deleteForUser(userId, organizationId, businessId, id);
   }
 
   @Post(':id/sync')

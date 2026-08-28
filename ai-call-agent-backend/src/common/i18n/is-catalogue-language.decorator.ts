@@ -7,9 +7,7 @@ import {
 import { isCatalogueLanguageCode } from './language-catalogue';
 
 @ValidatorConstraint({ name: 'isCatalogueLanguageCode', async: false })
-export class IsCatalogueLanguageCodeConstraint
-  implements ValidatorConstraintInterface
-{
+export class IsCatalogueLanguageCodeConstraint implements ValidatorConstraintInterface {
   validate(value: unknown): boolean {
     return typeof value === 'string' && isCatalogueLanguageCode(value);
   }
@@ -19,9 +17,7 @@ export class IsCatalogueLanguageCodeConstraint
   }
 }
 
-export function IsCatalogueLanguageCode(
-  validationOptions?: ValidationOptions,
-) {
+export function IsCatalogueLanguageCode(validationOptions?: ValidationOptions) {
   return (object: object, propertyName: string) => {
     registerDecorator({
       target: object.constructor,

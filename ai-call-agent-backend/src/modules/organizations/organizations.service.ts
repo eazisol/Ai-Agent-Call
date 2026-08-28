@@ -236,7 +236,9 @@ export class OrganizationsService {
   }
 
   isValidSlug(slug: string): boolean {
-    return /^[a-z0-9](?:[a-z0-9-]{0,78}[a-z0-9])?$/.test(slug) && slug.length >= 2;
+    return (
+      /^[a-z0-9](?:[a-z0-9-]{0,78}[a-z0-9])?$/.test(slug) && slug.length >= 2
+    );
   }
 
   private shortSuffix(): string {

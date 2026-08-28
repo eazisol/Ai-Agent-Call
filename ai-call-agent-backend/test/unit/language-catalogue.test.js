@@ -10,7 +10,9 @@ test('recommended starter codes are in the catalogue', () => {
   for (const code of RECOMMENDED_LANGUAGE_CODES) {
     assert.equal(isCatalogueLanguageCode(code), true);
   }
-  assert.ok(listCatalogueLanguages().length > RECOMMENDED_LANGUAGE_CODES.length);
+  assert.ok(
+    listCatalogueLanguages().length > RECOMMENDED_LANGUAGE_CODES.length,
+  );
 });
 
 test('rejects free-text and unknown codes', () => {

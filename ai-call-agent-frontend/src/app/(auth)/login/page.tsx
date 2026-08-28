@@ -32,12 +32,6 @@ function LoginForm() {
   }>({});
   const [submitting, setSubmitting] = React.useState(false);
 
-  React.useEffect(() => {
-    if (emailPrefill) {
-      setEmail(emailPrefill);
-    }
-  }, [emailPrefill]);
-
   const registerHref = withReturnTo(
     emailPrefill
       ? `/register?email=${encodeURIComponent(emailPrefill)}&lockEmail=1`

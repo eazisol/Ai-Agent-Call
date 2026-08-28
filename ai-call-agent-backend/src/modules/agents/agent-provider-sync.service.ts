@@ -192,10 +192,7 @@ export class AgentProviderSyncService {
       },
     };
 
-    if (
-      !mapping.externalAgentId ||
-      !this.voiceSync.isConfigured()
-    ) {
+    if (!mapping.externalAgentId || !this.voiceSync.isConfigured()) {
       return base;
     }
 

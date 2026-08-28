@@ -4,9 +4,7 @@ import type { MigrationInterface, QueryRunner } from 'typeorm';
  * Provider-neutral language detection / switching configuration.
  * Runtime ElevenLabs wiring is M06; this only stores SaaS config.
  */
-export class LanguageDetectionConfig1756082000000
-  implements MigrationInterface
-{
+export class LanguageDetectionConfig1756082000000 implements MigrationInterface {
   name = 'LanguageDetectionConfig1756082000000';
 
   async up(queryRunner: QueryRunner): Promise<void> {

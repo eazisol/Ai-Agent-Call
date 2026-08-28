@@ -196,7 +196,7 @@ async function request<T>(
   }
 }
 
-export function canViewKnowledge(_role: OrganizationRole | undefined): boolean {
+export function canViewKnowledge(): boolean {
   return true;
 }
 

@@ -174,7 +174,7 @@ async function request<T>(
   }
 }
 
-export function canListAgents(_role: OrganizationRole | undefined): boolean {
+export function canListAgents(): boolean {
   return true;
 }
 

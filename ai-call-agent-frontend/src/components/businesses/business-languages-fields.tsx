@@ -48,7 +48,9 @@ export function BusinessLanguagesFields({
   const [addOpen, setAddOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const languagesRef = React.useRef(languages);
-  languagesRef.current = languages;
+  React.useEffect(() => {
+    languagesRef.current = languages;
+  }, [languages]);
 
   const recommended = React.useMemo(() => listRecommendedLanguages(), []);
   const catalogue = React.useMemo(() => listCatalogueLanguages(), []);

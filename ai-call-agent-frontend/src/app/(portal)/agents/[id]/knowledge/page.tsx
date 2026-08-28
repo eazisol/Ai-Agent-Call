@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffectTask } from "@/hooks/use-effect-task";
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -78,9 +79,7 @@ export default function AgentKnowledgePage() {
     );
   }, [agentId]);
 
-  React.useEffect(() => {
-    void load();
-  }, [load]);
+  useEffectTask(load, [load]);
 
   const toggle = async (knowledgeId: string, nextChecked: boolean) => {
     if (!canAssign || !agentId) return;

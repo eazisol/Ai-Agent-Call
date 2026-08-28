@@ -18,9 +18,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { IsCatalogueLanguageCode } from '../../../common/i18n/is-catalogue-language.decorator';
-import {
-  BUSINESS_INDUSTRIES,
-} from '../entities/business.entity';
+import { BUSINESS_INDUSTRIES } from '../entities/business.entity';
 
 const TIME_HH_MM = /^([01]\d|2[0-3]):([0-5]\d)$/;
 

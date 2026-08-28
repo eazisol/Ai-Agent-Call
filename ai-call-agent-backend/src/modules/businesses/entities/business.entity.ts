@@ -56,7 +56,12 @@ export class Business {
   @Column({ length: 100 })
   industry!: BusinessIndustry;
 
-  @Column({ name: 'industry_label', type: 'varchar', length: 100, nullable: true })
+  @Column({
+    name: 'industry_label',
+    type: 'varchar',
+    length: 100,
+    nullable: true,
+  })
   industryLabel!: string | null;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
@@ -81,7 +86,7 @@ export class Business {
   @Column({
     name: 'languages',
     type: 'jsonb',
-    default: () => "'[\"en\"]'::jsonb",
+    default: () => '\'["en"]\'::jsonb',
   })
   languages!: BusinessLanguage[];
 
@@ -90,14 +95,22 @@ export class Business {
    * `languages` and respond in that language. Default language is fallback only.
    * Provider wiring (e.g. ElevenLabs) is M06.
    */
-  @Column({ name: 'language_detection_enabled', type: 'boolean', default: false })
+  @Column({
+    name: 'language_detection_enabled',
+    type: 'boolean',
+    default: false,
+  })
   languageDetectionEnabled!: boolean;
 
   /**
    * When true, mid-call language switching is allowed among `languages`
    * where the voice provider supports it. Provider wiring is M06.
    */
-  @Column({ name: 'language_switching_enabled', type: 'boolean', default: false })
+  @Column({
+    name: 'language_switching_enabled',
+    type: 'boolean',
+    default: false,
+  })
   languageSwitchingEnabled!: boolean;
 
   @Column({ length: 20, default: 'active' })

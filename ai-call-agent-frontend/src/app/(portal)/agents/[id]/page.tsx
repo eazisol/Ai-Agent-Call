@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffectTask } from "@/hooks/use-effect-task";
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -54,9 +55,7 @@ export default function AgentDetailPage() {
     setAgent(result.data.agent);
   }, [id]);
 
-  React.useEffect(() => {
-    void load();
-  }, [load]);
+  useEffectTask(load, [load]);
 
   const runAction = async (
     action: () => ReturnType<typeof agentsApi.activate>,

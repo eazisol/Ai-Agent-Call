@@ -70,7 +70,12 @@ export class KnowledgeSource {
   })
   originalFilename!: string | null;
 
-  @Column({ name: 'content_type', type: 'varchar', length: 150, nullable: true })
+  @Column({
+    name: 'content_type',
+    type: 'varchar',
+    length: 150,
+    nullable: true,
+  })
   contentType!: string | null;
 
   @Column({ name: 'byte_size', type: 'integer', nullable: true })

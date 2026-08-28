@@ -86,7 +86,10 @@ export class KnowledgeSyncService {
     organizationId: string,
     businessId: string,
     knowledgeId: string,
-  ): Promise<{ knowledge: KnowledgeSourceView; sync: KnowledgeSyncResultView }> {
+  ): Promise<{
+    knowledge: KnowledgeSourceView;
+    sync: KnowledgeSyncResultView;
+  }> {
     return this.runSync(userId, organizationId, businessId, knowledgeId, false);
   }
 
@@ -95,7 +98,10 @@ export class KnowledgeSyncService {
     organizationId: string,
     businessId: string,
     knowledgeId: string,
-  ): Promise<{ knowledge: KnowledgeSourceView; sync: KnowledgeSyncResultView }> {
+  ): Promise<{
+    knowledge: KnowledgeSourceView;
+    sync: KnowledgeSyncResultView;
+  }> {
     return this.runSync(userId, organizationId, businessId, knowledgeId, true);
   }
 
@@ -218,7 +224,10 @@ export class KnowledgeSyncService {
     businessId: string,
     knowledgeId: string,
     _forceResync: boolean,
-  ): Promise<{ knowledge: KnowledgeSourceView; sync: KnowledgeSyncResultView }> {
+  ): Promise<{
+    knowledge: KnowledgeSourceView;
+    sync: KnowledgeSyncResultView;
+  }> {
     const membership = await this.organizations.requireMembership(
       userId,
       organizationId,

@@ -17,9 +17,7 @@ const {
   GlobalExceptionFilter,
 } = require('../dist/common/filters/global-exception.filter');
 const { ConfigService } = require('@nestjs/config');
-const {
-  ApplicationError,
-} = require('../dist/common/errors/application-error');
+const { ApplicationError } = require('../dist/common/errors/application-error');
 
 const sampleBusiness = {
   id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
@@ -200,9 +198,7 @@ test('POST /businesses/active sets cookie after ownership check', async () => {
   assert.equal(response.body.business.id, sampleBusiness.id);
   const cookies = response.headers['set-cookie'] ?? [];
   assert.equal(
-    cookies.some((value) =>
-      value.startsWith(`eazi_biz=${sampleBusiness.id}`),
-    ),
+    cookies.some((value) => value.startsWith(`eazi_biz=${sampleBusiness.id}`)),
     true,
   );
   await app.close();

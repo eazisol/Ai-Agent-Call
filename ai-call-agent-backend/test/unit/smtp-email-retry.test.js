@@ -73,6 +73,7 @@ test('SMTP adapter reports EMAIL_NOT_CONFIGURED without host', async () => {
         text: 'Body',
       }),
     (error) =>
-      error instanceof ApplicationError && error.code === 'EMAIL_NOT_CONFIGURED',
+      error instanceof ApplicationError &&
+      error.code === 'EMAIL_NOT_CONFIGURED',
   );
 });

@@ -81,9 +81,7 @@ export class SmtpEmailAdapter implements EmailDeliveryPort {
     return this.transporter;
   }
 
-  private buildAuth():
-    | { user: string; pass: string }
-    | undefined {
+  private buildAuth(): { user: string; pass: string } | undefined {
     const user = this.config.get<string>('smtp.user');
     const pass = this.config.get<string>('smtp.password');
     if (!user || !pass) {

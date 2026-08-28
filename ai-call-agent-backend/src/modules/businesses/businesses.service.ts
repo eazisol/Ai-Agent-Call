@@ -456,10 +456,7 @@ export class BusinessesService {
         }),
       };
     }
-    throw new ApplicationError(
-      'INVALID_BUSINESS',
-      'Invalid business payload.',
-    );
+    throw new ApplicationError('INVALID_BUSINESS', 'Invalid business payload.');
   }
 
   private resolveLanguagePolicy(input: {
@@ -582,8 +579,7 @@ export class BusinessesService {
       ? raw.filter((item): item is string => typeof item === 'string')
       : [];
 
-    const unique =
-      list.length > 0 ? this.requireLanguages(list) : [fallback];
+    const unique = list.length > 0 ? this.requireLanguages(list) : [fallback];
 
     if (!unique.includes(fallback)) {
       return [...unique, fallback];
@@ -717,9 +713,7 @@ export class BusinessesService {
     return trimmed.slice(0, max);
   }
 
-  private normalizeHoursInput(
-    hours?: BusinessHourDto[],
-  ): Array<{
+  private normalizeHoursInput(hours?: BusinessHourDto[]): Array<{
     dayOfWeek: number;
     isClosed: boolean;
     opensAt: string | null;

@@ -39,7 +39,9 @@ export class S3ObjectStorageAdapter implements ObjectStoragePort {
     }
 
     if (!this.isConfigured()) {
-      throw new Error('Object storage is enabled but credentials are incomplete');
+      throw new Error(
+        'Object storage is enabled but credentials are incomplete',
+      );
     }
 
     const timeout =

@@ -12,10 +12,7 @@ import type { Response } from 'express';
 import { ApplicationError } from '../../common/errors/application-error';
 import { AuthCookieService } from './auth-cookie.service';
 import { AuthRateLimitGuard } from './auth-rate-limit.guard';
-import {
-  type AuthenticatedRequest,
-  readCookie,
-} from './auth-request';
+import { type AuthenticatedRequest, readCookie } from './auth-request';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
@@ -56,10 +53,7 @@ export class AuthController {
     @Req() request: AuthenticatedRequest,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const refreshToken = readCookie(
-      request,
-      this.cookies.refreshCookieName(),
-    );
+    const refreshToken = readCookie(request, this.cookies.refreshCookieName());
     await this.auth.logout(refreshToken);
     this.cookies.clearSession(response);
     return { success: true };
@@ -94,10 +88,7 @@ export class AuthController {
     @Req() request: AuthenticatedRequest,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const refreshToken = readCookie(
-      request,
-      this.cookies.refreshCookieName(),
-    );
+    const refreshToken = readCookie(request, this.cookies.refreshCookieName());
     if (!refreshToken) {
       this.cookies.clearSession(response);
       throw new ApplicationError(

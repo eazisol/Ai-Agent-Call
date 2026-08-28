@@ -59,7 +59,9 @@ async function createApp(serviceOverrides = {}, teamOverrides = {}) {
           listForUser: async () => [sampleOrg],
           getForUser: async (_userId, id) => {
             if (id !== sampleOrg.id) {
-              const { ApplicationError } = require('../dist/common/errors/application-error');
+              const {
+                ApplicationError,
+              } = require('../dist/common/errors/application-error');
               throw new ApplicationError(
                 'ORGANIZATION_NOT_FOUND',
                 'Organization not found.',
@@ -330,7 +332,9 @@ test('invitation DTO rejects owner role', async () => {
 });
 
 test('PATCH returns FORBIDDEN when service denies non-owner', async () => {
-  const { ApplicationError } = require('../dist/common/errors/application-error');
+  const {
+    ApplicationError,
+  } = require('../dist/common/errors/application-error');
   const app = await createApp({
     updateForOwner: async () => {
       throw new ApplicationError(
@@ -349,7 +353,9 @@ test('PATCH returns FORBIDDEN when service denies non-owner', async () => {
 });
 
 test('team RBAC denials surface FORBIDDEN / LAST_OWNER / ORGANIZATION_NOT_FOUND', async () => {
-  const { ApplicationError } = require('../dist/common/errors/application-error');
+  const {
+    ApplicationError,
+  } = require('../dist/common/errors/application-error');
   const app = await createApp(
     {},
     {

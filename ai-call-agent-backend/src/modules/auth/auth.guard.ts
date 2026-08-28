@@ -1,14 +1,7 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ApplicationError } from '../../common/errors/application-error';
 import { AuthCookieService } from './auth-cookie.service';
-import {
-  type AuthenticatedRequest,
-  readCookie,
-} from './auth-request';
+import { type AuthenticatedRequest, readCookie } from './auth-request';
 import { AuthService } from './auth.service';
 
 @Injectable()

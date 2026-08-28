@@ -10,6 +10,8 @@
 
 > Checklist syntax: `- [ ] ID — detailed task`. Change `[ ]` to `[x]` only after the item is verified.
 
+
+
 ## Streamlined Execution Model — v2
 
 This roadmap keeps all high-level phases/modules and feature-specific checklist requirements, but merges the repeated 10-submodule template into **5 execution submodules per module**:
@@ -28,7 +30,7 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 
 ## Mandatory Manual QA Handoff Standard — v3
 
-Every module must produce a dedicated **Manual QA Handoff** document during **Submodule `XX.05 — Documentation & Acceptance`**. The purpose is to give a Manual QA Engineer/Tester enough product and technical context to test the completed module independently, reproduce defects clearly, and perform regression checks without having to reverse-engineer the implementation.
+Every module must produce a dedicated **Manual QA Handoff** document during **Submodule** `XX.05 — Documentation & Acceptance`. The purpose is to give a Manual QA Engineer/Tester enough product and technical context to test the completed module independently, reproduce defects clearly, and perform regression checks without having to reverse-engineer the implementation.
 
 **Canonical path:** `docs/module-<number>/M<number>_<Module_Name>_manual-qa-guide.md` (module code + slugified module title; e.g. `docs/module-2/M02_Organizations_Tenants_manual-qa-guide.md`).
 
@@ -65,6 +67,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] Completed and verified
 
+
+
 ## Global Vertical Slice Gate — Applies to Every Module
 
 - [ ] VS-GLOBAL-01 — Requirements and scope for the module are finalized before implementation.
@@ -83,6 +87,7 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [ ] VS-GLOBAL-14 — No unrelated future module is implemented during the slice.
 - [ ] VS-GLOBAL-15 — Module is accepted before the next module moves to In Development.
 - [ ] VS-GLOBAL-16 — Module Manual QA Handoff guide exists at the canonical path, reflects final implemented behavior, and is linked from module documentation where practical.
+
 
 
 ## Overall Development Phases & Modules
@@ -145,9 +150,11 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 ---
 
 
+
 # PHASE 00 — Foundation
 
 - [x] P00-GATE — Phase 00 is complete only when every required module below is accepted.
+
 
 
 ## Module 00 — Existing Project Audit & SaaS Foundation `M00`
@@ -155,7 +162,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 **Target:** MVP
 
 **Dependencies:** None
-
 
 ### Submodule 00.01 — Scope & Technical Design
 
@@ -171,6 +177,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P00-M00-01-10 — Add health checks, structured error handling and baseline logging.
 - [x] P00-M00-01-11 — Document environment-variable strategy for local, development, staging and production.
 - [x] P00-M00-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 00.02 — Backend, Persistence & API
 
@@ -189,6 +197,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P00-M00-02-11 — Implement/verify API contract: `Document webhook routes already present and routes to preserve.`.
 - [x] P00-M00-02-12 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 00.03 — Frontend & Integrations
 
 - [x] P00-M00-03-01 — Build/complete frontend requirement: Verify existing Dashboard, Calls and Settings routes build successfully..
@@ -201,6 +211,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P00-M00-03-07 — Integrate and verify: Verify Docker Compose service networking..
 - [x] P00-M00-03-08 — Integrate and verify: Preserve Twilio and OpenAI provider code for later refactor..
 - [x] P00-M00-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 00.04 — Security & QA
 
@@ -216,6 +228,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P00-M00-04-09 — Run regression checks for directly affected existing modules.
 - [x] P00-M00-04-10 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 00.05 — Documentation & Acceptance
 
 - [x] P00-M00-05-01 — Update the Master Module Registry status and dependencies.
@@ -224,15 +238,16 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P00-M00-05-04 — Do not add future business features during M00. This is a controlled foundation slice only.
 - [x] P00-M00-05-05 — Create/update the **Manual QA Handoff** guide for **Existing Project Audit & SaaS Foundation** at `docs/module-0/M00_Existing_Project_Audit_and_SaaS_Foundation_manual-qa-guide.md`
 
-
 - [x] P00-M00-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M00] Existing Project Audit & SaaS Foundation = COMPLETE ✅` — verified 24 August 2026.
----
+## **Module Gate:** `[M00] Existing Project Audit & SaaS Foundation = COMPLETE ✅` — verified 24 August 2026.
+
+
 
 # PHASE 01 — SaaS Core
 
 - [x] P01-GATE — Phase 01 is complete only when every required module below is accepted.
+
 
 
 ## Module 01 — Authentication `M01`
@@ -240,7 +255,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 **Target:** MVP
 
 **Dependencies:** M00
-
 
 ### Submodule 01.01 — Scope & Technical Design
 
@@ -254,6 +268,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M01-01-08 — Current-user session endpoint
 - [x] P01-M01-01-09 — Protected routes/session restoration
 - [x] P01-M01-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 01.02 — Backend, Persistence & API
 
@@ -277,6 +293,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M01-02-16 — Implement/verify API contract: `GET /api/v1/auth/me`.
 - [x] P01-M01-02-17 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 01.03 — Frontend & Integrations
 
 - [x] P01-M01-03-01 — Build/complete frontend requirement: Register page.
@@ -290,6 +308,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] P01-M01-03-09 — Integrate and verify: Email delivery provider for verification/reset messages when enabled..
 - [x] P01-M01-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 01.04 — Security & QA
 
@@ -308,13 +328,14 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M01-04-12 — Run regression checks for directly affected existing modules.
 - [x] P01-M01-04-13 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 01.05 — Documentation & Acceptance
 
 - [x] P01-M01-05-01 — Update the Master Module Registry status and dependencies.
 - [x] P01-M01-05-02 — Document database/API/provider changes introduced by this module.
 - [x] P01-M01-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [x] P01-M01-05-04 — Create/update the **Manual QA Handoff** guide for **Authentication** at `docs/module-1/M01_Authentication_manual-qa-guide.md`
-
 
 - [x] P01-M01-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -325,7 +346,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 **Target:** MVP
 
 **Dependencies:** M01
-
 
 ### Submodule 02.01 — Scope & Technical Design
 
@@ -338,6 +358,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M02-01-07 — Organization membership ownership
 - [x] P01-M02-01-08 — Tenant isolation
 - [x] P01-M02-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 02.02 — Backend, Persistence & API
 
@@ -356,6 +378,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M02-02-11 — Implement/verify API contract: `PATCH /api/v1/organizations/:id`.
 - [x] P01-M02-02-12 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 02.03 — Frontend & Integrations
 
 - [x] P01-M02-03-01 — Build/complete frontend requirement: Organization creation onboarding.
@@ -366,6 +390,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M02-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
 - [x] P01-M02-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+
+
 
 ### Submodule 02.04 — Security & QA
 
@@ -381,13 +407,14 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M02-04-09 — Run regression checks for directly affected existing modules.
 - [x] P01-M02-04-10 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 02.05 — Documentation & Acceptance
 
 - [x] P01-M02-05-01 — Update the Master Module Registry status and dependencies.
 - [x] P01-M02-05-02 — Document database/API/provider changes introduced by this module.
 - [x] P01-M02-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [x] P01-M02-05-04 — Create/update the **Manual QA Handoff** guide for **Organizations / Tenants** at `docs/module-2/M02_Organizations_Tenants_manual-qa-guide.md`
-
 
 - [x] P01-M02-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -398,7 +425,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 **Target:** MVP
 
 **Dependencies:** M01, M02
-
 
 ### Submodule 03.01 — Scope & Technical Design
 
@@ -412,6 +438,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M03-01-08 — Pending invitations
 - [x] P01-M03-01-09 — RBAC permission checks
 - [x] P01-M03-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 03.02 — Backend, Persistence & API
 
@@ -431,6 +459,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M03-02-12 — Implement/verify API contract: `DELETE /api/v1/organizations/:id/members/:memberId`.
 - [x] P01-M03-02-13 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 03.03 — Frontend & Integrations
 
 - [x] P01-M03-03-01 — Build/complete frontend requirement: Team list.
@@ -443,6 +473,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] P01-M03-03-08 — Integrate and verify: Email invitation delivery..
 - [x] P01-M03-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 03.04 — Security & QA
 
@@ -459,13 +491,14 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M03-04-10 — Run regression checks for directly affected existing modules.
 - [x] P01-M03-04-11 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 03.05 — Documentation & Acceptance
 
 - [x] P01-M03-05-01 — Update the Master Module Registry status and dependencies.
 - [x] P01-M03-05-02 — Document database/API/provider changes introduced by this module.
 - [x] P01-M03-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [x] P01-M03-05-04 — Create/update the **Manual QA Handoff** guide for **Users, Team & Roles** at `docs/module-3/M03_Users_Team_and_Roles_manual-qa-guide.md`
-
 
 - [x] P01-M03-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -476,7 +509,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 **Target:** MVP
 
 **Dependencies:** M02, M03
-
 
 ### Submodule 04.01 — Scope & Technical Design
 
@@ -493,6 +525,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M04-01-11 — Default language
 - [x] P01-M04-01-12 — Business status/settings
 - [x] P01-M04-01-13 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 04.02 — Backend, Persistence & API
 
@@ -513,6 +547,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M04-02-13 — Implement/verify API contract: `DELETE or archive /api/v1/businesses/:id`.
 - [x] P01-M04-02-14 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 04.03 — Frontend & Integrations
 
 - [x] P01-M04-03-01 — Build/complete frontend requirement: Business list.
@@ -526,6 +562,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] P01-M04-03-09 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
 
+
+
 ### Submodule 04.04 — Security & QA
 
 - [x] P01-M04-04-01 — Organization-scoped business access.
@@ -538,6 +576,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M04-04-07 — Run regression checks for directly affected existing modules.
 - [x] P01-M04-04-08 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 04.05 — Documentation & Acceptance
 
 - [x] P01-M04-05-01 — Update the Master Module Registry status and dependencies.
@@ -545,15 +585,16 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M04-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [x] P01-M04-05-04 — Create/update the **Manual QA Handoff** guide for **Business Management** at `docs/module-4/M04_Business_Management_manual-qa-guide.md`
 
-
 - [x] P01-M04-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M04] Business Management = COMPLETE ✅` — verified 27 August 2026.
----
+## **Module Gate:** `[M04] Business Management = COMPLETE ✅` — verified 27 August 2026.
+
+
 
 # PHASE 02 — AI Agent Core
 
 - [ ] P02-GATE — Phase 02 is complete only when every required module below is accepted.
+
 
 
 ## Module 05 — AI Agent Management `M05`
@@ -561,7 +602,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 **Target:** MVP
 
 **Dependencies:** M04
-
 
 ### Submodule 05.01 — Scope & Technical Design
 
@@ -617,7 +657,7 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] P02-M05-03-09 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
 
-**05.03 note:** Agents portal delivered 27 August 2026 — `/agents*` routes, `agents-api.ts`, language/voice fields, nav enabled; no provider calls.
+**05.03 note:** Agents portal delivered 27 August 2026 — `/agents`* routes, `agents-api.ts`, language/voice fields, nav enabled; no provider calls.
 
 ### Submodule 05.04 — Security & QA
 
@@ -641,7 +681,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P02-M05-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [x] P02-M05-05-04 — Create/update the **Manual QA Handoff** guide for **AI Agent Management** at `docs/module-5/M05_AI_Agent_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [x] P02-M05-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M05] AI Agent Management = COMPLETE ✅` — verified 27 August 2026.
@@ -651,7 +690,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 **Target:** MVP
 
 **Dependencies:** M05
-
 
 ### Submodule 06.01 — Scope & Technical Design
 
@@ -684,7 +722,9 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P02-M06-02-10 — Implement/verify API contract: `Optional GET /api/v1/agents/:id/provider-status`.
 - [x] P02-M06-02-11 — Add DTO/schema validation and consistent API error responses.
 
-> **06.02 note (27 August 2026):** Mapping-only MVP (no `provider_sync_logs`). Reuses M05 `agent_provider_mappings`. `VoiceAgentSyncPort` + ElevenLabs ConvAI adapter; explicit sync endpoints; env `ELEVENLABS_*` optional at boot; unit + e2e coverage. Docs under `docs/module-6/`.
+> **06.02 note (27 August 2026):** Mapping-only MVP (no `provider_sync_logs`). Reuses M05 `agent_provider_mappings`. `VoiceAgentSyncPort` + ElevenLabs ConvAI adapter; explicit sync endpoints; env `ELEVENLABS_`* optional at boot; unit + e2e coverage. Docs under `docs/module-6/`.
+
+
 
 ### Submodule 06.03 — Frontend & Integrations
 
@@ -698,6 +738,8 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P02-M06-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
 > **06.03 note (27 August 2026):** Agent overview `AgentProviderSyncPanel` + list Provider column. Real `sync` / `provider-status` APIs; Sync/Retry for update roles; sanitized errors + warnings; no ElevenLabs keys in browser. Frontend typecheck clean.
+
+
 
 ### Submodule 06.04 — Security & QA
 
@@ -727,12 +769,15 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] P02-M06-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M06] ElevenLabs Voice Agent Provider = COMPLETE` — verified 27 August 2026 (06.01–06.05).
----
+## **Module Gate:** `[M06] ElevenLabs Voice Agent Provider = COMPLETE` — verified 27 August 2026 (06.01–06.05).
+
+
 
 # PHASE 03 — Knowledge & Voice
 
 - [ ] P03-GATE — Phase 03 is complete only when every required module below is accepted.
+
+
 
 ### Phase 03 Architecture Lock — Shared Business Assets + Per-Agent Assignment (v4)
 
@@ -771,12 +816,14 @@ Agent
 
 **Cardinality:**
 
-| Relationship | Rule |
-| --- | --- |
-| One agent → knowledge sources | many (assignment mapping) |
-| One agent → active voice | normally one selected voice at a time |
-| One knowledge source → agents | many (same Business) |
-| One voice / cloned voice → agents | many (same Business, authorized) |
+
+| Relationship                      | Rule                                  |
+| --------------------------------- | ------------------------------------- |
+| One agent → knowledge sources     | many (assignment mapping)             |
+| One agent → active voice          | normally one selected voice at a time |
+| One knowledge source → agents     | many (same Business)                  |
+| One voice / cloned voice → agents | many (same Business, authorized)      |
+
 
 **Example (ABC Dental):** Shared knowledge (Clinic Hours, Services, Pricing, Insurance FAQ, Emergency Policy) and shared voices (Sarah, James, Owner Custom Clone) live once on the Business. Receptionist, Appointment, and After-hours agents each receive a subset of sources and one selected voice — FAQ and Owner Custom Clone exist once and are reused.
 
@@ -810,6 +857,7 @@ Agent
 - Do **not** start translation/localization functionality in M07–M09 unless explicitly defined later.
 
 
+
 ## Module 07 — Knowledge Base `M07`
 
 **Target:** MVP
@@ -819,7 +867,6 @@ Agent
 **Status:** In development — **07.01 complete** 27 August 2026. Architecture: Business-owned shared knowledge + per-agent assignment.
 
 **Architecture (locked):** Business-owned shared knowledge assets + per-agent knowledge assignments. A Business may own Clinic Hours, Pricing, FAQ, Policies once; Agent A may receive Hours + FAQ while Agent B receives Pricing + FAQ — the FAQ exists once and is reusable.
-
 
 ### Submodule 07.01 — Scope & Technical Design
 
@@ -843,13 +890,15 @@ Agent
 - [x] P03-M07-01-18 — Reuse one Business source across multiple same-Business agents (one canonical `knowledge_sources` row; multiple assignment rows).
 - [x] P03-M07-01-19 — Document ownership rules: Business-scoped assets; tenant ownership derivable via Business; cross-business access blocked; agents may only use own-Business sources.
 
-> **07.01 note (27 August 2026):** Scope locked in `docs/module-7/`. No separate `knowledge_bases` table (Business is container). Types `file|url|text|faq`. `KnowledgeSyncPort` + `knowledge_provider_mappings` (provider-neutral). Cookie-scoped `/api/v1/knowledge*` + agent assignment APIs. Hard delete blocked while assigned. No implementation in 07.01.
+> **07.01 note (28 August 2026):** Scope locked in `docs/module-7/`. No separate `knowledge_bases` table (Business is container). Types `file|url|text|faq`. `KnowledgeSyncPort` + `knowledge_provider_mappings` (provider-neutral). Cookie-scoped `/api/v1/knowledge`* + agent assignment APIs. Hard delete blocked while assigned. No implementation in 07.01.
+
+
 
 ### Submodule 07.02 — Backend, Persistence & API
 
-> **Complete 27 August 2026:** Business-scoped `knowledge_sources` (no `knowledge_bases` table); `agent_knowledge_sources`; `knowledge_provider_mappings` with `last_synced_version` (no `knowledge_sync_logs` — deferred); Nest `KnowledgeModule` + cookie-scoped `/api/v1/knowledge*` and `/api/v1/agents/:agentId/knowledge*`; `KnowledgeSyncPort` / ElevenLabs adapter; S3 object storage port extension.
+> **Complete 28 August 2026:** Business-scoped `knowledge_sources` (no `knowledge_bases` table); `agent_knowledge_sources`; `knowledge_provider_mappings` with `last_synced_version` (no `knowledge_sync_logs` — deferred); Nest `KnowledgeModule` + cookie-scoped `/api/v1/knowledge`* and `/api/v1/agents/:agentId/knowledge*`; `KnowledgeSyncPort` / ElevenLabs adapter; S3 object storage port extension.
 
-- [x] P03-M07-02-01 — Implement/confirm data requirement: `knowledge_bases` (or equivalent Business-scoped container naming consistent with repository conventions). — *Satisfied by Business as library container; no separate `knowledge_bases` table.*
+- [x] P03-M07-02-01 — Implement/confirm data requirement: `knowledge_bases` (or equivalent Business-scoped container naming consistent with repository conventions). — *Satisfied by Business as library container; no separate* `knowledge_bases` *table.*
 - [x] P03-M07-02-02 — Implement/confirm data requirement: `knowledge_sources` belonging to **Business** (do **not** require duplicate source rows per agent).
 - [x] P03-M07-02-03 — Implement/confirm data requirement: `knowledge_sync_logs` (provider sync state/history against canonical sources). — *Deferred; mapping-only MVP like M06.*
 - [x] P03-M07-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
@@ -859,36 +908,40 @@ Agent
 - [x] P03-M07-02-07 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (provider-neutral mapping; no core schema hardcoding of `elevenlabs_knowledge_id`).
 - [x] P03-M07-02-08 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [x] P03-M07-02-09 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/files` (architectural target; exact REST naming may follow repository conventions). — *MVP: `POST /api/v1/knowledge/files`.*
-- [x] P03-M07-02-10 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/url`. — *MVP: `POST /api/v1/knowledge/url`.*
-- [x] P03-M07-02-11 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/text` (and FAQ as applicable). — *MVP: `/knowledge/text` + `/knowledge/faq`.*
+- [x] P03-M07-02-09 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/files` (architectural target; exact REST naming may follow repository conventions). — *MVP:* `POST /api/v1/knowledge/files`*.*
+- [x] P03-M07-02-10 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/url`. — *MVP:* `POST /api/v1/knowledge/url`*.*
+- [x] P03-M07-02-11 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/text` (and FAQ as applicable). — *MVP:* `/knowledge/text` *+* `/knowledge/faq`*.*
 - [x] P03-M07-02-12 — Implement/verify agent assignment list API intent: `GET /api/v1/agents/:agentId/knowledge` (sources assigned to the agent — not a substitute for the Business library list).
 - [x] P03-M07-02-13 — Implement/verify API contract: `DELETE /api/v1/knowledge/:id` (Business source delete/archive with safe assignment handling).
 - [x] P03-M07-02-14 — Implement/verify API contract: `POST /api/v1/knowledge/:id/resync`.
 - [x] P03-M07-02-15 — Add DTO/schema validation and consistent API error responses (provider errors must not leak secrets).
 - [x] P03-M07-02-16 — Implement/confirm data requirement: `agent_knowledge_sources` assignment/mapping table (unique assignment per agent/source; deleting an assignment does not delete the source).
-- [x] P03-M07-02-17 — Implement/verify Business knowledge list API intent: `GET /api/v1/businesses/:businessId/knowledge`. — *MVP: `GET /api/v1/knowledge`.*
+- [x] P03-M07-02-17 — Implement/verify Business knowledge list API intent: `GET /api/v1/businesses/:businessId/knowledge`. — *MVP:* `GET /api/v1/knowledge`*.*
 - [x] P03-M07-02-18 — Implement/verify source detail API intent: `GET /api/v1/knowledge/:id`.
 - [x] P03-M07-02-19 — Implement/verify agent assignment APIs intent: `POST /api/v1/agents/:agentId/knowledge/:knowledgeId` and `DELETE /api/v1/agents/:agentId/knowledge/:knowledgeId`.
 - [x] P03-M07-02-20 — Enforce business-ownership validation on assign: agent and knowledge source must belong to the same Business; block cross-business assignment.
 
+
+
 ### Submodule 07.03 — Frontend & Integrations
 
-- [x] P03-M07-03-01 — Build/complete **Business Knowledge** area: shared knowledge list (not an agent-only list that forces re-upload). — *`/knowledge` list page.*
-- [x] P03-M07-03-02 — Build/complete frontend requirement: Upload component (Business knowledge create). — *`/knowledge/new` File tab.*
-- [x] P03-M07-03-03 — Build/complete frontend requirement: URL form (Business knowledge create). — *`/knowledge/new` URL tab.*
-- [x] P03-M07-03-04 — Build/complete frontend requirement: Text/FAQ form (Business knowledge create). — *`/knowledge/new` Text + FAQ tabs.*
+- [x] P03-M07-03-01 — Build/complete **Business Knowledge** area: shared knowledge list (not an agent-only list that forces re-upload). — `/knowledge` *list page.*
+- [x] P03-M07-03-02 — Build/complete frontend requirement: Upload component (Business knowledge create). — `/knowledge/new` *File tab.*
+- [x] P03-M07-03-03 — Build/complete frontend requirement: URL form (Business knowledge create). — `/knowledge/new` *URL tab.*
+- [x] P03-M07-03-04 — Build/complete frontend requirement: Text/FAQ form (Business knowledge create). — `/knowledge/new` *Text + FAQ tabs.*
 - [x] P03-M07-03-05 — Build/complete frontend requirement: Sync status badges on Business sources. — *List + detail + agent assign.*
-- [x] P03-M07-03-06 — Build/complete frontend requirement: Edit/delete/resync actions for Business sources (with assignment-aware destructive confirmations). — *`/knowledge/[id]`.*
-- [x] P03-M07-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data. — *`knowledge-api.ts`.*
+- [x] P03-M07-03-06 — Build/complete frontend requirement: Edit/delete/resync actions for Business sources (with assignment-aware destructive confirmations). — `/knowledge/[id]`*.*
+- [x] P03-M07-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data. — `knowledge-api.ts`*.*
 - [x] P03-M07-03-08 — Verify responsive, loading, empty, validation, success and error states. — *Portal patterns wired; formal QA in 07.04.*
 
 - [x] P03-M07-03-09 — Integrate and verify: S3-compatible storage. — *UI uploads via backend multipart → object storage; env already from 07.02.*
 - [x] P03-M07-03-10 — Integrate and verify: provider knowledge/RAG synchronization via abstraction (ElevenLabs as first provider; remain provider-swappable). — *Sync/resync/provider-status panel on detail.*
 - [x] P03-M07-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable. — *45s sync timeout + error/retry CTAs; deeper QA in 07.04.*
-- [x] P03-M07-03-12 — Agent configuration UI: multi-select assigned knowledge sources (e.g. ☑ Clinic Hours, ☑ Services, ☐ Pricing) without repeated uploads per agent. — *`/agents/[id]/knowledge`.*
+- [x] P03-M07-03-12 — Agent configuration UI: multi-select assigned knowledge sources (e.g. ☑ Clinic Hours, ☑ Services, ☐ Pricing) without repeated uploads per agent. — `/agents/[id]/knowledge`*.*
 - [x] P03-M07-03-13 — Provide “Manage Business Knowledge” navigation from agent knowledge configuration where appropriate.
-- [x] P03-M07-03-14 — Where useful, show which agents currently use a Business knowledge source. — *Detail `assignedAgents` list.*
+- [x] P03-M07-03-14 — Where useful, show which agents currently use a Business knowledge source. — *Detail* `assignedAgents` *list.*
+
+
 
 ### Submodule 07.04 — Security & QA
 
@@ -912,7 +965,9 @@ Agent
 - [x] P03-M07-04-17 — Test: Source deletion safely handles active assignments (detect/confirm/block or explicit safe flow).
 - [x] P03-M07-04-18 — Test: Provider sync state remains source-safe; provider errors do not leak secrets.
 
-> **07.04 note (27 August 2026):** Evidence in `docs/module-7/security-and-qa.md`. File allowlist + size; tenant object keys; private S3 (no browser secrets); URL http(s); cross-business assign blocked (unit/e2e). Backend build + knowledge/agents unit & e2e + FE typecheck pass. Live S3/ElevenLabs happy-path in manual QA guide (human sign-off). Signed portal download deferred (private server-side access only).
+> **07.04 note (28 August 2026):** Evidence in `docs/module-7/security-and-qa.md`. File allowlist + size; tenant object keys; private S3 (no browser secrets); URL http(s); cross-business assign blocked (unit/e2e). Backend build + knowledge/agents unit & e2e + FE typecheck pass. Live S3/ElevenLabs happy-path in manual QA guide (human sign-off). Signed portal download deferred (private server-side access only).
+
+
 
 ### Submodule 07.05 — Documentation & Acceptance
 
@@ -923,7 +978,7 @@ Agent
 
 - [x] P03-M07-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M07] Knowledge Base = COMPLETE` — verified 27 August 2026 (07.01–07.05).
+**Module Gate:** `[M07] Knowledge Base = COMPLETE` — verified 28 August 2026 (07.01–07.05).
 
 ## Module 08 — Voice Library `M08`
 
@@ -934,7 +989,6 @@ Agent
 **Status:** Not Started — roadmap refined 27 August 2026 for Shared Business Voice Library + per-agent voice selection. Do not mark In Development or Complete until implementation begins and gates pass.
 
 **Architecture (locked):** Shared Business Voice Library + per-agent voice selection. A voice is **not** duplicated because Agent A and Agent B use it; agent config references/selects the voice. Library may include provider voices available to the Business and eligible custom/cloned voices once M09 exists.
-
 
 ### Submodule 08.01 — Scope & Technical Design
 
@@ -949,6 +1003,8 @@ Agent
 - [ ] P03-M08-01-09 — Identify provider voice metadata (provider-neutral catalogue fields; provider-specific IDs in mapping/adapters only).
 - [ ] P03-M08-01-10 — Provider / language / model compatibility validation where applicable (clear error or warning on incompatible selection).
 - [ ] P03-M08-01-11 — Document that cloned/custom voices (M09) appear in the Business library as eligible voice assets without per-agent recreation.
+
+
 
 ### Submodule 08.02 — Backend, Persistence & API
 
@@ -966,6 +1022,8 @@ Agent
 - [ ] P03-M08-02-10 — Add DTO/schema validation and consistent API error responses (invalid/unavailable voice; compatibility failures; no provider credential exposure).
 - [ ] P03-M08-02-11 — Enforce Business/tenant-safe voice assignment: agents may only select voices eligible for their Business; block cross-tenant custom voice access.
 
+
+
 ### Submodule 08.03 — Frontend & Integrations
 
 - [ ] P03-M08-03-01 — Build/complete frontend requirement: **Business Voice Library** (available voices, metadata, cloned/custom indicator where applicable later).
@@ -979,6 +1037,8 @@ Agent
 - [ ] P03-M08-03-08 — Integrate and verify: provider voice catalogue via abstraction (ElevenLabs as first catalogue provider; remain provider-swappable).
 - [ ] P03-M08-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 - [ ] P03-M08-03-10 — UX clarity: Agent A and Agent B may both use the same voice (e.g. Sarah) with no duplication required.
+
+
 
 ### Submodule 08.04 — Security & QA
 
@@ -998,13 +1058,14 @@ Agent
 - [ ] P03-M08-04-13 — Test: Incompatible voice/language/model produces clear error or warning.
 - [ ] P03-M08-04-14 — Test: Cross-tenant / cross-business custom voice access blocked.
 
+
+
 ### Submodule 08.05 — Documentation & Acceptance
 
 - [ ] P03-M08-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P03-M08-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P03-M08-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P03-M08-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Library** at `docs/module-8/M08_Voice_Library_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** Business voice library, voice preview, per-agent assignment, reuse across agents, and language/provider compatibility. Do not create the final QA guide until this module is being completed.
-
 
 - [ ] P03-M08-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1019,7 +1080,6 @@ Agent
 **Status:** Not Started — roadmap refined 27 August 2026 for Business-owned reusable cloned voices + per-agent assignment. Do not mark In Development or Complete until implementation begins and gates pass.
 
 **Architecture (locked):** Business-owned reusable cloned voices + per-agent assignment. A cloned voice must **not** be recreated for every agent. Example: Business creates Owner Custom Clone once; Receptionist and Appointment Agent both reference the same authorized Business voice asset.
-
 
 ### Submodule 09.01 — Scope & Technical Design
 
@@ -1037,6 +1097,8 @@ Agent
 - [ ] P03-M09-01-12 — Unassign/change agent voice selection without destroying the shared Business clone asset.
 - [ ] P03-M09-01-13 — Provider sync/mapping for clones (EaziAICall canonical clone record → provider clone ID; provider failure must not silently corrupt canonical records).
 - [ ] P03-M09-01-14 — Document: no automatic voice cloning without explicit consent.
+
+
 
 ### Submodule 09.02 — Backend, Persistence & API
 
@@ -1059,6 +1121,8 @@ Agent
 - [ ] P03-M09-02-15 — Implement/confirm linkage to `voices` / `business_voices` so the resulting clone is a reusable Business voice asset.
 - [ ] P03-M09-02-16 — Enforce cross-business clone access blocked; agents may only be assigned clones owned by their Business.
 
+
+
 ### Submodule 09.03 — Frontend & Integrations
 
 - [ ] P03-M09-03-01 — Build/complete frontend requirement: Consent screen (asset-level consent; clear Business ownership context).
@@ -1074,6 +1138,8 @@ Agent
 - [ ] P03-M09-03-10 — Integrate and verify: provider voice cloning via abstraction (ElevenLabs as first cloning provider; remain provider-swappable).
 - [ ] P03-M09-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 - [ ] P03-M09-03-12 — UX clarity: one Business clone (e.g. Owner Custom Clone) selectable by multiple agents without recreating the clone.
+
+
 
 ### Submodule 09.04 — Security & QA
 
@@ -1094,6 +1160,8 @@ Agent
 - [ ] P03-M09-04-14 — Test: Destructive delete/revoke while assigned detects assignments and requires safe confirmation flow (block until unassigned or explicit reassignment).
 - [ ] P03-M09-04-15 — Test: Provider credentials never exposed; sample URLs not publicly accessible.
 
+
+
 ### Submodule 09.05 — Documentation & Acceptance
 
 - [ ] P03-M09-05-01 — Update the Master Module Registry status and dependencies.
@@ -1101,15 +1169,16 @@ Agent
 - [ ] P03-M09-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P03-M09-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Cloning** at `docs/module-9/M09_Voice_Cloning_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** consent, sample handling, clone creation, reusable Business clone, agent assignment, revocation/deletion with assignment safety, and security/privacy. Do not create the final QA guide until this module is being completed.
 
-
 - [ ] P03-M09-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M09] Voice Cloning = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M09] Voice Cloning = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # PHASE 04 — Telephony
 
 - [ ] P04-GATE — Phase 04 is complete only when every required module below is accepted.
+
 
 
 ## Module 10 — Twilio Telephony Provider `M10`
@@ -1117,7 +1186,6 @@ Agent
 **Target:** MVP
 
 **Dependencies:** M00
-
 
 ### Submodule 10.01 — Scope & Technical Design
 
@@ -1131,6 +1199,8 @@ Agent
 - [ ] P04-M10-01-08 — Handle status callbacks
 - [ ] P04-M10-01-09 — Normalize Twilio errors/events
 - [ ] P04-M10-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 10.02 — Backend, Persistence & API
 
@@ -1146,6 +1216,8 @@ Agent
 - [ ] P04-M10-02-08 — Implement/verify API contract: `/api/v1/webhooks/twilio/*`.
 - [ ] P04-M10-02-09 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 10.03 — Frontend & Integrations
 
 - [ ] P04-M10-03-01 — Build/complete frontend requirement: Provider health/config status in internal settings if needed.
@@ -1154,6 +1226,8 @@ Agent
 
 - [ ] P04-M10-03-04 — Integrate and verify: Twilio.
 - [ ] P04-M10-03-05 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 10.04 — Security & QA
 
@@ -1170,13 +1244,14 @@ Agent
 - [ ] P04-M10-04-10 — Run regression checks for directly affected existing modules.
 - [ ] P04-M10-04-11 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 10.05 — Documentation & Acceptance
 
 - [ ] P04-M10-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P04-M10-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P04-M10-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P04-M10-05-04 — Create/update the **Manual QA Handoff** guide for **Twilio Telephony Provider** at `docs/module-10/M10_Twilio_Telephony_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P04-M10-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1187,7 +1262,6 @@ Agent
 **Target:** MVP
 
 **Dependencies:** M04, M05, M10
-
 
 ### Submodule 11.01 — Scope & Technical Design
 
@@ -1201,6 +1275,8 @@ Agent
 - [ ] P04-M11-01-08 — Release
 - [ ] P04-M11-01-09 — Display status/provider/country
 - [ ] P04-M11-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 11.02 — Backend, Persistence & API
 
@@ -1221,6 +1297,8 @@ Agent
 - [ ] P04-M11-02-13 — Implement/verify API contract: `DELETE /api/v1/phone-numbers/:id`.
 - [ ] P04-M11-02-14 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 11.03 — Frontend & Integrations
 
 - [ ] P04-M11-03-01 — Build/complete frontend requirement: Phone-number list.
@@ -1233,6 +1311,8 @@ Agent
 
 - [ ] P04-M11-03-08 — Integrate and verify: Twilio number APIs.
 - [ ] P04-M11-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 11.04 — Security & QA
 
@@ -1248,6 +1328,8 @@ Agent
 - [ ] P04-M11-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P04-M11-04-10 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 11.05 — Documentation & Acceptance
 
 - [ ] P04-M11-05-01 — Update the Master Module Registry status and dependencies.
@@ -1255,15 +1337,16 @@ Agent
 - [ ] P04-M11-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P04-M11-05-04 — Create/update the **Manual QA Handoff** guide for **Phone Number Management** at `docs/module-11/M11_Phone_Number_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [ ] P04-M11-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M11] Phone Number Management = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M11] Phone Number Management = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # PHASE 05 — AI Calling MVP
 
 - [ ] P05-GATE — Phase 05 is complete only when every required module below is accepted.
+
 
 
 ## Module 12 — Incoming AI Calls `M12`
@@ -1271,7 +1354,6 @@ Agent
 **Target:** MVP
 
 **Dependencies:** M06, M10, M11
-
 
 ### Submodule 12.01 — Scope & Technical Design
 
@@ -1285,6 +1367,8 @@ Agent
 - [ ] P05-M12-01-08 — Persist start/end status
 - [ ] P05-M12-01-09 — Handle failed/unmapped calls
 - [ ] P05-M12-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 12.02 — Backend, Persistence & API
 
@@ -1302,6 +1386,8 @@ Agent
 - [ ] P05-M12-02-10 — Implement/verify API contract: `ElevenLabs call/conversation webhook endpoints as required`.
 - [ ] P05-M12-02-11 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 12.03 — Frontend & Integrations
 
 - [ ] P05-M12-03-01 — Build/complete frontend requirement: Basic call appears in customer portal.
@@ -1312,6 +1398,8 @@ Agent
 - [ ] P05-M12-03-05 — Integrate and verify: Twilio.
 - [ ] P05-M12-03-06 — Integrate and verify: ElevenLabs.
 - [ ] P05-M12-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 12.04 — Security & QA
 
@@ -1328,13 +1416,14 @@ Agent
 - [ ] P05-M12-04-10 — Run regression checks for directly affected existing modules.
 - [ ] P05-M12-04-11 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 12.05 — Documentation & Acceptance
 
 - [ ] P05-M12-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M12-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M12-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P05-M12-05-04 — Create/update the **Manual QA Handoff** guide for **Incoming AI Calls** at `docs/module-12/M12_Incoming_AI_Calls_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P05-M12-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1346,7 +1435,6 @@ Agent
 
 **Dependencies:** M11, M12
 
-
 ### Submodule 13.01 — Scope & Technical Design
 
 - [ ] P05-M13-01-01 — Confirm the objective and boundaries of **Outbound Calls**.
@@ -1357,6 +1445,8 @@ Agent
 - [ ] P05-M13-01-06 — Create reminder/follow-up foundation
 - [ ] P05-M13-01-07 — Track outbound lifecycle
 - [ ] P05-M13-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 13.02 — Backend, Persistence & API
 
@@ -1373,6 +1463,8 @@ Agent
 - [ ] P05-M13-02-09 — Implement/verify API contract: `POST /api/v1/calls/outbound`.
 - [ ] P05-M13-02-10 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 13.03 — Frontend & Integrations
 
 - [ ] P05-M13-03-01 — Build/complete frontend requirement: Make-call form.
@@ -1385,6 +1477,8 @@ Agent
 - [ ] P05-M13-03-07 — Integrate and verify: Twilio.
 - [ ] P05-M13-03-08 — Integrate and verify: ElevenLabs.
 - [ ] P05-M13-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 13.04 — Security & QA
 
@@ -1401,13 +1495,14 @@ Agent
 - [ ] P05-M13-04-10 — Run regression checks for directly affected existing modules.
 - [ ] P05-M13-04-11 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 13.05 — Documentation & Acceptance
 
 - [ ] P05-M13-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M13-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M13-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P05-M13-05-04 — Create/update the **Manual QA Handoff** guide for **Outbound Calls** at `docs/module-13/M13_Outbound_Calls_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P05-M13-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1418,7 +1513,6 @@ Agent
 **Target:** MVP
 
 **Dependencies:** M12
-
 
 ### Submodule 14.01 — Scope & Technical Design
 
@@ -1433,6 +1527,8 @@ Agent
 - [ ] P05-M14-01-09 — Pagination
 - [ ] P05-M14-01-10 — Basic search
 - [ ] P05-M14-01-11 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 14.02 — Backend, Persistence & API
 
@@ -1449,6 +1545,8 @@ Agent
 - [ ] P05-M14-02-09 — Implement/verify API contract: `GET /api/v1/calls/:id`.
 - [ ] P05-M14-02-10 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 14.03 — Frontend & Integrations
 
 - [ ] P05-M14-03-01 — Build/complete frontend requirement: Calls table.
@@ -1459,6 +1557,8 @@ Agent
 - [ ] P05-M14-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
 - [ ] P05-M14-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+
+
 
 ### Submodule 14.04 — Security & QA
 
@@ -1473,13 +1573,14 @@ Agent
 - [ ] P05-M14-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P05-M14-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 14.05 — Documentation & Acceptance
 
 - [ ] P05-M14-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M14-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M14-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P05-M14-05-04 — Create/update the **Manual QA Handoff** guide for **Call Management** at `docs/module-14/M14_Call_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P05-M14-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1491,7 +1592,6 @@ Agent
 
 **Dependencies:** M12, M14
 
-
 ### Submodule 15.01 — Scope & Technical Design
 
 - [ ] P05-M15-01-01 — Confirm the objective and boundaries of **Transcript Management**.
@@ -1502,6 +1602,8 @@ Agent
 - [ ] P05-M15-01-06 — Search within transcript where supported
 - [ ] P05-M15-01-07 — Handle partial/final transcript updates
 - [ ] P05-M15-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 15.02 — Backend, Persistence & API
 
@@ -1517,6 +1619,8 @@ Agent
 - [ ] P05-M15-02-08 — Implement/verify API contract: `Provider transcript webhook/sync method`.
 - [ ] P05-M15-02-09 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 15.03 — Frontend & Integrations
 
 - [ ] P05-M15-03-01 — Build/complete frontend requirement: Transcript tab.
@@ -1528,6 +1632,8 @@ Agent
 
 - [ ] P05-M15-03-07 — Integrate and verify: ElevenLabs transcript/conversation data.
 - [ ] P05-M15-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 15.04 — Security & QA
 
@@ -1542,13 +1648,14 @@ Agent
 - [ ] P05-M15-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P05-M15-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 15.05 — Documentation & Acceptance
 
 - [ ] P05-M15-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M15-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M15-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P05-M15-05-04 — Create/update the **Manual QA Handoff** guide for **Transcript Management** at `docs/module-15/M15_Transcript_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P05-M15-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1559,7 +1666,6 @@ Agent
 **Target:** MVP
 
 **Dependencies:** M15
-
 
 ### Submodule 16.01 — Scope & Technical Design
 
@@ -1573,6 +1679,8 @@ Agent
 - [ ] P05-M16-01-08 — Lead status
 - [ ] P05-M16-01-09 — Analysis processing state
 - [ ] P05-M16-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 16.02 — Backend, Persistence & API
 
@@ -1588,6 +1696,8 @@ Agent
 - [ ] P05-M16-02-08 — Implement/verify API contract: `Internal analysis job endpoint/service if required`.
 - [ ] P05-M16-02-09 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 16.03 — Frontend & Integrations
 
 - [ ] P05-M16-03-01 — Build/complete frontend requirement: Summary/analysis tab.
@@ -1599,6 +1709,8 @@ Agent
 
 - [ ] P05-M16-03-07 — Integrate and verify: Provider analysis or selected LLM service.
 - [ ] P05-M16-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 16.04 — Security & QA
 
@@ -1613,6 +1725,8 @@ Agent
 - [ ] P05-M16-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P05-M16-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 16.05 — Documentation & Acceptance
 
 - [ ] P05-M16-05-01 — Update the Master Module Registry status and dependencies.
@@ -1620,15 +1734,16 @@ Agent
 - [ ] P05-M16-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P05-M16-05-04 — Create/update the **Manual QA Handoff** guide for **Call Summary & Analysis** at `docs/module-16/M16_Call_Summary_and_Analysis_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [ ] P05-M16-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M16] Call Summary & Analysis = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M16] Call Summary & Analysis = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # PHASE 06 — Business Tools
 
 - [ ] P06-GATE — Phase 06 is complete only when every required module below is accepted.
+
 
 
 ## Module 17 — Generic Tool Framework `M17`
@@ -1636,7 +1751,6 @@ Agent
 **Target:** MVP
 
 **Dependencies:** M05, M06
-
 
 ### Submodule 17.01 — Scope & Technical Design
 
@@ -1652,6 +1766,8 @@ Agent
 - [ ] P06-M17-01-10 — Retry policy where safe
 - [ ] P06-M17-01-11 — Error handling
 - [ ] P06-M17-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 17.02 — Backend, Persistence & API
 
@@ -1669,6 +1785,8 @@ Agent
 - [ ] P06-M17-02-10 — Implement/verify API contract: `Provider-facing secure tool execution endpoint`.
 - [ ] P06-M17-02-11 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 17.03 — Frontend & Integrations
 
 - [ ] P06-M17-03-01 — Build/complete frontend requirement: Tool list.
@@ -1682,6 +1800,8 @@ Agent
 - [ ] P06-M17-03-08 — Integrate and verify: ElevenLabs tool/function calling.
 - [ ] P06-M17-03-09 — Integrate and verify: External REST/webhook systems.
 - [ ] P06-M17-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 17.04 — Security & QA
 
@@ -1700,13 +1820,14 @@ Agent
 - [ ] P06-M17-04-12 — Run regression checks for directly affected existing modules.
 - [ ] P06-M17-04-13 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 17.05 — Documentation & Acceptance
 
 - [ ] P06-M17-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P06-M17-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P06-M17-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P06-M17-05-04 — Create/update the **Manual QA Handoff** guide for **Generic Tool Framework** at `docs/module-17/M17_Generic_Tool_Framework_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P06-M17-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1718,7 +1839,6 @@ Agent
 
 **Dependencies:** M17
 
-
 ### Submodule 18.01 — Scope & Technical Design
 
 - [ ] P06-M18-01-01 — Confirm the objective and boundaries of **Appointment Booking**.
@@ -1729,6 +1849,8 @@ Agent
 - [ ] P06-M18-01-06 — Map customer/business/service
 - [ ] P06-M18-01-07 — Return structured response to agent
 - [ ] P06-M18-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 18.02 — Backend, Persistence & API
 
@@ -1744,6 +1866,8 @@ Agent
 - [ ] P06-M18-02-08 — Implement/verify API contract: `Tool endpoints for checkSlots/bookAppointment/rescheduleAppointment/cancelAppointment`.
 - [ ] P06-M18-02-09 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 18.03 — Frontend & Integrations
 
 - [ ] P06-M18-03-01 — Build/complete frontend requirement: Appointment list/basic detail if owned in SaaS.
@@ -1754,6 +1878,8 @@ Agent
 
 - [ ] P06-M18-03-06 — Integrate and verify: Calendar/booking provider or business API.
 - [ ] P06-M18-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 18.04 — Security & QA
 
@@ -1771,13 +1897,14 @@ Agent
 - [ ] P06-M18-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P06-M18-04-12 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 18.05 — Documentation & Acceptance
 
 - [ ] P06-M18-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P06-M18-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P06-M18-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P06-M18-05-04 — Create/update the **Manual QA Handoff** guide for **Appointment Booking** at `docs/module-18/M18_Appointment_Booking_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P06-M18-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1789,7 +1916,6 @@ Agent
 
 **Dependencies:** M17
 
-
 ### Submodule 19.01 — Scope & Technical Design
 
 - [ ] P06-M19-01-01 — Confirm the objective and boundaries of **Restaurant Reservations**.
@@ -1800,6 +1926,8 @@ Agent
 - [ ] P06-M19-01-06 — Capture guest count/date/time/contact
 - [ ] P06-M19-01-07 — Return structured result to agent
 - [ ] P06-M19-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 19.02 — Backend, Persistence & API
 
@@ -1815,6 +1943,8 @@ Agent
 - [ ] P06-M19-02-08 — Implement/verify API contract: `Tool endpoints for checkAvailability/createReservation/cancelReservation/getReservation`.
 - [ ] P06-M19-02-09 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 19.03 — Frontend & Integrations
 
 - [ ] P06-M19-03-01 — Build/complete frontend requirement: Reservation list/basic detail if owned in SaaS.
@@ -1825,6 +1955,8 @@ Agent
 
 - [ ] P06-M19-03-06 — Integrate and verify: Restaurant reservation system or business API.
 - [ ] P06-M19-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 19.04 — Security & QA
 
@@ -1842,6 +1974,8 @@ Agent
 - [ ] P06-M19-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P06-M19-04-12 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 19.05 — Documentation & Acceptance
 
 - [ ] P06-M19-05-01 — Update the Master Module Registry status and dependencies.
@@ -1849,15 +1983,16 @@ Agent
 - [ ] P06-M19-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P06-M19-05-04 — Create/update the **Manual QA Handoff** guide for **Restaurant Reservations** at `docs/module-19/M19_Restaurant_Reservations_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [ ] P06-M19-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M19] Restaurant Reservations = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M19] Restaurant Reservations = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # PHASE 07 — CRM & Intelligence
 
 - [ ] P07-GATE — Phase 07 is complete only when every required module below is accepted.
+
 
 
 ## Module 20 — Customer / CRM `M20`
@@ -1865,7 +2000,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M04, M14
-
 
 ### Submodule 20.01 — Scope & Technical Design
 
@@ -1880,6 +2014,8 @@ Agent
 - [ ] P07-M20-01-09 — Follow-up status
 - [ ] P07-M20-01-10 — Search/filter customers
 - [ ] P07-M20-01-11 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 20.02 — Backend, Persistence & API
 
@@ -1897,6 +2033,8 @@ Agent
 - [ ] P07-M20-02-10 — Implement/verify API contract: `Customer activity/history endpoints`.
 - [ ] P07-M20-02-11 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 20.03 — Frontend & Integrations
 
 - [ ] P07-M20-03-01 — Build/complete frontend requirement: Customer list.
@@ -1912,6 +2050,8 @@ Agent
 - [ ] P07-M20-03-10 — Integrate and verify: Future CRM connectors.
 - [ ] P07-M20-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
+
+
 ### Submodule 20.04 — Security & QA
 
 - [ ] P07-M20-04-01 — Tenant-scoped customer data.
@@ -1925,13 +2065,14 @@ Agent
 - [ ] P07-M20-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P07-M20-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 20.05 — Documentation & Acceptance
 
 - [ ] P07-M20-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P07-M20-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P07-M20-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P07-M20-05-04 — Create/update the **Manual QA Handoff** guide for **Customer / CRM** at `docs/module-20/M20_Customer_CRM_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P07-M20-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1942,7 +2083,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M15, M16, M07
-
 
 ### Submodule 21.01 — Scope & Technical Design
 
@@ -1955,6 +2095,8 @@ Agent
 - [ ] P07-M21-01-07 — Apply approved knowledge update
 - [ ] P07-M21-01-08 — Track suggestion lifecycle
 - [ ] P07-M21-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 21.02 — Backend, Persistence & API
 
@@ -1973,6 +2115,8 @@ Agent
 - [ ] P07-M21-02-11 — Implement/verify API contract: `POST /api/v1/knowledge-gaps/:id/reject`.
 - [ ] P07-M21-02-12 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 21.03 — Frontend & Integrations
 
 - [ ] P07-M21-03-01 — Build/complete frontend requirement: Knowledge gaps queue.
@@ -1985,6 +2129,8 @@ Agent
 - [ ] P07-M21-03-07 — Integrate and verify: Call analysis.
 - [ ] P07-M21-03-08 — Integrate and verify: Knowledge sync.
 - [ ] P07-M21-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 21.04 — Security & QA
 
@@ -1999,6 +2145,8 @@ Agent
 - [ ] P07-M21-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P07-M21-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 21.05 — Documentation & Acceptance
 
 - [ ] P07-M21-05-01 — Update the Master Module Registry status and dependencies.
@@ -2006,15 +2154,16 @@ Agent
 - [ ] P07-M21-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P07-M21-05-04 — Create/update the **Manual QA Handoff** guide for **Knowledge Gap Detection** at `docs/module-21/M21_Knowledge_Gap_Detection_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [ ] P07-M21-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M21] Knowledge Gap Detection = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M21] Knowledge Gap Detection = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # PHASE 08 — Automation
 
 - [ ] P08-GATE — Phase 08 is complete only when every required module below is accepted.
+
 
 
 ## Module 22 — n8n Automation `M22`
@@ -2022,7 +2171,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M12
-
 
 ### Submodule 22.01 — Scope & Technical Design
 
@@ -2034,6 +2182,8 @@ Agent
 - [ ] P08-M22-01-06 — Retry failed delivery
 - [ ] P08-M22-01-07 — Support CALL_COMPLETED/CALL_FAILED/BOOKING_CREATED/LEAD_CREATED/FOLLOW_UP_REQUIRED/AGENT_ESCALATED
 - [ ] P08-M22-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 22.02 — Backend, Persistence & API
 
@@ -2050,6 +2200,8 @@ Agent
 - [ ] P08-M22-02-09 — Implement/verify API contract: `Secure outbound webhook delivery`.
 - [ ] P08-M22-02-10 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 22.03 — Frontend & Integrations
 
 - [ ] P08-M22-03-01 — Build/complete frontend requirement: Automation list.
@@ -2063,6 +2215,8 @@ Agent
 - [ ] P08-M22-03-08 — Integrate and verify: n8n.
 - [ ] P08-M22-03-09 — Integrate and verify: Email/SMS/WhatsApp/CRM/Calendar/Slack/Sheets/custom webhooks.
 - [ ] P08-M22-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 22.04 — Security & QA
 
@@ -2078,13 +2232,14 @@ Agent
 - [ ] P08-M22-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P08-M22-04-10 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 22.05 — Documentation & Acceptance
 
 - [ ] P08-M22-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P08-M22-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P08-M22-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P08-M22-05-04 — Create/update the **Manual QA Handoff** guide for **n8n Automation** at `docs/module-22/M22_n8n_Automation_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P08-M22-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -2095,7 +2250,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M22
-
 
 ### Submodule 23.01 — Scope & Technical Design
 
@@ -2109,6 +2263,8 @@ Agent
 - [ ] P08-M23-01-08 — Provider/billing alert foundation
 - [ ] P08-M23-01-09 — Read/unread state
 - [ ] P08-M23-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 23.02 — Backend, Persistence & API
 
@@ -2126,6 +2282,8 @@ Agent
 - [ ] P08-M23-02-10 — Implement/verify API contract: `Preference endpoints if needed`.
 - [ ] P08-M23-02-11 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 23.03 — Frontend & Integrations
 
 - [ ] P08-M23-03-01 — Build/complete frontend requirement: Notification center.
@@ -2138,6 +2296,8 @@ Agent
 - [ ] P08-M23-03-07 — Integrate and verify: Email provider.
 - [ ] P08-M23-03-08 — Integrate and verify: SMS provider.
 - [ ] P08-M23-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 23.04 — Security & QA
 
@@ -2152,6 +2312,8 @@ Agent
 - [ ] P08-M23-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P08-M23-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 23.05 — Documentation & Acceptance
 
 - [ ] P08-M23-05-01 — Update the Master Module Registry status and dependencies.
@@ -2159,15 +2321,16 @@ Agent
 - [ ] P08-M23-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P08-M23-05-04 — Create/update the **Manual QA Handoff** guide for **Notifications** at `docs/module-23/M23_Notifications_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [ ] P08-M23-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M23] Notifications = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M23] Notifications = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # PHASE 09 — Commercial SaaS
 
 - [ ] P09-GATE — Phase 09 is complete only when every required module below is accepted.
+
 
 
 ## Module 24 — Analytics `M24`
@@ -2175,7 +2338,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M14, M16
-
 
 ### Submodule 24.01 — Scope & Technical Design
 
@@ -2189,6 +2351,8 @@ Agent
 - [ ] P09-M24-01-08 — Tenant/business/agent filters
 - [ ] P09-M24-01-09 — Dashboard aggregates
 - [ ] P09-M24-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 24.02 — Backend, Persistence & API
 
@@ -2207,6 +2371,8 @@ Agent
 - [ ] P09-M24-02-11 — Implement/verify API contract: `GET /api/v1/analytics/costs`.
 - [ ] P09-M24-02-12 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 24.03 — Frontend & Integrations
 
 - [ ] P09-M24-03-01 — Build/complete frontend requirement: Analytics dashboard.
@@ -2221,6 +2387,8 @@ Agent
 - [ ] P09-M24-03-09 — Integrate and verify: Provider usage/cost data when available.
 - [ ] P09-M24-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
+
+
 ### Submodule 24.04 — Security & QA
 
 - [ ] P09-M24-04-01 — Tenant-scoped aggregation.
@@ -2234,13 +2402,14 @@ Agent
 - [ ] P09-M24-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P09-M24-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 24.05 — Documentation & Acceptance
 
 - [ ] P09-M24-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P09-M24-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P09-M24-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P09-M24-05-04 — Create/update the **Manual QA Handoff** guide for **Analytics** at `docs/module-24/M24_Analytics_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P09-M24-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -2251,7 +2420,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M03
-
 
 ### Submodule 25.01 — Scope & Technical Design
 
@@ -2264,6 +2432,8 @@ Agent
 - [ ] P09-M25-01-07 — Feature gates
 - [ ] P09-M25-01-08 — Plan comparison metadata
 - [ ] P09-M25-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 25.02 — Backend, Persistence & API
 
@@ -2283,6 +2453,8 @@ Agent
 - [ ] P09-M25-02-12 — Implement/verify API contract: `Internal/admin plan management endpoints`.
 - [ ] P09-M25-02-13 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 25.03 — Frontend & Integrations
 
 - [ ] P09-M25-03-01 — Build/complete frontend requirement: Pricing/plan view.
@@ -2293,6 +2465,8 @@ Agent
 - [ ] P09-M25-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
 - [ ] P09-M25-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+
+
 
 ### Submodule 25.04 — Security & QA
 
@@ -2307,13 +2481,14 @@ Agent
 - [ ] P09-M25-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P09-M25-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 25.05 — Documentation & Acceptance
 
 - [ ] P09-M25-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P09-M25-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P09-M25-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P09-M25-05-04 — Create/update the **Manual QA Handoff** guide for **Subscription Plans** at `docs/module-25/M25_Subscription_Plans_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P09-M25-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -2324,7 +2499,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M12, M25
-
 
 ### Submodule 26.01 — Scope & Technical Design
 
@@ -2339,6 +2513,8 @@ Agent
 - [ ] P09-M26-01-09 — Track phone numbers
 - [ ] P09-M26-01-10 — Aggregate by tenant and billing period
 - [ ] P09-M26-01-11 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 26.02 — Backend, Persistence & API
 
@@ -2357,6 +2533,8 @@ Agent
 - [ ] P09-M26-02-11 — Implement/verify API contract: `Internal provider reconciliation endpoints`.
 - [ ] P09-M26-02-12 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 26.03 — Frontend & Integrations
 
 - [ ] P09-M26-03-01 — Build/complete frontend requirement: Usage dashboard.
@@ -2372,6 +2550,8 @@ Agent
 - [ ] P09-M26-03-10 — Integrate and verify: Future LLM providers.
 - [ ] P09-M26-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
+
+
 ### Submodule 26.04 — Security & QA
 
 - [ ] P09-M26-04-01 — Tenant-scoped usage.
@@ -2385,13 +2565,14 @@ Agent
 - [ ] P09-M26-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P09-M26-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 26.05 — Documentation & Acceptance
 
 - [ ] P09-M26-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P09-M26-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P09-M26-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P09-M26-05-04 — Create/update the **Manual QA Handoff** guide for **Usage Metering** at `docs/module-26/M26_Usage_Metering_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P09-M26-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -2402,7 +2583,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M25, M26
-
 
 ### Submodule 27.01 — Scope & Technical Design
 
@@ -2419,6 +2599,8 @@ Agent
 - [ ] P09-M27-01-11 — Credits/coupons foundation
 - [ ] P09-M27-01-12 — Refund/enterprise invoice paths as approved
 - [ ] P09-M27-01-13 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 27.02 — Backend, Persistence & API
 
@@ -2438,6 +2620,8 @@ Agent
 - [ ] P09-M27-02-12 — Implement/verify API contract: `Stripe/provider webhook endpoints`.
 - [ ] P09-M27-02-13 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 27.03 — Frontend & Integrations
 
 - [ ] P09-M27-03-01 — Build/complete frontend requirement: Billing overview.
@@ -2450,6 +2634,8 @@ Agent
 
 - [ ] P09-M27-03-08 — Integrate and verify: Stripe or approved billing provider.
 - [ ] P09-M27-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 27.04 — Security & QA
 
@@ -2468,6 +2654,8 @@ Agent
 - [ ] P09-M27-04-12 — Run regression checks for directly affected existing modules.
 - [ ] P09-M27-04-13 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 27.05 — Documentation & Acceptance
 
 - [ ] P09-M27-05-01 — Update the Master Module Registry status and dependencies.
@@ -2475,15 +2663,16 @@ Agent
 - [ ] P09-M27-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P09-M27-05-04 — Create/update the **Manual QA Handoff** guide for **Billing** at `docs/module-27/M27_Billing_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [ ] P09-M27-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M27] Billing = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M27] Billing = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # PHASE 10 — Admin & Production
 
 - [ ] P10-GATE — Phase 10 is complete only when every required module below is accepted.
+
 
 
 ## Module 28 — Admin Portal `M28`
@@ -2491,7 +2680,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M02, M03, M14, M25, M26, M27
-
 
 ### Submodule 28.01 — Scope & Technical Design
 
@@ -2515,6 +2703,8 @@ Agent
 - [ ] P10-M28-01-18 — Support tools
 - [ ] P10-M28-01-19 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
+
+
 ### Submodule 28.02 — Backend, Persistence & API
 
 - [ ] P10-M28-02-01 — Implement/confirm data requirement: `Uses existing domain tables plus admin/support metadata`.
@@ -2528,6 +2718,8 @@ Agent
 - [ ] P10-M28-02-07 — Implement/verify API contract: `Admin-scoped endpoints or admin authorization over existing APIs`.
 - [ ] P10-M28-02-08 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 28.03 — Frontend & Integrations
 
 - [ ] P10-M28-03-01 — Build/complete frontend requirement: Admin layout/navigation.
@@ -2539,6 +2731,8 @@ Agent
 - [ ] P10-M28-03-07 — Verify responsive, loading, empty, validation, success and error states.
 
 - [ ] P10-M28-03-08 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+
+
 
 ### Submodule 28.04 — Security & QA
 
@@ -2554,13 +2748,14 @@ Agent
 - [ ] P10-M28-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P10-M28-04-10 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 28.05 — Documentation & Acceptance
 
 - [ ] P10-M28-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P10-M28-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P10-M28-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P10-M28-05-04 — Create/update the **Manual QA Handoff** guide for **Admin Portal** at `docs/module-28/M28_Admin_Portal_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P10-M28-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -2571,7 +2766,6 @@ Agent
 **Target:** Commercial
 
 **Dependencies:** M28
-
 
 ### Submodule 29.01 — Scope & Technical Design
 
@@ -2590,6 +2784,8 @@ Agent
 - [ ] P10-M29-01-13 — Security alerts
 - [ ] P10-M29-01-14 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
+
+
 ### Submodule 29.02 — Backend, Persistence & API
 
 - [ ] P10-M29-02-01 — Implement/confirm data requirement: `audit_logs`.
@@ -2605,6 +2801,8 @@ Agent
 - [ ] P10-M29-02-09 — Implement/verify API contract: `Admin audit/system endpoints as appropriate`.
 - [ ] P10-M29-02-10 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 29.03 — Frontend & Integrations
 
 - [ ] P10-M29-03-01 — Build/complete frontend requirement: Audit log viewer.
@@ -2616,6 +2814,8 @@ Agent
 - [ ] P10-M29-03-06 — Integrate and verify: Monitoring/logging platform.
 - [ ] P10-M29-03-07 — Integrate and verify: Backup/storage services.
 - [ ] P10-M29-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 29.04 — Security & QA
 
@@ -2634,6 +2834,8 @@ Agent
 - [ ] P10-M29-04-12 — Run regression checks for directly affected existing modules.
 - [ ] P10-M29-04-13 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 29.05 — Documentation & Acceptance
 
 - [ ] P10-M29-05-01 — Update the Master Module Registry status and dependencies.
@@ -2641,15 +2843,16 @@ Agent
 - [ ] P10-M29-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P10-M29-05-04 — Create/update the **Manual QA Handoff** guide for **Security, Audit & Monitoring** at `docs/module-29/M29_Security_Audit_and_Monitoring_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [ ] P10-M29-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M29] Security, Audit & Monitoring = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M29] Security, Audit & Monitoring = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # PHASE 11 — Multi-Provider Future
 
 - [ ] P11-GATE — Phase 11 is complete only when every required module below is accepted.
+
 
 
 ## Module 30 — Retell Voice Agent Provider `M30`
@@ -2657,7 +2860,6 @@ Agent
 **Target:** Future
 
 **Dependencies:** M05, M07, M08, M17
-
 
 ### Submodule 30.01 — Scope & Technical Design
 
@@ -2669,6 +2871,8 @@ Agent
 - [ ] P11-M30-01-06 — Store provider mapping
 - [ ] P11-M30-01-07 — Provider health/retry
 - [ ] P11-M30-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 30.02 — Backend, Persistence & API
 
@@ -2684,6 +2888,8 @@ Agent
 - [ ] P11-M30-02-08 — Implement/verify API contract: `Internal provider adapter; no SaaS-wide API redesign`.
 - [ ] P11-M30-02-09 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 30.03 — Frontend & Integrations
 
 - [ ] P11-M30-03-01 — Build/complete frontend requirement: Provider selection/status only where product scope allows.
@@ -2692,6 +2898,8 @@ Agent
 
 - [ ] P11-M30-03-04 — Integrate and verify: Retell AI.
 - [ ] P11-M30-03-05 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 30.04 — Security & QA
 
@@ -2706,13 +2914,14 @@ Agent
 - [ ] P11-M30-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P11-M30-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 30.05 — Documentation & Acceptance
 
 - [ ] P11-M30-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P11-M30-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P11-M30-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P11-M30-05-04 — Create/update the **Manual QA Handoff** guide for **Retell Voice Agent Provider** at `docs/module-30/M30_Retell_Voice_Agent_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P11-M30-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -2723,7 +2932,6 @@ Agent
 **Target:** Future
 
 **Dependencies:** M05, M10, M17
-
 
 ### Submodule 31.01 — Scope & Technical Design
 
@@ -2736,6 +2944,8 @@ Agent
 - [ ] P11-M31-01-07 — Normalize session/call events
 - [ ] P11-M31-01-08 — Observability and retry/reconnect strategy
 - [ ] P11-M31-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 31.02 — Backend, Persistence & API
 
@@ -2752,6 +2962,8 @@ Agent
 - [ ] P11-M31-02-09 — Implement/verify API contract: `Realtime/WebSocket endpoints and internal provider methods`.
 - [ ] P11-M31-02-10 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 31.03 — Frontend & Integrations
 
 - [ ] P11-M31-03-01 — Build/complete frontend requirement: Provider selection/status if enabled.
@@ -2762,6 +2974,8 @@ Agent
 - [ ] P11-M31-03-05 — Integrate and verify: OpenAI Realtime.
 - [ ] P11-M31-03-06 — Integrate and verify: Twilio or telephony provider.
 - [ ] P11-M31-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 31.04 — Security & QA
 
@@ -2779,13 +2993,14 @@ Agent
 - [ ] P11-M31-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P11-M31-04-12 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 31.05 — Documentation & Acceptance
 
 - [ ] P11-M31-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P11-M31-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P11-M31-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P11-M31-05-04 — Create/update the **Manual QA Handoff** guide for **OpenAI Realtime Provider** at `docs/module-31/M31_OpenAI_Realtime_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P11-M31-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -2797,7 +3012,6 @@ Agent
 
 **Dependencies:** M10, M11
 
-
 ### Submodule 32.01 — Scope & Technical Design
 
 - [ ] P11-M32-01-01 — Confirm the objective and boundaries of **Telnyx Telephony Provider**.
@@ -2807,6 +3021,8 @@ Agent
 - [ ] P11-M32-01-05 — Webhook normalization
 - [ ] P11-M32-01-06 — Provider mapping
 - [ ] P11-M32-01-07 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 32.02 — Backend, Persistence & API
 
@@ -2822,6 +3038,8 @@ Agent
 - [ ] P11-M32-02-08 — Implement/verify API contract: `Telnyx webhook endpoints and internal adapter`.
 - [ ] P11-M32-02-09 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 32.03 — Frontend & Integrations
 
 - [ ] P11-M32-03-01 — Build/complete frontend requirement: Provider option/status when enabled.
@@ -2830,6 +3048,8 @@ Agent
 
 - [ ] P11-M32-03-04 — Integrate and verify: Telnyx.
 - [ ] P11-M32-03-05 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 32.04 — Security & QA
 
@@ -2844,6 +3064,8 @@ Agent
 - [ ] P11-M32-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P11-M32-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 32.05 — Documentation & Acceptance
 
 - [ ] P11-M32-05-01 — Update the Master Module Registry status and dependencies.
@@ -2851,15 +3073,16 @@ Agent
 - [ ] P11-M32-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P11-M32-05-04 — Create/update the **Manual QA Handoff** guide for **Telnyx Telephony Provider** at `docs/module-32/M32_Telnyx_Telephony_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [ ] P11-M32-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M32] Telnyx Telephony Provider = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M32] Telnyx Telephony Provider = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # PHASE 12 — Platform Expansion
 
 - [ ] P12-GATE — Phase 12 is complete only when every required module below is accepted.
+
 
 
 ## Module 33 — Developer / Integration Portal `M33`
@@ -2867,7 +3090,6 @@ Agent
 **Target:** Future
 
 **Dependencies:** M03, M17, M29
-
 
 ### Submodule 33.01 — Scope & Technical Design
 
@@ -2882,6 +3104,8 @@ Agent
 - [ ] P12-M33-01-09 — OAuth/service-account foundation
 - [ ] P12-M33-01-10 — Sandbox/changelog
 - [ ] P12-M33-01-11 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 33.02 — Backend, Persistence & API
 
@@ -2899,6 +3123,8 @@ Agent
 - [ ] P12-M33-02-10 — Implement/verify API contract: `Public API access management endpoints`.
 - [ ] P12-M33-02-11 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 33.03 — Frontend & Integrations
 
 - [ ] P12-M33-03-01 — Build/complete frontend requirement: Developer dashboard.
@@ -2909,6 +3135,8 @@ Agent
 - [ ] P12-M33-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
 - [ ] P12-M33-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+
+
 
 ### Submodule 33.04 — Security & QA
 
@@ -2926,13 +3154,14 @@ Agent
 - [ ] P12-M33-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P12-M33-04-12 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 33.05 — Documentation & Acceptance
 
 - [ ] P12-M33-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M33-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M33-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P12-M33-05-04 — Create/update the **Manual QA Handoff** guide for **Developer / Integration Portal** at `docs/module-33/M33_Developer_Integration_Portal_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P12-M33-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -2943,7 +3172,6 @@ Agent
 **Target:** Future
 
 **Dependencies:** M01
-
 
 ### Submodule 34.01 — Scope & Technical Design
 
@@ -2963,6 +3191,8 @@ Agent
 - [ ] P12-M34-01-14 — Release notes
 - [ ] P12-M34-01-15 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
+
+
 ### Submodule 34.02 — Backend, Persistence & API
 
 - [ ] P12-M34-02-01 — Implement/confirm data requirement: `Documentation content source/versioning`.
@@ -2975,6 +3205,8 @@ Agent
 
 - [ ] P12-M34-02-07 — Confirm whether public/customer APIs are required; avoid creating unnecessary endpoints.
 
+
+
 ### Submodule 34.03 — Frontend & Integrations
 
 - [ ] P12-M34-03-01 — Build/complete frontend requirement: Searchable help center.
@@ -2985,6 +3217,8 @@ Agent
 
 - [ ] P12-M34-03-06 — Integrate and verify: Optional docs/CMS/search platform.
 - [ ] P12-M34-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 34.04 — Security & QA
 
@@ -2997,13 +3231,14 @@ Agent
 - [ ] P12-M34-04-06 — Run regression checks for directly affected existing modules.
 - [ ] P12-M34-04-07 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 34.05 — Documentation & Acceptance
 
 - [ ] P12-M34-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M34-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M34-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P12-M34-05-04 — Create/update the **Manual QA Handoff** guide for **Documentation / Help Center** at `docs/module-34/M34_Documentation_Help_Center_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P12-M34-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -3014,7 +3249,6 @@ Agent
 **Target:** Future
 
 **Dependencies:** M28, M29
-
 
 ### Submodule 35.01 — Scope & Technical Design
 
@@ -3033,6 +3267,8 @@ Agent
 - [ ] P12-M35-01-13 — Incident timeline
 - [ ] P12-M35-01-14 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
+
+
 ### Submodule 35.02 — Backend, Persistence & API
 
 - [ ] P12-M35-02-01 — Implement/confirm data requirement: `system_events`.
@@ -3049,6 +3285,8 @@ Agent
 - [ ] P12-M35-02-10 — Implement/verify API contract: `Realtime stream/polling where justified`.
 - [ ] P12-M35-02-11 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 35.03 — Frontend & Integrations
 
 - [ ] P12-M35-03-01 — Build/complete frontend requirement: Ops dashboard.
@@ -3064,6 +3302,8 @@ Agent
 - [ ] P12-M35-03-10 — Integrate and verify: Providers.
 - [ ] P12-M35-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
+
+
 ### Submodule 35.04 — Security & QA
 
 - [ ] P12-M35-04-01 — Ops-only access.
@@ -3077,13 +3317,14 @@ Agent
 - [ ] P12-M35-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P12-M35-04-09 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 35.05 — Documentation & Acceptance
 
 - [ ] P12-M35-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M35-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M35-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P12-M35-05-04 — Create/update the **Manual QA Handoff** guide for **Operations / Support Console** at `docs/module-35/M35_Operations_Support_Console_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P12-M35-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -3094,7 +3335,6 @@ Agent
 **Target:** Future
 
 **Dependencies:** M25, M27, M28
-
 
 ### Submodule 36.01 — Scope & Technical Design
 
@@ -3113,6 +3353,8 @@ Agent
 - [ ] P12-M36-01-13 — Partner support/API
 - [ ] P12-M36-01-14 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
+
+
 ### Submodule 36.02 — Backend, Persistence & API
 
 - [ ] P12-M36-02-01 — Implement/confirm data requirement: `partners`.
@@ -3130,6 +3372,8 @@ Agent
 - [ ] P12-M36-02-11 — Implement/verify API contract: `Partner-scoped account/provisioning/billing endpoints`.
 - [ ] P12-M36-02-12 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 36.03 — Frontend & Integrations
 
 - [ ] P12-M36-03-01 — Build/complete frontend requirement: Partner dashboard.
@@ -3143,6 +3387,8 @@ Agent
 - [ ] P12-M36-03-08 — Integrate and verify: Billing.
 - [ ] P12-M36-03-09 — Integrate and verify: Custom domains/email branding.
 - [ ] P12-M36-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 36.04 — Security & QA
 
@@ -3158,13 +3404,14 @@ Agent
 - [ ] P12-M36-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P12-M36-04-10 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 36.05 — Documentation & Acceptance
 
 - [ ] P12-M36-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M36-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M36-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P12-M36-05-04 — Create/update the **Manual QA Handoff** guide for **Partner / Reseller / White-Label Portal** at `docs/module-36/M36_Partner_Reseller_White_Label_Portal_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P12-M36-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -3176,7 +3423,6 @@ Agent
 
 **Dependencies:** M29
 
-
 ### Submodule 37.01 — Scope & Technical Design
 
 - [ ] P12-M37-01-01 — Confirm the objective and boundaries of **Public Status Page**.
@@ -3186,6 +3432,8 @@ Agent
 - [ ] P12-M37-01-05 — Provider degradation
 - [ ] P12-M37-01-06 — Subscribe to updates
 - [ ] P12-M37-01-07 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 37.02 — Backend, Persistence & API
 
@@ -3201,6 +3449,8 @@ Agent
 - [ ] P12-M37-02-08 — Implement/verify API contract: `Admin incident management endpoint`.
 - [ ] P12-M37-02-09 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 37.03 — Frontend & Integrations
 
 - [ ] P12-M37-03-01 — Build/complete frontend requirement: Public status overview.
@@ -3213,6 +3463,8 @@ Agent
 - [ ] P12-M37-03-07 — Integrate and verify: Email notification service.
 - [ ] P12-M37-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
+
+
 ### Submodule 37.04 — Security & QA
 
 - [ ] P12-M37-04-01 — No sensitive internal diagnostics exposed.
@@ -3224,13 +3476,14 @@ Agent
 - [ ] P12-M37-04-06 — Run regression checks for directly affected existing modules.
 - [ ] P12-M37-04-07 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 37.05 — Documentation & Acceptance
 
 - [ ] P12-M37-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M37-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M37-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P12-M37-05-04 — Create/update the **Manual QA Handoff** guide for **Public Status Page** at `docs/module-37/M37_Public_Status_Page_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P12-M37-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -3241,7 +3494,6 @@ Agent
 **Target:** Future
 
 **Dependencies:** M14, M20, M23
-
 
 ### Submodule 38.01 — Scope & Technical Design
 
@@ -3258,6 +3510,8 @@ Agent
 - [ ] P12-M38-01-11 — Usage
 - [ ] P12-M38-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
+
+
 ### Submodule 38.02 — Backend, Persistence & API
 
 - [ ] P12-M38-02-01 — Implement/confirm data requirement: `Uses existing SaaS APIs; minimal mobile-specific state`.
@@ -3271,6 +3525,8 @@ Agent
 - [ ] P12-M38-02-07 — Implement/verify API contract: `Reuse versioned SaaS APIs; add mobile-specific aggregation only if justified`.
 - [ ] P12-M38-02-08 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 38.03 — Frontend & Integrations
 
 - [ ] P12-M38-03-01 — Build/complete frontend requirement: React Native/Expo mobile navigation.
@@ -3282,6 +3538,8 @@ Agent
 - [ ] P12-M38-03-06 — Integrate and verify: Push notification service.
 - [ ] P12-M38-03-07 — Integrate and verify: Same NestJS API.
 - [ ] P12-M38-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 38.04 — Security & QA
 
@@ -3298,13 +3556,14 @@ Agent
 - [ ] P12-M38-04-10 — Run regression checks for directly affected existing modules.
 - [ ] P12-M38-04-11 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 38.05 — Documentation & Acceptance
 
 - [ ] P12-M38-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M38-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M38-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P12-M38-05-04 — Create/update the **Manual QA Handoff** guide for **Business Mobile App** at `docs/module-38/M38_Business_Mobile_App_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P12-M38-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -3315,7 +3574,6 @@ Agent
 **Target:** Future
 
 **Dependencies:** M05, M07, M17
-
 
 ### Submodule 39.01 — Scope & Technical Design
 
@@ -3329,6 +3587,8 @@ Agent
 - [ ] P12-M39-01-08 — Theme/config options
 - [ ] P12-M39-01-09 — Installation snippet
 - [ ] P12-M39-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 39.02 — Backend, Persistence & API
 
@@ -3345,6 +3605,8 @@ Agent
 - [ ] P12-M39-02-09 — Implement/verify API contract: `Secure agent bootstrap/token endpoint`.
 - [ ] P12-M39-02-10 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 39.03 — Frontend & Integrations
 
 - [ ] P12-M39-03-01 — Build/complete frontend requirement: Compact embeddable widget.
@@ -3358,6 +3620,8 @@ Agent
 - [ ] P12-M39-03-08 — Integrate and verify: Tools.
 - [ ] P12-M39-03-09 — Integrate and verify: CDN/static distribution.
 - [ ] P12-M39-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 39.04 — Security & QA
 
@@ -3375,13 +3639,14 @@ Agent
 - [ ] P12-M39-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P12-M39-04-12 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 39.05 — Documentation & Acceptance
 
 - [ ] P12-M39-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P12-M39-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P12-M39-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P12-M39-05-04 — Create/update the **Manual QA Handoff** guide for **Embeddable Web Voice / Chat Widget** at `docs/module-39/M39_Embeddable_Web_Voice_Chat_Widget_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
-
 
 - [ ] P12-M39-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -3392,7 +3657,6 @@ Agent
 **Target:** Future
 
 **Dependencies:** M01, M05, M07, M08
-
 
 ### Submodule 40.01 — Scope & Technical Design
 
@@ -3405,6 +3669,8 @@ Agent
 - [ ] P12-M40-01-07 — Rate limits
 - [ ] P12-M40-01-08 — Trial/signup conversion
 - [ ] P12-M40-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+
+
 
 ### Submodule 40.02 — Backend, Persistence & API
 
@@ -3421,6 +3687,8 @@ Agent
 - [ ] P12-M40-02-09 — Implement/verify API contract: `Rate-limit/abuse controls`.
 - [ ] P12-M40-02-10 — Add DTO/schema validation and consistent API error responses.
 
+
+
 ### Submodule 40.03 — Frontend & Integrations
 
 - [ ] P12-M40-03-01 — Build/complete frontend requirement: Industry selector.
@@ -3433,6 +3701,8 @@ Agent
 - [ ] P12-M40-03-07 — Integrate and verify: VoiceAgentProvider.
 - [ ] P12-M40-03-08 — Integrate and verify: Marketing website.
 - [ ] P12-M40-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+
+
 
 ### Submodule 40.04 — Security & QA
 
@@ -3448,6 +3718,8 @@ Agent
 - [ ] P12-M40-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P12-M40-04-10 — Complete manual QA of the end-to-end user journey.
 
+
+
 ### Submodule 40.05 — Documentation & Acceptance
 
 - [ ] P12-M40-05-01 — Update the Master Module Registry status and dependencies.
@@ -3455,11 +3727,11 @@ Agent
 - [ ] P12-M40-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
 - [ ] P12-M40-05-04 — Create/update the **Manual QA Handoff** guide for **Public Demo / Trial Sandbox** at `docs/module-40/M40_Public_Demo_Trial_Sandbox_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-
 - [ ] P12-M40-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M40] Public Demo / Trial Sandbox = COMPLETE ✅` only after every required checkbox above is verified.
----
+## **Module Gate:** `[M40] Public Demo / Trial Sandbox = COMPLETE ✅` only after every required checkbox above is verified.
+
+
 
 # Final Execution Order
 
@@ -3506,6 +3778,7 @@ Agent
 - [ ] ORDER-41 — M40 Public Demo / Trial Sandbox — Target: Future — Dependencies: M01, M05, M07, M08
 
 
+
 ## MVP Market-Test Gate
 
 - [x] MVP-GATE-M00 — M00 Existing Project Audit & SaaS Foundation completed and accepted.
@@ -3529,6 +3802,7 @@ Agent
 - [ ] MVP-GATE-E2E — Full journey passes: Register → Organization → Business → Agent → Provider Sync → Knowledge → Voice → Phone Number → Test → Activate → Real Call → Call History → Transcript → Summary.
 
 
+
 ## Commercial Launch Gate
 
 - [ ] COMMERCIAL-GATE-M20 — M20 Customer / CRM completed to the approved launch scope.
@@ -3542,6 +3816,7 @@ Agent
 - [ ] COMMERCIAL-GATE-M29 — M29 Security, Audit & Monitoring completed to the approved launch scope.
 - [ ] COMMERCIAL-GATE-P1 — Marketing Website launch scope completed.
 - [ ] COMMERCIAL-GATE-P6 — Basic Help Center / onboarding documentation available.
+
 
 
 ## Future Scale Gate
@@ -3559,6 +3834,7 @@ Agent
 - [ ] FUTURE-GATE-M40 — M40 Public Demo / Trial Sandbox completed only when business priority justifies it.
 
 ---
+
 
 
 # Vertical Slice Rule — Final Reminder

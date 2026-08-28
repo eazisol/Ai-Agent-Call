@@ -174,7 +174,11 @@ test('sync updates when mapping already has external id', async () => {
         create: () => {
           throw new Error('should not create');
         },
-        save: async (row) => ({ ...row, syncStatus: 'pending', lastError: null }),
+        save: async (row) => ({
+          ...row,
+          syncStatus: 'pending',
+          lastError: null,
+        }),
       };
       return fn(manager);
     },

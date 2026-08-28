@@ -35,10 +35,20 @@ export class AgentProviderMapping {
   @Column({ type: 'varchar', length: 50 })
   provider!: string;
 
-  @Column({ name: 'external_agent_id', type: 'varchar', length: 255, nullable: true })
+  @Column({
+    name: 'external_agent_id',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
   externalAgentId!: string | null;
 
-  @Column({ name: 'sync_status', type: 'varchar', length: 40, default: 'not_provisioned' })
+  @Column({
+    name: 'sync_status',
+    type: 'varchar',
+    length: 40,
+    default: 'not_provisioned',
+  })
   syncStatus!: AgentProviderSyncStatus;
 
   @Column({ name: 'last_synced_at', type: 'timestamptz', nullable: true })

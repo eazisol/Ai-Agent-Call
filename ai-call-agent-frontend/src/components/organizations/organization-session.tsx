@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffectTask } from "@/hooks/use-effect-task";
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -79,9 +80,7 @@ export function OrganizationSessionProvider({
     setStatus("ready");
   }, []);
 
-  React.useEffect(() => {
-    void refresh();
-  }, [refresh]);
+  useEffectTask(refresh, [refresh]);
 
   const switchOrganization = React.useCallback(
     async (organizationId: string) => {

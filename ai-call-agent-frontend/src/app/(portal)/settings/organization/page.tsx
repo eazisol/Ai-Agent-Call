@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/patterns/empty-state";
 import { useOrganizationSession } from "@/components/organizations/organization-session";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useEffectTask } from "@/hooks/use-effect-task";
 import { organizationsApi } from "@/lib/organizations-api";
 
 export default function OrganizationSettingsPage() {
@@ -20,7 +21,7 @@ export default function OrganizationSettingsPage() {
   const [fieldError, setFieldError] = React.useState<string | undefined>();
   const [submitting, setSubmitting] = React.useState(false);
 
-  React.useEffect(() => {
+  useEffectTask(() => {
     if (!active) {
       return;
     }

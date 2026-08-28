@@ -35,7 +35,12 @@ export class AgentConfig {
   useBusinessLanguageSettings!: boolean;
 
   /** Customer-facing mode: single language vs multilingual / auto-detect. */
-  @Column({ name: 'language_mode', type: 'varchar', length: 20, default: 'single' })
+  @Column({
+    name: 'language_mode',
+    type: 'varchar',
+    length: 20,
+    default: 'single',
+  })
   languageMode!: AgentLanguageMode;
 
   /** Default / initial / fallback language when detection is unavailable. */
@@ -46,16 +51,24 @@ export class AgentConfig {
   @Column({
     name: 'languages',
     type: 'jsonb',
-    default: () => "'[\"en\"]'::jsonb",
+    default: () => '\'["en"]\'::jsonb',
   })
   languages!: AgentLanguage[];
 
   /** Auto-detect caller language among `languages` (provider-neutral; M06 wires). */
-  @Column({ name: 'language_detection_enabled', type: 'boolean', default: false })
+  @Column({
+    name: 'language_detection_enabled',
+    type: 'boolean',
+    default: false,
+  })
   languageDetectionEnabled!: boolean;
 
   /** Allow mid-call language switch among `languages` when provider supports it. */
-  @Column({ name: 'language_switching_enabled', type: 'boolean', default: false })
+  @Column({
+    name: 'language_switching_enabled',
+    type: 'boolean',
+    default: false,
+  })
   languageSwitchingEnabled!: boolean;
 
   /**

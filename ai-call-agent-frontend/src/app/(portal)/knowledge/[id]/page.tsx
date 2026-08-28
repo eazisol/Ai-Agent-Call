@@ -14,6 +14,7 @@ import { StatusBadge } from "@/components/patterns/status-badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffectTask } from "@/hooks/use-effect-task";
 import {
   canArchiveKnowledge,
   canDeleteKnowledge,
@@ -76,15 +77,26 @@ export default function KnowledgeDetailPage() {
   const load = React.useCallback(async () => {
     if (!id) return;
     setLoading(true);
+    setStatusLoading(true);
     setError(null);
     const result = await knowledgeApi.get(id);
     setLoading(false);
     if (!result.ok) {
       setSource(null);
+      setProviderStatus(null);
+      setStatusLoading(false);
       setError(result.message);
       return;
     }
     applySource(result.data.source);
+
+    const statusResult = await knowledgeApi.providerStatus(id);
+    setStatusLoading(false);
+    if (!statusResult.ok) {
+      setProviderStatus(null);
+      return;
+    }
+    setProviderStatus(statusResult.data.status);
   }, [id, applySource]);
 
   const loadStatus = React.useCallback(async () => {
@@ -99,13 +111,7 @@ export default function KnowledgeDetailPage() {
     setProviderStatus(result.data.status);
   }, [id]);
 
-  React.useEffect(() => {
-    void load();
-  }, [load]);
-
-  React.useEffect(() => {
-    if (source) void loadStatus();
-  }, [source?.id, loadStatus]);
+  useEffectTask(load, [load]);
 
   const mapping = elevenLabsKnowledgeMapping(source);
   const syncStatus =

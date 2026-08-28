@@ -13,10 +13,7 @@ export class PasswordService {
     return bcrypt.hash(plainPassword, rounds);
   }
 
-  async verify(
-    plainPassword: string,
-    passwordHash: string,
-  ): Promise<boolean> {
+  async verify(plainPassword: string, passwordHash: string): Promise<boolean> {
     return bcrypt.compare(plainPassword, passwordHash);
   }
 

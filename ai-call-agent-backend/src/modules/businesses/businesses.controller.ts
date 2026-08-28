@@ -16,10 +16,7 @@ import {
 import type { Response } from 'express';
 import { ApplicationError } from '../../common/errors/application-error';
 import { AuthCookieService } from '../auth/auth-cookie.service';
-import {
-  type AuthenticatedRequest,
-  readCookie,
-} from '../auth/auth-request';
+import { type AuthenticatedRequest, readCookie } from '../auth/auth-request';
 import { AuthGuard } from '../auth/auth.guard';
 import { BusinessesService } from './businesses.service';
 import { CreateBusinessDto } from './dto/create-business.dto';
@@ -42,11 +39,7 @@ export class BusinessesController {
   ) {
     const userId = this.requireUserId(request);
     const organizationId = this.requireActiveOrganization(request);
-    const business = await this.businesses.create(
-      userId,
-      organizationId,
-      body,
-    );
+    const business = await this.businesses.create(userId, organizationId, body);
     this.cookies.setActiveBusiness(response, business.id);
     return { business };
   }

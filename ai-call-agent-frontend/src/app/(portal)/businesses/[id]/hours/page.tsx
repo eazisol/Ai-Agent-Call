@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffectTask } from "@/hooks/use-effect-task";
 import * as React from "react";
 import { useParams } from "next/navigation";
 
@@ -56,9 +57,7 @@ export default function BusinessHoursPage() {
     );
   }, [id]);
 
-  React.useEffect(() => {
-    void load();
-  }, [load]);
+  useEffectTask(load, [load]);
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffectTask } from "@/hooks/use-effect-task";
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -40,9 +41,7 @@ export default function BusinessDetailPage() {
     setBusiness(result.data.business);
   }, [id]);
 
-  React.useEffect(() => {
-    void load();
-  }, [load]);
+  useEffectTask(load, [load]);
 
   if (loading) {
     return <LoadingState label="Loading business…" />;

@@ -17,6 +17,7 @@ import { LoadingState } from "@/components/patterns/loading-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffectTask } from "@/hooks/use-effect-task";
 import { agentsApi, canCreateAgent } from "@/lib/agents-api";
 import { cn } from "@/lib/utils";
 
@@ -63,7 +64,7 @@ export default function CreateAgentPage() {
       voicePreference: "neutral",
     });
 
-  React.useEffect(() => {
+  useEffectTask(() => {
     if (!business) return;
     const langs = business.languages?.length
       ? business.languages

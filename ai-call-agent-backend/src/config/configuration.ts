@@ -81,7 +81,8 @@ export default () => {
     },
     elevenlabs: {
       apiKey: process.env.ELEVENLABS_API_KEY ?? '',
-      baseUrl: process.env.ELEVENLABS_API_BASE_URL ?? 'https://api.elevenlabs.io',
+      baseUrl:
+        process.env.ELEVENLABS_API_BASE_URL ?? 'https://api.elevenlabs.io',
       timeoutMs: numberValue(process.env.ELEVENLABS_TIMEOUT_MS, 20_000),
       voiceFemale:
         process.env.ELEVENLABS_DEFAULT_VOICE_FEMALE ?? 'EXAVITQu4vr4xnSDxMaL',

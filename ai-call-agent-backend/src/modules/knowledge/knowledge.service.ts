@@ -34,13 +34,7 @@ import {
 
 const DEFAULT_MAX_FILE_BYTES = 10 * 1024 * 1024;
 
-const ALLOWED_EXTENSIONS = new Set([
-  '.pdf',
-  '.txt',
-  '.md',
-  '.docx',
-  '.csv',
-]);
+const ALLOWED_EXTENSIONS = new Set(['.pdf', '.txt', '.md', '.docx', '.csv']);
 
 const ALLOWED_CONTENT_TYPES = new Set([
   'application/pdf',
@@ -342,7 +336,9 @@ export class KnowledgeService {
       allowArchivedBusiness: true,
     });
 
-    const keys = Object.entries(input).filter(([, value]) => value !== undefined);
+    const keys = Object.entries(input).filter(
+      ([, value]) => value !== undefined,
+    );
     if (keys.length === 0) {
       throw new ApplicationError(
         'KNOWLEDGE_TYPE_INVALID',
@@ -701,9 +697,7 @@ export class KnowledgeService {
 
     const assignedAgents = (source.assignments ?? [])
       .map((row) =>
-        row.agent
-          ? { id: row.agent.id, name: row.agent.name }
-          : null,
+        row.agent ? { id: row.agent.id, name: row.agent.name } : null,
       )
       .filter((row): row is { id: string; name: string } => row != null)
       .sort((a, b) => a.name.localeCompare(b.name));
@@ -718,7 +712,10 @@ export class KnowledgeService {
       description: source.description,
       language: source.language,
       url: source.url,
-      textBody: source.type === 'text' || source.type === 'faq' ? source.textBody : null,
+      textBody:
+        source.type === 'text' || source.type === 'faq'
+          ? source.textBody
+          : null,
       faqItems: source.type === 'faq' ? source.faqItems : null,
       originalFilename: source.originalFilename,
       contentType: source.contentType,
@@ -792,8 +789,12 @@ export class KnowledgeService {
     }
     const cleaned = items
       .map((item) => ({
-        question: String(item.question ?? '').trim().slice(0, 2000),
-        answer: String(item.answer ?? '').trim().slice(0, 20_000),
+        question: String(item.question ?? '')
+          .trim()
+          .slice(0, 2000),
+        answer: String(item.answer ?? '')
+          .trim()
+          .slice(0, 20_000),
       }))
       .filter((item) => item.question && item.answer);
     if (!cleaned.length) {
@@ -844,9 +845,7 @@ export class KnowledgeService {
     }
 
     const filename = (file.originalname || '').toLowerCase();
-    const ext = filename.includes('.')
-      ? `.${filename.split('.').pop()}`
-      : '';
+    const ext = filename.includes('.') ? `.${filename.split('.').pop()}` : '';
     if (!ALLOWED_EXTENSIONS.has(ext)) {
       throw new ApplicationError(
         'KNOWLEDGE_TYPE_INVALID',
@@ -872,4 +871,3 @@ export class KnowledgeService {
     return name.replace(/[^a-zA-Z0-9._-]+/g, '_').slice(0, 180) || 'file';
   }
 }
-

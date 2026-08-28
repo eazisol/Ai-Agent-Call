@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Building2 } from "lucide-react";
 
 import { FormField } from "@/components/patterns/form-field";

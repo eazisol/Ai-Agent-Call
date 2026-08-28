@@ -17,10 +17,7 @@ import {
   BUSINESS_INDUSTRIES,
   BUSINESS_STATUSES,
 } from '../entities/business.entity';
-import {
-  BusinessHourDto,
-  BusinessSettingsDto,
-} from './create-business.dto';
+import { BusinessHourDto, BusinessSettingsDto } from './create-business.dto';
 
 export class UpdateBusinessDto {
   @IsOptional()

@@ -6,9 +6,7 @@ const { AuthService } = require('../../dist/modules/auth/auth.service');
 const {
   AuthTokenService,
 } = require('../../dist/modules/auth/auth-token.service');
-const {
-  PasswordService,
-} = require('../../dist/modules/auth/password.service');
+const { PasswordService } = require('../../dist/modules/auth/password.service');
 const {
   ApplicationError,
 } = require('../../dist/common/errors/application-error');
@@ -185,7 +183,9 @@ function createHarness() {
       if (options.relations?.user) {
         const user =
           found.user ||
-          users.rows.find((u) => u.id === found.userId || u.id === found.user?.id);
+          users.rows.find(
+            (u) => u.id === found.userId || u.id === found.user?.id,
+          );
         if (user) {
           found.user = user;
         }
@@ -251,9 +251,14 @@ test('register → verify → login → me → logout journey', async () => {
         email: 'alex@example.com',
         password: 'correct-horse-battery',
       }),
-    (error) => error instanceof ApplicationError && error.code === 'EMAIL_NOT_VERIFIED',
+    (error) =>
+      error instanceof ApplicationError && error.code === 'EMAIL_NOT_VERIFIED',
   );
-  assert.equal(sent.length, 2, 'login before verify should resend verification email');
+  assert.equal(
+    sent.length,
+    2,
+    'login before verify should resend verification email',
+  );
 
   const verifyToken = tokenFromLink(sent[1].text);
   const verified = await auth.verifyEmail(verifyToken);
@@ -272,7 +277,9 @@ test('register → verify → login → me → logout journey', async () => {
 
   await auth.logout(session.refreshToken);
   const stored = refreshTokens.rows.find(
-    (row) => row.tokenHash === new AuthTokenService(config).hashOpaqueToken(session.refreshToken),
+    (row) =>
+      row.tokenHash ===
+      new AuthTokenService(config).hashOpaqueToken(session.refreshToken),
   );
   assert.ok(stored?.revokedAt);
 });
@@ -296,7 +303,11 @@ test('duplicate email registration is rejected', async () => {
     (error) =>
       error instanceof ApplicationError && error.code === 'EMAIL_NOT_VERIFIED',
   );
-  assert.equal(sent.length, 2, 'unverified re-register should resend verification email');
+  assert.equal(
+    sent.length,
+    2,
+    'unverified re-register should resend verification email',
+  );
 
   const verifyToken = tokenFromLink(sent[1].text);
   await auth.verifyEmail(verifyToken);
@@ -309,7 +320,8 @@ test('duplicate email registration is rejected', async () => {
         displayName: 'Three',
       }),
     (error) =>
-      error instanceof ApplicationError && error.code === 'EMAIL_ALREADY_REGISTERED',
+      error instanceof ApplicationError &&
+      error.code === 'EMAIL_ALREADY_REGISTERED',
   );
 });
 
@@ -404,7 +416,8 @@ test('access token subject cannot resolve a different user identity', async () =
   await assert.rejects(
     () => auth.meFromAccessToken('tampered.token.value'),
     (error) =>
-      error instanceof ApplicationError && error.code === 'INVALID_ACCESS_TOKEN',
+      error instanceof ApplicationError &&
+      error.code === 'INVALID_ACCESS_TOKEN',
   );
 });
 
@@ -428,6 +441,7 @@ test('access tokens expire according to configured TTL', async () => {
   assert.throws(
     () => tokens.verifyAccessToken(token),
     (error) =>
-      error instanceof ApplicationError && error.code === 'INVALID_ACCESS_TOKEN',
+      error instanceof ApplicationError &&
+      error.code === 'INVALID_ACCESS_TOKEN',
   );
 });

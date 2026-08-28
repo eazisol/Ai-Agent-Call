@@ -26,7 +26,8 @@ test('auth rate limiter allows traffic under the max then blocks', () => {
 
   assert.throws(
     () => limiter.consume('ip:POST:/api/v1/auth/login'),
-    (error) => error instanceof ApplicationError && error.code === 'RATE_LIMITED',
+    (error) =>
+      error instanceof ApplicationError && error.code === 'RATE_LIMITED',
   );
 
   // Separate route bucket remains available

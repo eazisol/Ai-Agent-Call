@@ -19,7 +19,9 @@ export class AuthCookieService {
     response.cookie(
       this.accessCookieName(),
       session.accessToken,
-      this.cookieOptions(this.config.get<number>('auth.accessTtlSeconds') ?? 900),
+      this.cookieOptions(
+        this.config.get<number>('auth.accessTtlSeconds') ?? 900,
+      ),
     );
     response.cookie(
       this.refreshCookieName(),
@@ -85,9 +87,9 @@ export class AuthCookieService {
     const secure =
       this.config.get<boolean>('auth.cookieSecure') ??
       this.config.get<string>('app.nodeEnv') === 'production';
-    const sameSite =
-      (this.config.get<'lax' | 'strict' | 'none'>('auth.cookieSameSite') ??
-        (secure ? 'none' : 'lax')) as CookieOptions['sameSite'];
+    const sameSite = (this.config.get<'lax' | 'strict' | 'none'>(
+      'auth.cookieSameSite',
+    ) ?? (secure ? 'none' : 'lax')) as CookieOptions['sameSite'];
 
     return {
       httpOnly: true,

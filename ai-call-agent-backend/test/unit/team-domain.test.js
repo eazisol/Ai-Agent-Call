@@ -226,8 +226,7 @@ function createTeamHarness(usersSeed = []) {
 
   const tokens = {
     createOpaqueToken: () => 'opaque-invite-token',
-    hashOpaqueToken: (raw) =>
-      createHash('sha256').update(raw).digest('hex'),
+    hashOpaqueToken: (raw) => createHash('sha256').update(raw).digest('hex'),
   };
 
   const config = {
@@ -401,7 +400,10 @@ test('invite accept creates membership; email mismatch blocked', async () => {
   assert.equal(accepted.alreadyMember, false);
 
   const listed = await harness.team.listMembers(owner.id, org.id);
-  assert.equal(listed.some((member) => member.userId === invitee.id), true);
+  assert.equal(
+    listed.some((member) => member.userId === invitee.id),
+    true,
+  );
 });
 
 test('admin cannot escalate to admin/owner; self role change blocked', async () => {
@@ -466,8 +468,7 @@ test('cannot remove last owner; transfer then remove previous owner works', asyn
 
   await assert.rejects(
     () => harness.team.removeMember(owner.id, org.id, ownerMember.id),
-    (error) =>
-      error instanceof ApplicationError && error.code === 'LAST_OWNER',
+    (error) => error instanceof ApplicationError && error.code === 'LAST_OWNER',
   );
 
   const transfer = await harness.team.transferOwnership(

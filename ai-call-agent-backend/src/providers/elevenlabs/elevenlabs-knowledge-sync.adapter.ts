@@ -69,10 +69,7 @@ export class ElevenLabsKnowledgeSyncAdapter implements KnowledgeSyncPort {
         `/v1/convai/knowledge-base/${encodeURIComponent(externalId)}`,
       );
     } catch (error) {
-      if (
-        error instanceof ApplicationError &&
-        error.statusCode === 404
-      ) {
+      if (error instanceof ApplicationError && error.statusCode === 404) {
         return;
       }
       // Best-effort: log and swallow so local delete is not blocked.
@@ -138,7 +135,11 @@ export class ElevenLabsKnowledgeSyncAdapter implements KnowledgeSyncPort {
       });
     }
 
-    if (input.type === 'file' && input.fileBytes && input.fileBytes.length > 0) {
+    if (
+      input.type === 'file' &&
+      input.fileBytes &&
+      input.fileBytes.length > 0
+    ) {
       return this.uploadFile(name, input);
     }
 
@@ -197,11 +198,7 @@ export class ElevenLabsKnowledgeSyncAdapter implements KnowledgeSyncPort {
       const blob = new Blob([bytes], {
         type: input.contentType || 'application/octet-stream',
       });
-      form.append(
-        'file',
-        blob,
-        input.originalFilename || 'knowledge-file',
-      );
+      form.append('file', blob, input.originalFilename || 'knowledge-file');
 
       const response = await fetch(
         `${cfg.baseUrl}/v1/convai/knowledge-base/file`,

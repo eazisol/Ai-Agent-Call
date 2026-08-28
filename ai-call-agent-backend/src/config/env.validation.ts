@@ -79,7 +79,11 @@ export const envValidationSchema = Joi.object({
   N8N_CALL_COMPLETED_WEBHOOK: Joi.string().uri().allow('', null),
 
   AUTH_JWT_ACCESS_SECRET: Joi.string().min(32).required(),
-  AUTH_ACCESS_TTL_SECONDS: Joi.number().integer().min(60).max(3600).default(900),
+  AUTH_ACCESS_TTL_SECONDS: Joi.number()
+    .integer()
+    .min(60)
+    .max(3600)
+    .default(900),
   AUTH_REFRESH_TTL_SECONDS: Joi.number()
     .integer()
     .min(3600)

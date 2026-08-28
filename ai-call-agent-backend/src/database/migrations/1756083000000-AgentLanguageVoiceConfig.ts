@@ -4,9 +4,7 @@ import type { MigrationInterface, QueryRunner } from 'typeorm';
  * Agent language mode, business-defaults inheritance, and voice preference.
  * Preserves existing language columns; expands language codes beyond the MVP-8 check.
  */
-export class AgentLanguageVoiceConfig1756083000000
-  implements MigrationInterface
-{
+export class AgentLanguageVoiceConfig1756083000000 implements MigrationInterface {
   name = 'AgentLanguageVoiceConfig1756083000000';
 
   async up(queryRunner: QueryRunner): Promise<void> {

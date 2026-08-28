@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffectTask } from "@/hooks/use-effect-task";
 import * as React from "react";
 import { RefreshCw } from "lucide-react";
 
@@ -57,9 +58,7 @@ export function AgentProviderSyncPanel({
     setStatus(result.data.status);
   }, [agent.id]);
 
-  React.useEffect(() => {
-    void loadStatus();
-  }, [loadStatus]);
+  useEffectTask(loadStatus, [loadStatus]);
 
   const onSync = async () => {
     if (!canSync || agent.status === "archived") return;

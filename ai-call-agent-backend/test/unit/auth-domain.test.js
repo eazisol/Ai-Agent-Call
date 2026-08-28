@@ -3,9 +3,7 @@ const test = require('node:test');
 const {
   AuthTokenService,
 } = require('../../dist/modules/auth/auth-token.service');
-const {
-  PasswordService,
-} = require('../../dist/modules/auth/password.service');
+const { PasswordService } = require('../../dist/modules/auth/password.service');
 
 const configValues = {
   'auth.jwtAccessSecret': 'test-auth-jwt-access-secret-32chars-min',
