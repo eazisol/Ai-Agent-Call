@@ -201,7 +201,7 @@ export function formatLanguages(
 ): string {
   const unique = [...new Set(languages.length ? languages : defaultLanguage ? [defaultLanguage] : [])];
   if (!unique.length) {
-    return "—";
+    return "ï¿½";
   }
   return unique
     .map((code) =>
@@ -239,7 +239,7 @@ export const COMMON_TIMEZONES = [
   "Australia/Sydney",
 ] as const;
 
-/** Businesses client — credentials cookies only; no request body logging. */
+/** Businesses client ï¿½ credentials cookies only; no request body logging. */
 export const businessesApi = {
   list: (includeArchived = false) =>
     request<{ businesses: Business[] }>(
