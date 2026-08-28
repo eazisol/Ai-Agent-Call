@@ -73,6 +73,13 @@ export default () => {
         3600,
       ),
     },
+    voiceClones: {
+      maxSampleBytes: numberValue(
+        process.env.VOICE_CLONE_MAX_SAMPLE_BYTES,
+        25 * 1024 * 1024,
+      ),
+      maxSamples: numberValue(process.env.VOICE_CLONE_MAX_SAMPLES, 5),
+    },
     providers: {
       telephony: process.env.TELEPHONY_PROVIDER ?? 'twilio',
       voiceAgent: process.env.VOICE_AGENT_PROVIDER ?? 'openai_realtime',

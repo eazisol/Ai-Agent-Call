@@ -149,6 +149,33 @@ function buildPortalBreadcrumbs(
     return [{ label: "Voice Library" }];
   }
 
+  if (pathname === "/voices/clones") {
+    return [
+      { label: "Voice Library", href: "/voices" },
+      { label: "Custom clones" },
+    ];
+  }
+
+  if (pathname === "/voices/clones/new") {
+    return [
+      { label: "Voice Library", href: "/voices" },
+      { label: "Custom clones", href: "/voices/clones" },
+      { label: "Create" },
+    ];
+  }
+
+  if (pathname.startsWith("/voices/clones/")) {
+    const parts = pathname.split("/").filter(Boolean);
+    const rawId = parts[2];
+    const label =
+      rawId && rawId.length > 12 ? `${rawId.slice(0, 8)}…` : rawId || "Clone";
+    return [
+      { label: "Voice Library", href: "/voices" },
+      { label: "Custom clones", href: "/voices/clones" },
+      { label },
+    ];
+  }
+
   if (pathname.startsWith("/voices")) {
     return [{ label: "Voice Library", href: "/voices" }];
   }

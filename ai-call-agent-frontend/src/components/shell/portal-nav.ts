@@ -23,6 +23,8 @@ export function isEnabledPortalRoute(href: string): boolean {
     href === "/knowledge" ||
     href === "/knowledge/new" ||
     href === "/voices" ||
+    href === "/voices/clones" ||
+    href === "/voices/clones/new" ||
     href === "/settings" ||
     href === "/settings/organization" ||
     href === "/onboarding/organization"

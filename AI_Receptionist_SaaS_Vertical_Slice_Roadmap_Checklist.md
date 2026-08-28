@@ -6,7 +6,7 @@
 
 **Roadmap Update v3 (25 August 2026):** Added a mandatory per-module Manual QA Handoff guide under every `XX.05 — Documentation & Acceptance` submodule, plus `VS-GLOBAL-16`. M00–M03 receive this requirement retroactively as documentation backfill.
 
-**Roadmap Update v4 (27 August 2026):** Refined **M07 Knowledge Base**, **M08 Voice Library**, and **M09 Voice Cloning** around the locked ownership model: **Business owns reusable assets; Agents receive assignments/configuration**. No physical duplication of the same knowledge source or cloned voice per agent. **M07 Complete** 27 August 2026. **M08 Complete** 28 August 2026 (08.01–08.05). M09 not started.
+**Roadmap Update v4 (27 August 2026):** Refined **M07 Knowledge Base**, **M08 Voice Library**, and **M09 Voice Cloning** around the locked ownership model: **Business owns reusable assets; Agents receive assignments/configuration**. No physical duplication of the same knowledge source or cloned voice per agent. **M07 Complete** 27 August 2026. **M08 Complete** 28 August 2026 (08.01–08.05). **M09 Complete** 28 August 2026 (09.01–09.05).
 
 > Checklist syntax: `- [ ] ID — detailed task`. Change `[ ]` to `[x]` only after the item is verified.
 
@@ -105,7 +105,7 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [ ] P03 — **Knowledge & Voice**
   - [x] M07 — Knowledge Base (MVP) — COMPLETE 27 August 2026
   - [x] M08 — Voice Library (MVP) — COMPLETE 28 August 2026
-  - [ ] M09 — Voice Cloning (MVP/Premium)
+  - [x] M09 — Voice Cloning (MVP/Premium) — **Complete** 28 August 2026
 - [ ] P04 — **Telephony**
   - [ ] M10 — Twilio Telephony Provider (MVP)
   - [ ] M11 — Phone Number Management (MVP)
@@ -1085,99 +1085,101 @@ Agent
 
 **Dependencies:** M05, M06, M08
 
-**Status:** Not Started — roadmap refined 27 August 2026 for Business-owned reusable cloned voices + per-agent assignment. Do not mark In Development or Complete until implementation begins and gates pass.
+**Status:** **Complete** — 28 August 2026. Depends on M05, M06, M08 Complete.
+
+**Design docs:** `docs/module-9/`
 
 **Architecture (locked):** Business-owned reusable cloned voices + per-agent assignment. A cloned voice must **not** be recreated for every agent. Example: Business creates Owner Custom Clone once; Receptionist and Appointment Agent both reference the same authorized Business voice asset.
 
 ### Submodule 09.01 — Scope & Technical Design
 
-- [ ] P03-M09-01-01 — Confirm the objective and boundaries of **Voice Cloning** as **Business-owned reusable cloned voices + per-agent assignment** (one canonical Business clone asset; many agent selections).
-- [ ] P03-M09-01-02 — Capture explicit consent for creation/use of the cloned voice **asset** (who consented, when, what source/sample, Business context, provider, retention/revocation state). Do not duplicate consent unnecessarily for every agent assignment unless future legal/product requirements specifically require additional per-use consent.
-- [ ] P03-M09-01-03 — Upload or record voice samples (private, Business-scoped storage).
-- [ ] P03-M09-01-04 — Submit / create clone request (Business-owned clone lifecycle).
-- [ ] P03-M09-01-05 — Track processing status.
-- [ ] P03-M09-01-06 — Preview cloned voice.
-- [ ] P03-M09-01-07 — Assign cloned voice to one or more agents (via Business voice asset / agent voice config — reuse across eligible Business agents; do not model one clone row per agent unless a provider mapping requires an internal detail while preserving one canonical Business asset).
-- [ ] P03-M09-01-08 — Revoke/delete clone with **safe handling while assigned** (detect assignments; require confirmation; either block destructive deletion until unassigned **or** follow an explicitly designed safe reassignment/unassignment flow — exact UX may be locked during M09 implementation).
-- [ ] P03-M09-01-09 — Audit consent and sensitive actions (clone create/delete/revoke and agent voice assignment remain auditable).
-- [ ] P03-M09-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
-- [ ] P03-M09-01-11 — Store resulting cloned voice as a Business-owned voice asset eligible for the M08 Business Voice Library.
-- [ ] P03-M09-01-12 — Unassign/change agent voice selection without destroying the shared Business clone asset.
-- [ ] P03-M09-01-13 — Provider sync/mapping for clones (EaziAICall canonical clone record → provider clone ID; provider failure must not silently corrupt canonical records).
-- [ ] P03-M09-01-14 — Document: no automatic voice cloning without explicit consent.
+- [x] P03-M09-01-01 — Confirm the objective and boundaries of **Voice Cloning** as **Business-owned reusable cloned voices + per-agent assignment** (one canonical Business clone asset; many agent selections).
+- [x] P03-M09-01-02 — Capture explicit consent for creation/use of the cloned voice **asset** (who consented, when, what source/sample, Business context, provider, retention/revocation state). Do not duplicate consent unnecessarily for every agent assignment unless future legal/product requirements specifically require additional per-use consent.
+- [x] P03-M09-01-03 — Upload or record voice samples (private, Business-scoped storage).
+- [x] P03-M09-01-04 — Submit / create clone request (Business-owned clone lifecycle).
+- [x] P03-M09-01-05 — Track processing status.
+- [x] P03-M09-01-06 — Preview cloned voice.
+- [x] P03-M09-01-07 — Assign cloned voice to one or more agents (via Business voice asset / agent voice config — reuse across eligible Business agents; do not model one clone row per agent unless a provider mapping requires an internal detail while preserving one canonical Business asset).
+- [x] P03-M09-01-08 — Revoke/delete clone with **safe handling while assigned** (detect assignments; require confirmation; either block destructive deletion until unassigned **or** follow an explicitly designed safe reassignment/unassignment flow — exact UX may be locked during M09 implementation).
+- [x] P03-M09-01-09 — Audit consent and sensitive actions (clone create/delete/revoke and agent voice assignment remain auditable).
+- [x] P03-M09-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P03-M09-01-11 — Store resulting cloned voice as a Business-owned voice asset eligible for the M08 Business Voice Library.
+- [x] P03-M09-01-12 — Unassign/change agent voice selection without destroying the shared Business clone asset.
+- [x] P03-M09-01-13 — Provider sync/mapping for clones (EaziAICall canonical clone record → provider clone ID; provider failure must not silently corrupt canonical records).
+- [x] P03-M09-01-14 — Document: no automatic voice cloning without explicit consent.
 
 
 
 ### Submodule 09.02 — Backend, Persistence & API
 
-- [ ] P03-M09-02-01 — Implement/confirm data requirement: `voice_clones` (Business-owned; one canonical asset — not one row per agent).
-- [ ] P03-M09-02-02 — Implement/confirm data requirement: `voice_consents` (belongs to clone asset creation/use; records who/when/source/Business/provider/retention-revocation).
-- [ ] P03-M09-02-03 — Implement/confirm data requirement: `voice_samples` (restricted, private storage).
-- [ ] P03-M09-02-04 — Implement/confirm data requirement: `voice_configs` / `agent_voice_configs` (agent → selected voice assignment; many agents may reference the same clone/voice asset).
-- [ ] P03-M09-02-05 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P03-M09-02-06 — Confirm Business ownership keys and foreign-key behavior for tenant-owned records (Business → Voice Clone → Consent / Samples → Voice Asset → many Agent assignments).
+- [x] P03-M09-02-01 — Implement/confirm data requirement: `voice_clones` (Business-owned; one canonical asset — not one row per agent).
+- [x] P03-M09-02-02 — Implement/confirm data requirement: `voice_consents` (belongs to clone asset creation/use; records who/when/source/Business/provider/retention-revocation).
+- [x] P03-M09-02-03 — Implement/confirm data requirement: `voice_samples` (restricted, private storage).
+- [x] P03-M09-02-04 — Implement/confirm data requirement: `voice_configs` / `agent_voice_configs` (agent → selected voice assignment; many agents may reference the same clone/voice asset).
+- [x] P03-M09-02-05 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P03-M09-02-06 — Confirm Business ownership keys and foreign-key behavior for tenant-owned records (Business → Voice Clone → Consent / Samples → Voice Asset → many Agent assignments).
 
-- [ ] P03-M09-02-07 — Create/update the NestJS module boundaries, services and domain logic for **Voice Cloning**.
-- [ ] P03-M09-02-08 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (provider-neutral mapping; no core hardcoding of ElevenLabs-only IDs).
-- [ ] P03-M09-02-09 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P03-M09-02-07 — Create/update the NestJS module boundaries, services and domain logic for **Voice Cloning**.
+- [x] P03-M09-02-08 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (provider-neutral mapping; no core hardcoding of ElevenLabs-only IDs).
+- [x] P03-M09-02-09 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P03-M09-02-10 — Implement/verify API contract intent: `POST /api/v1/voices/clone` (or Business-scoped equivalent — creates Business-owned clone, not per-agent clone).
-- [ ] P03-M09-02-11 — Implement/verify API contract intent: `GET /api/v1/voices/:id/status`.
-- [ ] P03-M09-02-12 — Implement/verify API contract intent: `DELETE /api/v1/voices/:id` (safe revoke/delete with active-assignment handling).
-- [ ] P03-M09-02-13 — Implement/verify API contract intent: `POST /api/v1/agents/:id/voice` (assign/change selected voice to an existing Business clone/voice asset).
-- [ ] P03-M09-02-14 — Add DTO/schema validation and consistent API error responses.
-- [ ] P03-M09-02-15 — Implement/confirm linkage to `voices` / `business_voices` so the resulting clone is a reusable Business voice asset.
-- [ ] P03-M09-02-16 — Enforce cross-business clone access blocked; agents may only be assigned clones owned by their Business.
+- [x] P03-M09-02-10 — Implement/verify API contract intent: `POST /api/v1/voices/clone` (or Business-scoped equivalent — creates Business-owned clone, not per-agent clone).
+- [x] P03-M09-02-11 — Implement/verify API contract intent: `GET /api/v1/voices/:id/status`.
+- [x] P03-M09-02-12 — Implement/verify API contract intent: `DELETE /api/v1/voices/:id` (safe revoke/delete with active-assignment handling).
+- [x] P03-M09-02-13 — Implement/verify API contract intent: `POST /api/v1/agents/:id/voice` (assign/change selected voice to an existing Business clone/voice asset).
+- [x] P03-M09-02-14 — Add DTO/schema validation and consistent API error responses.
+- [x] P03-M09-02-15 — Implement/confirm linkage to `voices` / `business_voices` so the resulting clone is a reusable Business voice asset.
+- [x] P03-M09-02-16 — Enforce cross-business clone access blocked; agents may only be assigned clones owned by their Business.
 
 
 
 ### Submodule 09.03 — Frontend & Integrations
 
-- [ ] P03-M09-03-01 — Build/complete frontend requirement: Consent screen (asset-level consent; clear Business ownership context).
-- [ ] P03-M09-03-02 — Build/complete frontend requirement: Upload/record samples.
-- [ ] P03-M09-03-03 — Build/complete frontend requirement: Processing state.
-- [ ] P03-M09-03-04 — Build/complete frontend requirement: Preview.
-- [ ] P03-M09-03-05 — Build/complete frontend requirement: Assign clone to agent(s) from Business Voice Library / agent Voice selection (reuse across agents).
-- [ ] P03-M09-03-06 — Build/complete frontend requirement: Delete/revoke confirmation that surfaces active agent assignments and requires a safe flow.
-- [ ] P03-M09-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P03-M09-03-08 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P03-M09-03-01 — Build/complete frontend requirement: Consent screen (asset-level consent; clear Business ownership context).
+- [x] P03-M09-03-02 — Build/complete frontend requirement: Upload/record samples.
+- [x] P03-M09-03-03 — Build/complete frontend requirement: Processing state.
+- [x] P03-M09-03-04 — Build/complete frontend requirement: Preview.
+- [x] P03-M09-03-05 — Build/complete frontend requirement: Assign clone to agent(s) from Business Voice Library / agent Voice selection (reuse across agents).
+- [x] P03-M09-03-06 — Build/complete frontend requirement: Delete/revoke confirmation that surfaces active agent assignments and requires a safe flow.
+- [x] P03-M09-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P03-M09-03-08 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P03-M09-03-09 — Integrate and verify: S3-compatible sample storage where permitted (private; sensitive sample URLs not publicly exposed).
-- [ ] P03-M09-03-10 — Integrate and verify: provider voice cloning via abstraction (ElevenLabs as first cloning provider; remain provider-swappable).
-- [ ] P03-M09-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-- [ ] P03-M09-03-12 — UX clarity: one Business clone (e.g. Owner Custom Clone) selectable by multiple agents without recreating the clone.
+- [x] P03-M09-03-09 — Integrate and verify: S3-compatible sample storage where permitted (private; sensitive sample URLs not publicly exposed).
+- [x] P03-M09-03-10 — Integrate and verify: provider voice cloning via abstraction (ElevenLabs as first cloning provider; remain provider-swappable).
+- [x] P03-M09-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [x] P03-M09-03-12 — UX clarity: one Business clone (e.g. Owner Custom Clone) selectable by multiple agents without recreating the clone.
 
 
 
 ### Submodule 09.04 — Security & QA
 
-- [ ] P03-M09-04-01 — Explicit consent required before submission; no automatic cloning without consent.
-- [ ] P03-M09-04-02 — Restrict sample access; private storage; sensitive sample URLs not publicly exposed.
-- [ ] P03-M09-04-03 — Retention/deletion rules for samples and clones.
-- [ ] P03-M09-04-04 — Audit log for consent and sensitive actions (including agent assignment of cloned voices).
-- [ ] P03-M09-04-05 — Verify tenant/Business isolation for all tenant-owned records and actions (cross-business clone access blocked; provider credentials server-side only).
+- [x] P03-M09-04-01 — Explicit consent required before submission; no automatic cloning without consent.
+- [x] P03-M09-04-02 — Restrict sample access; private storage; sensitive sample URLs not publicly exposed.
+- [x] P03-M09-04-03 — Retention/deletion rules for samples and clones.
+- [x] P03-M09-04-04 — Audit log for consent and sensitive actions (including agent assignment of cloned voices).
+- [x] P03-M09-04-05 — Verify tenant/Business isolation for all tenant-owned records and actions (cross-business clone access blocked; provider credentials server-side only).
 
-- [ ] P03-M09-04-06 — Test: Consent required.
-- [ ] P03-M09-04-07 — Test: Valid sample upload.
-- [ ] P03-M09-04-08 — Test: Clone request/status (Business-owned asset).
-- [ ] P03-M09-04-09 — Test: Assign clone to agent(s); reuse across eligible Business agents.
-- [ ] P03-M09-04-10 — Test: Unauthorized / cross-business clone access blocked.
-- [ ] P03-M09-04-11 — Run regression checks for directly affected existing modules.
-- [ ] P03-M09-04-12 — Complete manual QA of the end-to-end user journey.
-- [ ] P03-M09-04-13 — Test: Unassign/change agent voice does not destroy the shared Business clone.
-- [ ] P03-M09-04-14 — Test: Destructive delete/revoke while assigned detects assignments and requires safe confirmation flow (block until unassigned or explicit reassignment).
-- [ ] P03-M09-04-15 — Test: Provider credentials never exposed; sample URLs not publicly accessible.
+- [x] P03-M09-04-06 — Test: Consent required.
+- [x] P03-M09-04-07 — Test: Valid sample upload.
+- [x] P03-M09-04-08 — Test: Clone request/status (Business-owned asset).
+- [x] P03-M09-04-09 — Test: Assign clone to agent(s); reuse across eligible Business agents.
+- [x] P03-M09-04-10 — Test: Unauthorized / cross-business clone access blocked.
+- [x] P03-M09-04-11 — Run regression checks for directly affected existing modules.
+- [x] P03-M09-04-12 — Complete manual QA of the end-to-end user journey.
+- [x] P03-M09-04-13 — Test: Unassign/change agent voice does not destroy the shared Business clone.
+- [x] P03-M09-04-14 — Test: Destructive delete/revoke while assigned detects assignments and requires safe confirmation flow (block until unassigned or explicit reassignment).
+- [x] P03-M09-04-15 — Test: Provider credentials never exposed; sample URLs not publicly accessible.
 
 
 
 ### Submodule 09.05 — Documentation & Acceptance
 
-- [ ] P03-M09-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P03-M09-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P03-M09-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P03-M09-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Cloning** at `docs/module-9/M09_Voice_Cloning_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** consent, sample handling, clone creation, reusable Business clone, agent assignment, revocation/deletion with assignment safety, and security/privacy. Do not create the final QA guide until this module is being completed.
+- [x] P03-M09-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P03-M09-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P03-M09-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P03-M09-05-04 — Create/update the **Manual QA Handoff** guide for **Voice Cloning** at `docs/module-9/M09_Voice_Cloning_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** consent, sample handling, clone creation, reusable Business clone, agent assignment, revocation/deletion with assignment safety, and security/privacy. Do not create the final QA guide until this module is being completed.
 
-- [ ] P03-M09-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
+- [x] P03-M09-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 ## **Module Gate:** `[M09] Voice Cloning = COMPLETE ✅` only after every required checkbox above is verified.
 

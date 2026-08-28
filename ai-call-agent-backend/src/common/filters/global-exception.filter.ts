@@ -83,6 +83,22 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       };
     }
 
+    if (
+      exception instanceof Error &&
+      exception.name === 'PayloadTooLargeError'
+    ) {
+      return {
+        statusCode: HttpStatus.PAYLOAD_TOO_LARGE,
+        body: {
+          error: {
+            code: 'PAYLOAD_TOO_LARGE',
+            message: 'The uploaded file is too large.',
+            correlationId,
+          },
+        },
+      };
+    }
+
     return {
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       body: {

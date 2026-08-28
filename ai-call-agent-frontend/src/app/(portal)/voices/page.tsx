@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { AudioLines, Store } from "lucide-react";
+import { AudioLines, Mic2, Store } from "lucide-react";
 
 import { useOrganizationSession } from "@/components/organizations/organization-session";
 import { useBusinessSession } from "@/components/businesses/business-session";
@@ -15,11 +15,13 @@ import { StatusBadge } from "@/components/patterns/status-badge";
 import { Button } from "@/components/ui/button";
 import { useEffectTask } from "@/hooks/use-effect-task";
 import { formatLanguage } from "@/lib/language-catalogue";
+import { canCreateVoiceClone } from "@/lib/voice-clones-api";
 import {
   formatGenderPresentation,
   formatVoiceSourceType,
   voicesApi,
   type VoiceGenderPresentation,
+  type VoiceSourceType,
   type VoiceSummary,
 } from "@/lib/voices-api";
 
@@ -29,6 +31,7 @@ export default function VoicesPage() {
 
   const { active: org } = useOrganizationSession();
   const { active: business, status: bizStatus } = useBusinessSession();
+  const canCreateClone = canCreateVoiceClone(org?.role);
 
   const [voices, setVoices] = React.useState<VoiceSummary[]>([]);
   const [total, setTotal] = React.useState(0);
@@ -41,6 +44,7 @@ export default function VoicesPage() {
     VoiceGenderPresentation | ""
   >("");
   const [accent, setAccent] = React.useState("");
+  const [sourceType, setSourceType] = React.useState<VoiceSourceType | "">("");
 
   const load = React.useCallback(async () => {
     if (bizStatus === "loading") {
@@ -60,6 +64,7 @@ export default function VoicesPage() {
       language: language || undefined,
       genderPresentation: genderPresentation || undefined,
       accent: accent || undefined,
+      sourceType: sourceType || undefined,
       limit: 50,
     });
     setLoading(false);
@@ -71,7 +76,7 @@ export default function VoicesPage() {
     }
     setVoices(result.data.voices);
     setTotal(result.data.total);
-  }, [bizStatus, business, q, language, genderPresentation, accent]);
+  }, [bizStatus, business, q, language, genderPresentation, accent, sourceType]);
 
   useEffectTask(load, [load]);
 
@@ -126,10 +131,17 @@ export default function VoicesPage() {
           <Button asChild variant="outline" size="sm">
             <Link href={`/agents/${pickForAgentId}/voice`}>Back to agent</Link>
           </Button>
+        ) : canCreateClone ? (
+          <Button asChild variant="outline" size="sm">
+            <Link href="/voices/clones">
+              <Mic2 className="size-4" aria-hidden="true" />
+              Custom clones
+            </Link>
+          </Button>
         ) : null}
       </div>
 
-      <div className="grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2 lg:grid-cols-5">
         <label className="space-y-1 text-sm">
           <span className="text-muted-foreground">Search</span>
           <input
@@ -173,6 +185,20 @@ export default function VoicesPage() {
             onChange={(e) => setAccent(e.target.value)}
             placeholder="e.g. American"
           />
+        </label>
+        <label className="space-y-1 text-sm">
+          <span className="text-muted-foreground">Source</span>
+          <select
+            className="w-full rounded-md border border-input bg-background px-3 py-2"
+            value={sourceType}
+            onChange={(e) =>
+              setSourceType(e.target.value as VoiceSourceType | "")
+            }
+          >
+            <option value="">All</option>
+            <option value="provider_catalog">Provider catalogue</option>
+            <option value="business_clone">Custom clones</option>
+          </select>
         </label>
       </div>
 

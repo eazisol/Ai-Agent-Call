@@ -177,6 +177,7 @@ Core services use capability-focused interfaces rather than a single oversized p
 | Port | Initial adapter | Future adapters | Representative capabilities |
 | --- | --- | --- | --- |
 | `VoiceAgentProvider` | ElevenLabs | Retell, OpenAI Realtime | Create/update/archive provider agent, publish instructions, obtain status |
+| `VoiceClonePort` | ElevenLabs IVC | Retell, custom | Create/delete provider clone from private samples |
 | `VoiceCatalogProvider` | ElevenLabs | Retell, custom | List/preview voices, map selection, clone with consent evidence |
 | `KnowledgeSyncProvider` | ElevenLabs | Custom RAG, Retell | Publish/update/remove source, check synchronization state |
 | `TelephonyProvider` | Twilio | Telnyx | Search/provision/release numbers, configure routing, place call |
@@ -302,7 +303,7 @@ This is a deployment separation, not a requirement to create microservices. Each
 | M6 | ElevenLabs Voice-Agent Provider | 2 | MVP | P0 | M0, M5 | Complete — 27 August 2026 |
 | M7 | Knowledge Base | 3 | MVP | P0 | M4, M5, M6 | Complete — 27 August 2026 |
 | M8 | Voice Library | 3 | MVP | P0 | M5, M6 | Complete — 28 August 2026 |
-| M9 | Voice Cloning & Consent | 3 | MVP Optional | P1 | M3, M5, M6, M8 | Not Started |
+| M9 | Voice Cloning & Consent | 3 | MVP Optional | P1 | M3, M5, M6, M8 | Complete — 28 August 2026 |
 | M10 | Twilio Telephony Provider | 4 | MVP | P0 | M0 | Not Started |
 | M11 | Phone Number Management | 4 | MVP | P0 | M4, M5, M10 | Not Started |
 | M12 | Incoming AI Calls | 5 | MVP | P0 | M5–M8, M10, M11 | Not Started |

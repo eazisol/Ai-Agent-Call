@@ -49,6 +49,14 @@ export const envValidationSchema = Joi.object({
     .max(86_400)
     .default(3600),
 
+  VOICE_CLONE_MAX_SAMPLE_BYTES: Joi.number()
+    .integer()
+    .min(1024)
+    .max(52_428_800)
+    .default(26_214_400),
+
+  VOICE_CLONE_MAX_SAMPLES: Joi.number().integer().min(1).max(10).default(5),
+
   TELEPHONY_PROVIDER: Joi.string().valid('twilio').default('twilio'),
   VOICE_AGENT_PROVIDER: Joi.string()
     .valid('openai_realtime')

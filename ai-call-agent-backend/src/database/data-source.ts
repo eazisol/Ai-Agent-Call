@@ -32,12 +32,16 @@ import { LanguageDetectionConfig1756082000000 } from './migrations/1756082000000
 import { AgentLanguageVoiceConfig1756083000000 } from './migrations/1756083000000-AgentLanguageVoiceConfig';
 import { KnowledgeBase1756090000000 } from './migrations/1756090000000-KnowledgeBase';
 import { VoiceLibrary1756100000000 } from './migrations/1756100000000-VoiceLibrary';
+import { VoiceCloning1756110000000 } from './migrations/1756110000000-VoiceCloning';
 import { loadBackendEnv } from './load-backend-env';
 import { AgentKnowledgeSource } from '../modules/knowledge/entities/agent-knowledge-source.entity';
 import { KnowledgeProviderMapping } from '../modules/knowledge/entities/knowledge-provider-mapping.entity';
 import { KnowledgeSource } from '../modules/knowledge/entities/knowledge-source.entity';
 import { VoiceAsset } from '../modules/voices/entities/voice-asset.entity';
 import { VoiceProviderMapping } from '../modules/voices/entities/voice-provider-mapping.entity';
+import { VoiceClone } from '../modules/voice-clones/entities/voice-clone.entity';
+import { VoiceConsent } from '../modules/voice-clones/entities/voice-consent.entity';
+import { VoiceSample } from '../modules/voice-clones/entities/voice-sample.entity';
 
 loadBackendEnv();
 
@@ -70,6 +74,9 @@ export default new DataSource({
     KnowledgeProviderMapping,
     VoiceAsset,
     VoiceProviderMapping,
+    VoiceClone,
+    VoiceConsent,
+    VoiceSample,
     Call,
     CallMessage,
     CallRecording,
@@ -91,6 +98,7 @@ export default new DataSource({
     AgentLanguageVoiceConfig1756083000000,
     KnowledgeBase1756090000000,
     VoiceLibrary1756100000000,
+    VoiceCloning1756110000000,
   ],
   migrationsTableName: 'eazi_ai_call_migrations',
   synchronize: false,

@@ -5,7 +5,7 @@
 | Module | M08 — Voice Library |
 | Status | **Complete** — 28 August 2026 |
 | Depends on | M05, M06 Complete |
-| Next | M09 — Voice Cloning (optional) |
+| Next | M09 — Voice Cloning (in progress) |
 
 ## Documents
 

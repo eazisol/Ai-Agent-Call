@@ -7,6 +7,8 @@ import { Agent } from '../agents/entities/agent.entity';
 import { AuthModule } from '../auth/auth.module';
 import { Business } from '../businesses/entities/business.entity';
 import { OrganizationsModule } from '../organizations/organizations.module';
+import { VoiceClonesModule } from '../voice-clones/voice-clones.module';
+import { VoiceClonesController } from '../voice-clones/voice-clones.controller';
 import { VoiceAsset } from './entities/voice-asset.entity';
 import { VoiceProviderMapping } from './entities/voice-provider-mapping.entity';
 import { AgentVoiceController, VoicesController } from './voices.controller';
@@ -23,8 +25,9 @@ import { VoiceCatalogSyncService, VoicesService } from './voices.service';
     ]),
     AuthModule,
     OrganizationsModule,
+    VoiceClonesModule,
   ],
-  controllers: [VoicesController, AgentVoiceController],
+  controllers: [VoiceClonesController, VoicesController, AgentVoiceController],
   providers: [
     VoicesService,
     VoiceCatalogSyncService,
