@@ -1,6 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { ObjectStorageHealthService } from '../infrastructure/object-storage/object-storage-health.service';
+import {
+  OBJECT_STORAGE_PORT,
+  type ObjectStoragePort,
+} from '../infrastructure/object-storage/object-storage.port';
 import { RedisHealthService } from '../infrastructure/redis/redis-health.service';
 
 export interface HealthResult {
@@ -14,7 +17,8 @@ export class HealthService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly redis: RedisHealthService,
-    private readonly objectStorage: ObjectStorageHealthService,
+    @Inject(OBJECT_STORAGE_PORT)
+    private readonly objectStorage: ObjectStoragePort,
   ) {}
 
   live(): HealthResult {

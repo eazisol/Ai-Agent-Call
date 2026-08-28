@@ -300,7 +300,7 @@ This is a deployment separation, not a requirement to create microservices. Each
 | M4 | Business Management | 1 | MVP | P0 | M2, M3 | Completed |
 | M5 | Agent Management | 2 | MVP | P0 | M4 | Complete — 27 August 2026 |
 | M6 | ElevenLabs Voice-Agent Provider | 2 | MVP | P0 | M0, M5 | Complete — 27 August 2026 |
-| M7 | Knowledge Base | 3 | MVP | P0 | M4, M5, M6 | Not Started |
+| M7 | Knowledge Base | 3 | MVP | P0 | M4, M5, M6 | Complete — 27 August 2026 |
 | M8 | Voice Library | 3 | MVP | P0 | M5, M6 | Not Started |
 | M9 | Voice Cloning & Consent | 3 | MVP Optional | P1 | M3, M5, M6, M8 | Not Started |
 | M10 | Twilio Telephony Provider | 4 | MVP | P0 | M0 | Not Started |

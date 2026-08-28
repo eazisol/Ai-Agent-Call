@@ -137,8 +137,32 @@ function buildPortalBreadcrumbs(
       crumbs.push({ label: "Behavior" });
     } else if (parts[2] === "escalation") {
       crumbs.push({ label: "Escalation" });
+    } else if (parts[2] === "knowledge") {
+      crumbs.push({ label: "Knowledge" });
     }
     return crumbs;
+  }
+
+  if (pathname === "/knowledge") {
+    return [{ label: "Knowledge" }];
+  }
+
+  if (pathname === "/knowledge/new") {
+    return [
+      { label: "Knowledge", href: "/knowledge" },
+      { label: "Create" },
+    ];
+  }
+
+  if (pathname.startsWith("/knowledge/")) {
+    const parts = pathname.split("/").filter(Boolean);
+    const rawId = parts[1];
+    const label =
+      rawId && rawId.length > 12 ? `${rawId.slice(0, 8)}…` : rawId || "Source";
+    return [
+      { label: "Knowledge", href: "/knowledge" },
+      { label },
+    ];
   }
 
   if (pathname === "/settings") {

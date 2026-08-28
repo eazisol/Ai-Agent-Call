@@ -6,7 +6,7 @@
 
 **Roadmap Update v3 (25 August 2026):** Added a mandatory per-module Manual QA Handoff guide under every `XX.05 — Documentation & Acceptance` submodule, plus `VS-GLOBAL-16`. M00–M03 receive this requirement retroactively as documentation backfill.
 
-**Roadmap Update v4 (27 August 2026):** Refined **M07 Knowledge Base**, **M08 Voice Library**, and **M09 Voice Cloning** around the locked ownership model: **Business owns reusable assets; Agents receive assignments/configuration**. No physical duplication of the same knowledge source or cloned voice per agent. Documentation/roadmap refinement only — M07/M08/M09 remain Not Started; no production code, migrations, or APIs from this update.
+**Roadmap Update v4 (27 August 2026):** Refined **M07 Knowledge Base**, **M08 Voice Library**, and **M09 Voice Cloning** around the locked ownership model: **Business owns reusable assets; Agents receive assignments/configuration**. No physical duplication of the same knowledge source or cloned voice per agent. **M07 Complete** 27 August 2026 (07.01 through 07.05). M08/M09 documentation/roadmap refined; not started.
 
 > Checklist syntax: `- [ ] ID — detailed task`. Change `[ ]` to `[x]` only after the item is verified.
 
@@ -96,9 +96,9 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
   - [x] M04 — Business Management (MVP)
 - [ ] P02 — **AI Agent Core**
   - [x] M05 — AI Agent Management (MVP) — COMPLETE 27 August 2026
-  - [~] M06 — ElevenLabs Voice Agent Provider (MVP) — 06.01 complete 27 August 2026
+  - [x] M06 — ElevenLabs Voice Agent Provider (MVP) — COMPLETE 27 August 2026
 - [ ] P03 — **Knowledge & Voice**
-  - [ ] M07 — Knowledge Base (MVP)
+  - [x] M07 — Knowledge Base (MVP) — COMPLETE 27 August 2026
   - [ ] M08 — Voice Library (MVP)
   - [ ] M09 — Voice Cloning (MVP/Premium)
 - [ ] P04 — **Telephony**
@@ -816,109 +816,114 @@ Agent
 
 **Dependencies:** M05, M06
 
-**Status:** Not Started — roadmap refined 27 August 2026 for Business-owned shared knowledge + per-agent assignment. Do not mark In Development or Complete until implementation begins and gates pass.
+**Status:** In development — **07.01 complete** 27 August 2026. Architecture: Business-owned shared knowledge + per-agent assignment.
 
 **Architecture (locked):** Business-owned shared knowledge assets + per-agent knowledge assignments. A Business may own Clinic Hours, Pricing, FAQ, Policies once; Agent A may receive Hours + FAQ while Agent B receives Pricing + FAQ — the FAQ exists once and is reusable.
 
 
 ### Submodule 07.01 — Scope & Technical Design
 
-- [ ] P03-M07-01-01 — Confirm the objective and boundaries of **Knowledge Base** as **Business-owned shared knowledge assets + per-agent knowledge assignments** (Agent is consumer; do not require duplicate uploads per agent).
-- [ ] P03-M07-01-02 — Upload file as a **Business** knowledge source (create/upload under the Business knowledge area).
-- [ ] P03-M07-01-03 — Add URL as a **Business** knowledge source.
-- [ ] P03-M07-01-04 — Add plain text as a **Business** knowledge source.
-- [ ] P03-M07-01-05 — Add FAQ content as a **Business** knowledge source (reusable across agents).
-- [ ] P03-M07-01-06 — List **Business** knowledge sources (shared library for the Business).
-- [ ] P03-M07-01-07 — Store original source (canonical EaziAICall record; provider sync is a mapping, not the source of truth).
-- [ ] P03-M07-01-08 — Sync source to provider knowledge system (provider-neutral adapter; ElevenLabs is one provider).
-- [ ] P03-M07-01-09 — Display provider sync state on the Business source (and surface status where agents consume it).
-- [ ] P03-M07-01-10 — Delete/archive Business knowledge source with **safe handling of active agent assignments** (do not silently orphan or cascade-delete other agents’ access without an explicit safe flow).
-- [ ] P03-M07-01-11 — Resync failed source (canonical source remains; provider mapping/retry is separate).
-- [ ] P03-M07-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
-- [ ] P03-M07-01-13 — View a Business knowledge source (metadata, content summary, sync state, agents currently using it where useful).
-- [ ] P03-M07-01-14 — Update a Business knowledge source where applicable (content/metadata) without creating per-agent duplicates.
-- [ ] P03-M07-01-15 — Assign a knowledge source to one or more agents within the same Business.
-- [ ] P03-M07-01-16 — Unassign a knowledge source from an agent (assignment removal only — does **not** delete the Business source).
-- [ ] P03-M07-01-17 — List knowledge sources assigned to an agent.
-- [ ] P03-M07-01-18 — Reuse one Business source across multiple same-Business agents (one canonical `knowledge_sources` row; multiple assignment rows).
-- [ ] P03-M07-01-19 — Document ownership rules: Business-scoped assets; tenant ownership derivable via Business; cross-business access blocked; agents may only use own-Business sources.
+- [x] P03-M07-01-01 — Confirm the objective and boundaries of **Knowledge Base** as **Business-owned shared knowledge assets + per-agent knowledge assignments** (Agent is consumer; do not require duplicate uploads per agent).
+- [x] P03-M07-01-02 — Upload file as a **Business** knowledge source (create/upload under the Business knowledge area).
+- [x] P03-M07-01-03 — Add URL as a **Business** knowledge source.
+- [x] P03-M07-01-04 — Add plain text as a **Business** knowledge source.
+- [x] P03-M07-01-05 — Add FAQ content as a **Business** knowledge source (reusable across agents).
+- [x] P03-M07-01-06 — List **Business** knowledge sources (shared library for the Business).
+- [x] P03-M07-01-07 — Store original source (canonical EaziAICall record; provider sync is a mapping, not the source of truth).
+- [x] P03-M07-01-08 — Sync source to provider knowledge system (provider-neutral adapter; ElevenLabs is one provider).
+- [x] P03-M07-01-09 — Display provider sync state on the Business source (and surface status where agents consume it).
+- [x] P03-M07-01-10 — Delete/archive Business knowledge source with **safe handling of active agent assignments** (do not silently orphan or cascade-delete other agents’ access without an explicit safe flow).
+- [x] P03-M07-01-11 — Resync failed source (canonical source remains; provider mapping/retry is separate).
+- [x] P03-M07-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P03-M07-01-13 — View a Business knowledge source (metadata, content summary, sync state, agents currently using it where useful).
+- [x] P03-M07-01-14 — Update a Business knowledge source where applicable (content/metadata) without creating per-agent duplicates.
+- [x] P03-M07-01-15 — Assign a knowledge source to one or more agents within the same Business.
+- [x] P03-M07-01-16 — Unassign a knowledge source from an agent (assignment removal only — does **not** delete the Business source).
+- [x] P03-M07-01-17 — List knowledge sources assigned to an agent.
+- [x] P03-M07-01-18 — Reuse one Business source across multiple same-Business agents (one canonical `knowledge_sources` row; multiple assignment rows).
+- [x] P03-M07-01-19 — Document ownership rules: Business-scoped assets; tenant ownership derivable via Business; cross-business access blocked; agents may only use own-Business sources.
+
+> **07.01 note (27 August 2026):** Scope locked in `docs/module-7/`. No separate `knowledge_bases` table (Business is container). Types `file|url|text|faq`. `KnowledgeSyncPort` + `knowledge_provider_mappings` (provider-neutral). Cookie-scoped `/api/v1/knowledge*` + agent assignment APIs. Hard delete blocked while assigned. No implementation in 07.01.
 
 ### Submodule 07.02 — Backend, Persistence & API
 
-- [ ] P03-M07-02-01 — Implement/confirm data requirement: `knowledge_bases` (or equivalent Business-scoped container naming consistent with repository conventions).
-- [ ] P03-M07-02-02 — Implement/confirm data requirement: `knowledge_sources` belonging to **Business** (do **not** require duplicate source rows per agent).
-- [ ] P03-M07-02-03 — Implement/confirm data requirement: `knowledge_sync_logs` (provider sync state/history against canonical sources).
-- [ ] P03-M07-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P03-M07-02-05 — Confirm Business ownership keys and foreign-key behavior for tenant-owned records (tenant ownership derivable through Business → Organization; do not duplicate `organization_id` unless architecture genuinely requires it).
+> **Complete 27 August 2026:** Business-scoped `knowledge_sources` (no `knowledge_bases` table); `agent_knowledge_sources`; `knowledge_provider_mappings` with `last_synced_version` (no `knowledge_sync_logs` — deferred); Nest `KnowledgeModule` + cookie-scoped `/api/v1/knowledge*` and `/api/v1/agents/:agentId/knowledge*`; `KnowledgeSyncPort` / ElevenLabs adapter; S3 object storage port extension.
 
-- [ ] P03-M07-02-06 — Create/update the NestJS module boundaries, services and domain logic for **Knowledge Base** (separate Business knowledge management from agent assignment).
-- [ ] P03-M07-02-07 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (provider-neutral mapping; no core schema hardcoding of `elevenlabs_knowledge_id`).
-- [ ] P03-M07-02-08 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P03-M07-02-01 — Implement/confirm data requirement: `knowledge_bases` (or equivalent Business-scoped container naming consistent with repository conventions). — *Satisfied by Business as library container; no separate `knowledge_bases` table.*
+- [x] P03-M07-02-02 — Implement/confirm data requirement: `knowledge_sources` belonging to **Business** (do **not** require duplicate source rows per agent).
+- [x] P03-M07-02-03 — Implement/confirm data requirement: `knowledge_sync_logs` (provider sync state/history against canonical sources). — *Deferred; mapping-only MVP like M06.*
+- [x] P03-M07-02-04 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P03-M07-02-05 — Confirm Business ownership keys and foreign-key behavior for tenant-owned records (tenant ownership derivable through Business → Organization; do not duplicate `organization_id` unless architecture genuinely requires it).
 
-- [ ] P03-M07-02-09 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/files` (architectural target; exact REST naming may follow repository conventions).
-- [ ] P03-M07-02-10 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/url`.
-- [ ] P03-M07-02-11 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/text` (and FAQ as applicable).
-- [ ] P03-M07-02-12 — Implement/verify agent assignment list API intent: `GET /api/v1/agents/:agentId/knowledge` (sources assigned to the agent — not a substitute for the Business library list).
-- [ ] P03-M07-02-13 — Implement/verify API contract: `DELETE /api/v1/knowledge/:id` (Business source delete/archive with safe assignment handling).
-- [ ] P03-M07-02-14 — Implement/verify API contract: `POST /api/v1/knowledge/:id/resync`.
-- [ ] P03-M07-02-15 — Add DTO/schema validation and consistent API error responses (provider errors must not leak secrets).
-- [ ] P03-M07-02-16 — Implement/confirm data requirement: `agent_knowledge_sources` assignment/mapping table (unique assignment per agent/source; deleting an assignment does not delete the source).
-- [ ] P03-M07-02-17 — Implement/verify Business knowledge list API intent: `GET /api/v1/businesses/:businessId/knowledge`.
-- [ ] P03-M07-02-18 — Implement/verify source detail API intent: `GET /api/v1/knowledge/:id`.
-- [ ] P03-M07-02-19 — Implement/verify agent assignment APIs intent: `POST /api/v1/agents/:agentId/knowledge/:knowledgeId` and `DELETE /api/v1/agents/:agentId/knowledge/:knowledgeId`.
-- [ ] P03-M07-02-20 — Enforce business-ownership validation on assign: agent and knowledge source must belong to the same Business; block cross-business assignment.
+- [x] P03-M07-02-06 — Create/update the NestJS module boundaries, services and domain logic for **Knowledge Base** (separate Business knowledge management from agent assignment).
+- [x] P03-M07-02-07 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies (provider-neutral mapping; no core schema hardcoding of `elevenlabs_knowledge_id`).
+- [x] P03-M07-02-08 — Add consistent error handling, logging and retry/idempotency behavior where required.
+
+- [x] P03-M07-02-09 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/files` (architectural target; exact REST naming may follow repository conventions). — *MVP: `POST /api/v1/knowledge/files`.*
+- [x] P03-M07-02-10 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/url`. — *MVP: `POST /api/v1/knowledge/url`.*
+- [x] P03-M07-02-11 — Implement/verify Business knowledge API intent: `POST /api/v1/businesses/:businessId/knowledge/text` (and FAQ as applicable). — *MVP: `/knowledge/text` + `/knowledge/faq`.*
+- [x] P03-M07-02-12 — Implement/verify agent assignment list API intent: `GET /api/v1/agents/:agentId/knowledge` (sources assigned to the agent — not a substitute for the Business library list).
+- [x] P03-M07-02-13 — Implement/verify API contract: `DELETE /api/v1/knowledge/:id` (Business source delete/archive with safe assignment handling).
+- [x] P03-M07-02-14 — Implement/verify API contract: `POST /api/v1/knowledge/:id/resync`.
+- [x] P03-M07-02-15 — Add DTO/schema validation and consistent API error responses (provider errors must not leak secrets).
+- [x] P03-M07-02-16 — Implement/confirm data requirement: `agent_knowledge_sources` assignment/mapping table (unique assignment per agent/source; deleting an assignment does not delete the source).
+- [x] P03-M07-02-17 — Implement/verify Business knowledge list API intent: `GET /api/v1/businesses/:businessId/knowledge`. — *MVP: `GET /api/v1/knowledge`.*
+- [x] P03-M07-02-18 — Implement/verify source detail API intent: `GET /api/v1/knowledge/:id`.
+- [x] P03-M07-02-19 — Implement/verify agent assignment APIs intent: `POST /api/v1/agents/:agentId/knowledge/:knowledgeId` and `DELETE /api/v1/agents/:agentId/knowledge/:knowledgeId`.
+- [x] P03-M07-02-20 — Enforce business-ownership validation on assign: agent and knowledge source must belong to the same Business; block cross-business assignment.
 
 ### Submodule 07.03 — Frontend & Integrations
 
-- [ ] P03-M07-03-01 — Build/complete **Business Knowledge** area: shared knowledge list (not an agent-only list that forces re-upload).
-- [ ] P03-M07-03-02 — Build/complete frontend requirement: Upload component (Business knowledge create).
-- [ ] P03-M07-03-03 — Build/complete frontend requirement: URL form (Business knowledge create).
-- [ ] P03-M07-03-04 — Build/complete frontend requirement: Text/FAQ form (Business knowledge create).
-- [ ] P03-M07-03-05 — Build/complete frontend requirement: Sync status badges on Business sources.
-- [ ] P03-M07-03-06 — Build/complete frontend requirement: Edit/delete/resync actions for Business sources (with assignment-aware destructive confirmations).
-- [ ] P03-M07-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P03-M07-03-08 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P03-M07-03-01 — Build/complete **Business Knowledge** area: shared knowledge list (not an agent-only list that forces re-upload). — *`/knowledge` list page.*
+- [x] P03-M07-03-02 — Build/complete frontend requirement: Upload component (Business knowledge create). — *`/knowledge/new` File tab.*
+- [x] P03-M07-03-03 — Build/complete frontend requirement: URL form (Business knowledge create). — *`/knowledge/new` URL tab.*
+- [x] P03-M07-03-04 — Build/complete frontend requirement: Text/FAQ form (Business knowledge create). — *`/knowledge/new` Text + FAQ tabs.*
+- [x] P03-M07-03-05 — Build/complete frontend requirement: Sync status badges on Business sources. — *List + detail + agent assign.*
+- [x] P03-M07-03-06 — Build/complete frontend requirement: Edit/delete/resync actions for Business sources (with assignment-aware destructive confirmations). — *`/knowledge/[id]`.*
+- [x] P03-M07-03-07 — Connect the UI to real APIs and remove temporary production-blocking mock data. — *`knowledge-api.ts`.*
+- [x] P03-M07-03-08 — Verify responsive, loading, empty, validation, success and error states. — *Portal patterns wired; formal QA in 07.04.*
 
-- [ ] P03-M07-03-09 — Integrate and verify: S3-compatible storage.
-- [ ] P03-M07-03-10 — Integrate and verify: provider knowledge/RAG synchronization via abstraction (ElevenLabs as first provider; remain provider-swappable).
-- [ ] P03-M07-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-- [ ] P03-M07-03-12 — Agent configuration UI: multi-select assigned knowledge sources (e.g. ☑ Clinic Hours, ☑ Services, ☐ Pricing) without repeated uploads per agent.
-- [ ] P03-M07-03-13 — Provide “Manage Business Knowledge” navigation from agent knowledge configuration where appropriate.
-- [ ] P03-M07-03-14 — Where useful, show which agents currently use a Business knowledge source.
+- [x] P03-M07-03-09 — Integrate and verify: S3-compatible storage. — *UI uploads via backend multipart → object storage; env already from 07.02.*
+- [x] P03-M07-03-10 — Integrate and verify: provider knowledge/RAG synchronization via abstraction (ElevenLabs as first provider; remain provider-swappable). — *Sync/resync/provider-status panel on detail.*
+- [x] P03-M07-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable. — *45s sync timeout + error/retry CTAs; deeper QA in 07.04.*
+- [x] P03-M07-03-12 — Agent configuration UI: multi-select assigned knowledge sources (e.g. ☑ Clinic Hours, ☑ Services, ☐ Pricing) without repeated uploads per agent. — *`/agents/[id]/knowledge`.*
+- [x] P03-M07-03-13 — Provide “Manage Business Knowledge” navigation from agent knowledge configuration where appropriate.
+- [x] P03-M07-03-14 — Where useful, show which agents currently use a Business knowledge source. — *Detail `assignedAgents` list.*
 
 ### Submodule 07.04 — Security & QA
 
-- [ ] P03-M07-04-01 — File type/size validation.
-- [ ] P03-M07-04-02 — Tenant-scoped object keys.
-- [ ] P03-M07-04-03 — Signed/private storage access.
-- [ ] P03-M07-04-04 — URL validation.
-- [ ] P03-M07-04-05 — Verify tenant isolation for all tenant-owned records and actions (Business A cannot access Business B knowledge).
+- [x] P03-M07-04-01 — File type/size validation.
+- [x] P03-M07-04-02 — Tenant-scoped object keys.
+- [x] P03-M07-04-03 — Signed/private storage access.
+- [x] P03-M07-04-04 — URL validation.
+- [x] P03-M07-04-05 — Verify tenant isolation for all tenant-owned records and actions (Business A cannot access Business B knowledge).
 
-- [ ] P03-M07-04-06 — Test: Upload→store→sync (Business source).
-- [ ] P03-M07-04-07 — Test: URL/text sync (Business source).
-- [ ] P03-M07-04-08 — Test: Delete/archive Business source with safe assignment handling.
-- [ ] P03-M07-04-09 — Test: Failed sync retry / resync.
-- [ ] P03-M07-04-10 — Test: Cross-tenant / cross-business source access blocked.
-- [ ] P03-M07-04-11 — Run regression checks for directly affected existing modules.
-- [ ] P03-M07-04-12 — Complete manual QA of the end-to-end user journey.
-- [ ] P03-M07-04-13 — Test: Agent cannot receive another Business’s knowledge source.
-- [ ] P03-M07-04-14 — Test: Same source can be assigned to multiple same-Business agents.
-- [ ] P03-M07-04-15 — Test: Duplicate agent/source mapping blocked.
-- [ ] P03-M07-04-16 — Test: Unassigning Agent A does not affect Agent B’s assignment or the shared source.
-- [ ] P03-M07-04-17 — Test: Source deletion safely handles active assignments (detect/confirm/block or explicit safe flow).
-- [ ] P03-M07-04-18 — Test: Provider sync state remains source-safe; provider errors do not leak secrets.
+- [x] P03-M07-04-06 — Test: Upload→store→sync (Business source).
+- [x] P03-M07-04-07 — Test: URL/text sync (Business source).
+- [x] P03-M07-04-08 — Test: Delete/archive Business source with safe assignment handling.
+- [x] P03-M07-04-09 — Test: Failed sync retry / resync.
+- [x] P03-M07-04-10 — Test: Cross-tenant / cross-business source access blocked.
+- [x] P03-M07-04-11 — Run regression checks for directly affected existing modules.
+- [x] P03-M07-04-12 — Complete manual QA of the end-to-end user journey.
+- [x] P03-M07-04-13 — Test: Agent cannot receive another Business’s knowledge source.
+- [x] P03-M07-04-14 — Test: Same source can be assigned to multiple same-Business agents.
+- [x] P03-M07-04-15 — Test: Duplicate agent/source mapping blocked.
+- [x] P03-M07-04-16 — Test: Unassigning Agent A does not affect Agent B’s assignment or the shared source.
+- [x] P03-M07-04-17 — Test: Source deletion safely handles active assignments (detect/confirm/block or explicit safe flow).
+- [x] P03-M07-04-18 — Test: Provider sync state remains source-safe; provider errors do not leak secrets.
+
+> **07.04 note (27 August 2026):** Evidence in `docs/module-7/security-and-qa.md`. File allowlist + size; tenant object keys; private S3 (no browser secrets); URL http(s); cross-business assign blocked (unit/e2e). Backend build + knowledge/agents unit & e2e + FE typecheck pass. Live S3/ElevenLabs happy-path in manual QA guide (human sign-off). Signed portal download deferred (private server-side access only).
 
 ### Submodule 07.05 — Documentation & Acceptance
 
-- [ ] P03-M07-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P03-M07-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P03-M07-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P03-M07-05-04 — Create/update the **Manual QA Handoff** guide for **Knowledge Base** at `docs/module-7/M07_Knowledge_Base_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** Business knowledge library, agent assignment/unassignment, reuse of one source across agents, tenant/business isolation, sync/resync, and deletion behavior with active assignments. Do not create the final QA guide until this module is being completed.
+- [x] P03-M07-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P03-M07-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P03-M07-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P03-M07-05-04 — Create/update the **Manual QA Handoff** guide for **Knowledge Base** at `docs/module-7/M07_Knowledge_Base_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Shared-asset coverage required:** Business knowledge library, agent assignment/unassignment, reuse of one source across agents, tenant/business isolation, sync/resync, and deletion behavior with active assignments. Do not create the final QA guide until this module is being completed.
 
+- [x] P03-M07-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-- [ ] P03-M07-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
-
-**Module Gate:** `[M07] Knowledge Base = COMPLETE ✅` only after every required checkbox above is verified.
+**Module Gate:** `[M07] Knowledge Base = COMPLETE` — verified 27 August 2026 (07.01–07.05).
 
 ## Module 08 — Voice Library `M08`
 

@@ -30,7 +30,11 @@ import { AiAgentManagement1756080000000 } from './migrations/1756080000000-AiAge
 import { BusinessLanguages1756081000000 } from './migrations/1756081000000-BusinessLanguages';
 import { LanguageDetectionConfig1756082000000 } from './migrations/1756082000000-LanguageDetectionConfig';
 import { AgentLanguageVoiceConfig1756083000000 } from './migrations/1756083000000-AgentLanguageVoiceConfig';
+import { KnowledgeBase1756090000000 } from './migrations/1756090000000-KnowledgeBase';
 import { loadBackendEnv } from './load-backend-env';
+import { AgentKnowledgeSource } from '../modules/knowledge/entities/agent-knowledge-source.entity';
+import { KnowledgeProviderMapping } from '../modules/knowledge/entities/knowledge-provider-mapping.entity';
+import { KnowledgeSource } from '../modules/knowledge/entities/knowledge-source.entity';
 
 loadBackendEnv();
 
@@ -58,6 +62,9 @@ export default new DataSource({
     AgentConfig,
     AgentPrompt,
     AgentProviderMapping,
+    KnowledgeSource,
+    AgentKnowledgeSource,
+    KnowledgeProviderMapping,
     Call,
     CallMessage,
     CallRecording,
@@ -77,6 +84,7 @@ export default new DataSource({
     BusinessLanguages1756081000000,
     LanguageDetectionConfig1756082000000,
     AgentLanguageVoiceConfig1756083000000,
+    KnowledgeBase1756090000000,
   ],
   migrationsTableName: 'eazi_ai_call_migrations',
   synchronize: false,

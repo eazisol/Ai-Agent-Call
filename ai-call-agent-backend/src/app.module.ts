@@ -12,6 +12,7 @@ import { AgentsModule } from './modules/agents/agents.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BusinessesModule } from './modules/businesses/businesses.module';
 import { CallsModule } from './modules/calls/calls.module';
+import { KnowledgeModule } from './modules/knowledge/knowledge.module';
 import { N8nModule } from './modules/n8n/n8n.module';
 import { OpenaiRealtimeModule } from './modules/openai-realtime/openai-realtime.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
@@ -49,6 +50,7 @@ import { VoiceStreamModule } from './modules/voice-stream/voice-stream.module';
     OrganizationsModule,
     BusinessesModule,
     AgentsModule,
+    KnowledgeModule,
     CallsModule,
     OpenaiRealtimeModule,
     VoiceStreamModule,

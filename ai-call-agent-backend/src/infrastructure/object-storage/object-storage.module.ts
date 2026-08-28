@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ObjectStorageHealthService } from './object-storage-health.service';
 import { OBJECT_STORAGE_PORT } from './object-storage.port';
+import { S3ObjectStorageAdapter } from './s3-object-storage.adapter';
 
 @Module({
   providers: [
-    ObjectStorageHealthService,
+    S3ObjectStorageAdapter,
     {
       provide: OBJECT_STORAGE_PORT,
-      useExisting: ObjectStorageHealthService,
+      useExisting: S3ObjectStorageAdapter,
     },
   ],
-  exports: [ObjectStorageHealthService, OBJECT_STORAGE_PORT],
+  exports: [S3ObjectStorageAdapter, OBJECT_STORAGE_PORT],
 })
 export class ObjectStorageModule {}

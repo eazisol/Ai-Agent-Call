@@ -37,6 +37,12 @@ export const envValidationSchema = Joi.object({
     .min(100)
     .default(2000),
 
+  KNOWLEDGE_MAX_FILE_BYTES: Joi.number()
+    .integer()
+    .min(1024)
+    .max(52_428_800)
+    .default(10_485_760),
+
   TELEPHONY_PROVIDER: Joi.string().valid('twilio').default('twilio'),
   VOICE_AGENT_PROVIDER: Joi.string()
     .valid('openai_realtime')
