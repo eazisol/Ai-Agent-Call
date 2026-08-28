@@ -108,6 +108,7 @@ export default () => {
       accountSid: process.env.TWILIO_ACCOUNT_SID,
       authToken: process.env.TWILIO_AUTH_TOKEN,
       phoneNumber: process.env.TWILIO_PHONE_NUMBER,
+      timeoutMs: numberValue(process.env.TWILIO_TIMEOUT_MS, 20_000),
       validateSignatures: booleanValue(
         process.env.TWILIO_VALIDATE_SIGNATURES,
         true,

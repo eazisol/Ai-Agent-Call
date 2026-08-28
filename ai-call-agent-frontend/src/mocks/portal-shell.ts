@@ -143,9 +143,9 @@ export const portalNavGroups: ShellNavGroup[] = [
       { id: "knowledge", label: "Knowledge", href: "/knowledge", icon: BookOpen },
       { id: "voices", label: "Voices", href: "/voices", icon: AudioLines },
       {
-        id: "voice-numbers",
+        id: "phone-numbers",
         label: "Phone Numbers",
-        href: "/voice/numbers",
+        href: "/phone-numbers",
         icon: Phone,
       },
     ],

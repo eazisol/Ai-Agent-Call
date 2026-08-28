@@ -25,8 +25,12 @@ export function isEnabledPortalRoute(href: string): boolean {
     href === "/voices" ||
     href === "/voices/clones" ||
     href === "/voices/clones/new" ||
+    href === "/phone-numbers" ||
+    href === "/phone-numbers/new" ||
+    href === "/phone-numbers/import" ||
     href === "/settings" ||
     href === "/settings/organization" ||
+    href === "/settings/integrations" ||
     href === "/onboarding/organization"
   ) {
     return true;
@@ -36,6 +40,7 @@ export function isEnabledPortalRoute(href: string): boolean {
     href.startsWith("/businesses/") ||
     href.startsWith("/agents/") ||
     href.startsWith("/knowledge/") ||
+    href.startsWith("/phone-numbers") ||
     href.startsWith("/voices")
   ) {
     return true;

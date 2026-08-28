@@ -5,6 +5,7 @@ import {
   type ObjectStoragePort,
 } from '../infrastructure/object-storage/object-storage.port';
 import { RedisHealthService } from '../infrastructure/redis/redis-health.service';
+import { TelephonyStatusService } from '../modules/twilio/telephony-status.service';
 
 export interface HealthResult {
   status: 'ok' | 'error';
@@ -19,6 +20,7 @@ export class HealthService {
     private readonly redis: RedisHealthService,
     @Inject(OBJECT_STORAGE_PORT)
     private readonly objectStorage: ObjectStoragePort,
+    private readonly telephony: TelephonyStatusService,
   ) {}
 
   live(): HealthResult {
@@ -40,8 +42,23 @@ export class HealthService {
       (await this.runCheck('objectStorage', checks, () =>
         this.objectStorage.healthCheck(),
       )) && healthy;
+    healthy =
+      (await this.runTelephonyCheck(checks)) && healthy;
 
     return { status: healthy ? 'ok' : 'error', service: 'EaziAiCall', checks };
+  }
+
+  private async runTelephonyCheck(
+    checks: Record<string, 'up' | 'down' | 'disabled'>,
+  ): Promise<boolean> {
+    try {
+      const result = await this.telephony.healthCheck();
+      checks.telephony = result;
+      return result !== 'down';
+    } catch {
+      checks.telephony = 'down';
+      return false;
+    }
   }
 
   private async runCheck(

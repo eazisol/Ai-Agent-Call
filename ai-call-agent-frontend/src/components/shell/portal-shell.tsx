@@ -202,6 +202,24 @@ function buildPortalBreadcrumbs(
     ];
   }
 
+  if (pathname === "/phone-numbers") {
+    return [{ label: "Phone numbers" }];
+  }
+
+  if (pathname === "/phone-numbers/new") {
+    return [
+      { label: "Phone numbers", href: "/phone-numbers" },
+      { label: "Search & purchase" },
+    ];
+  }
+
+  if (pathname === "/phone-numbers/import") {
+    return [
+      { label: "Phone numbers", href: "/phone-numbers" },
+      { label: "Import" },
+    ];
+  }
+
   if (pathname === "/settings") {
     return [{ label: "Settings" }];
   }
@@ -210,6 +228,13 @@ function buildPortalBreadcrumbs(
     return [
       { label: "Settings", href: "/settings" },
       { label: "Organization" },
+    ];
+  }
+
+  if (pathname === "/settings/integrations") {
+    return [
+      { label: "Settings", href: "/settings" },
+      { label: "Integrations" },
     ];
   }
 

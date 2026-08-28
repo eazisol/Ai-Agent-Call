@@ -10,6 +10,7 @@ describe('TwilioController (e2e)', () => {
   const twilioService = {
     handleIncomingCall: jest.fn(),
     handleCallEnded: jest.fn(),
+    handleStatusCallback: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -44,6 +45,21 @@ describe('TwilioController (e2e)', () => {
 
     expect(twilioService.handleIncomingCall).toHaveBeenCalledWith({
       CallSid: 'CA-e2e-1',
+    });
+  });
+
+  it('returns success for status callbacks', async () => {
+    twilioService.handleStatusCallback.mockResolvedValue({ success: true });
+
+    await request(app.getHttpServer())
+      .post('/webhooks/twilio/status-callback')
+      .send({ CallSid: 'CA-e2e-2', CallStatus: 'completed' })
+      .expect(201)
+      .expect({ success: true });
+
+    expect(twilioService.handleStatusCallback).toHaveBeenCalledWith({
+      CallSid: 'CA-e2e-2',
+      CallStatus: 'completed',
     });
   });
 });

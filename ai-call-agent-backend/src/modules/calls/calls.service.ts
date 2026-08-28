@@ -108,6 +108,27 @@ export class CallsService {
     });
   }
 
+  async markFailed(
+    provider: string,
+    externalCallId: string,
+    reason?: string,
+  ): Promise<void> {
+    const mapping = await this.mappingRepository.findOne({
+      where: { provider, externalCallId },
+      relations: { call: true },
+    });
+
+    if (!mapping) {
+      return;
+    }
+
+    await this.callRepository.update(mapping.call.id, {
+      status: CallStatus.FAILED,
+      endedAt: new Date(),
+      ...(reason ? { conclusion: reason } : {}),
+    });
+  }
+
   async recordProviderEvent(input: {
     provider: string;
     externalEventId: string;

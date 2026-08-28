@@ -42,6 +42,11 @@ import { VoiceProviderMapping } from '../modules/voices/entities/voice-provider-
 import { VoiceClone } from '../modules/voice-clones/entities/voice-clone.entity';
 import { VoiceConsent } from '../modules/voice-clones/entities/voice-consent.entity';
 import { VoiceSample } from '../modules/voice-clones/entities/voice-sample.entity';
+import { TelephonyProviderMapping } from '../modules/twilio/entities/telephony-provider-mapping.entity';
+import { TwilioTelephonyProvider1756120000000 } from './migrations/1756120000000-TwilioTelephonyProvider';
+import { PhoneNumber } from '../modules/phone-numbers/entities/phone-number.entity';
+import { PhoneNumberAssignment } from '../modules/phone-numbers/entities/phone-number-assignment.entity';
+import { PhoneNumberManagement1756130000000 } from './migrations/1756130000000-PhoneNumberManagement';
 
 loadBackendEnv();
 
@@ -77,6 +82,9 @@ export default new DataSource({
     VoiceClone,
     VoiceConsent,
     VoiceSample,
+    TelephonyProviderMapping,
+    PhoneNumber,
+    PhoneNumberAssignment,
     Call,
     CallMessage,
     CallRecording,
@@ -99,6 +107,8 @@ export default new DataSource({
     KnowledgeBase1756090000000,
     VoiceLibrary1756100000000,
     VoiceCloning1756110000000,
+    TwilioTelephonyProvider1756120000000,
+    PhoneNumberManagement1756130000000,
   ],
   migrationsTableName: 'eazi_ai_call_migrations',
   synchronize: false,

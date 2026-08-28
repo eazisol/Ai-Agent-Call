@@ -202,22 +202,45 @@ Knowledge customization uses base model capability plus industry configuration, 
 
 Static knowledge belongs in RAG. Availability, reservations, appointments, inventory, payments, and CRM state must come from live tools/APIs.
 
-### 4.9 Incoming-call flow
+### 4.9 Incoming-call flow (FINAL MVP routing lock — 28 August 2026)
+
+Canonical reference: [`docs/telephony-inbound-routing-lock.md`](../docs/telephony-inbound-routing-lock.md).
+
+**Ownership hierarchy**
+
+```text
+Organization
+└── Business
+    ├── Phone Numbers (M11) → Active Agent Assignment
+    ├── Shared Knowledge (M07) · Shared Voice Library (M08) · Cloned Voices (M09, optional)
+    └── Agents (M05) → Assigned Knowledge · Selected Voice · Language · ElevenLabs mapping (M06)
+```
+
+**Runtime path (M12 orchestration)**
+
+```text
+Caller → Twilio (M10) → Phone Number record (M11) → Business → Assigned Active Agent
+→ Agent config + assigned Knowledge + selected Voice → ElevenLabs (M06) → Conversation
+→ EaziAICall Call + Call Events
+```
+
+**Module split:** M10 = telephony provider adapter only. M11 = canonical phone inventory + assignment. M12 = runtime resolution, early Call record creation, provider handoff, idempotent webhooks, failure routes. n8n is **not** in the realtime audio path.
 
 ```mermaid
 sequenceDiagram
     participant C as Caller
-    participant T as Telephony provider
-    participant O as Call orchestrator
-    participant V as Voice provider
-    participant D as Platform data
+    participant T as Twilio (M10)
+    participant O as Call orchestrator (M12)
+    participant D as Platform data (M11 inventory)
+    participant V as ElevenLabs (M06)
     C->>T: Calls business number
-    T->>O: Signed incoming-call event
-    O->>D: Resolve number, tenant, business, agent
-    O->>V: Start provider-neutral session
-    V-->>C: Realtime conversation through telephony
-    T-->>O: Signed call lifecycle events
-    O->>D: Idempotent call, transcript, outcome updates
+    T->>O: Signed inbound webhook
+    O->>D: Resolve phone → business → active agent → knowledge → voice
+    O->>D: Create Call record (before handoff)
+    O->>V: Connect realtime session
+    V-->>C: AI conversation through telephony
+    T-->>O: Signed lifecycle callbacks
+    O->>D: Idempotent call events + terminal state
 ```
 
 After the call transaction is durably recorded, asynchronous events may trigger summary enrichment, notifications, CRM updates, analytics, or n8n workflows. Failure of an asynchronous action must not corrupt the call record or block realtime audio.
@@ -306,9 +329,9 @@ This is a deployment separation, not a requirement to create microservices. Each
 | M7 | Knowledge Base | 3 | MVP | P0 | M4, M5, M6 | Complete — 27 August 2026 |
 | M8 | Voice Library | 3 | MVP | P0 | M5, M6 | Complete — 28 August 2026 |
 | M9 | Voice Cloning & Consent | 3 | MVP Optional | P1 | M3, M5, M6, M8 | Complete — 28 August 2026 |
-| M10 | Twilio Telephony Provider | 4 | MVP | P0 | M0 | Not Started |
-| M11 | Phone Number Management | 4 | MVP | P0 | M4, M5, M10 | Not Started |
-| M12 | Incoming AI Calls | 5 | MVP | P0 | M5–M8, M10, M11 | Not Started |
+| M10 | Twilio Telephony Provider | 4 | MVP | P0 | M0 | **Complete** (28 August 2026) |
+| M11 | Phone Number Management | 4 | MVP | P0 | M4, M5, M10 | **Complete** — 28 August 2026 |
+| M12 | Incoming AI Calls | 5 | MVP | P0 | M6, M7, M8, M10, M11 (M9 optional) | Not Started (12.01 roadmap locked) |
 | M13 | Outbound Calls | 5 | Commercial | P1 | M12, M20, M23 | Not Started |
 | M14 | Call Management | 5 | MVP | P0 | M12 | Not Started |
 | M15 | Transcripts | 5 | MVP | P0 | M12, M14 | Not Started |
@@ -354,7 +377,7 @@ flowchart TB
     M8 --> M12
 ```
 
-M12 also requires M10 Twilio and M11 phone-number management. M10 can begin only after M0; under the agreed one-module-at-a-time method, it is completed after the voice/knowledge foundation and before M11.
+M12 also requires **M06, M07, M08, M10, and M11** (M09 optional when Agent uses cloned voice). M10 can begin only after M0; under the agreed one-module-at-a-time method, it is completed after the voice/knowledge foundation and before M11.
 
 ### 7.2 Exact market-testable MVP sequence
 

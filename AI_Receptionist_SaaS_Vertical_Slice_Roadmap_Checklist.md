@@ -6,11 +6,11 @@
 
 **Roadmap Update v3 (25 August 2026):** Added a mandatory per-module Manual QA Handoff guide under every `XX.05 — Documentation & Acceptance` submodule, plus `VS-GLOBAL-16`. M00–M03 receive this requirement retroactively as documentation backfill.
 
+**Roadmap Update v4 (28 August 2026):** Locked canonical telephony + inbound routing architecture for M10/M11/M12 in `docs/telephony-inbound-routing-lock.md`. M12 dependencies updated to M06,M07,M08,M10,M11 (M09 optional for cloned voices). Checklist IDs appended; module completion statuses preserved.
+
 **Roadmap Update v4 (27 August 2026):** Refined **M07 Knowledge Base**, **M08 Voice Library**, and **M09 Voice Cloning** around the locked ownership model: **Business owns reusable assets; Agents receive assignments/configuration**. No physical duplication of the same knowledge source or cloned voice per agent. **M07 Complete** 27 August 2026. **M08 Complete** 28 August 2026 (08.01–08.05). **M09 Complete** 28 August 2026 (09.01–09.05).
 
 > Checklist syntax: `- [ ] ID — detailed task`. Change `[ ]` to `[x]` only after the item is verified.
-
-
 
 ## Streamlined Execution Model — v2
 
@@ -27,6 +27,8 @@ This roadmap keeps all high-level phases/modules and feature-specific checklist 
 **Acceptance simplification:** The former repeated `XX.10 — Acceptance / Definition of Done` checklist is no longer duplicated inside every module. Its requirements are enforced by `VS-GLOBAL-01` through `VS-GLOBAL-16` plus the module-specific gate. Historical completed-module acceptance remains preserved, while the Manual QA Handoff requirement introduced in v3 is backfilled as documented below.
 
 **Working rule:** Finish all 5 submodules, create the module-specific Manual QA Handoff guide, and pass the Global Vertical Slice Gate before starting the next module.
+
+**Phase gate rule (mandatory):** When a module's `Pxx-Myy-GATE` is checked, **immediately** verify whether every required module in that phase is accepted. If yes, check the phase `Pxx-GATE` at the phase header with verification date. Never leave a phase gate unchecked when all of its modules are complete.
 
 ## Mandatory Manual QA Handoff Standard — v3
 
@@ -67,8 +69,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] Completed and verified
 
-
-
 ## Global Vertical Slice Gate — Applies to Every Module
 
 - [ ] VS-GLOBAL-01 — Requirements and scope for the module are finalized before implementation.
@@ -88,8 +88,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [ ] VS-GLOBAL-15 — Module is accepted before the next module moves to In Development.
 - [ ] VS-GLOBAL-16 — Module Manual QA Handoff guide exists at the canonical path, reflects final implemented behavior, and is linked from module documentation where practical.
 
-
-
 ## Overall Development Phases & Modules
 
 - [x] P00 — **Foundation**
@@ -99,18 +97,18 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
   - [x] M02 — Organizations / Tenants (MVP)
   - [x] M03 — Users, Team & Roles (MVP)
   - [x] M04 — Business Management (MVP)
-- [ ] P02 — **AI Agent Core**
+- [x] P02 — **AI Agent Core**
   - [x] M05 — AI Agent Management (MVP) — COMPLETE 27 August 2026
   - [x] M06 — ElevenLabs Voice Agent Provider (MVP) — COMPLETE 27 August 2026
-- [ ] P03 — **Knowledge & Voice**
-  - [x] M07 — Knowledge Base (MVP) — COMPLETE 27 August 2026
+- [x] P03 — **Knowledge & Voice**
+  - [x] M07 — Knowledge Base (MVP) — COMPLETE 28 August 2026
   - [x] M08 — Voice Library (MVP) — COMPLETE 28 August 2026
   - [x] M09 — Voice Cloning (MVP/Premium) — **Complete** 28 August 2026
-- [ ] P04 — **Telephony**
-  - [ ] M10 — Twilio Telephony Provider (MVP)
-  - [ ] M11 — Phone Number Management (MVP)
+- [x] P04 — **Telephony**
+  - [x] M10 — Twilio Telephony Provider (MVP) — **Complete** 28 August 2026
+  - [x] M11 — Phone Number Management (MVP) — **Complete** 28 August 2026
 - [ ] P05 — **AI Calling MVP**
-  - [ ] M12 — Incoming AI Calls (MVP)
+  - [ ] M12 — Incoming AI Calls (MVP) — 12.01 roadmap locked; not started
   - [ ] M13 — Outbound Calls (Post-MVP)
   - [ ] M14 — Call Management (MVP)
   - [ ] M15 — Transcript Management (MVP)
@@ -149,13 +147,9 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 ---
 
-
-
 # PHASE 00 — Foundation
 
 - [x] P00-GATE — Phase 00 is complete only when every required module below is accepted.
-
-
 
 ## Module 00 — Existing Project Audit & SaaS Foundation `M00`
 
@@ -178,8 +172,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P00-M00-01-11 — Document environment-variable strategy for local, development, staging and production.
 - [x] P00-M00-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 00.02 — Backend, Persistence & API
 
 - [x] P00-M00-02-01 — Implement/confirm data requirement: `Inventory existing tables and decide which are retained, migrated or extended.`.
@@ -197,8 +189,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P00-M00-02-11 — Implement/verify API contract: `Document webhook routes already present and routes to preserve.`.
 - [x] P00-M00-02-12 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 00.03 — Frontend & Integrations
 
 - [x] P00-M00-03-01 — Build/complete frontend requirement: Verify existing Dashboard, Calls and Settings routes build successfully..
@@ -211,8 +201,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P00-M00-03-07 — Integrate and verify: Verify Docker Compose service networking..
 - [x] P00-M00-03-08 — Integrate and verify: Preserve Twilio and OpenAI provider code for later refactor..
 - [x] P00-M00-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 00.04 — Security & QA
 
@@ -228,8 +216,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P00-M00-04-09 — Run regression checks for directly affected existing modules.
 - [x] P00-M00-04-10 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 00.05 — Documentation & Acceptance
 
 - [x] P00-M00-05-01 — Update the Master Module Registry status and dependencies.
@@ -242,13 +228,9 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 ## **Module Gate:** `[M00] Existing Project Audit & SaaS Foundation = COMPLETE ✅` — verified 24 August 2026.
 
-
-
 # PHASE 01 — SaaS Core
 
 - [x] P01-GATE — Phase 01 is complete only when every required module below is accepted.
-
-
 
 ## Module 01 — Authentication `M01`
 
@@ -268,8 +250,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M01-01-08 — Current-user session endpoint
 - [x] P01-M01-01-09 — Protected routes/session restoration
 - [x] P01-M01-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
-
-
 
 ### Submodule 01.02 — Backend, Persistence & API
 
@@ -293,8 +273,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M01-02-16 — Implement/verify API contract: `GET /api/v1/auth/me`.
 - [x] P01-M01-02-17 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 01.03 — Frontend & Integrations
 
 - [x] P01-M01-03-01 — Build/complete frontend requirement: Register page.
@@ -308,8 +286,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] P01-M01-03-09 — Integrate and verify: Email delivery provider for verification/reset messages when enabled..
 - [x] P01-M01-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 01.04 — Security & QA
 
@@ -327,8 +303,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M01-04-11 — Test: Unauthenticated protected-route rejection.
 - [x] P01-M01-04-12 — Run regression checks for directly affected existing modules.
 - [x] P01-M01-04-13 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 01.05 — Documentation & Acceptance
 
@@ -359,8 +333,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M02-01-08 — Tenant isolation
 - [x] P01-M02-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 02.02 — Backend, Persistence & API
 
 - [x] P01-M02-02-01 — Implement/confirm data requirement: `organizations`.
@@ -378,8 +350,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M02-02-11 — Implement/verify API contract: `PATCH /api/v1/organizations/:id`.
 - [x] P01-M02-02-12 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 02.03 — Frontend & Integrations
 
 - [x] P01-M02-03-01 — Build/complete frontend requirement: Organization creation onboarding.
@@ -390,8 +360,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M02-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
 - [x] P01-M02-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
-
-
 
 ### Submodule 02.04 — Security & QA
 
@@ -406,8 +374,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M02-04-08 — Test: Workspace switching preserves isolation.
 - [x] P01-M02-04-09 — Run regression checks for directly affected existing modules.
 - [x] P01-M02-04-10 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 02.05 — Documentation & Acceptance
 
@@ -439,8 +405,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M03-01-09 — RBAC permission checks
 - [x] P01-M03-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 03.02 — Backend, Persistence & API
 
 - [x] P01-M03-02-01 — Implement/confirm data requirement: `organization_members`.
@@ -459,8 +423,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M03-02-12 — Implement/verify API contract: `DELETE /api/v1/organizations/:id/members/:memberId`.
 - [x] P01-M03-02-13 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 03.03 — Frontend & Integrations
 
 - [x] P01-M03-03-01 — Build/complete frontend requirement: Team list.
@@ -473,8 +435,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] P01-M03-03-08 — Integrate and verify: Email invitation delivery..
 - [x] P01-M03-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 03.04 — Security & QA
 
@@ -490,8 +450,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M03-04-09 — Test: Removed member loses tenant access.
 - [x] P01-M03-04-10 — Run regression checks for directly affected existing modules.
 - [x] P01-M03-04-11 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 03.05 — Documentation & Acceptance
 
@@ -526,8 +484,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M04-01-12 — Business status/settings
 - [x] P01-M04-01-13 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 04.02 — Backend, Persistence & API
 
 - [x] P01-M04-02-01 — Implement/confirm data requirement: `businesses`.
@@ -547,8 +503,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M04-02-13 — Implement/verify API contract: `DELETE or archive /api/v1/businesses/:id`.
 - [x] P01-M04-02-14 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 04.03 — Frontend & Integrations
 
 - [x] P01-M04-03-01 — Build/complete frontend requirement: Business list.
@@ -562,8 +516,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 - [x] P01-M04-03-09 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
 
-
-
 ### Submodule 04.04 — Security & QA
 
 - [x] P01-M04-04-01 — Organization-scoped business access.
@@ -576,8 +528,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P01-M04-04-07 — Run regression checks for directly affected existing modules.
 - [x] P01-M04-04-08 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 04.05 — Documentation & Acceptance
 
 - [x] P01-M04-05-01 — Update the Master Module Registry status and dependencies.
@@ -589,13 +539,9 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 ## **Module Gate:** `[M04] Business Management = COMPLETE ✅` — verified 27 August 2026.
 
-
-
 # PHASE 02 — AI Agent Core
 
-- [ ] P02-GATE — Phase 02 is complete only when every required module below is accepted.
-
-
+- [x] P02-GATE — Phase 02 is complete only when every required module below is accepted. — **Verified 28 August 2026** (M05 + M06 complete).
 
 ## Module 05 — AI Agent Management `M05`
 
@@ -724,8 +670,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 > **06.02 note (27 August 2026):** Mapping-only MVP (no `provider_sync_logs`). Reuses M05 `agent_provider_mappings`. `VoiceAgentSyncPort` + ElevenLabs ConvAI adapter; explicit sync endpoints; env `ELEVENLABS_`* optional at boot; unit + e2e coverage. Docs under `docs/module-6/`.
 
-
-
 ### Submodule 06.03 — Frontend & Integrations
 
 - [x] P02-M06-03-01 — Build/complete frontend requirement: Provider sync status on agent page.
@@ -738,8 +682,6 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 - [x] P02-M06-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
 > **06.03 note (27 August 2026):** Agent overview `AgentProviderSyncPanel` + list Provider column. Real `sync` / `provider-status` APIs; Sync/Retry for update roles; sanitized errors + warnings; no ElevenLabs keys in browser. Frontend typecheck clean.
-
-
 
 ### Submodule 06.04 — Security & QA
 
@@ -771,13 +713,9 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
 
 ## **Module Gate:** `[M06] ElevenLabs Voice Agent Provider = COMPLETE` — verified 27 August 2026 (06.01–06.05).
 
-
-
 # PHASE 03 — Knowledge & Voice
 
-- [ ] P03-GATE — Phase 03 is complete only when every required module below is accepted.
-
-
+- [x] P03-GATE — Phase 03 is complete only when every required module below is accepted. — **Verified 28 August 2026** (M07 + M08 + M09 complete).
 
 ### Phase 03 Architecture Lock — Shared Business Assets + Per-Agent Assignment (v4)
 
@@ -856,8 +794,6 @@ Agent
 - Knowledge source reuse is not dependent on one language unless a source itself has language metadata or translation behavior.
 - Do **not** start translation/localization functionality in M07–M09 unless explicitly defined later.
 
-
-
 ## Module 07 — Knowledge Base `M07`
 
 **Target:** MVP
@@ -892,11 +828,9 @@ Agent
 
 > **07.01 note (28 August 2026):** Scope locked in `docs/module-7/`. No separate `knowledge_bases` table (Business is container). Types `file|url|text|faq`. `KnowledgeSyncPort` + `knowledge_provider_mappings` (provider-neutral). Cookie-scoped `/api/v1/knowledge`* + agent assignment APIs. Hard delete blocked while assigned. No implementation in 07.01.
 
-
-
 ### Submodule 07.02 — Backend, Persistence & API
 
-> **Complete 28 August 2026:** Business-scoped `knowledge_sources` (no `knowledge_bases` table); `agent_knowledge_sources`; `knowledge_provider_mappings` with `last_synced_version` (no `knowledge_sync_logs` — deferred); Nest `KnowledgeModule` + cookie-scoped `/api/v1/knowledge`* and `/api/v1/agents/:agentId/knowledge*`; `KnowledgeSyncPort` / ElevenLabs adapter; S3 object storage port extension.
+> **Complete 28 August 2026:** Business-scoped `knowledge_sources` (no `knowledge_bases` table); `agent_knowledge_sources`; `knowledge_provider_mappings` with `last_synced_version` (no `knowledge_sync_logs` — deferred); Nest `KnowledgeModule` + cookie-scoped `/api/v1/knowledge`* and `/api/v1/agents/:agentId/knowledge`*; `KnowledgeSyncPort` / ElevenLabs adapter; S3 object storage port extension.
 
 - [x] P03-M07-02-01 — Implement/confirm data requirement: `knowledge_bases` (or equivalent Business-scoped container naming consistent with repository conventions). — *Satisfied by Business as library container; no separate* `knowledge_bases` *table.*
 - [x] P03-M07-02-02 — Implement/confirm data requirement: `knowledge_sources` belonging to **Business** (do **not** require duplicate source rows per agent).
@@ -921,8 +855,6 @@ Agent
 - [x] P03-M07-02-19 — Implement/verify agent assignment APIs intent: `POST /api/v1/agents/:agentId/knowledge/:knowledgeId` and `DELETE /api/v1/agents/:agentId/knowledge/:knowledgeId`.
 - [x] P03-M07-02-20 — Enforce business-ownership validation on assign: agent and knowledge source must belong to the same Business; block cross-business assignment.
 
-
-
 ### Submodule 07.03 — Frontend & Integrations
 
 - [x] P03-M07-03-01 — Build/complete **Business Knowledge** area: shared knowledge list (not an agent-only list that forces re-upload). — `/knowledge` *list page.*
@@ -940,8 +872,6 @@ Agent
 - [x] P03-M07-03-12 — Agent configuration UI: multi-select assigned knowledge sources (e.g. ☑ Clinic Hours, ☑ Services, ☐ Pricing) without repeated uploads per agent. — `/agents/[id]/knowledge`*.*
 - [x] P03-M07-03-13 — Provide “Manage Business Knowledge” navigation from agent knowledge configuration where appropriate.
 - [x] P03-M07-03-14 — Where useful, show which agents currently use a Business knowledge source. — *Detail* `assignedAgents` *list.*
-
-
 
 ### Submodule 07.04 — Security & QA
 
@@ -966,8 +896,6 @@ Agent
 - [x] P03-M07-04-18 — Test: Provider sync state remains source-safe; provider errors do not leak secrets.
 
 > **07.04 note (28 August 2026):** Evidence in `docs/module-7/security-and-qa.md`. File allowlist + size; tenant object keys; private S3 (no browser secrets); URL http(s); cross-business assign blocked (unit/e2e). Backend build + knowledge/agents unit & e2e + FE typecheck pass. Live S3/ElevenLabs happy-path in manual QA guide (human sign-off). Signed portal download deferred (private server-side access only).
-
-
 
 ### Submodule 07.05 — Documentation & Acceptance
 
@@ -1006,8 +934,6 @@ Agent
 
 > **08.01 note (28 August 2026):** Design locked in `docs/module-8/` — scope, `voice_assets` + `voice_provider_mappings`, `agent_configs.voice_id` assignment, `VoiceCatalogPort` (ElevenLabs first), preview/assign/compatibility rules, frontend surface plan. Explicit sync to provider remains M06 after assign.
 
-
-
 ### Submodule 08.02 — Backend, Persistence & API
 
 - [x] P03-M08-02-01 — Implement/confirm data requirement: `voices` (or `business_voices` / cached provider-neutral voice metadata) — canonical voice **asset** records; do not force exact schema prematurely if provider investigation is required, but lock VOICE ASSET vs ASSIGNMENT separation.
@@ -1026,8 +952,6 @@ Agent
 
 > **08.02 note (28 August 2026):** Migration `1756100000000-VoiceLibrary.ts` — `voice_assets`, `voice_provider_mappings`, FK on `agent_configs.voice_id`. `VoicesModule` + `VoiceCatalogPort` / `ElevenLabsVoiceCatalogAdapter`. APIs: `GET /voices`, `GET /voices/:id`, `POST /voices/:id/preview`, `GET|PUT|POST|DELETE /agents/:id/voice`. M06 sync uses assigned `voice_id` → external mapping when set. Unit tests: `voices-domain.test.js` (93/93 pass).
 
-
-
 ### Submodule 08.03 — Frontend & Integrations
 
 - [x] P03-M08-03-01 — Build/complete frontend requirement: **Business Voice Library** (available voices, metadata, cloned/custom indicator where applicable later).
@@ -1043,8 +967,6 @@ Agent
 - [x] P03-M08-03-10 — UX clarity: Agent A and Agent B may both use the same voice (e.g. Sarah) with no duplication required.
 
 > **08.03 note (28 August 2026):** `/voices` library + filters + preview; `/agents/[id]/voice` assign/browse; `voices-api.ts`; nav Voices → `/voices`; agent list Voice column + overview assigned voice; behavior preference copy updated. FE typecheck clean. Live ElevenLabs catalogue requires server key + backend restart.
-
-
 
 ### Submodule 08.04 — Security & QA
 
@@ -1065,8 +987,6 @@ Agent
 - [x] P03-M08-04-14 — Test: Cross-tenant / cross-business custom voice access blocked.
 
 > **08.04 note (28 August 2026):** Evidence in `docs/module-8/security-and-qa.md`. Preview server-proxied; no secrets in FE/e2e JSON. Unit + e2e + agents/knowledge regression pass. Manual journey in QA guide (human sign-off).
-
-
 
 ### Submodule 08.05 — Documentation & Acceptance
 
@@ -1108,8 +1028,6 @@ Agent
 - [x] P03-M09-01-13 — Provider sync/mapping for clones (EaziAICall canonical clone record → provider clone ID; provider failure must not silently corrupt canonical records).
 - [x] P03-M09-01-14 — Document: no automatic voice cloning without explicit consent.
 
-
-
 ### Submodule 09.02 — Backend, Persistence & API
 
 - [x] P03-M09-02-01 — Implement/confirm data requirement: `voice_clones` (Business-owned; one canonical asset — not one row per agent).
@@ -1131,8 +1049,6 @@ Agent
 - [x] P03-M09-02-15 — Implement/confirm linkage to `voices` / `business_voices` so the resulting clone is a reusable Business voice asset.
 - [x] P03-M09-02-16 — Enforce cross-business clone access blocked; agents may only be assigned clones owned by their Business.
 
-
-
 ### Submodule 09.03 — Frontend & Integrations
 
 - [x] P03-M09-03-01 — Build/complete frontend requirement: Consent screen (asset-level consent; clear Business ownership context).
@@ -1148,8 +1064,6 @@ Agent
 - [x] P03-M09-03-10 — Integrate and verify: provider voice cloning via abstraction (ElevenLabs as first cloning provider; remain provider-swappable).
 - [x] P03-M09-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 - [x] P03-M09-03-12 — UX clarity: one Business clone (e.g. Owner Custom Clone) selectable by multiple agents without recreating the clone.
-
-
 
 ### Submodule 09.04 — Security & QA
 
@@ -1170,8 +1084,6 @@ Agent
 - [x] P03-M09-04-14 — Test: Destructive delete/revoke while assigned detects assignments and requires safe confirmation flow (block until unassigned or explicit reassignment).
 - [x] P03-M09-04-15 — Test: Provider credentials never exposed; sample URLs not publicly accessible.
 
-
-
 ### Submodule 09.05 — Documentation & Acceptance
 
 - [x] P03-M09-05-01 — Update the Master Module Registry status and dependencies.
@@ -1181,15 +1093,11 @@ Agent
 
 - [x] P03-M09-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-## **Module Gate:** `[M09] Voice Cloning = COMPLETE ✅` only after every required checkbox above is verified.
-
-
+## **Module Gate:** `[M09] Voice Cloning = COMPLETE ✅` — verified 28 August 2026 (09.01–09.05).
 
 # PHASE 04 — Telephony
 
-- [ ] P04-GATE — Phase 04 is complete only when every required module below is accepted.
-
-
+- [x] P04-GATE — Phase 04 is complete only when every required module below is accepted. — **Verified 28 August 2026** (M10 + M11 complete).
 
 ## Module 10 — Twilio Telephony Provider `M10`
 
@@ -1197,75 +1105,84 @@ Agent
 
 **Dependencies:** M00
 
+**Status:** **Complete** — 28 August 2026. Gate passed; M11 may start.
+
+**Design docs:** `docs/module-10/` · canonical lock: `docs/telephony-inbound-routing-lock.md`
+
+**Architecture (locked):** Twilio behind `TelephonyProviderPort` — provider REST for number lifecycle (consumed by M11), secured webhooks for inbound calls and status callbacks, normalized errors/events. Platform-managed credentials. Business phone inventory, agent assignment, and call routing are **M11/M12**, not M10.
+
 ### Submodule 10.01 — Scope & Technical Design
 
-- [ ] P04-M10-01-01 — Confirm the objective and boundaries of **Twilio Telephony Provider**.
-- [ ] P04-M10-01-02 — Implement TelephonyProvider contract
-- [ ] P04-M10-01-03 — Authenticate with Twilio
-- [ ] P04-M10-01-04 — Search numbers
-- [ ] P04-M10-01-05 — Purchase/configure number
-- [ ] P04-M10-01-06 — Release number
-- [ ] P04-M10-01-07 — Handle inbound webhook
-- [ ] P04-M10-01-08 — Handle status callbacks
-- [ ] P04-M10-01-09 — Normalize Twilio errors/events
-- [ ] P04-M10-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P04-M10-01-01 — Confirm the objective and boundaries of **Twilio Telephony Provider**.
+- [x] P04-M10-01-02 — Implement TelephonyProvider contract
+- [x] P04-M10-01-03 — Authenticate with Twilio
+- [x] P04-M10-01-04 — Search numbers
+- [x] P04-M10-01-05 — Purchase/configure number
+- [x] P04-M10-01-06 — Release number
+- [x] P04-M10-01-07 — Handle inbound webhook
+- [x] P04-M10-01-08 — Handle status callbacks
+- [x] P04-M10-01-09 — Normalize Twilio errors/events
+- [x] P04-M10-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P04-M10-01-11 — Lock platform-managed Twilio credential policy (no BYOT / customer-connected accounts in MVP).
+- [x] P04-M10-01-12 — Lock webhook URL / signature verification operational requirements (proxy, tunnel, canonical public URL).
+- [x] P04-M10-01-13 — Lock persistence policy (no Auth Token in DB; minimal provider mappings/logs sufficient for MVP).
 
-
+> **10.01 note (28 August 2026):** Design locked in `docs/module-10/` + `docs/telephony-inbound-routing-lock.md`. Credential/webhook policies in `operational-policy.md`.
 
 ### Submodule 10.02 — Backend, Persistence & API
 
-- [ ] P04-M10-02-01 — Implement/confirm data requirement: `provider mappings and logs as required`.
-- [ ] P04-M10-02-02 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P04-M10-02-03 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [x] P04-M10-02-01 — Implement/confirm data requirement: `provider mappings and logs as required`.
+- [x] P04-M10-02-02 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P04-M10-02-03 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
 
-- [ ] P04-M10-02-04 — Create/update the NestJS module boundaries, services and domain logic for **Twilio Telephony Provider**.
-- [ ] P04-M10-02-05 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
-- [ ] P04-M10-02-06 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P04-M10-02-04 — Create/update the NestJS module boundaries, services and domain logic for **Twilio Telephony Provider**.
+- [x] P04-M10-02-05 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [x] P04-M10-02-06 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P04-M10-02-07 — Implement/verify API contract: `Internal Twilio provider methods`.
-- [ ] P04-M10-02-08 — Implement/verify API contract: `/api/v1/webhooks/twilio/*`.
-- [ ] P04-M10-02-09 — Add DTO/schema validation and consistent API error responses.
+- [x] P04-M10-02-07 — Implement/verify API contract: `Internal Twilio provider methods`.
+- [x] P04-M10-02-08 — Implement/verify API contract: `/api/v1/webhooks/twilio/*`.
+- [x] P04-M10-02-09 — Add DTO/schema validation and consistent API error responses.
 
-
+> **10.02 note (28 August 2026):** Migration `1756120000000-TwilioTelephonyProvider`, `TwilioTelephonyAdapter` (full port), `TelephonyMappingsService`, webhook `status-callback`, `CallsService.markFailed`. Tests: adapter spec, service spec, `telephony-domain.test.js`.
 
 ### Submodule 10.03 — Frontend & Integrations
 
-- [ ] P04-M10-03-01 — Build/complete frontend requirement: Provider health/config status in internal settings if needed.
-- [ ] P04-M10-03-02 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P04-M10-03-03 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P04-M10-03-01 — Build/complete frontend requirement: Provider health/config status in internal settings if needed.
+- [x] P04-M10-03-02 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P04-M10-03-03 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P04-M10-03-04 — Integrate and verify: Twilio.
-- [ ] P04-M10-03-05 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [x] P04-M10-03-04 — Integrate and verify: Twilio.
+- [x] P04-M10-03-05 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
+> **10.03 note (28 August 2026):** `GET /telephony/provider-status`, `/settings/integrations` + status panel, settings hub, `telephony-api.ts`, health `telephony` check. Admin shell mocks unchanged (future admin slice).
 
 ### Submodule 10.04 — Security & QA
 
-- [ ] P04-M10-04-01 — Verify Twilio webhook signatures.
-- [ ] P04-M10-04-02 — Keep Account SID/Auth Token server-side.
-- [ ] P04-M10-04-03 — Idempotent callback handling.
-- [ ] P04-M10-04-04 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P04-M10-04-01 — Verify Twilio webhook signatures.
+- [x] P04-M10-04-02 — Keep Account SID/Auth Token server-side.
+- [x] P04-M10-04-03 — Idempotent callback handling.
+- [x] P04-M10-04-04 — Verify tenant isolation for all tenant-owned records and actions.
 
-- [ ] P04-M10-04-05 — Test: Credential validation.
-- [ ] P04-M10-04-06 — Test: Webhook verification.
-- [ ] P04-M10-04-07 — Test: Event normalization.
-- [ ] P04-M10-04-08 — Test: Number configuration test.
-- [ ] P04-M10-04-09 — Test: Provider failure handling.
-- [ ] P04-M10-04-10 — Run regression checks for directly affected existing modules.
-- [ ] P04-M10-04-11 — Complete manual QA of the end-to-end user journey.
+- [x] P04-M10-04-05 — Test: Credential validation.
+- [x] P04-M10-04-06 — Test: Webhook verification.
+- [x] P04-M10-04-07 — Test: Event normalization.
+- [x] P04-M10-04-08 — Test: Number configuration test.
+- [x] P04-M10-04-09 — Test: Provider failure handling.
+- [x] P04-M10-04-10 — Run regression checks for directly affected existing modules.
+- [x] P04-M10-04-11 — Complete manual QA of the end-to-end user journey.
 
-
+> **10.04 note (28 August 2026):** Evidence in `docs/module-10/security-and-qa.md`. Tests: `telephony-webhooks.test.js`, `telephony-webhook-guard.test.js`, expanded domain/e2e suites. Manual Integrations Connected + Valid verified.
 
 ### Submodule 10.05 — Documentation & Acceptance
 
-- [ ] P04-M10-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P04-M10-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P04-M10-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P04-M10-05-04 — Create/update the **Manual QA Handoff** guide for **Twilio Telephony Provider** at `docs/module-10/M10_Twilio_Telephony_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [x] P04-M10-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P04-M10-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P04-M10-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P04-M10-05-04 — Create/update the **Manual QA Handoff** guide for **Twilio Telephony Provider** at `docs/module-10/M10_Twilio_Telephony_Provider_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Required topics (locked):** credentials/prerequisites, webhook URL setup, signature verification, provider errors, provider number methods, retry/idempotency — see `docs/telephony-inbound-routing-lock.md`.
 
-- [ ] P04-M10-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
+- [x] P04-M10-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-**Module Gate:** `[M10] Twilio Telephony Provider = COMPLETE ✅` only after every required checkbox above is verified.
+**Module Gate:** `[M10] Twilio Telephony Provider = COMPLETE ✅` — verified 28 August 2026.
 
 ## Module 11 — Phone Number Management `M11`
 
@@ -1273,112 +1190,136 @@ Agent
 
 **Dependencies:** M04, M05, M10
 
+**Status:** **M11 COMPLETE ✅** — 28 August 2026 (gate passed; M12 may start).
+
+**Design docs:** `docs/module-11/` · canonical lock: `docs/telephony-inbound-routing-lock.md`
+
+**Architecture (locked):** Canonical Business phone inventory (`phone_numbers.business_id`) + active agent assignment (MVP: ≤1 active per number). Consumes M10 `TelephonyProviderPort`; no inbound call routing (M12).
+
 ### Submodule 11.01 — Scope & Technical Design
 
-- [ ] P04-M11-01-01 — Confirm the objective and boundaries of **Phone Number Management**.
-- [ ] P04-M11-01-02 — Search available phone numbers
-- [ ] P04-M11-01-03 — Purchase/provision
-- [ ] P04-M11-01-04 — Import/map existing number where supported
-- [ ] P04-M11-01-05 — List owned numbers
-- [ ] P04-M11-01-06 — Assign number to agent
-- [ ] P04-M11-01-07 — Unassign
-- [ ] P04-M11-01-08 — Release
-- [ ] P04-M11-01-09 — Display status/provider/country
-- [ ] P04-M11-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P04-M11-01-01 — Confirm the objective and boundaries of **Phone Number Management**.
+- [x] P04-M11-01-02 — Search available phone numbers
+- [x] P04-M11-01-03 — Purchase/provision
+- [x] P04-M11-01-04 — Import/map existing number where supported
+- [x] P04-M11-01-05 — List owned numbers
+- [x] P04-M11-01-06 — Assign number to agent
+- [x] P04-M11-01-07 — Unassign
+- [x] P04-M11-01-08 — Release
+- [x] P04-M11-01-09 — Display status/provider/country
+- [x] P04-M11-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P04-M11-01-11 — Lock Business ownership via `phone_numbers.business_id` (Organization derived through Business).
+- [x] P04-M11-01-12 — Lock MVP assignment model: one phone number → zero or one ACTIVE agent; same Business only.
+- [x] P04-M11-01-13 — Lock import semantics: map provider-controlled number only (not arbitrary porting).
+- [x] P04-M11-01-14 — Lock safe release flow (unassign → confirm → provider release → local `released` state).
+- [x] P04-M11-01-15 — Lock idempotency requirements for purchase, import, assign, unassign, release.
 
-
+> **11.01 note (28 August 2026):** Full design pack in `docs/module-11/` — scope-and-requirements, domain-logic, api-contracts, data-model, frontend-surfaces. No migrations or runtime code. 11.02+ remain pending.
 
 ### Submodule 11.02 — Backend, Persistence & API
 
-- [ ] P04-M11-02-01 — Implement/confirm data requirement: `phone_numbers`.
-- [ ] P04-M11-02-02 — Implement/confirm data requirement: `phone_number_assignments`.
-- [ ] P04-M11-02-03 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P04-M11-02-04 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [x] P04-M11-02-01 — Implement/confirm data requirement: `phone_numbers`.
+- [x] P04-M11-02-02 — Implement/confirm data requirement: `phone_number_assignments`.
+- [x] P04-M11-02-03 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P04-M11-02-04 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
 
-- [ ] P04-M11-02-05 — Create/update the NestJS module boundaries, services and domain logic for **Phone Number Management**.
-- [ ] P04-M11-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
-- [ ] P04-M11-02-07 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P04-M11-02-05 — Create/update the NestJS module boundaries, services and domain logic for **Phone Number Management**.
+- [x] P04-M11-02-06 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [x] P04-M11-02-07 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P04-M11-02-08 — Implement/verify API contract: `GET /api/v1/phone-numbers`.
-- [ ] P04-M11-02-09 — Implement/verify API contract: `POST /api/v1/phone-numbers/search`.
-- [ ] P04-M11-02-10 — Implement/verify API contract: `POST /api/v1/phone-numbers/purchase`.
-- [ ] P04-M11-02-11 — Implement/verify API contract: `POST /api/v1/phone-numbers/:id/assign`.
-- [ ] P04-M11-02-12 — Implement/verify API contract: `POST /api/v1/phone-numbers/:id/unassign`.
-- [ ] P04-M11-02-13 — Implement/verify API contract: `DELETE /api/v1/phone-numbers/:id`.
-- [ ] P04-M11-02-14 — Add DTO/schema validation and consistent API error responses.
+- [x] P04-M11-02-08 — Implement/verify API contract: `GET /api/v1/phone-numbers`.
+- [x] P04-M11-02-09 — Implement/verify API contract: `POST /api/v1/phone-numbers/search`.
+- [x] P04-M11-02-10 — Implement/verify API contract: `POST /api/v1/phone-numbers/purchase`.
+- [x] P04-M11-02-11 — Implement/verify API contract: `POST /api/v1/phone-numbers/:id/assign`.
+- [x] P04-M11-02-12 — Implement/verify API contract: `POST /api/v1/phone-numbers/:id/unassign`.
+- [x] P04-M11-02-13 — Implement/verify API contract: `DELETE /api/v1/phone-numbers/:id`.
+- [x] P04-M11-02-14 — Add DTO/schema validation and consistent API error responses.
+- [x] P04-M11-02-15 — Implement/verify API contract: `POST /api/v1/phone-numbers/import` (provider-controlled number import).
 
-
+> **11.02 note (28 August 2026):** `PhoneNumbersModule` + migration `1756130000000-PhoneNumberManagement` + REST under `/api/v1/phone-numbers/`*. Unit tests (`phone-numbers-domain.test.js`) and e2e (`app.phone-numbers.e2e-test.js`) pass. Run migration before manual QA.
 
 ### Submodule 11.03 — Frontend & Integrations
 
-- [ ] P04-M11-03-01 — Build/complete frontend requirement: Phone-number list.
-- [ ] P04-M11-03-02 — Build/complete frontend requirement: Search/purchase flow.
-- [ ] P04-M11-03-03 — Build/complete frontend requirement: Assignment UI.
-- [ ] P04-M11-03-04 — Build/complete frontend requirement: Release confirmation.
-- [ ] P04-M11-03-05 — Build/complete frontend requirement: Status badges.
-- [ ] P04-M11-03-06 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P04-M11-03-07 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P04-M11-03-01 — Build/complete frontend requirement: Phone-number list.
+- [x] P04-M11-03-02 — Build/complete frontend requirement: Search/purchase flow.
+- [x] P04-M11-03-03 — Build/complete frontend requirement: Assignment UI.
+- [x] P04-M11-03-04 — Build/complete frontend requirement: Release confirmation.
+- [x] P04-M11-03-05 — Build/complete frontend requirement: Status badges.
+- [x] P04-M11-03-06 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P04-M11-03-07 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P04-M11-03-08 — Integrate and verify: Twilio number APIs.
-- [ ] P04-M11-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
+- [x] P04-M11-03-08 — Integrate and verify: Twilio number APIs.
+- [x] P04-M11-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
+> **11.03 note (28 August 2026):** Portal routes `/phone-numbers`, `/phone-numbers/new`, `/phone-numbers/import` wired to `phoneNumbersApi`. Nav updated from `/voice/numbers` → `/phone-numbers`. Integrations page links to inventory UI.
 
 ### Submodule 11.04 — Security & QA
 
-- [ ] P04-M11-04-01 — Tenant owns number record.
-- [ ] P04-M11-04-02 — Role-based purchase/release.
-- [ ] P04-M11-04-03 — Confirm destructive release.
-- [ ] P04-M11-04-04 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P04-M11-04-01 — Tenant owns number record.
+- [x] P04-M11-04-02 — Role-based purchase/release.
+- [x] P04-M11-04-03 — Confirm destructive release.
+- [x] P04-M11-04-04 — Verify tenant isolation for all tenant-owned records and actions.
 
-- [ ] P04-M11-04-05 — Test: Search→purchase→assign.
-- [ ] P04-M11-04-06 — Test: Unassign.
-- [ ] P04-M11-04-07 — Test: Release.
-- [ ] P04-M11-04-08 — Test: Cannot assign another tenant's number.
-- [ ] P04-M11-04-09 — Run regression checks for directly affected existing modules.
-- [ ] P04-M11-04-10 — Complete manual QA of the end-to-end user journey.
+- [x] P04-M11-04-05 — Test: Search→purchase→assign.
+- [x] P04-M11-04-06 — Test: Unassign.
+- [x] P04-M11-04-07 — Test: Release.
+- [x] P04-M11-04-08 — Test: Cannot assign another tenant's number.
+- [x] P04-M11-04-09 — Run regression checks for directly affected existing modules.
+- [x] P04-M11-04-10 — Complete manual QA of the end-to-end user journey.
 
-
+> **11.04 note (28 August 2026):** `phone-numbers-service.test.js` + expanded e2e + `docs/module-11/security-and-qa.md`. Manual journey in `M11_Phone_Number_Management_manual-qa-guide.md` (WF-1–WF-5).
 
 ### Submodule 11.05 — Documentation & Acceptance
 
-- [ ] P04-M11-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P04-M11-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P04-M11-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P04-M11-05-04 — Create/update the **Manual QA Handoff** guide for **Phone Number Management** at `docs/module-11/M11_Phone_Number_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [x] P04-M11-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P04-M11-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P04-M11-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P04-M11-05-04 — Create/update the **Manual QA Handoff** guide for **Phone Number Management** at `docs/module-11/M11_Phone_Number_Management_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Required topics (locked):** Business ownership, search, purchase, import, assign, unassign, release, cross-business restrictions, provider failure/reconciliation — see `docs/telephony-inbound-routing-lock.md`.
 
-- [ ] P04-M11-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
+- [x] P04-M11-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
-## **Module Gate:** `[M11] Phone Number Management = COMPLETE ✅` only after every required checkbox above is verified.
-
-
+## **Module Gate:** `[M11] Phone Number Management = COMPLETE ✅` — verified 28 August 2026.
 
 # PHASE 05 — AI Calling MVP
 
 - [ ] P05-GATE — Phase 05 is complete only when every required module below is accepted.
 
-
-
 ## Module 12 — Incoming AI Calls `M12`
 
 **Target:** MVP
 
-**Dependencies:** M06, M10, M11
+**Dependencies:** **M06, M07, M08, M10, M11** (M09 optional — required only when Agent uses cloned voice)
+
+**Status:** **Roadmap locked** — 12.01 design locked 28 August 2026; implementation not started.
+
+**Design docs:** `docs/module-12/` · canonical lock: `docs/telephony-inbound-routing-lock.md`
+
+**Architecture (locked):** Twilio → Phone Number → Business → Assigned Agent → Knowledge + Voice + Agent config → ElevenLabs → Call/Events. Early Call record creation. No n8n in realtime audio.
 
 ### Submodule 12.01 — Scope & Technical Design
 
-- [ ] P05-M12-01-01 — Confirm the objective and boundaries of **Incoming AI Calls**.
-- [ ] P05-M12-01-02 — Receive inbound call
-- [ ] P05-M12-01-03 — Resolve called number
-- [ ] P05-M12-01-04 — Resolve organization/business/agent
-- [ ] P05-M12-01-05 — Route to ElevenLabs agent
-- [ ] P05-M12-01-06 — Create local call record
-- [ ] P05-M12-01-07 — Normalize call lifecycle events
-- [ ] P05-M12-01-08 — Persist start/end status
-- [ ] P05-M12-01-09 — Handle failed/unmapped calls
-- [ ] P05-M12-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P05-M12-01-01 — Confirm the objective and boundaries of **Incoming AI Calls**.
+- [x] P05-M12-01-02 — Receive inbound call
+- [x] P05-M12-01-03 — Resolve called number
+- [x] P05-M12-01-04 — Resolve organization/business/agent
+- [x] P05-M12-01-05 — Route to ElevenLabs agent
+- [x] P05-M12-01-06 — Create local call record
+- [x] P05-M12-01-07 — Normalize call lifecycle events
+- [x] P05-M12-01-08 — Persist start/end status
+- [x] P05-M12-01-09 — Handle failed/unmapped calls
+- [x] P05-M12-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P05-M12-01-11 — Lock 17-step runtime resolution order (see `docs/telephony-inbound-routing-lock.md`).
+- [x] P05-M12-01-12 — Lock early Call record creation (before ElevenLabs handoff succeeds).
+- [x] P05-M12-01-13 — Lock webhook/idempotency strategy (duplicate events, terminal transitions).
+- [x] P05-M12-01-14 — Lock required failure routes (UNKNOWN NUMBER, UNASSIGNED, INACTIVE AGENT, etc.).
+- [x] P05-M12-01-15 — Lock language runtime behavior (multilingual detection; no IVR language menu in MVP).
+- [x] P05-M12-01-16 — Lock knowledge routing (Agent-assigned sources only).
+- [x] P05-M12-01-17 — Lock voice routing (M09 optional for clones; M08 for catalogue voices).
+- [x] P05-M12-01-18 — Lock tenant safety chain (Phone → Business → Agent → Knowledge → Voice → mapping).
+- [x] P05-M12-01-19 — Lock n8n exclusion from realtime audio path.
+- [x] P05-M12-01-20 — Lock dependencies: M06,M07,M08,M10,M11 required; M09 optional for cloned voices.
 
-
+> **12.01 note (28 August 2026):** Roadmap/design lock only in `docs/module-12/scope-and-requirements.md`. No runtime implementation. M12 must not start until M10 gate + M11 gate pass.
 
 ### Submodule 12.02 — Backend, Persistence & API
 
@@ -1396,8 +1337,6 @@ Agent
 - [ ] P05-M12-02-10 — Implement/verify API contract: `ElevenLabs call/conversation webhook endpoints as required`.
 - [ ] P05-M12-02-11 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 12.03 — Frontend & Integrations
 
 - [ ] P05-M12-03-01 — Build/complete frontend requirement: Basic call appears in customer portal.
@@ -1408,8 +1347,6 @@ Agent
 - [ ] P05-M12-03-05 — Integrate and verify: Twilio.
 - [ ] P05-M12-03-06 — Integrate and verify: ElevenLabs.
 - [ ] P05-M12-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 12.04 — Security & QA
 
@@ -1425,15 +1362,25 @@ Agent
 - [ ] P05-M12-04-09 — Test: Failure event stored.
 - [ ] P05-M12-04-10 — Run regression checks for directly affected existing modules.
 - [ ] P05-M12-04-11 — Complete manual QA of the end-to-end user journey.
-
-
+- [ ] P05-M12-04-12 — Test: Assigned Knowledge used; unassigned Business knowledge not implicitly used.
+- [ ] P05-M12-04-13 — Test: Selected Voice used (catalogue and clone paths).
+- [ ] P05-M12-04-14 — Test: Multilingual detection/switching when enabled.
+- [ ] P05-M12-04-15 — Test: Twilio Call SID + ElevenLabs conversation ID linked when available.
+- [ ] P05-M12-04-16 — Test: Unassigned number, inactive agent, unsynced agent failure routes.
+- [ ] P05-M12-04-17 — Test: Invalid webhook signature rejected.
+- [ ] P05-M12-04-18 — Test: Duplicate webhook / status callback idempotent.
+- [ ] P05-M12-04-19 — Test: Provider failure persists safe Call failure state.
+- [ ] P05-M12-04-20 — Test: Cross-business routing cannot occur.
+- [ ] P05-M12-04-21 — Test: No provider credential exposed in API/UI/logs.
+- [ ] P05-M12-04-22 — Test: Regression M05–M11.
+- [ ] P05-M12-04-23 — Test: Manual real-phone journey before M12 gate.
 
 ### Submodule 12.05 — Documentation & Acceptance
 
 - [ ] P05-M12-05-01 — Update the Master Module Registry status and dependencies.
 - [ ] P05-M12-05-02 — Document database/API/provider changes introduced by this module.
 - [ ] P05-M12-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P05-M12-05-04 — Create/update the **Manual QA Handoff** guide for **Incoming AI Calls** at `docs/module-12/M12_Incoming_AI_Calls_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [ ] P05-M12-05-04 — Create/update the **Manual QA Handoff** guide for **Incoming AI Calls** at `docs/module-12/M12_Incoming_AI_Calls_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist. **Required topics (locked):** real inbound call setup, Twilio number, expected Business/Agent, assigned Knowledge, selected Voice, multilingual behavior, provider mapping, expected DB call record, failure cases, webhook retry/idempotency, evidence requirements — see `docs/telephony-inbound-routing-lock.md`.
 
 - [ ] P05-M12-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
@@ -1456,8 +1403,6 @@ Agent
 - [ ] P05-M13-01-07 — Track outbound lifecycle
 - [ ] P05-M13-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 13.02 — Backend, Persistence & API
 
 - [ ] P05-M13-02-01 — Implement/confirm data requirement: `calls`.
@@ -1473,8 +1418,6 @@ Agent
 - [ ] P05-M13-02-09 — Implement/verify API contract: `POST /api/v1/calls/outbound`.
 - [ ] P05-M13-02-10 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 13.03 — Frontend & Integrations
 
 - [ ] P05-M13-03-01 — Build/complete frontend requirement: Make-call form.
@@ -1487,8 +1430,6 @@ Agent
 - [ ] P05-M13-03-07 — Integrate and verify: Twilio.
 - [ ] P05-M13-03-08 — Integrate and verify: ElevenLabs.
 - [ ] P05-M13-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 13.04 — Security & QA
 
@@ -1504,8 +1445,6 @@ Agent
 - [ ] P05-M13-04-09 — Test: Provider failure handled.
 - [ ] P05-M13-04-10 — Run regression checks for directly affected existing modules.
 - [ ] P05-M13-04-11 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 13.05 — Documentation & Acceptance
 
@@ -1538,8 +1477,6 @@ Agent
 - [ ] P05-M14-01-10 — Basic search
 - [ ] P05-M14-01-11 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 14.02 — Backend, Persistence & API
 
 - [ ] P05-M14-02-01 — Implement/confirm data requirement: `calls`.
@@ -1555,8 +1492,6 @@ Agent
 - [ ] P05-M14-02-09 — Implement/verify API contract: `GET /api/v1/calls/:id`.
 - [ ] P05-M14-02-10 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 14.03 — Frontend & Integrations
 
 - [ ] P05-M14-03-01 — Build/complete frontend requirement: Calls table.
@@ -1567,8 +1502,6 @@ Agent
 - [ ] P05-M14-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
 - [ ] P05-M14-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
-
-
 
 ### Submodule 14.04 — Security & QA
 
@@ -1582,8 +1515,6 @@ Agent
 - [ ] P05-M14-04-07 — Test: Cross-tenant call blocked.
 - [ ] P05-M14-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P05-M14-04-09 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 14.05 — Documentation & Acceptance
 
@@ -1613,8 +1544,6 @@ Agent
 - [ ] P05-M15-01-07 — Handle partial/final transcript updates
 - [ ] P05-M15-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 15.02 — Backend, Persistence & API
 
 - [ ] P05-M15-02-01 — Implement/confirm data requirement: `call_messages`.
@@ -1629,8 +1558,6 @@ Agent
 - [ ] P05-M15-02-08 — Implement/verify API contract: `Provider transcript webhook/sync method`.
 - [ ] P05-M15-02-09 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 15.03 — Frontend & Integrations
 
 - [ ] P05-M15-03-01 — Build/complete frontend requirement: Transcript tab.
@@ -1642,8 +1569,6 @@ Agent
 
 - [ ] P05-M15-03-07 — Integrate and verify: ElevenLabs transcript/conversation data.
 - [ ] P05-M15-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 15.04 — Security & QA
 
@@ -1657,8 +1582,6 @@ Agent
 - [ ] P05-M15-04-07 — Test: Cross-tenant access blocked.
 - [ ] P05-M15-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P05-M15-04-09 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 15.05 — Documentation & Acceptance
 
@@ -1690,8 +1613,6 @@ Agent
 - [ ] P05-M16-01-09 — Analysis processing state
 - [ ] P05-M16-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 16.02 — Backend, Persistence & API
 
 - [ ] P05-M16-02-01 — Implement/confirm data requirement: `call_analysis or fields on calls`.
@@ -1706,8 +1627,6 @@ Agent
 - [ ] P05-M16-02-08 — Implement/verify API contract: `Internal analysis job endpoint/service if required`.
 - [ ] P05-M16-02-09 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 16.03 — Frontend & Integrations
 
 - [ ] P05-M16-03-01 — Build/complete frontend requirement: Summary/analysis tab.
@@ -1719,8 +1638,6 @@ Agent
 
 - [ ] P05-M16-03-07 — Integrate and verify: Provider analysis or selected LLM service.
 - [ ] P05-M16-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 16.04 — Security & QA
 
@@ -1735,8 +1652,6 @@ Agent
 - [ ] P05-M16-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P05-M16-04-09 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 16.05 — Documentation & Acceptance
 
 - [ ] P05-M16-05-01 — Update the Master Module Registry status and dependencies.
@@ -1748,13 +1663,9 @@ Agent
 
 ## **Module Gate:** `[M16] Call Summary & Analysis = COMPLETE ✅` only after every required checkbox above is verified.
 
-
-
 # PHASE 06 — Business Tools
 
 - [ ] P06-GATE — Phase 06 is complete only when every required module below is accepted.
-
-
 
 ## Module 17 — Generic Tool Framework `M17`
 
@@ -1777,8 +1688,6 @@ Agent
 - [ ] P06-M17-01-11 — Error handling
 - [ ] P06-M17-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 17.02 — Backend, Persistence & API
 
 - [ ] P06-M17-02-01 — Implement/confirm data requirement: `tools`.
@@ -1795,8 +1704,6 @@ Agent
 - [ ] P06-M17-02-10 — Implement/verify API contract: `Provider-facing secure tool execution endpoint`.
 - [ ] P06-M17-02-11 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 17.03 — Frontend & Integrations
 
 - [ ] P06-M17-03-01 — Build/complete frontend requirement: Tool list.
@@ -1810,8 +1717,6 @@ Agent
 - [ ] P06-M17-03-08 — Integrate and verify: ElevenLabs tool/function calling.
 - [ ] P06-M17-03-09 — Integrate and verify: External REST/webhook systems.
 - [ ] P06-M17-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 17.04 — Security & QA
 
@@ -1829,8 +1734,6 @@ Agent
 - [ ] P06-M17-04-11 — Test: Wrong-tenant tool blocked.
 - [ ] P06-M17-04-12 — Run regression checks for directly affected existing modules.
 - [ ] P06-M17-04-13 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 17.05 — Documentation & Acceptance
 
@@ -1860,8 +1763,6 @@ Agent
 - [ ] P06-M18-01-07 — Return structured response to agent
 - [ ] P06-M18-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 18.02 — Backend, Persistence & API
 
 - [ ] P06-M18-02-01 — Implement/confirm data requirement: `appointments or integration mapping if our DB owns canonical booking`.
@@ -1876,8 +1777,6 @@ Agent
 - [ ] P06-M18-02-08 — Implement/verify API contract: `Tool endpoints for checkSlots/bookAppointment/rescheduleAppointment/cancelAppointment`.
 - [ ] P06-M18-02-09 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 18.03 — Frontend & Integrations
 
 - [ ] P06-M18-03-01 — Build/complete frontend requirement: Appointment list/basic detail if owned in SaaS.
@@ -1888,8 +1787,6 @@ Agent
 
 - [ ] P06-M18-03-06 — Integrate and verify: Calendar/booking provider or business API.
 - [ ] P06-M18-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 18.04 — Security & QA
 
@@ -1906,8 +1803,6 @@ Agent
 - [ ] P06-M18-04-10 — Test: Agent receives usable result.
 - [ ] P06-M18-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P06-M18-04-12 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 18.05 — Documentation & Acceptance
 
@@ -1937,8 +1832,6 @@ Agent
 - [ ] P06-M19-01-07 — Return structured result to agent
 - [ ] P06-M19-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 19.02 — Backend, Persistence & API
 
 - [ ] P06-M19-02-01 — Implement/confirm data requirement: `reservations or provider mapping if owned internally`.
@@ -1953,8 +1846,6 @@ Agent
 - [ ] P06-M19-02-08 — Implement/verify API contract: `Tool endpoints for checkAvailability/createReservation/cancelReservation/getReservation`.
 - [ ] P06-M19-02-09 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 19.03 — Frontend & Integrations
 
 - [ ] P06-M19-03-01 — Build/complete frontend requirement: Reservation list/basic detail if owned in SaaS.
@@ -1965,8 +1856,6 @@ Agent
 
 - [ ] P06-M19-03-06 — Integrate and verify: Restaurant reservation system or business API.
 - [ ] P06-M19-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 19.04 — Security & QA
 
@@ -1984,8 +1873,6 @@ Agent
 - [ ] P06-M19-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P06-M19-04-12 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 19.05 — Documentation & Acceptance
 
 - [ ] P06-M19-05-01 — Update the Master Module Registry status and dependencies.
@@ -1997,13 +1884,9 @@ Agent
 
 ## **Module Gate:** `[M19] Restaurant Reservations = COMPLETE ✅` only after every required checkbox above is verified.
 
-
-
 # PHASE 07 — CRM & Intelligence
 
 - [ ] P07-GATE — Phase 07 is complete only when every required module below is accepted.
-
-
 
 ## Module 20 — Customer / CRM `M20`
 
@@ -2025,8 +1908,6 @@ Agent
 - [ ] P07-M20-01-10 — Search/filter customers
 - [ ] P07-M20-01-11 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 20.02 — Backend, Persistence & API
 
 - [ ] P07-M20-02-01 — Implement/confirm data requirement: `customers`.
@@ -2043,8 +1924,6 @@ Agent
 - [ ] P07-M20-02-10 — Implement/verify API contract: `Customer activity/history endpoints`.
 - [ ] P07-M20-02-11 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 20.03 — Frontend & Integrations
 
 - [ ] P07-M20-03-01 — Build/complete frontend requirement: Customer list.
@@ -2060,8 +1939,6 @@ Agent
 - [ ] P07-M20-03-10 — Integrate and verify: Future CRM connectors.
 - [ ] P07-M20-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
-
 ### Submodule 20.04 — Security & QA
 
 - [ ] P07-M20-04-01 — Tenant-scoped customer data.
@@ -2074,8 +1951,6 @@ Agent
 - [ ] P07-M20-04-07 — Test: Cross-tenant customer blocked.
 - [ ] P07-M20-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P07-M20-04-09 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 20.05 — Documentation & Acceptance
 
@@ -2106,8 +1981,6 @@ Agent
 - [ ] P07-M21-01-08 — Track suggestion lifecycle
 - [ ] P07-M21-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 21.02 — Backend, Persistence & API
 
 - [ ] P07-M21-02-01 — Implement/confirm data requirement: `knowledge_gap_suggestions or equivalent`.
@@ -2125,8 +1998,6 @@ Agent
 - [ ] P07-M21-02-11 — Implement/verify API contract: `POST /api/v1/knowledge-gaps/:id/reject`.
 - [ ] P07-M21-02-12 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 21.03 — Frontend & Integrations
 
 - [ ] P07-M21-03-01 — Build/complete frontend requirement: Knowledge gaps queue.
@@ -2139,8 +2010,6 @@ Agent
 - [ ] P07-M21-03-07 — Integrate and verify: Call analysis.
 - [ ] P07-M21-03-08 — Integrate and verify: Knowledge sync.
 - [ ] P07-M21-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 21.04 — Security & QA
 
@@ -2155,8 +2024,6 @@ Agent
 - [ ] P07-M21-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P07-M21-04-09 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 21.05 — Documentation & Acceptance
 
 - [ ] P07-M21-05-01 — Update the Master Module Registry status and dependencies.
@@ -2168,13 +2035,9 @@ Agent
 
 ## **Module Gate:** `[M21] Knowledge Gap Detection = COMPLETE ✅` only after every required checkbox above is verified.
 
-
-
 # PHASE 08 — Automation
 
 - [ ] P08-GATE — Phase 08 is complete only when every required module below is accepted.
-
-
 
 ## Module 22 — n8n Automation `M22`
 
@@ -2193,8 +2056,6 @@ Agent
 - [ ] P08-M22-01-07 — Support CALL_COMPLETED/CALL_FAILED/BOOKING_CREATED/LEAD_CREATED/FOLLOW_UP_REQUIRED/AGENT_ESCALATED
 - [ ] P08-M22-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 22.02 — Backend, Persistence & API
 
 - [ ] P08-M22-02-01 — Implement/confirm data requirement: `automations`.
@@ -2210,8 +2071,6 @@ Agent
 - [ ] P08-M22-02-09 — Implement/verify API contract: `Secure outbound webhook delivery`.
 - [ ] P08-M22-02-10 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 22.03 — Frontend & Integrations
 
 - [ ] P08-M22-03-01 — Build/complete frontend requirement: Automation list.
@@ -2226,8 +2085,6 @@ Agent
 - [ ] P08-M22-03-09 — Integrate and verify: Email/SMS/WhatsApp/CRM/Calendar/Slack/Sheets/custom webhooks.
 - [ ] P08-M22-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
-
 ### Submodule 22.04 — Security & QA
 
 - [ ] P08-M22-04-01 — Webhook signing/secrets.
@@ -2241,8 +2098,6 @@ Agent
 - [ ] P08-M22-04-08 — Test: Disabled automation not triggered.
 - [ ] P08-M22-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P08-M22-04-10 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 22.05 — Documentation & Acceptance
 
@@ -2274,8 +2129,6 @@ Agent
 - [ ] P08-M23-01-09 — Read/unread state
 - [ ] P08-M23-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 23.02 — Backend, Persistence & API
 
 - [ ] P08-M23-02-01 — Implement/confirm data requirement: `notifications`.
@@ -2292,8 +2145,6 @@ Agent
 - [ ] P08-M23-02-10 — Implement/verify API contract: `Preference endpoints if needed`.
 - [ ] P08-M23-02-11 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 23.03 — Frontend & Integrations
 
 - [ ] P08-M23-03-01 — Build/complete frontend requirement: Notification center.
@@ -2306,8 +2157,6 @@ Agent
 - [ ] P08-M23-03-07 — Integrate and verify: Email provider.
 - [ ] P08-M23-03-08 — Integrate and verify: SMS provider.
 - [ ] P08-M23-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 23.04 — Security & QA
 
@@ -2322,8 +2171,6 @@ Agent
 - [ ] P08-M23-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P08-M23-04-09 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 23.05 — Documentation & Acceptance
 
 - [ ] P08-M23-05-01 — Update the Master Module Registry status and dependencies.
@@ -2335,13 +2182,9 @@ Agent
 
 ## **Module Gate:** `[M23] Notifications = COMPLETE ✅` only after every required checkbox above is verified.
 
-
-
 # PHASE 09 — Commercial SaaS
 
 - [ ] P09-GATE — Phase 09 is complete only when every required module below is accepted.
-
-
 
 ## Module 24 — Analytics `M24`
 
@@ -2362,8 +2205,6 @@ Agent
 - [ ] P09-M24-01-09 — Dashboard aggregates
 - [ ] P09-M24-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 24.02 — Backend, Persistence & API
 
 - [ ] P09-M24-02-01 — Implement/confirm data requirement: `analytics aggregates or materialized summaries`.
@@ -2381,8 +2222,6 @@ Agent
 - [ ] P09-M24-02-11 — Implement/verify API contract: `GET /api/v1/analytics/costs`.
 - [ ] P09-M24-02-12 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 24.03 — Frontend & Integrations
 
 - [ ] P09-M24-03-01 — Build/complete frontend requirement: Analytics dashboard.
@@ -2397,8 +2236,6 @@ Agent
 - [ ] P09-M24-03-09 — Integrate and verify: Provider usage/cost data when available.
 - [ ] P09-M24-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
-
 ### Submodule 24.04 — Security & QA
 
 - [ ] P09-M24-04-01 — Tenant-scoped aggregation.
@@ -2411,8 +2248,6 @@ Agent
 - [ ] P09-M24-04-07 — Test: Empty dataset.
 - [ ] P09-M24-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P09-M24-04-09 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 24.05 — Documentation & Acceptance
 
@@ -2443,8 +2278,6 @@ Agent
 - [ ] P09-M25-01-08 — Plan comparison metadata
 - [ ] P09-M25-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 25.02 — Backend, Persistence & API
 
 - [ ] P09-M25-02-01 — Implement/confirm data requirement: `plans`.
@@ -2463,8 +2296,6 @@ Agent
 - [ ] P09-M25-02-12 — Implement/verify API contract: `Internal/admin plan management endpoints`.
 - [ ] P09-M25-02-13 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 25.03 — Frontend & Integrations
 
 - [ ] P09-M25-03-01 — Build/complete frontend requirement: Pricing/plan view.
@@ -2475,8 +2306,6 @@ Agent
 - [ ] P09-M25-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
 - [ ] P09-M25-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
-
-
 
 ### Submodule 25.04 — Security & QA
 
@@ -2490,8 +2319,6 @@ Agent
 - [ ] P09-M25-04-07 — Test: Trial entitlement.
 - [ ] P09-M25-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P09-M25-04-09 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 25.05 — Documentation & Acceptance
 
@@ -2524,8 +2351,6 @@ Agent
 - [ ] P09-M26-01-10 — Aggregate by tenant and billing period
 - [ ] P09-M26-01-11 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 26.02 — Backend, Persistence & API
 
 - [ ] P09-M26-02-01 — Implement/confirm data requirement: `usage_records`.
@@ -2543,8 +2368,6 @@ Agent
 - [ ] P09-M26-02-11 — Implement/verify API contract: `Internal provider reconciliation endpoints`.
 - [ ] P09-M26-02-12 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 26.03 — Frontend & Integrations
 
 - [ ] P09-M26-03-01 — Build/complete frontend requirement: Usage dashboard.
@@ -2560,8 +2383,6 @@ Agent
 - [ ] P09-M26-03-10 — Integrate and verify: Future LLM providers.
 - [ ] P09-M26-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
-
 ### Submodule 26.04 — Security & QA
 
 - [ ] P09-M26-04-01 — Tenant-scoped usage.
@@ -2574,8 +2395,6 @@ Agent
 - [ ] P09-M26-04-07 — Test: Provider reconciliation.
 - [ ] P09-M26-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P09-M26-04-09 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 26.05 — Documentation & Acceptance
 
@@ -2610,8 +2429,6 @@ Agent
 - [ ] P09-M27-01-12 — Refund/enterprise invoice paths as approved
 - [ ] P09-M27-01-13 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 27.02 — Backend, Persistence & API
 
 - [ ] P09-M27-02-01 — Implement/confirm data requirement: `subscriptions`.
@@ -2630,8 +2447,6 @@ Agent
 - [ ] P09-M27-02-12 — Implement/verify API contract: `Stripe/provider webhook endpoints`.
 - [ ] P09-M27-02-13 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 27.03 — Frontend & Integrations
 
 - [ ] P09-M27-03-01 — Build/complete frontend requirement: Billing overview.
@@ -2644,8 +2459,6 @@ Agent
 
 - [ ] P09-M27-03-08 — Integrate and verify: Stripe or approved billing provider.
 - [ ] P09-M27-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 27.04 — Security & QA
 
@@ -2664,8 +2477,6 @@ Agent
 - [ ] P09-M27-04-12 — Run regression checks for directly affected existing modules.
 - [ ] P09-M27-04-13 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 27.05 — Documentation & Acceptance
 
 - [ ] P09-M27-05-01 — Update the Master Module Registry status and dependencies.
@@ -2677,13 +2488,9 @@ Agent
 
 ## **Module Gate:** `[M27] Billing = COMPLETE ✅` only after every required checkbox above is verified.
 
-
-
 # PHASE 10 — Admin & Production
 
 - [ ] P10-GATE — Phase 10 is complete only when every required module below is accepted.
-
-
 
 ## Module 28 — Admin Portal `M28`
 
@@ -2713,8 +2520,6 @@ Agent
 - [ ] P10-M28-01-18 — Support tools
 - [ ] P10-M28-01-19 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 28.02 — Backend, Persistence & API
 
 - [ ] P10-M28-02-01 — Implement/confirm data requirement: `Uses existing domain tables plus admin/support metadata`.
@@ -2728,8 +2533,6 @@ Agent
 - [ ] P10-M28-02-07 — Implement/verify API contract: `Admin-scoped endpoints or admin authorization over existing APIs`.
 - [ ] P10-M28-02-08 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 28.03 — Frontend & Integrations
 
 - [ ] P10-M28-03-01 — Build/complete frontend requirement: Admin layout/navigation.
@@ -2741,8 +2544,6 @@ Agent
 - [ ] P10-M28-03-07 — Verify responsive, loading, empty, validation, success and error states.
 
 - [ ] P10-M28-03-08 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
-
-
 
 ### Submodule 28.04 — Security & QA
 
@@ -2757,8 +2558,6 @@ Agent
 - [ ] P10-M28-04-08 — Test: Cross-tenant admin view works only with explicit admin authority.
 - [ ] P10-M28-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P10-M28-04-10 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 28.05 — Documentation & Acceptance
 
@@ -2794,8 +2593,6 @@ Agent
 - [ ] P10-M29-01-13 — Security alerts
 - [ ] P10-M29-01-14 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 29.02 — Backend, Persistence & API
 
 - [ ] P10-M29-02-01 — Implement/confirm data requirement: `audit_logs`.
@@ -2811,8 +2608,6 @@ Agent
 - [ ] P10-M29-02-09 — Implement/verify API contract: `Admin audit/system endpoints as appropriate`.
 - [ ] P10-M29-02-10 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 29.03 — Frontend & Integrations
 
 - [ ] P10-M29-03-01 — Build/complete frontend requirement: Audit log viewer.
@@ -2824,8 +2619,6 @@ Agent
 - [ ] P10-M29-03-06 — Integrate and verify: Monitoring/logging platform.
 - [ ] P10-M29-03-07 — Integrate and verify: Backup/storage services.
 - [ ] P10-M29-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 29.04 — Security & QA
 
@@ -2844,8 +2637,6 @@ Agent
 - [ ] P10-M29-04-12 — Run regression checks for directly affected existing modules.
 - [ ] P10-M29-04-13 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 29.05 — Documentation & Acceptance
 
 - [ ] P10-M29-05-01 — Update the Master Module Registry status and dependencies.
@@ -2857,13 +2648,9 @@ Agent
 
 ## **Module Gate:** `[M29] Security, Audit & Monitoring = COMPLETE ✅` only after every required checkbox above is verified.
 
-
-
 # PHASE 11 — Multi-Provider Future
 
 - [ ] P11-GATE — Phase 11 is complete only when every required module below is accepted.
-
-
 
 ## Module 30 — Retell Voice Agent Provider `M30`
 
@@ -2882,8 +2669,6 @@ Agent
 - [ ] P11-M30-01-07 — Provider health/retry
 - [ ] P11-M30-01-08 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 30.02 — Backend, Persistence & API
 
 - [ ] P11-M30-02-01 — Implement/confirm data requirement: `agent_provider_mappings`.
@@ -2898,8 +2683,6 @@ Agent
 - [ ] P11-M30-02-08 — Implement/verify API contract: `Internal provider adapter; no SaaS-wide API redesign`.
 - [ ] P11-M30-02-09 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 30.03 — Frontend & Integrations
 
 - [ ] P11-M30-03-01 — Build/complete frontend requirement: Provider selection/status only where product scope allows.
@@ -2908,8 +2691,6 @@ Agent
 
 - [ ] P11-M30-03-04 — Integrate and verify: Retell AI.
 - [ ] P11-M30-03-05 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 30.04 — Security & QA
 
@@ -2923,8 +2704,6 @@ Agent
 - [ ] P11-M30-04-07 — Test: Failure normalization.
 - [ ] P11-M30-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P11-M30-04-09 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 30.05 — Documentation & Acceptance
 
@@ -2955,8 +2734,6 @@ Agent
 - [ ] P11-M31-01-08 — Observability and retry/reconnect strategy
 - [ ] P11-M31-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 31.02 — Backend, Persistence & API
 
 - [ ] P11-M31-02-01 — Implement/confirm data requirement: `agent_provider_mappings`.
@@ -2972,8 +2749,6 @@ Agent
 - [ ] P11-M31-02-09 — Implement/verify API contract: `Realtime/WebSocket endpoints and internal provider methods`.
 - [ ] P11-M31-02-10 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 31.03 — Frontend & Integrations
 
 - [ ] P11-M31-03-01 — Build/complete frontend requirement: Provider selection/status if enabled.
@@ -2984,8 +2759,6 @@ Agent
 - [ ] P11-M31-03-05 — Integrate and verify: OpenAI Realtime.
 - [ ] P11-M31-03-06 — Integrate and verify: Twilio or telephony provider.
 - [ ] P11-M31-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 31.04 — Security & QA
 
@@ -3002,8 +2775,6 @@ Agent
 - [ ] P11-M31-04-10 — Test: Concurrent-call isolation.
 - [ ] P11-M31-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P11-M31-04-12 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 31.05 — Documentation & Acceptance
 
@@ -3032,8 +2803,6 @@ Agent
 - [ ] P11-M32-01-06 — Provider mapping
 - [ ] P11-M32-01-07 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 32.02 — Backend, Persistence & API
 
 - [ ] P11-M32-02-01 — Implement/confirm data requirement: `phone number/provider mappings`.
@@ -3048,8 +2817,6 @@ Agent
 - [ ] P11-M32-02-08 — Implement/verify API contract: `Telnyx webhook endpoints and internal adapter`.
 - [ ] P11-M32-02-09 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 32.03 — Frontend & Integrations
 
 - [ ] P11-M32-03-01 — Build/complete frontend requirement: Provider option/status when enabled.
@@ -3058,8 +2825,6 @@ Agent
 
 - [ ] P11-M32-03-04 — Integrate and verify: Telnyx.
 - [ ] P11-M32-03-05 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 32.04 — Security & QA
 
@@ -3074,8 +2839,6 @@ Agent
 - [ ] P11-M32-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P11-M32-04-09 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 32.05 — Documentation & Acceptance
 
 - [ ] P11-M32-05-01 — Update the Master Module Registry status and dependencies.
@@ -3087,13 +2850,9 @@ Agent
 
 ## **Module Gate:** `[M32] Telnyx Telephony Provider = COMPLETE ✅` only after every required checkbox above is verified.
 
-
-
 # PHASE 12 — Platform Expansion
 
 - [ ] P12-GATE — Phase 12 is complete only when every required module below is accepted.
-
-
 
 ## Module 33 — Developer / Integration Portal `M33`
 
@@ -3115,8 +2874,6 @@ Agent
 - [ ] P12-M33-01-10 — Sandbox/changelog
 - [ ] P12-M33-01-11 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 33.02 — Backend, Persistence & API
 
 - [ ] P12-M33-02-01 — Implement/confirm data requirement: `api_keys`.
@@ -3133,8 +2890,6 @@ Agent
 - [ ] P12-M33-02-10 — Implement/verify API contract: `Public API access management endpoints`.
 - [ ] P12-M33-02-11 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 33.03 — Frontend & Integrations
 
 - [ ] P12-M33-03-01 — Build/complete frontend requirement: Developer dashboard.
@@ -3145,8 +2900,6 @@ Agent
 - [ ] P12-M33-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
 - [ ] P12-M33-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
-
-
 
 ### Submodule 33.04 — Security & QA
 
@@ -3163,8 +2916,6 @@ Agent
 - [ ] P12-M33-04-10 — Test: Rate limit.
 - [ ] P12-M33-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P12-M33-04-12 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 33.05 — Documentation & Acceptance
 
@@ -3201,8 +2952,6 @@ Agent
 - [ ] P12-M34-01-14 — Release notes
 - [ ] P12-M34-01-15 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 34.02 — Backend, Persistence & API
 
 - [ ] P12-M34-02-01 — Implement/confirm data requirement: `Documentation content source/versioning`.
@@ -3215,8 +2964,6 @@ Agent
 
 - [ ] P12-M34-02-07 — Confirm whether public/customer APIs are required; avoid creating unnecessary endpoints.
 
-
-
 ### Submodule 34.03 — Frontend & Integrations
 
 - [ ] P12-M34-03-01 — Build/complete frontend requirement: Searchable help center.
@@ -3228,8 +2975,6 @@ Agent
 - [ ] P12-M34-03-06 — Integrate and verify: Optional docs/CMS/search platform.
 - [ ] P12-M34-03-07 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
-
 ### Submodule 34.04 — Security & QA
 
 - [ ] P12-M34-04-01 — Do not publish secrets/internal operational details.
@@ -3240,8 +2985,6 @@ Agent
 - [ ] P12-M34-04-05 — Test: Responsive rendering.
 - [ ] P12-M34-04-06 — Run regression checks for directly affected existing modules.
 - [ ] P12-M34-04-07 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 34.05 — Documentation & Acceptance
 
@@ -3277,8 +3020,6 @@ Agent
 - [ ] P12-M35-01-13 — Incident timeline
 - [ ] P12-M35-01-14 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 35.02 — Backend, Persistence & API
 
 - [ ] P12-M35-02-01 — Implement/confirm data requirement: `system_events`.
@@ -3295,8 +3036,6 @@ Agent
 - [ ] P12-M35-02-10 — Implement/verify API contract: `Realtime stream/polling where justified`.
 - [ ] P12-M35-02-11 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 35.03 — Frontend & Integrations
 
 - [ ] P12-M35-03-01 — Build/complete frontend requirement: Ops dashboard.
@@ -3312,8 +3051,6 @@ Agent
 - [ ] P12-M35-03-10 — Integrate and verify: Providers.
 - [ ] P12-M35-03-11 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
-
 ### Submodule 35.04 — Security & QA
 
 - [ ] P12-M35-04-01 — Ops-only access.
@@ -3326,8 +3063,6 @@ Agent
 - [ ] P12-M35-04-07 — Test: Live data refresh.
 - [ ] P12-M35-04-08 — Run regression checks for directly affected existing modules.
 - [ ] P12-M35-04-09 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 35.05 — Documentation & Acceptance
 
@@ -3363,8 +3098,6 @@ Agent
 - [ ] P12-M36-01-13 — Partner support/API
 - [ ] P12-M36-01-14 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 36.02 — Backend, Persistence & API
 
 - [ ] P12-M36-02-01 — Implement/confirm data requirement: `partners`.
@@ -3382,8 +3115,6 @@ Agent
 - [ ] P12-M36-02-11 — Implement/verify API contract: `Partner-scoped account/provisioning/billing endpoints`.
 - [ ] P12-M36-02-12 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 36.03 — Frontend & Integrations
 
 - [ ] P12-M36-03-01 — Build/complete frontend requirement: Partner dashboard.
@@ -3398,8 +3129,6 @@ Agent
 - [ ] P12-M36-03-09 — Integrate and verify: Custom domains/email branding.
 - [ ] P12-M36-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
-
 ### Submodule 36.04 — Security & QA
 
 - [ ] P12-M36-04-01 — Partner cannot access unrelated partners.
@@ -3413,8 +3142,6 @@ Agent
 - [ ] P12-M36-04-08 — Test: Commission/usage visibility.
 - [ ] P12-M36-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P12-M36-04-10 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 36.05 — Documentation & Acceptance
 
@@ -3443,8 +3170,6 @@ Agent
 - [ ] P12-M37-01-06 — Subscribe to updates
 - [ ] P12-M37-01-07 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 37.02 — Backend, Persistence & API
 
 - [ ] P12-M37-02-01 — Implement/confirm data requirement: `public incidents/components/subscriptions as required`.
@@ -3459,8 +3184,6 @@ Agent
 - [ ] P12-M37-02-08 — Implement/verify API contract: `Admin incident management endpoint`.
 - [ ] P12-M37-02-09 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 37.03 — Frontend & Integrations
 
 - [ ] P12-M37-03-01 — Build/complete frontend requirement: Public status overview.
@@ -3473,8 +3196,6 @@ Agent
 - [ ] P12-M37-03-07 — Integrate and verify: Email notification service.
 - [ ] P12-M37-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
 
-
-
 ### Submodule 37.04 — Security & QA
 
 - [ ] P12-M37-04-01 — No sensitive internal diagnostics exposed.
@@ -3485,8 +3206,6 @@ Agent
 - [ ] P12-M37-04-05 — Test: Subscription notification.
 - [ ] P12-M37-04-06 — Run regression checks for directly affected existing modules.
 - [ ] P12-M37-04-07 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 37.05 — Documentation & Acceptance
 
@@ -3520,8 +3239,6 @@ Agent
 - [ ] P12-M38-01-11 — Usage
 - [ ] P12-M38-01-12 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 38.02 — Backend, Persistence & API
 
 - [ ] P12-M38-02-01 — Implement/confirm data requirement: `Uses existing SaaS APIs; minimal mobile-specific state`.
@@ -3535,8 +3252,6 @@ Agent
 - [ ] P12-M38-02-07 — Implement/verify API contract: `Reuse versioned SaaS APIs; add mobile-specific aggregation only if justified`.
 - [ ] P12-M38-02-08 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 38.03 — Frontend & Integrations
 
 - [ ] P12-M38-03-01 — Build/complete frontend requirement: React Native/Expo mobile navigation.
@@ -3548,8 +3263,6 @@ Agent
 - [ ] P12-M38-03-06 — Integrate and verify: Push notification service.
 - [ ] P12-M38-03-07 — Integrate and verify: Same NestJS API.
 - [ ] P12-M38-03-08 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 38.04 — Security & QA
 
@@ -3565,8 +3278,6 @@ Agent
 - [ ] P12-M38-04-09 — Test: Network failure.
 - [ ] P12-M38-04-10 — Run regression checks for directly affected existing modules.
 - [ ] P12-M38-04-11 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 38.05 — Documentation & Acceptance
 
@@ -3598,8 +3309,6 @@ Agent
 - [ ] P12-M39-01-09 — Installation snippet
 - [ ] P12-M39-01-10 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 39.02 — Backend, Persistence & API
 
 - [ ] P12-M39-02-01 — Implement/confirm data requirement: `widget_configs`.
@@ -3615,8 +3324,6 @@ Agent
 - [ ] P12-M39-02-09 — Implement/verify API contract: `Secure agent bootstrap/token endpoint`.
 - [ ] P12-M39-02-10 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 39.03 — Frontend & Integrations
 
 - [ ] P12-M39-03-01 — Build/complete frontend requirement: Compact embeddable widget.
@@ -3630,8 +3337,6 @@ Agent
 - [ ] P12-M39-03-08 — Integrate and verify: Tools.
 - [ ] P12-M39-03-09 — Integrate and verify: CDN/static distribution.
 - [ ] P12-M39-03-10 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 39.04 — Security & QA
 
@@ -3648,8 +3353,6 @@ Agent
 - [ ] P12-M39-04-10 — Test: Mobile responsiveness.
 - [ ] P12-M39-04-11 — Run regression checks for directly affected existing modules.
 - [ ] P12-M39-04-12 — Complete manual QA of the end-to-end user journey.
-
-
 
 ### Submodule 39.05 — Documentation & Acceptance
 
@@ -3680,8 +3383,6 @@ Agent
 - [ ] P12-M40-01-08 — Trial/signup conversion
 - [ ] P12-M40-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
-
-
 ### Submodule 40.02 — Backend, Persistence & API
 
 - [ ] P12-M40-02-01 — Implement/confirm data requirement: `demo_agents`.
@@ -3697,8 +3398,6 @@ Agent
 - [ ] P12-M40-02-09 — Implement/verify API contract: `Rate-limit/abuse controls`.
 - [ ] P12-M40-02-10 — Add DTO/schema validation and consistent API error responses.
 
-
-
 ### Submodule 40.03 — Frontend & Integrations
 
 - [ ] P12-M40-03-01 — Build/complete frontend requirement: Industry selector.
@@ -3711,8 +3410,6 @@ Agent
 - [ ] P12-M40-03-07 — Integrate and verify: VoiceAgentProvider.
 - [ ] P12-M40-03-08 — Integrate and verify: Marketing website.
 - [ ] P12-M40-03-09 — Handle provider timeout, unavailable, invalid-response and retry scenarios where applicable.
-
-
 
 ### Submodule 40.04 — Security & QA
 
@@ -3728,8 +3425,6 @@ Agent
 - [ ] P12-M40-04-09 — Run regression checks for directly affected existing modules.
 - [ ] P12-M40-04-10 — Complete manual QA of the end-to-end user journey.
 
-
-
 ### Submodule 40.05 — Documentation & Acceptance
 
 - [ ] P12-M40-05-01 — Update the Master Module Registry status and dependencies.
@@ -3740,8 +3435,6 @@ Agent
 - [ ] P12-M40-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 ## **Module Gate:** `[M40] Public Demo / Trial Sandbox = COMPLETE ✅` only after every required checkbox above is verified.
-
-
 
 # Final Execution Order
 
@@ -3757,7 +3450,7 @@ Agent
 - [ ] ORDER-10 — M09 Voice Cloning — Target: MVP/Premium — Dependencies: M05, M06, M08
 - [ ] ORDER-11 — M10 Twilio Telephony Provider — Target: MVP — Dependencies: M00
 - [ ] ORDER-12 — M11 Phone Number Management — Target: MVP — Dependencies: M04, M05, M10
-- [ ] ORDER-13 — M12 Incoming AI Calls — Target: MVP — Dependencies: M06, M10, M11
+- [ ] ORDER-13 — M12 Incoming AI Calls — Target: MVP — Dependencies: M06, M07, M08, M10, M11 (M09 optional for cloned voices)
 - [ ] ORDER-14 — M13 Outbound Calls — Target: Post-MVP — Dependencies: M11, M12
 - [ ] ORDER-15 — M14 Call Management — Target: MVP — Dependencies: M12
 - [ ] ORDER-16 — M15 Transcript Management — Target: MVP — Dependencies: M12, M14
@@ -3787,8 +3480,6 @@ Agent
 - [ ] ORDER-40 — M39 Embeddable Web Voice / Chat Widget — Target: Future — Dependencies: M05, M07, M17
 - [ ] ORDER-41 — M40 Public Demo / Trial Sandbox — Target: Future — Dependencies: M01, M05, M07, M08
 
-
-
 ## MVP Market-Test Gate
 
 - [x] MVP-GATE-M00 — M00 Existing Project Audit & SaaS Foundation completed and accepted.
@@ -3811,8 +3502,6 @@ Agent
 - [ ] MVP-GATE-INDUSTRY — At least one industry action slice (M18 Appointment Booking or M19 Restaurant Reservations) is completed if the first pilot requires real booking/reservation actions.
 - [ ] MVP-GATE-E2E — Full journey passes: Register → Organization → Business → Agent → Provider Sync → Knowledge → Voice → Phone Number → Test → Activate → Real Call → Call History → Transcript → Summary.
 
-
-
 ## Commercial Launch Gate
 
 - [ ] COMMERCIAL-GATE-M20 — M20 Customer / CRM completed to the approved launch scope.
@@ -3826,8 +3515,6 @@ Agent
 - [ ] COMMERCIAL-GATE-M29 — M29 Security, Audit & Monitoring completed to the approved launch scope.
 - [ ] COMMERCIAL-GATE-P1 — Marketing Website launch scope completed.
 - [ ] COMMERCIAL-GATE-P6 — Basic Help Center / onboarding documentation available.
-
-
 
 ## Future Scale Gate
 
@@ -3844,8 +3531,6 @@ Agent
 - [ ] FUTURE-GATE-M40 — M40 Public Demo / Trial Sandbox completed only when business priority justifies it.
 
 ---
-
-
 
 # Vertical Slice Rule — Final Reminder
 

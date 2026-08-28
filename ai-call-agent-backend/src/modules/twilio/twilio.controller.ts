@@ -18,4 +18,11 @@ export class TwilioController {
   handleCallEnded(@Body() body: TwilioWebhookDto): Promise<{ success: true }> {
     return this.twilioService.handleCallEnded(body);
   }
+
+  @Post('status-callback')
+  handleStatusCallback(
+    @Body() body: TwilioWebhookDto,
+  ): Promise<{ success: true }> {
+    return this.twilioService.handleStatusCallback(body);
+  }
 }

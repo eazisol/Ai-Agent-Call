@@ -24,4 +24,8 @@ export class TwilioWebhookDto {
   @IsOptional()
   @IsString()
   Timestamp?: string;
+
+  @IsOptional()
+  @IsString()
+  SequenceNumber?: string;
 }
