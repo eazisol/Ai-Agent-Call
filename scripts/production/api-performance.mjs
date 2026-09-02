@@ -23,6 +23,8 @@ const ITERATIONS = Math.max(
   Number.parseInt(process.env.PERF_ITERATIONS ?? "10", 10) || 10,
 );
 const TIMEOUT_MS = Number.parseInt(process.env.PERF_TIMEOUT_MS ?? "20000", 10);
+const PLACEHOLDER_BUSINESS_ID = "501df018-cb8c-4731-b7d8-bcf68af0e92b";
+const PLACEHOLDER_AGENT_ID = "15784e32-ce59-41e3-91f5-b6f3b3042091";
 
 /** @type {Map<string, string>} */
 const jar = new Map();
@@ -109,7 +111,7 @@ const ROUTES = [
   { method: "GET", route: "auth/me", auth: true },
   { method: "GET", route: "organizations", auth: true },
   { method: "GET", route: "organizations/active", auth: true },
-  { method: "GET", route: "businesses", auth: true },
+  { method: "GET", route: "businesses?includeArchived=true", auth: true },
   {
     method: "GET",
     route: "businesses/501df018-cb8c-4731-b7d8-bcf68af0e92b",
@@ -129,7 +131,6 @@ const ROUTES = [
 ];
 
 async function login() {
-  const result = await timedFetch("proxy", "POST", "auth/login");
   const response = await fetch(`${FRONTEND}/api/backend/auth/login`, {
     method: "POST",
     headers: {
@@ -141,8 +142,90 @@ async function login() {
     signal: AbortSignal.timeout(TIMEOUT_MS),
   });
   storeSetCookies(response);
-  await response.text();
-  return response.status;
+  const text = await response.text();
+  const status = response.status;
+
+  let activeAgentId = process.env.EAZI_PROD_AGENT_ID ?? null;
+  let activeBusinessId = process.env.EAZI_PROD_BUSINESS_ID ?? null;
+
+  if (status >= 200 && status < 300) {
+    const orgResponse = await fetch(`${FRONTEND}/api/backend/organizations`, {
+      headers: { Accept: "application/json", Cookie: cookieHeader() },
+      cache: "no-store",
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+    storeSetCookies(orgResponse);
+    let orgId = process.env.EAZI_PROD_ORG_ID;
+    try {
+      const payload = JSON.parse(await orgResponse.text());
+      orgId = orgId ?? payload?.organizations?.[0]?.id;
+    } catch {
+      // ignore
+    }
+    if (orgId) {
+      const setOrg = await fetch(`${FRONTEND}/api/backend/organizations/active`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Cookie: cookieHeader(),
+        },
+        body: JSON.stringify({ organizationId: orgId }),
+        cache: "no-store",
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
+      storeSetCookies(setOrg);
+      await setOrg.text();
+
+      const bizResponse = await fetch(
+        `${FRONTEND}/api/backend/businesses?includeArchived=true`,
+        {
+          headers: { Accept: "application/json", Cookie: cookieHeader() },
+          cache: "no-store",
+          signal: AbortSignal.timeout(TIMEOUT_MS),
+        },
+      );
+      storeSetCookies(bizResponse);
+      let businessId = process.env.EAZI_PROD_BUSINESS_ID;
+      try {
+        const payload = JSON.parse(await bizResponse.text());
+        businessId = businessId ?? payload?.businesses?.[0]?.id;
+      } catch {
+        // ignore
+      }
+      if (businessId) {
+        activeBusinessId = businessId;
+        const setBiz = await fetch(`${FRONTEND}/api/backend/businesses/active`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Cookie: cookieHeader(),
+          },
+          body: JSON.stringify({ businessId }),
+          cache: "no-store",
+          signal: AbortSignal.timeout(TIMEOUT_MS),
+        });
+        storeSetCookies(setBiz);
+        await setBiz.text();
+      }
+
+      const agentsResponse = await fetch(`${FRONTEND}/api/backend/agents`, {
+        headers: { Accept: "application/json", Cookie: cookieHeader() },
+        cache: "no-store",
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
+      storeSetCookies(agentsResponse);
+      try {
+        const payload = JSON.parse(await agentsResponse.text());
+        activeAgentId = activeAgentId ?? payload?.agents?.[0]?.id;
+      } catch {
+        // ignore
+      }
+    }
+  }
+
+  return { status, activeAgentId, activeBusinessId };
 }
 
 async function main() {
@@ -175,17 +258,38 @@ async function main() {
   }
 
   const loginStatus = await login();
-  console.log(`login_status=${loginStatus} cookies=[${[...jar.keys()].join(",")}]`);
+  const activeAgentId = loginStatus.activeAgentId ?? PLACEHOLDER_AGENT_ID;
+  const activeBusinessId =
+    loginStatus.activeBusinessId ?? PLACEHOLDER_BUSINESS_ID;
+  console.log(
+    `login_status=${loginStatus.status} cookies=[${[...jar.keys()].join(",")}]`,
+  );
 
   /** @type {Record<string, unknown>} */
   const report = {};
 
-  for (const { method, route } of ROUTES) {
+  const perfRoutes = ROUTES.map((entry) => {
+    if (
+      entry.route.startsWith("agents/") &&
+      entry.route.includes(PLACEHOLDER_AGENT_ID)
+    ) {
+      return { ...entry, route: `agents/${activeAgentId}` };
+    }
+    if (
+      entry.route.startsWith("businesses/") &&
+      entry.route.includes(PLACEHOLDER_BUSINESS_ID)
+    ) {
+      return { ...entry, route: `businesses/${activeBusinessId}` };
+    }
+    return entry;
+  });
+
+  for (const { method, route } of perfRoutes) {
     for (const mode of ["proxy", "direct"]) {
       const key = `${mode}:${method}:${route}`;
       const samples = [];
       let errors = 0;
-      let statuses = new Set();
+      const statuses = new Set();
       for (let i = 0; i < ITERATIONS; i++) {
         const r = await timedFetch(mode, method, route);
         samples.push(r.ms);

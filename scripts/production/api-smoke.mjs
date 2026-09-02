@@ -172,11 +172,67 @@ async function main() {
     });
     printRow(login);
     if (login.status >= 200 && login.status < 300) {
+      const orgs = await call("proxy", "GET", "organizations", undefined);
+      printRow(orgs);
+      let orgId = process.env.EAZI_PROD_ORG_ID;
+      if (!orgId && orgs.status >= 200 && orgs.status < 300) {
+        const orgResponse = await fetch(`${FRONTEND}/api/backend/organizations`, {
+          headers: { Accept: "application/json", Cookie: cookieHeader() },
+          cache: "no-store",
+        });
+        try {
+          const payload = JSON.parse(await orgResponse.text());
+          orgId = payload?.organizations?.[0]?.id;
+        } catch {
+          orgId = undefined;
+        }
+      }
+      orgId =
+        orgId ?? "91cef079-51a2-47c7-92aa-98527523ad2b";
+
+      printRow(
+        await call("proxy", "POST", "organizations/active", {
+          organizationId: orgId,
+        }),
+      );
+
       for (const route of [
         "auth/me",
         "organizations",
         "organizations/active",
-        "businesses",
+        "businesses?includeArchived=true",
+      ]) {
+        printRow(await call("proxy", "GET", route, undefined));
+      }
+
+      let businessId = process.env.EAZI_PROD_BUSINESS_ID;
+      if (!businessId) {
+        const bizResponse = await fetch(
+          `${FRONTEND}/api/backend/businesses?includeArchived=true`,
+          {
+            headers: { Accept: "application/json", Cookie: cookieHeader() },
+            cache: "no-store",
+          },
+        );
+        try {
+          const payload = JSON.parse(await bizResponse.text());
+          businessId = payload?.businesses?.[0]?.id;
+        } catch {
+          businessId = undefined;
+        }
+      }
+      businessId =
+        businessId ?? "501df018-cb8c-4731-b7d8-bcf68af0e92b";
+
+      printRow(await call("proxy", "GET", `businesses/${businessId}`, undefined));
+
+      printRow(
+        await call("proxy", "POST", "businesses/active", {
+          businessId,
+        }),
+      );
+
+      for (const route of [
         "businesses/active",
         "agents",
         "calls?direction=inbound",
@@ -187,6 +243,8 @@ async function main() {
       ]) {
         printRow(await call("proxy", "GET", route, undefined));
       }
+
+      printRow(await call("proxy", "POST", "auth/refresh", {}));
       printRow(await call("proxy", "POST", "auth/logout", {}));
       printRow(await call("proxy", "GET", "auth/me", undefined));
     }
