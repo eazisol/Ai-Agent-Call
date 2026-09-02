@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { CorrelationIdInterceptor } from './common/interceptors/correlation-id.interceptor';
+import { HttpRequestLoggingInterceptor } from './common/interceptors/http-request-logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
@@ -32,7 +33,10 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new GlobalExceptionFilter());
-  app.useGlobalInterceptors(new CorrelationIdInterceptor());
+  app.useGlobalInterceptors(
+    new CorrelationIdInterceptor(),
+    new HttpRequestLoggingInterceptor(),
+  );
   app.enableShutdownHooks();
 
   const port = config.get<number>('app.port') ?? 3000;

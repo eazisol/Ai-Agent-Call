@@ -6,6 +6,10 @@ import {
   resolveProxyRequestBody,
   validateProxyPathSegments,
 } from "@/lib/backend-proxy.mjs";
+import {
+  UPSTREAM_FETCH_TIMEOUT_MS,
+  upstreamFetchDispatcher,
+} from "@/lib/upstream-fetch.mjs";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,8 +18,6 @@ const FIXED_BACKEND_ORIGIN =
   process.env.INTERNAL_BACKEND_ORIGIN ??
   process.env.BACKEND_PROXY_ORIGIN ??
   "https://dl1t1qnfxrdka.cloudfront.net";
-
-const UPSTREAM_TIMEOUT_MS = 55_000;
 
 async function proxy(request: Request, segments: string[]): Promise<Response> {
   validateProxyPathSegments(segments);
@@ -38,7 +40,9 @@ async function proxy(request: Request, segments: string[]): Promise<Response> {
       body,
       redirect: "manual",
       cache: "no-store",
-      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+      signal: AbortSignal.timeout(UPSTREAM_FETCH_TIMEOUT_MS),
+      // @ts-expect-error Node fetch accepts undici dispatcher for connection reuse.
+      dispatcher: upstreamFetchDispatcher,
     });
   } catch {
     return Response.json(

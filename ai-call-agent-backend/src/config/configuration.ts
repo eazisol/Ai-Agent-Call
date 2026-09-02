@@ -41,6 +41,15 @@ export default () => {
       password: process.env.DATABASE_PASSWORD,
       name: process.env.DATABASE_NAME,
       ssl: booleanValue(process.env.DATABASE_SSL, false),
+      poolMax: numberValue(process.env.DATABASE_POOL_MAX, 5),
+      poolIdleTimeoutMs: numberValue(
+        process.env.DATABASE_POOL_IDLE_TIMEOUT_MS,
+        30_000,
+      ),
+      poolConnectionTimeoutMs: numberValue(
+        process.env.DATABASE_POOL_CONNECTION_TIMEOUT_MS,
+        5_000,
+      ),
     },
     redis: {
       enabled: booleanValue(process.env.REDIS_ENABLED, true),

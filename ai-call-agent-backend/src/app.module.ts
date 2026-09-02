@@ -46,6 +46,13 @@ import { VoiceStreamModule } from './modules/voice-stream/voice-stream.module';
         synchronize: false,
         migrationsTableName: 'eazi_ai_call_migrations',
         logging: false,
+        extra: {
+          max: config.get<number>('database.poolMax') ?? 5,
+          idleTimeoutMillis:
+            config.get<number>('database.poolIdleTimeoutMs') ?? 30_000,
+          connectionTimeoutMillis:
+            config.get<number>('database.poolConnectionTimeoutMs') ?? 5_000,
+        },
       }),
     }),
     AuthModule,

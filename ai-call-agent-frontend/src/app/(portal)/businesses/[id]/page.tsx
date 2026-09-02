@@ -47,11 +47,30 @@ export default function BusinessDetailPage() {
     return <LoadingState label="Loading business…" />;
   }
 
-  if (error || !business) {
+  if (error) {
+    const isTimeout = /timed out/i.test(error);
+    const isAuth =
+      error.toLowerCase().includes("authentication") ||
+      error.toLowerCase().includes("sign in");
+    const title = isTimeout
+      ? "Request timed out"
+      : isAuth
+        ? "Session expired"
+        : "Could not load business";
+    return (
+      <ErrorState
+        title={title}
+        description={error}
+        onRetry={() => void load()}
+      />
+    );
+  }
+
+  if (!business) {
     return (
       <ErrorState
         title="Business not found"
-        description={error ?? "This business is unavailable in the active workspace."}
+        description="This business is unavailable in the active workspace."
         onRetry={() => void load()}
       />
     );
