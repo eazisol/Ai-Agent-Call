@@ -1,4 +1,4 @@
-import { apiRequest } from "./api-client";
+import { apiRequest, type ApiResult } from "./api-client";
 ﻿
 export type TelephonyProviderStatus = {
   provider: string;

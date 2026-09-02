@@ -1,4 +1,4 @@
-import { apiRequest } from "./api-client";
+import { apiRequest, type ApiResult } from "./api-client";
 ﻿import type { OrganizationRole } from "./organizations-api";
 
 export type PhoneNumberStatus =

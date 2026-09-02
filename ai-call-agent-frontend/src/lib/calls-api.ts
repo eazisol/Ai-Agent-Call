@@ -1,4 +1,4 @@
-import { apiRequest } from "./api-client";
+import { apiRequest, type ApiResult } from "./api-client";
 ﻿
 export type CallStatus = "started" | "in_progress" | "completed" | "failed";
 
