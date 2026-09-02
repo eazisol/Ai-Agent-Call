@@ -67,7 +67,12 @@ export class Call {
   @Column({ name: 'failure_code', type: 'varchar', length: 50, nullable: true })
   failureCode!: string | null;
 
-  @Column({ name: 'failure_stage', type: 'varchar', length: 50, nullable: true })
+  @Column({
+    name: 'failure_stage',
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
   failureStage!: string | null;
 
   @Column({ name: 'started_at', type: 'timestamp', nullable: true })

@@ -7,9 +7,7 @@ const {
   VoicesController,
   AgentVoiceController,
 } = require('../dist/modules/voices/voices.controller');
-const {
-  VoicesService,
-} = require('../dist/modules/voices/voices.service');
+const { VoicesService } = require('../dist/modules/voices/voices.service');
 const {
   AuthCookieService,
 } = require('../dist/modules/auth/auth-cookie.service');
@@ -36,7 +34,8 @@ const sampleVoice = {
   sourceType: 'provider_catalog',
   businessOwned: false,
   previewSampleText: 'Hello',
-  previewAudioUrl: 'https://storage.googleapis.com/eleven-public-prod/preview/sample.mp3',
+  previewAudioUrl:
+    'https://storage.googleapis.com/eleven-public-prod/preview/sample.mp3',
 };
 
 const sampleAssignment = {

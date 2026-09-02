@@ -56,6 +56,23 @@ test("builds fixed CloudFront upstream URL", () => {
   );
 });
 
+
+test("defaults browser API base without NEXT_PUBLIC env", () => {
+  const previousWindow = globalThis.window;
+  // @ts-expect-error test shim
+  globalThis.window = {};
+  try {
+    assert.equal(buildApiUrl("auth/me"), "/api/backend/auth/me");
+  } finally {
+    if (previousWindow === undefined) {
+      // @ts-expect-error test shim
+      delete globalThis.window;
+    } else {
+      globalThis.window = previousWindow;
+    }
+  }
+});
+
 test("rejects non-https upstream origins", () => {
   assert.throws(() => resolveBackendProxyOrigin("http://example.com"));
 });

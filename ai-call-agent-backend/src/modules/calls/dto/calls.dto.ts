@@ -1,12 +1,5 @@
 import { CallStatus } from '../entities/call.entity';
-import {
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsUUID,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsUUID, Max, Min } from 'class-validator';
 
 export class ListCallsQueryDto {
   @IsOptional()

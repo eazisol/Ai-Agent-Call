@@ -30,7 +30,8 @@ const sampleStatus = {
   credentialsMessage: null,
   webhookSignatureValidation: true,
   webhookUrls: {
-    incomingCall: 'https://api.example.com/api/v1/webhooks/twilio/incoming-call',
+    incomingCall:
+      'https://api.example.com/api/v1/webhooks/twilio/incoming-call',
     statusCallback:
       'https://api.example.com/api/v1/webhooks/twilio/status-callback',
   },

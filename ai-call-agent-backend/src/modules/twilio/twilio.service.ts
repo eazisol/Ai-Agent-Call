@@ -38,7 +38,10 @@ export class TwilioService {
       );
       return twiml;
     } catch (error) {
-      if (error instanceof Error && error.message === 'INVALID_WEBHOOK_PAYLOAD') {
+      if (
+        error instanceof Error &&
+        error.message === 'INVALID_WEBHOOK_PAYLOAD'
+      ) {
         throw new ApplicationError(
           'INVALID_WEBHOOK_PAYLOAD',
           'CallSid is required.',

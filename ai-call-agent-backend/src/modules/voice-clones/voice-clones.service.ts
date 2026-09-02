@@ -13,7 +13,10 @@ import {
   VOICE_CLONE_CONSENT_VERSION,
   type VoiceClonePort,
 } from '../../providers/voice-clone.port';
-import { VOICE_CATALOG_PORT, type VoiceCatalogPort } from '../../providers/voice-catalog.port';
+import {
+  VOICE_CATALOG_PORT,
+  type VoiceCatalogPort,
+} from '../../providers/voice-catalog.port';
 import { AgentConfig } from '../agents/entities/agent-config.entity';
 import { Business } from '../businesses/entities/business.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
@@ -217,7 +220,14 @@ export class VoiceClonesService {
     businessId: string,
     cloneId: string,
     file: Express.Multer.File | undefined,
-  ): Promise<{ sample: { id: string; originalFilename: string; byteSize: number; contentType: string } }> {
+  ): Promise<{
+    sample: {
+      id: string;
+      originalFilename: string;
+      byteSize: number;
+      contentType: string;
+    };
+  }> {
     const membership = await this.organizations.requireMembership(
       userId,
       organizationId,
@@ -230,8 +240,7 @@ export class VoiceClonesService {
 
     this.validateSampleFile(file);
 
-    const enabled =
-      this.config.get<boolean>('objectStorage.enabled') ?? false;
+    const enabled = this.config.get<boolean>('objectStorage.enabled') ?? false;
     if (!enabled) {
       throw new ApplicationError(
         'OBJECT_STORAGE_NOT_CONFIGURED',
@@ -240,8 +249,7 @@ export class VoiceClonesService {
       );
     }
 
-    const maxSamples =
-      this.config.get<number>('voiceClones.maxSamples') ?? 5;
+    const maxSamples = this.config.get<number>('voiceClones.maxSamples') ?? 5;
     const existingCount = await this.samples.count({
       where: { voiceCloneId: clone.id, status: 'uploaded' },
     });
@@ -745,8 +753,7 @@ export class VoiceClonesService {
     }
 
     const maxBytes =
-      this.config.get<number>('voiceClones.maxSampleBytes') ??
-      25 * 1024 * 1024;
+      this.config.get<number>('voiceClones.maxSampleBytes') ?? 25 * 1024 * 1024;
     if (file.size > maxBytes) {
       throw new ApplicationError(
         'VOICE_CLONE_SAMPLE_TOO_LARGE',

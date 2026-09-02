@@ -53,8 +53,7 @@ test('ElevenLabsWebhookGuard fails closed in production when secret is empty', (
   const guard = createGuard({ secret: '', nodeEnv: 'production' });
   assert.throws(
     () => guard.canActivate(createContext('{"conversation_id":"conv-1"}')),
-    (error) =>
-      error.message === 'ElevenLabs webhook secret is not configured.',
+    (error) => error.message === 'ElevenLabs webhook secret is not configured.',
   );
 });
 
@@ -74,7 +73,10 @@ test('ElevenLabsWebhookGuard rejects malformed signatures', () => {
   assert.throws(
     () =>
       guard.canActivate(
-        createContext('{"conversation_id":"conv-1"}', 'not-a-valid-hex-signature'),
+        createContext(
+          '{"conversation_id":"conv-1"}',
+          'not-a-valid-hex-signature',
+        ),
       ),
     (error) => error.message === 'Invalid ElevenLabs webhook signature.',
   );

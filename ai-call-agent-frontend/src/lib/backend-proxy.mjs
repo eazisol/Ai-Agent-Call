@@ -1,4 +1,4 @@
-﻿/** @typedef {string | undefined} MaybeString */
+/** @typedef {string | undefined} MaybeString */
 
 export const DEFAULT_BACKEND_PROXY_ORIGIN =
   "https://dl1t1qnfxrdka.cloudfront.net";
@@ -88,9 +88,16 @@ export function getForwardedSetCookieHeaders(upstreamHeaders) {
   return raw ? [raw] : [];
 }
 
+export const BROWSER_API_BASE = "/api/backend";
+export const LOCAL_SERVER_API_BASE = "http://localhost:3000/api/v1";
+
 export function buildApiUrl(path, internalBaseUrl, publicBaseUrl) {
   const baseUrl =
-    internalBaseUrl || publicBaseUrl || "http://localhost:3000/api/v1";
+    internalBaseUrl ||
+    publicBaseUrl ||
+    (typeof window !== "undefined"
+      ? BROWSER_API_BASE
+      : LOCAL_SERVER_API_BASE);
   const normalizedPath = String(path || "").replace(/^\//, "");
 
   if (baseUrl.startsWith("/")) {

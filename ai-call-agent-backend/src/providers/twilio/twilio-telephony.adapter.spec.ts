@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { TwilioTelephonyAdapter } from './twilio-telephony.adapter';
-import { TelephonyMappingsService } from '../modules/twilio/telephony-mappings.service';
-import { VoiceStreamTokenService } from '../modules/voice-stream/voice-stream-token.service';
+import { TelephonyMappingsService } from '../../modules/twilio/telephony-mappings.service';
+import { VoiceStreamTokenService } from '../../modules/voice-stream/voice-stream-token.service';
 
 const mockLocalList = jest.fn();
 const mockIncomingCreate = jest.fn();
@@ -26,12 +26,13 @@ jest.mock('twilio', () => {
   };
 
   const clientFactory = jest.fn(() => {
-    const incomingPhoneNumbers = jest.fn((sid?: string) => ({
+    const incomingPhoneNumbers = jest.fn(() => ({
       update: mockIncomingUpdate,
       remove: mockIncomingRemove,
     }));
-    (incomingPhoneNumbers as jest.Mock & { create: jest.Mock; list: jest.Mock }).create =
-      mockIncomingCreate;
+    (
+      incomingPhoneNumbers as jest.Mock & { create: jest.Mock; list: jest.Mock }
+    ).create = mockIncomingCreate;
     (incomingPhoneNumbers as jest.Mock & { list: jest.Mock }).list =
       mockIncomingList;
 
@@ -146,7 +147,8 @@ describe('TwilioTelephonyAdapter', () => {
     });
     expect(mockIncomingUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
-        voiceUrl: 'https://api.example.com/api/v1/webhooks/twilio/incoming-call',
+        voiceUrl:
+          'https://api.example.com/api/v1/webhooks/twilio/incoming-call',
         statusCallback:
           'https://api.example.com/api/v1/webhooks/twilio/status-callback',
       }),
@@ -190,8 +192,8 @@ describe('TwilioTelephonyAdapter', () => {
   it('throws when provisioned number is not found', async () => {
     mockIncomingList.mockResolvedValue([]);
 
-    await expect(adapter.lookupProvisionedNumber('+14155550000')).rejects.toMatchObject(
-      { code: 'PHONE_NUMBER_NOT_AT_PROVIDER' },
-    );
+    await expect(
+      adapter.lookupProvisionedNumber('+14155550000'),
+    ).rejects.toMatchObject({ code: 'PHONE_NUMBER_NOT_AT_PROVIDER' });
   });
 });

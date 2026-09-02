@@ -53,7 +53,8 @@ export class CallsService {
     );
   }
 
-  findOne(_id: string): Promise<Call | null> {
+  findOne(_unusedId: string): Promise<Call | null> {
+    void _unusedId;
     throw new Error(
       'Prototype findOne is disabled. Use tenant-scoped GET /calls/:id.',
     );

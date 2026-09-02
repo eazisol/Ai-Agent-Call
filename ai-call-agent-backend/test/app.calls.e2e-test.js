@@ -17,9 +17,7 @@ const {
 const {
   GlobalExceptionFilter,
 } = require('../dist/common/filters/global-exception.filter');
-const {
-  ApplicationError,
-} = require('../dist/common/errors/application-error');
+const { ApplicationError } = require('../dist/common/errors/application-error');
 const { ConfigService } = require('@nestjs/config');
 
 const orgId = '11111111-1111-4111-8111-111111111111';

@@ -157,7 +157,10 @@ export class PhoneNumbersService {
       allowArchivedBusiness: true,
     });
 
-    const phoneNumber = await this.findOwnedPhoneNumber(businessId, phoneNumberId);
+    const phoneNumber = await this.findOwnedPhoneNumber(
+      businessId,
+      phoneNumberId,
+    );
     const activeAssignment = await this.assignments.findOne({
       where: { phoneNumberId, status: 'active' },
       relations: { agent: true },
@@ -257,7 +260,9 @@ export class PhoneNumbersService {
 
       provisioning.providerNumberId = purchased.externalNumberId;
       provisioning.phoneNumberE164 = normalizeE164(purchased.phoneNumber);
-      provisioning.country = deriveCountryFromE164(provisioning.phoneNumberE164);
+      provisioning.country = deriveCountryFromE164(
+        provisioning.phoneNumberE164,
+      );
       provisioning.status = 'active';
       provisioning.capabilities = defaultCapabilities();
       const saved = await this.phoneNumbers.save(provisioning);
@@ -359,7 +364,10 @@ export class PhoneNumbersService {
     assertPhoneNumberCan(membership.role, 'assign_phone_number');
     await this.requireActiveBusiness(organizationId, businessId);
 
-    const phoneNumber = await this.findOwnedPhoneNumber(businessId, phoneNumberId);
+    const phoneNumber = await this.findOwnedPhoneNumber(
+      businessId,
+      phoneNumberId,
+    );
     if (phoneNumber.status !== 'active') {
       throw new ApplicationError(
         'PHONE_NUMBER_NOT_ASSIGNABLE',
@@ -455,7 +463,11 @@ export class PhoneNumbersService {
     businessId: string,
     phoneNumberId: string,
     input: ReleasePhoneNumberDto,
-  ): Promise<{ phoneNumberId: string; status: PhoneNumberStatus; releasedAt: Date }> {
+  ): Promise<{
+    phoneNumberId: string;
+    status: PhoneNumberStatus;
+    releasedAt: Date;
+  }> {
     const membership = await this.organizations.requireMembership(
       userId,
       organizationId,
@@ -471,7 +483,10 @@ export class PhoneNumbersService {
       );
     }
 
-    const phoneNumber = await this.findOwnedPhoneNumber(businessId, phoneNumberId);
+    const phoneNumber = await this.findOwnedPhoneNumber(
+      businessId,
+      phoneNumberId,
+    );
     if (phoneNumber.status === 'released') {
       return {
         phoneNumberId,
@@ -674,7 +689,7 @@ export function isUniqueViolation(error: unknown): boolean {
     error instanceof QueryFailedError &&
     typeof (error as QueryFailedError & { driverError?: { code?: string } })
       .driverError?.code === 'string' &&
-    (error as QueryFailedError & { driverError?: { code?: string } }).driverError
-      ?.code === '23505'
+    (error as QueryFailedError & { driverError?: { code?: string } })
+      .driverError?.code === '23505'
   );
 }

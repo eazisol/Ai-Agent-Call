@@ -59,7 +59,11 @@ export class CallsController {
 
   private requireUserId(request: AuthenticatedRequest): string {
     if (!request.authUser?.id) {
-      throw new ApplicationError('UNAUTHORIZED', 'Authentication required.', 401);
+      throw new ApplicationError(
+        'UNAUTHORIZED',
+        'Authentication required.',
+        401,
+      );
     }
     return request.authUser.id;
   }
@@ -80,7 +84,10 @@ export class CallsController {
   }
 
   private requireActiveBusiness(request: AuthenticatedRequest): string {
-    const businessId = readCookie(request, this.cookies.activeBusinessCookieName());
+    const businessId = readCookie(
+      request,
+      this.cookies.activeBusinessCookieName(),
+    );
     if (!businessId) {
       throw new ApplicationError(
         'ACTIVE_BUSINESS_REQUIRED',

@@ -36,24 +36,19 @@ export type RoutingResult =
   | { ok: false; failure: RoutingFailure };
 
 export const FAILURE_MESSAGES: Record<RoutingFailureCode, string> = {
-  UNKNOWN_NUMBER:
-    'This number is not configured in EaziAiCall. Goodbye.',
+  UNKNOWN_NUMBER: 'This number is not configured in EaziAiCall. Goodbye.',
   UNASSIGNED_NUMBER:
     'This line is not assigned to an agent yet. Please try again later.',
   INACTIVE_AGENT:
     'The assigned agent is not available. Please try again later.',
   CROSS_BUSINESS_MAPPING:
     'This call cannot be connected due to a configuration error.',
-  UNSYNCED_AGENT:
-    'The assigned agent is not ready to receive calls yet.',
+  UNSYNCED_AGENT: 'The assigned agent is not ready to receive calls yet.',
   PROVIDER_UNAVAILABLE:
     'The voice service is temporarily unavailable. Please try again later.',
-  HANDOFF_FAILED:
-    'We could not connect your call. Please try again later.',
-  KNOWLEDGE_NOT_READY:
-    'The assigned agent knowledge is not ready yet.',
-  VOICE_NOT_READY:
-    'The assigned agent voice is not ready yet.',
+  HANDOFF_FAILED: 'We could not connect your call. Please try again later.',
+  KNOWLEDGE_NOT_READY: 'The assigned agent knowledge is not ready yet.',
+  VOICE_NOT_READY: 'The assigned agent voice is not ready yet.',
 };
 
 export function normalizePhoneE164(value: string | undefined): string {

@@ -55,7 +55,8 @@ function createOrchestrator({
   };
   const telephonyPort = {
     providerName: 'twilio',
-    buildIncomingCallResponse: () => '<Response><Say>Dev fallback</Say></Response>',
+    buildIncomingCallResponse: () =>
+      '<Response><Say>Dev fallback</Say></Response>',
     ...telephony,
   };
   const configService = {

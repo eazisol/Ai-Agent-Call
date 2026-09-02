@@ -32,11 +32,9 @@ function createAdapterHarness({
     },
   };
 
-  return new TwilioTelephonyAdapter(
-    config,
-    mappingCalls,
-    { create: () => 'token' },
-  );
+  return new TwilioTelephonyAdapter(config, mappingCalls, {
+    create: () => 'token',
+  });
 }
 
 test('TwilioTelephonyAdapter isConfigured requires sid and token', () => {

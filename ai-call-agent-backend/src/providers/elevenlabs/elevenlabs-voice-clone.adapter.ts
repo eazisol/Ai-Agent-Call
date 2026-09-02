@@ -222,11 +222,7 @@ export class ElevenLabsVoiceCloneAdapter implements VoiceClonePort {
       const message =
         detail ??
         'The voice provider rejected the submitted samples. Upload about 1–2 minutes of clear speech (MP3 recommended).';
-      return new ApplicationError(
-        'VOICE_CLONE_PROVIDER_FAILED',
-        message,
-        400,
-      );
+      return new ApplicationError('VOICE_CLONE_PROVIDER_FAILED', message, 400);
     }
     if (status === 429) {
       return new ApplicationError(
@@ -274,7 +270,11 @@ export class ElevenLabsVoiceCloneAdapter implements VoiceClonePort {
   private extractProviderDetailObject(
     json: Record<string, unknown>,
   ): { message?: string; code?: string; status?: string } | null {
-    if (!json.detail || typeof json.detail !== 'object' || Array.isArray(json.detail)) {
+    if (
+      !json.detail ||
+      typeof json.detail !== 'object' ||
+      Array.isArray(json.detail)
+    ) {
       return null;
     }
     const row = json.detail as {

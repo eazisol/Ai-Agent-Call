@@ -9,10 +9,7 @@ import {
 import { Business } from '../businesses/entities/business.entity';
 import type { OrganizationMemberRole } from '../organizations/entities/organization-member.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
-import {
-  VoicesService,
-  type VoiceSummaryView,
-} from '../voices/voices.service';
+import { VoicesService, type VoiceSummaryView } from '../voices/voices.service';
 import { assertAgentCan } from './agent-permissions';
 import {
   AgentProviderSyncService,
@@ -192,7 +189,7 @@ export class AgentsService {
         organizationId,
         membership.role,
         business,
-        row.config?.voiceId ? voiceMap.get(row.config.voiceId) ?? null : null,
+        row.config?.voiceId ? (voiceMap.get(row.config.voiceId) ?? null) : null,
       ),
     );
   }

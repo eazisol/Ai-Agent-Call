@@ -13,16 +13,23 @@ export class ElevenLabsWebhookService {
   ): Promise<{ success: true }> {
     const conversationId = body.conversation_id ?? body.conversationId;
     const twilioCallSid = body.call_sid ?? body.callSid;
-    const eventType = (body.event_type ?? body.eventType ?? body.status ?? 'unknown')
+    const eventType = (
+      body.event_type ??
+      body.eventType ??
+      body.status ??
+      'unknown'
+    )
       .toLowerCase()
       .replace(/\s+/g, '_');
 
     if (!conversationId && !twilioCallSid) {
-      this.logger.warn('ElevenLabs webhook missing conversation and call identifiers');
+      this.logger.warn(
+        'ElevenLabs webhook missing conversation and call identifiers',
+      );
       return { success: true };
     }
 
-    let call = twilioCallSid
+    const call = twilioCallSid
       ? await this.lifecycle.findExistingByTwilioSid(twilioCallSid)
       : null;
 
@@ -74,11 +81,15 @@ export class ElevenLabsWebhookService {
       );
     }
 
-    this.logger.log(`Accepted ElevenLabs conversation event ${externalEventId}`);
+    this.logger.log(
+      `Accepted ElevenLabs conversation event ${externalEventId}`,
+    );
     return { success: true };
   }
 
-  private stringPayload(body: ElevenLabsConversationWebhookDto): Record<string, string> {
+  private stringPayload(
+    body: ElevenLabsConversationWebhookDto,
+  ): Record<string, string> {
     return Object.fromEntries(
       Object.entries(body).filter(
         (entry): entry is [string, string] => typeof entry[1] === 'string',

@@ -57,7 +57,8 @@ function createHarness({
     configureNumber: async () => undefined,
     releaseNumber: async () => undefined,
     defaultWebhookUrls: () => ({
-      voiceWebhookUrl: 'https://api.example.com/api/v1/webhooks/twilio/incoming-call',
+      voiceWebhookUrl:
+        'https://api.example.com/api/v1/webhooks/twilio/incoming-call',
       statusCallbackUrl:
         'https://api.example.com/api/v1/webhooks/twilio/status-callback',
     }),
@@ -120,7 +121,9 @@ function createHarness({
           return this;
         },
         async getManyAndCount() {
-          let rows = phoneRows.filter((row) => row.businessId === state.businessId);
+          let rows = phoneRows.filter(
+            (row) => row.businessId === state.businessId,
+          );
           if (state.status) {
             rows = rows.filter((row) => row.status === state.status);
           }
@@ -137,7 +140,9 @@ function createHarness({
                 )
                 .map((assignment) => ({
                   ...assignment,
-                  agent: agentRows.find((agent) => agent.id === assignment.agentId),
+                  agent: agentRows.find(
+                    (agent) => agent.id === assignment.agentId,
+                  ),
                 })),
             })),
             total,
@@ -297,7 +302,8 @@ test('cross-business phone number id returns PHONE_NUMBER_NOT_FOUND', async () =
   });
 
   await assert.rejects(
-    () => service.assignForUser(userId, orgId, bizId, foreignPhoneId, { agentId }),
+    () =>
+      service.assignForUser(userId, orgId, bizId, foreignPhoneId, { agentId }),
     (error) =>
       error instanceof ApplicationError &&
       error.code === 'PHONE_NUMBER_NOT_FOUND',
@@ -333,7 +339,8 @@ test('purchase requires confirm flag', async () => {
         confirm: false,
       }),
     (error) =>
-      error instanceof ApplicationError && error.code === 'CONFIRMATION_REQUIRED',
+      error instanceof ApplicationError &&
+      error.code === 'CONFIRMATION_REQUIRED',
   );
 });
 
@@ -365,7 +372,10 @@ test('search purchase assign flow succeeds for owner', async () => {
     { agentId },
   );
   assert.equal(assigned.assignment.agentId, agentId);
-  assert.equal(assignmentRows.filter((row) => row.status === 'active').length, 1);
+  assert.equal(
+    assignmentRows.filter((row) => row.status === 'active').length,
+    1,
+  );
 });
 
 test('unassign is idempotent when no active assignment exists', async () => {
@@ -392,7 +402,8 @@ test('release requires confirm flag', async () => {
     () =>
       service.releaseForUser(userId, orgId, bizId, phoneId, { confirm: false }),
     (error) =>
-      error instanceof ApplicationError && error.code === 'CONFIRMATION_REQUIRED',
+      error instanceof ApplicationError &&
+      error.code === 'CONFIRMATION_REQUIRED',
   );
 });
 
@@ -437,8 +448,7 @@ test('viewer cannot assign phone numbers', async () => {
   });
 
   await assert.rejects(
-    () =>
-      service.assignForUser(userId, orgId, bizId, phoneId, { agentId }),
+    () => service.assignForUser(userId, orgId, bizId, phoneId, { agentId }),
     (error) => error instanceof ApplicationError && error.code === 'FORBIDDEN',
   );
 });

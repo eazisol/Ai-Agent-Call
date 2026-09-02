@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Building2, Plug, Settings2 } from "lucide-react";
 
 import { useOrganizationSession } from "@/components/organizations/organization-session";
-import { Button } from "@/components/ui/button";
 
 const links = [
   {

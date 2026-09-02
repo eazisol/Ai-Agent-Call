@@ -14,9 +14,7 @@ import {
   type KnowledgeProviderSyncStatus,
 } from '../knowledge/entities/knowledge-provider-mapping.entity';
 import { KnowledgeSource } from '../knowledge/entities/knowledge-source.entity';
-import {
-  PhoneNumberAssignment,
-} from '../phone-numbers/entities/phone-number-assignment.entity';
+import { PhoneNumberAssignment } from '../phone-numbers/entities/phone-number-assignment.entity';
 import { PhoneNumber } from '../phone-numbers/entities/phone-number.entity';
 import { VoiceClone } from '../voice-clones/entities/voice-clone.entity';
 import { VoiceAsset } from '../voices/entities/voice-asset.entity';
@@ -175,7 +173,10 @@ export class CallRoutingResolverService {
 
   private async validateAssignedKnowledge(
     agentId: string,
-  ): Promise<Omit<RoutingFailure, 'businessId' | 'phoneNumberId' | 'agentId'> | null> {
+  ): Promise<Omit<
+    RoutingFailure,
+    'businessId' | 'phoneNumberId' | 'agentId'
+  > | null> {
     const assignments = await this.agentKnowledgeRepository.find({
       where: { agentId },
     });
@@ -208,7 +209,10 @@ export class CallRoutingResolverService {
   private async validateSelectedVoice(
     agentId: string,
     businessId: string,
-  ): Promise<Omit<RoutingFailure, 'businessId' | 'phoneNumberId' | 'agentId'> | null> {
+  ): Promise<Omit<
+    RoutingFailure,
+    'businessId' | 'phoneNumberId' | 'agentId'
+  > | null> {
     const config = await this.agentConfigRepository.findOne({
       where: { agentId },
     });
@@ -238,7 +242,10 @@ export class CallRoutingResolverService {
     const voiceMapping = await this.voiceMappingRepository.findOne({
       where: { voiceAssetId: voice.id, provider: ELEVENLABS_PROVIDER },
     });
-    if (voice.sourceType === 'provider_catalog' && !voiceMapping?.externalVoiceId) {
+    if (
+      voice.sourceType === 'provider_catalog' &&
+      !voiceMapping?.externalVoiceId
+    ) {
       return this.buildFailure('VOICE_NOT_READY', 'voice_mapping');
     }
 
@@ -259,7 +266,9 @@ export class CallRoutingResolverService {
   private fail(
     code: RoutingFailure['code'],
     stage: string,
-    ids: Partial<Pick<RoutingFailure, 'businessId' | 'phoneNumberId' | 'agentId'>> = {},
+    ids: Partial<
+      Pick<RoutingFailure, 'businessId' | 'phoneNumberId' | 'agentId'>
+    > = {},
   ): RoutingResult {
     return {
       ok: false,

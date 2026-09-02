@@ -5,7 +5,10 @@ import { DataSource, Repository } from 'typeorm';
 import { ApplicationError } from '../../common/errors/application-error';
 import type { OrganizationMemberRole } from '../organizations/entities/organization-member.entity';
 import { canViewProviderLinks } from './call-permissions';
-import type { ResolvedRoutingContext, RoutingFailure } from './call-routing.types';
+import type {
+  ResolvedRoutingContext,
+  RoutingFailure,
+} from './call-routing.types';
 import {
   CallEvent,
   type CallEventSource,
@@ -98,8 +101,12 @@ export class CallLifecycleService {
           callerNumber: input.callerNumber,
           receiverNumber: input.receiverNumber,
           direction: input.direction ?? 'inbound',
-          business: input.businessId ? ({ id: input.businessId } as Call['business']) : null,
-          agent: input.agentId ? ({ id: input.agentId } as Call['agent']) : null,
+          business: input.businessId
+            ? ({ id: input.businessId } as Call['business'])
+            : null,
+          agent: input.agentId
+            ? ({ id: input.agentId } as Call['agent'])
+            : null,
           phoneNumber: input.phoneNumberId
             ? ({ id: input.phoneNumberId } as Call['phoneNumber'])
             : null,
@@ -107,8 +114,7 @@ export class CallLifecycleService {
           failureCode: input.failureCode ?? null,
           failureStage: input.failureStage ?? null,
           startedAt: new Date(),
-          endedAt:
-            input.status === CallStatus.FAILED ? new Date() : undefined,
+          endedAt: input.status === CallStatus.FAILED ? new Date() : undefined,
         });
         const saved = await manager.save(call);
         await manager.save(
@@ -122,7 +128,9 @@ export class CallLifecycleService {
       });
     } catch (error) {
       if (this.isUniqueViolation(error)) {
-        const concurrent = await this.findExistingByTwilioSid(input.twilioCallSid);
+        const concurrent = await this.findExistingByTwilioSid(
+          input.twilioCallSid,
+        );
         if (concurrent) {
           return concurrent;
         }
@@ -205,7 +213,10 @@ export class CallLifecycleService {
     }
   }
 
-  async markInProgress(provider: string, externalCallId: string): Promise<void> {
+  async markInProgress(
+    provider: string,
+    externalCallId: string,
+  ): Promise<void> {
     const call = await this.findCallByProviderMapping(provider, externalCallId);
     if (!call || this.isTerminal(call.status)) {
       return;
@@ -338,7 +349,12 @@ export class CallLifecycleService {
     businessId: string,
     role: OrganizationMemberRole,
     query: CallListQuery,
-  ): Promise<{ items: CallListItemView[]; page: number; limit: number; total: number }> {
+  ): Promise<{
+    items: CallListItemView[];
+    page: number;
+    limit: number;
+    total: number;
+  }> {
     const page = Math.max(query.page ?? 1, 1);
     const limit = Math.min(Math.max(query.limit ?? 20, 1), 100);
     const qb = this.callRepository
@@ -353,7 +369,9 @@ export class CallLifecycleService {
       qb.andWhere('call.status = :status', { status: query.status });
     }
     if (query.direction) {
-      qb.andWhere('call.direction = :direction', { direction: query.direction });
+      qb.andWhere('call.direction = :direction', {
+        direction: query.direction,
+      });
     } else {
       qb.andWhere('call.direction = :defaultDirection', {
         defaultDirection: 'inbound',
@@ -381,22 +399,26 @@ export class CallLifecycleService {
     businessId: string,
     callId: string,
     role: OrganizationMemberRole,
-  ): Promise<{ call: CallListItemView; events: Array<{
-    eventType: CallEventType;
-    source: CallEventSource;
-    occurredAt: Date;
-    payload: Record<string, unknown>;
-  }> }> {
+  ): Promise<{
+    call: CallListItemView;
+    events: Array<{
+      eventType: CallEventType;
+      source: CallEventSource;
+      occurredAt: Date;
+      payload: Record<string, unknown>;
+    }>;
+  }> {
     const call = await this.callRepository.findOne({
       where: { id: callId, business: { id: businessId } },
-      relations: { agent: true, phoneNumber: true, providerMappings: true, business: true },
+      relations: {
+        agent: true,
+        phoneNumber: true,
+        providerMappings: true,
+        business: true,
+      },
     });
     if (!call) {
-      throw new ApplicationError(
-        'CALL_NOT_FOUND',
-        'Call not found.',
-        404,
-      );
+      throw new ApplicationError('CALL_NOT_FOUND', 'Call not found.', 404);
     }
 
     const events = await this.callEventRepository.find({
@@ -416,14 +438,12 @@ export class CallLifecycleService {
     };
   }
 
-  async persistRoutingFailure(
-    input: {
-      twilioCallSid: string;
-      callerNumber?: string;
-      receiverNumber?: string;
-      failure: RoutingFailure;
-    },
-  ): Promise<Call> {
+  async persistRoutingFailure(input: {
+    twilioCallSid: string;
+    callerNumber?: string;
+    receiverNumber?: string;
+    failure: RoutingFailure;
+  }): Promise<Call> {
     return this.createInboundCall({
       twilioCallSid: input.twilioCallSid,
       callerNumber: input.callerNumber,
@@ -437,14 +457,12 @@ export class CallLifecycleService {
     });
   }
 
-  async persistSuccessfulRouting(
-    input: {
-      twilioCallSid: string;
-      callerNumber?: string;
-      receiverNumber?: string;
-      context: ResolvedRoutingContext;
-    },
-  ): Promise<Call> {
+  async persistSuccessfulRouting(input: {
+    twilioCallSid: string;
+    callerNumber?: string;
+    receiverNumber?: string;
+    context: ResolvedRoutingContext;
+  }): Promise<Call> {
     return this.createInboundCall({
       twilioCallSid: input.twilioCallSid,
       callerNumber: input.callerNumber,
@@ -456,7 +474,10 @@ export class CallLifecycleService {
     });
   }
 
-  private toListItem(call: Call, role: OrganizationMemberRole): CallListItemView {
+  private toListItem(
+    call: Call,
+    role: OrganizationMemberRole,
+  ): CallListItemView {
     const item: CallListItemView = {
       id: call.id,
       direction: call.direction,

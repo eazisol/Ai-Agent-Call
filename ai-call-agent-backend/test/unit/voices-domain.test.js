@@ -99,7 +99,8 @@ function createHarness({
             if (state.activeOnly && row.status !== 'active') return false;
             if (state.filters.eligible != null) {
               const ok =
-                row.businessId == null || row.businessId === state.filters.eligible;
+                row.businessId == null ||
+                row.businessId === state.filters.eligible;
               if (!ok) return false;
             }
             if (
@@ -160,7 +161,9 @@ function createHarness({
 
   const agentConfigs = {
     save: async (entity) => {
-      const index = configRows.findIndex((row) => row.agentId === entity.agentId);
+      const index = configRows.findIndex(
+        (row) => row.agentId === entity.agentId,
+      );
       if (index >= 0) configRows[index] = { ...configRows[index], ...entity };
       else configRows.push({ ...entity });
       return entity;
@@ -183,13 +186,17 @@ function createHarness({
         },
         async getMany() {
           return configRows
-            .filter((cfg) => (state.voiceId ? cfg.voiceId === state.voiceId : true))
+            .filter((cfg) =>
+              state.voiceId ? cfg.voiceId === state.voiceId : true,
+            )
             .map((cfg) => ({
               ...cfg,
               agent: agentRows.find((a) => a.id === cfg.agentId),
             }))
             .filter((cfg) =>
-              state.businessId ? cfg.agent?.businessId === state.businessId : true,
+              state.businessId
+                ? cfg.agent?.businessId === state.businessId
+                : true,
             );
         },
       };
@@ -218,7 +225,10 @@ function createHarness({
     isConfigured: () => providerConfigured,
     listVoices: async () => [],
     previewVoice: async (input) => {
-      assert.equal(input.catalogPreviewUrl ?? null, input.catalogPreviewUrl ?? null);
+      assert.equal(
+        input.catalogPreviewUrl ?? null,
+        input.catalogPreviewUrl ?? null,
+      );
       return {
         audioBytes: Buffer.from('audio'),
         contentType: 'audio/mpeg',
@@ -228,7 +238,10 @@ function createHarness({
 
   const catalogSync = new VoiceCatalogSyncService(
     { get: () => 3600 },
-    { transaction: async (fn) => fn({ create: assets.create, save: assets.save }) },
+    {
+      transaction: async (fn) =>
+        fn({ create: assets.create, save: assets.save }),
+    },
     catalog,
     assets,
     mappings,
@@ -236,7 +249,10 @@ function createHarness({
   );
 
   const service = new VoicesService(
-    { transaction: async (fn) => fn({ create: assets.create, save: assets.save }) },
+    {
+      transaction: async (fn) =>
+        fn({ create: assets.create, save: assets.save }),
+    },
     organizations,
     catalogSync,
     catalog,
@@ -337,7 +353,8 @@ function baseSeeds() {
         provider: 'elevenlabs',
         externalVoiceId: 'el-sarah',
         metadata: {
-          previewUrl: 'https://storage.googleapis.com/eleven-public-prod/preview/sample.mp3',
+          previewUrl:
+            'https://storage.googleapis.com/eleven-public-prod/preview/sample.mp3',
         },
       },
     ],
@@ -348,7 +365,10 @@ test('list eligible voices for active business', async () => {
   const { service } = createHarness(baseSeeds());
   const result = await service.listForUser(userId, orgId, bizId, {});
   assert.ok(result.voices.some((voice) => voice.id === voiceGlobalId));
-  assert.equal(result.voices.find((v) => v.id === voiceCloneId), undefined);
+  assert.equal(
+    result.voices.find((v) => v.id === voiceCloneId),
+    undefined,
+  );
   const sarah = result.voices.find((voice) => voice.id === voiceGlobalId);
   assert.equal(
     sarah.previewAudioUrl,
@@ -407,7 +427,8 @@ test('block cross-business clone assignment', async () => {
 
 test('resolve external voice id for provider sync', async () => {
   const harness = createHarness(baseSeeds());
-  const externalId = await harness.service.resolveExternalVoiceId(voiceGlobalId);
+  const externalId =
+    await harness.service.resolveExternalVoiceId(voiceGlobalId);
   assert.equal(externalId, 'el-sarah');
 });
 

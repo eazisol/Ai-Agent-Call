@@ -229,7 +229,12 @@ export class VoicesService {
     organizationId: string,
     businessId: string,
     options: ListVoicesOptions = {},
-  ): Promise<{ voices: VoiceSummaryView[]; total: number; page: number; limit: number }> {
+  ): Promise<{
+    voices: VoiceSummaryView[];
+    total: number;
+    page: number;
+    limit: number;
+  }> {
     const membership = await this.organizations.requireMembership(
       userId,
       organizationId,
@@ -325,10 +330,7 @@ export class VoicesService {
     });
     const assignedAgents = await this.listAssignedAgents(asset.id, businessId);
     return {
-      ...this.toSummary(
-        asset,
-        this.extractPreviewAudioUrl(mapping?.metadata),
-      ),
+      ...this.toSummary(asset, this.extractPreviewAudioUrl(mapping?.metadata)),
       status: asset.status,
       assignedAgentCount: assignedAgents.length,
       assignedAgents,
@@ -435,7 +437,10 @@ export class VoicesService {
       organizationId,
     );
     assertVoiceCan(membership.role, 'assign_agent_voice');
-    const business = await this.requireActiveBusiness(organizationId, businessId);
+    const business = await this.requireActiveBusiness(
+      organizationId,
+      businessId,
+    );
 
     const agent = await this.findOwnedAgent(businessId, agentId);
     const config = agent.config;
@@ -594,7 +599,10 @@ export class VoicesService {
     return warnings;
   }
 
-  private resolveEffectiveLanguages(agent: Agent, business: Business): string[] {
+  private resolveEffectiveLanguages(
+    agent: Agent,
+    business: Business,
+  ): string[] {
     const config = agent.config;
     if (!config) {
       return [business.defaultLanguage ?? 'en'];

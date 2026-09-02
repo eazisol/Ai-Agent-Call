@@ -39,7 +39,8 @@ export class TelephonyStatusService {
       credentialsValid = validation.ok;
       credentialsMessage = validation.ok ? null : validation.reason;
     } else {
-      credentialsMessage = 'Twilio credentials are not configured on the server.';
+      credentialsMessage =
+        'Twilio credentials are not configured on the server.';
     }
 
     const webhookUrls = configured ? this.buildWebhookUrls() : null;

@@ -3,7 +3,9 @@ const test = require('node:test');
 const { Test } = require('@nestjs/testing');
 const request = require('supertest');
 const { ValidationPipe } = require('@nestjs/common');
-const { VoiceClonesController } = require('../dist/modules/voice-clones/voice-clones.controller');
+const {
+  VoiceClonesController,
+} = require('../dist/modules/voice-clones/voice-clones.controller');
 const {
   VoiceClonesService,
 } = require('../dist/modules/voice-clones/voice-clones.service');

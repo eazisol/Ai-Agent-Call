@@ -41,7 +41,12 @@ export class PhoneNumber {
   @Column({ type: 'varchar', length: 50 })
   provider!: string;
 
-  @Column({ name: 'provider_number_id', type: 'varchar', length: 150, nullable: true })
+  @Column({
+    name: 'provider_number_id',
+    type: 'varchar',
+    length: 150,
+    nullable: true,
+  })
   providerNumberId!: string | null;
 
   @Column({ name: 'phone_number_e164', type: 'varchar', length: 30 })
@@ -50,19 +55,30 @@ export class PhoneNumber {
   @Column({ type: 'varchar', length: 2 })
   country!: string;
 
-  @Column({ type: 'jsonb', default: () => "'{\"voice\":true,\"sms\":false,\"mms\":false}'" })
+  @Column({
+    type: 'jsonb',
+    default: () => '\'{"voice":true,"sms":false,"mms":false}\'',
+  })
   capabilities!: PhoneNumberCapabilities;
 
   @Column({ type: 'varchar', length: 30, default: 'provisioning' })
   status!: PhoneNumberStatus;
 
-  @Column({ name: 'friendly_name', type: 'varchar', length: 64, nullable: true })
+  @Column({
+    name: 'friendly_name',
+    type: 'varchar',
+    length: 64,
+    nullable: true,
+  })
   friendlyName!: string | null;
 
   @Column({ type: 'jsonb', default: () => "'{}'" })
   metadata!: Record<string, unknown>;
 
-  @OneToMany(() => PhoneNumberAssignment, (assignment) => assignment.phoneNumber)
+  @OneToMany(
+    () => PhoneNumberAssignment,
+    (assignment) => assignment.phoneNumber,
+  )
   assignments?: PhoneNumberAssignment[];
 
   @CreateDateColumn({ name: 'created_at' })

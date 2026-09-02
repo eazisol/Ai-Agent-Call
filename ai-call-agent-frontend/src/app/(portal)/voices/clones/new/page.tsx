@@ -103,6 +103,15 @@ export default function CreateVoiceClonePage() {
 
   useEffectTask(loadResume, [loadResume]);
 
+  const totalSampleSeconds = React.useMemo(
+    () =>
+      Object.values(sampleDurations).reduce(
+        (sum, value) => sum + (Number.isFinite(value) ? value : 0),
+        0,
+      ),
+    [sampleDurations],
+  );
+
   React.useEffect(() => {
     return () => {
       recorderRef.current?.stop();
@@ -142,15 +151,6 @@ export default function CreateVoiceClonePage() {
       />
     );
   }
-
-  const totalSampleSeconds = React.useMemo(
-    () =>
-      Object.values(sampleDurations).reduce(
-        (sum, value) => sum + (Number.isFinite(value) ? value : 0),
-        0,
-      ),
-    [sampleDurations],
-  );
 
   const sampleDurationMessage = (): string | null => {
     if (samples.length === 0) return null;

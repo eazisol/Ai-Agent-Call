@@ -1,7 +1,9 @@
 const assert = require('node:assert/strict');
 const { randomUUID } = require('node:crypto');
 const test = require('node:test');
-const { VoiceClonesService } = require('../../dist/modules/voice-clones/voice-clones.service');
+const {
+  VoiceClonesService,
+} = require('../../dist/modules/voice-clones/voice-clones.service');
 const {
   ApplicationError,
 } = require('../../dist/common/errors/application-error');
@@ -367,16 +369,10 @@ test('submit requires consent and samples', async () => {
     (error) => error.code === 'VOICE_CLONE_CONSENT_REQUIRED',
   );
 
-  await harness.service.recordConsentForUser(
-    userId,
-    orgId,
-    bizId,
-    cloneId,
-    {
-      consentVersion: 'm09-v1',
-      consentTextHash: 'a'.repeat(64),
-    },
-  );
+  await harness.service.recordConsentForUser(userId, orgId, bizId, cloneId, {
+    consentVersion: 'm09-v1',
+    consentTextHash: 'a'.repeat(64),
+  });
 
   await assert.rejects(
     () => harness.service.submitForUser(userId, orgId, bizId, cloneId),
@@ -424,16 +420,10 @@ test('submit creates business voice asset', async () => {
 
   harness.storage.set('org/x/sample.mp3', Buffer.from('audio-data'));
 
-  await harness.service.recordConsentForUser(
-    userId,
-    orgId,
-    bizId,
-    cloneId,
-    {
-      consentVersion: 'm09-v1',
-      consentTextHash: 'b'.repeat(64),
-    },
-  );
+  await harness.service.recordConsentForUser(userId, orgId, bizId, cloneId, {
+    consentVersion: 'm09-v1',
+    consentTextHash: 'b'.repeat(64),
+  });
 
   const result = await harness.service.submitForUser(
     userId,

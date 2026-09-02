@@ -134,8 +134,7 @@ export default () => {
         process.env.INBOUND_CALL_DEV_STREAM_FALLBACK,
         nodeEnv === 'development',
       ),
-      elevenLabsWebhookSecret:
-        process.env.ELEVENLABS_WEBHOOK_SECRET ?? '',
+      elevenLabsWebhookSecret: process.env.ELEVENLABS_WEBHOOK_SECRET ?? '',
     },
     n8n: {
       enabled: booleanValue(process.env.N8N_ENABLED, false),

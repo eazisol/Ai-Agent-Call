@@ -40,7 +40,8 @@ export class InboundCallOrchestratorService {
       throw new Error('INVALID_WEBHOOK_PAYLOAD');
     }
 
-    const existing = await this.lifecycle.findExistingByTwilioSid(externalCallId);
+    const existing =
+      await this.lifecycle.findExistingByTwilioSid(externalCallId);
     if (existing) {
       this.logger.log(`Duplicate inbound webhook for ${externalCallId}`);
       return this.buildResponseForExistingCall(existing, externalCallId, body);

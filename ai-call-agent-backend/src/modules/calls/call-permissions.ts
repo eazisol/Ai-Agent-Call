@@ -21,8 +21,6 @@ export function assertCallCan(
   }
 }
 
-export function canViewProviderLinks(
-  role: OrganizationMemberRole,
-): boolean {
+export function canViewProviderLinks(role: OrganizationMemberRole): boolean {
   return role === 'owner' || role === 'admin' || role === 'manager';
 }

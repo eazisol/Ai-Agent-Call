@@ -75,7 +75,9 @@ export class TwilioTelephonyAdapter implements TelephonyProviderPort {
       const results = await client
         .availablePhoneNumbers(isoCountry)
         .local.list({
-          areaCode: input.areaCode ? Number.parseInt(input.areaCode, 10) : undefined,
+          areaCode: input.areaCode
+            ? Number.parseInt(input.areaCode, 10)
+            : undefined,
           contains: input.contains?.trim() || undefined,
           voiceEnabled: true,
           limit,
@@ -192,7 +194,8 @@ export class TwilioTelephonyAdapter implements TelephonyProviderPort {
     } catch (error) {
       throw this.mapRestError(error, {
         defaultCode: 'TELEPHONY_PROVISION_FAILED',
-        defaultMessage: 'Unable to configure the phone number with the provider.',
+        defaultMessage:
+          'Unable to configure the phone number with the provider.',
         notFoundCode: 'TELEPHONY_NUMBER_NOT_FOUND',
       });
     }
@@ -255,7 +258,9 @@ export class TwilioTelephonyAdapter implements TelephonyProviderPort {
     voiceWebhookUrl: string;
     statusCallbackUrl: string;
   } {
-    const baseUrl = this.config.getOrThrow<string>('app.publicBaseUrl').replace(/\/$/, '');
+    const baseUrl = this.config
+      .getOrThrow<string>('app.publicBaseUrl')
+      .replace(/\/$/, '');
     return {
       voiceWebhookUrl: `${baseUrl}/api/v1/webhooks/twilio/incoming-call`,
       statusCallbackUrl: `${baseUrl}/api/v1/webhooks/twilio/status-callback`,
@@ -379,8 +384,8 @@ export class TwilioTelephonyAdapter implements TelephonyProviderPort {
       return null;
     }
     const row = error as { message?: string; moreInfo?: string };
-    const parts = [row.message, row.moreInfo].filter(
-      (value): value is string => Boolean(value?.trim()),
+    const parts = [row.message, row.moreInfo].filter((value): value is string =>
+      Boolean(value?.trim()),
     );
     return parts.length > 0 ? parts.join(' ') : null;
   }

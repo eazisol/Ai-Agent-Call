@@ -136,9 +136,7 @@ export class ElevenLabsVoiceCatalogAdapter implements VoiceCatalogPort {
       languageCodes: this.extractLanguageCodes(row, labels),
       genderPresentation: this.normalizeGender(labels.gender),
       accent:
-        typeof labels.accent === 'string'
-          ? labels.accent.slice(0, 100)
-          : null,
+        typeof labels.accent === 'string' ? labels.accent.slice(0, 100) : null,
       styleLabels,
       previewSampleText: DEFAULT_PREVIEW_TEXT,
       metadata: {

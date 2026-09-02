@@ -42,8 +42,7 @@ export class HealthService {
       (await this.runCheck('objectStorage', checks, () =>
         this.objectStorage.healthCheck(),
       )) && healthy;
-    healthy =
-      (await this.runTelephonyCheck(checks)) && healthy;
+    healthy = (await this.runTelephonyCheck(checks)) && healthy;
 
     return { status: healthy ? 'ok' : 'error', service: 'EaziAiCall', checks };
   }

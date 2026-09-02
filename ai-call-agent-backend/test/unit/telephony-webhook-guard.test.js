@@ -7,7 +7,10 @@ const {
   ApplicationError,
 } = require('../../dist/common/errors/application-error');
 
-function createGuard({ validateSignatures = true, validateWebhookResult = true } = {}) {
+function createGuard({
+  validateSignatures = true,
+  validateWebhookResult = true,
+} = {}) {
   const config = {
     get: (key) => {
       if (key === 'twilio.validateSignatures') return validateSignatures;
@@ -24,7 +27,10 @@ function createGuard({ validateSignatures = true, validateWebhookResult = true }
   return new TwilioWebhookGuard(config, twilio);
 }
 
-function createContext(body = { CallSid: 'CA1' }, signature = 'valid-signature') {
+function createContext(
+  body = { CallSid: 'CA1' },
+  signature = 'valid-signature',
+) {
   return {
     switchToHttp: () => ({
       getRequest: () => ({

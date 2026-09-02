@@ -5,7 +5,11 @@ const {
   ApplicationError,
 } = require('../../dist/common/errors/application-error');
 
-function createService({ telephony = {}, lifecycle = {}, orchestrator = {} } = {}) {
+function createService({
+  telephony = {},
+  lifecycle = {},
+  orchestrator = {},
+} = {}) {
   const telephonyPort = {
     providerName: 'twilio',
     buildIncomingCallResponse: () => '<Response />',
@@ -25,7 +29,11 @@ function createService({ telephony = {}, lifecycle = {}, orchestrator = {} } = {
     handleTwilioInbound: async () => '<Response />',
     ...orchestrator,
   };
-  return new TwilioService(telephonyPort, lifecycleService, orchestratorService);
+  return new TwilioService(
+    telephonyPort,
+    lifecycleService,
+    orchestratorService,
+  );
 }
 
 test('handleIncomingCall delegates to orchestrator', async () => {
@@ -64,7 +72,10 @@ test('handleCallEnded is idempotent when provider event already exists', async (
   let markCompletedCalls = 0;
   const service = createService({
     lifecycle: {
-      findExistingByTwilioSid: async () => ({ id: 'call-1', twilioCallSid: 'CA200' }),
+      findExistingByTwilioSid: async () => ({
+        id: 'call-1',
+        twilioCallSid: 'CA200',
+      }),
       recordProviderEvent: async () => false,
       markCompleted: async () => {
         markCompletedCalls += 1;
@@ -86,7 +97,10 @@ test('handleCallEnded marks completed on first event', async () => {
   let markCompletedCalls = 0;
   const service = createService({
     lifecycle: {
-      findExistingByTwilioSid: async () => ({ id: 'call-1', twilioCallSid: 'CA200' }),
+      findExistingByTwilioSid: async () => ({
+        id: 'call-1',
+        twilioCallSid: 'CA200',
+      }),
       recordProviderEvent: async () => true,
       markCompleted: async (_provider, callSid, duration) => {
         markCompletedCalls += 1;
@@ -110,7 +124,10 @@ test('handleStatusCallback marks failed statuses', async () => {
   let markFailedCalls = 0;
   const service = createService({
     lifecycle: {
-      findExistingByTwilioSid: async () => ({ id: 'call-1', twilioCallSid: 'CA300' }),
+      findExistingByTwilioSid: async () => ({
+        id: 'call-1',
+        twilioCallSid: 'CA300',
+      }),
       recordProviderEvent: async () => true,
       markFailed: async (_provider, callSid, reason) => {
         markFailedCalls += 1;
