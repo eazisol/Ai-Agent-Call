@@ -15,6 +15,11 @@ const HOP_BY_HOP_HEADERS = new Set([
   "host",
 ]);
 
+const PROXY_REQUEST_HEADERS_TO_STRIP = new Set([
+  ...HOP_BY_HOP_HEADERS,
+  "content-length",
+]);
+
 export function validateProxyPathSegments(segments) {
   if (!Array.isArray(segments) || segments.length === 0) {
     throw new Error("Proxy path is required");
@@ -59,7 +64,7 @@ export function buildForwardedRequestHeaders(requestHeaders) {
   const headers = new Headers();
   requestHeaders.forEach((value, key) => {
     const lower = key.toLowerCase();
-    if (HOP_BY_HOP_HEADERS.has(lower)) {
+    if (PROXY_REQUEST_HEADERS_TO_STRIP.has(lower)) {
       return;
     }
     headers.set(key, value);
@@ -86,6 +91,14 @@ export function getForwardedSetCookieHeaders(upstreamHeaders) {
   }
   const raw = upstreamHeaders.get("set-cookie");
   return raw ? [raw] : [];
+}
+
+export async function resolveProxyRequestBody(request) {
+  const method = request.method.toUpperCase();
+  if (method === "GET" || method === "HEAD") {
+    return undefined;
+  }
+  return request.arrayBuffer();
 }
 
 export const BROWSER_API_BASE = "/api/backend";

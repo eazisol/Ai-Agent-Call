@@ -3,6 +3,7 @@ import {
   buildForwardedRequestHeaders,
   buildForwardedResponseHeaders,
   getForwardedSetCookieHeaders,
+  resolveProxyRequestBody,
   validateProxyPathSegments,
 } from "@/lib/backend-proxy.mjs";
 
@@ -25,8 +26,7 @@ async function proxy(request: Request, segments: string[]): Promise<Response> {
 
   const headers = buildForwardedRequestHeaders(request.headers);
   const method = request.method.toUpperCase();
-  const body =
-    method === "GET" || method === "HEAD" ? undefined : request.body;
+  const body = await resolveProxyRequestBody(request);
 
   const upstream = await fetch(upstreamUrl, {
     method,
@@ -34,7 +34,6 @@ async function proxy(request: Request, segments: string[]): Promise<Response> {
     body,
     redirect: "manual",
     cache: "no-store",
-    ...(body ? { duplex: "half" as const } : {}),
   });
 
   const responseHeaders = buildForwardedResponseHeaders(upstream.headers);

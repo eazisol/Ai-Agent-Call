@@ -48,6 +48,16 @@ function errorMessage(body: unknown, fallback: string): { message: string; code?
   };
 }
 
+function unavailableMessage(error: unknown): string {
+  if (error instanceof DOMException && error.name === "AbortError") {
+    return "The sign-in request timed out. Please try again.";
+  }
+  if (error instanceof Error && error.name === "TimeoutError") {
+    return "The sign-in request timed out. Please try again.";
+  }
+  return "The EaziAiCall API is temporarily unavailable.";
+}
+
 async function request<T>(
   path: string,
   init?: RequestInit,
@@ -65,12 +75,16 @@ async function request<T>(
       credentials: "include",
       cache: "no-store",
       headers,
-      signal: init?.signal ?? AbortSignal.timeout(15_000),
+      signal: init?.signal ?? AbortSignal.timeout(30_000),
     });
 
     const body = await parseJson(response);
     if (!response.ok) {
-      const parsed = errorMessage(body, "Request failed. Please try again.");
+      const fallback =
+        response.status >= 500
+          ? "The EaziAiCall API is temporarily unavailable."
+          : "Request failed. Please try again.";
+      const parsed = errorMessage(body, fallback);
       return {
         ok: false,
         status: response.status,
@@ -80,10 +94,10 @@ async function request<T>(
     }
 
     return { ok: true, data: body as T };
-  } catch {
+  } catch (error) {
     return {
       ok: false,
-      message: "The EaziAiCall API is temporarily unavailable.",
+      message: unavailableMessage(error),
     };
   }
 }
