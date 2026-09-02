@@ -1,20 +1,4 @@
-﻿import { Agent } from "undici";
-
-/**
- * Reuse TLS connections from Vercel to CloudFront on warm invocations.
- * Keep idle lifetime below typical CloudFront/ALB idle timeouts to avoid stale sockets.
- */
-export const upstreamFetchDispatcher = new Agent({
-  connect: {
-    timeout: 8_000,
-  },
-  keepAliveTimeout: 4_000,
-  keepAliveMaxTimeout: 10_000,
-  connections: 8,
-  pipelining: 1,
-});
-
-/** Per-attempt ceiling; route retries once on transient upstream failure. */
+﻿/** Per-attempt ceiling; route retries once on transient upstream failure. */
 export const UPSTREAM_FETCH_TIMEOUT_MS = 12_000;
 
 export const UPSTREAM_FETCH_MAX_ATTEMPTS = 2;
@@ -36,32 +20,21 @@ function isRetryableUpstreamError(error) {
 }
 
 /**
- * Fetch CloudFront with keep-alive when healthy; retry once without the pooled agent
- * when a stale connection or transient network fault occurs.
+ * Fetch CloudFront with a fresh connection each attempt to avoid stale pooled sockets
+ * between Vercel serverless invocations and CloudFront/ALB idle timeouts.
  */
 export async function fetchUpstream(url, init = {}) {
   const headers = new Headers(init.headers ?? undefined);
+  headers.set("connection", "close");
   let lastError;
 
   for (let attempt = 1; attempt <= UPSTREAM_FETCH_MAX_ATTEMPTS; attempt += 1) {
-    const usePooledAgent = attempt === 1;
-    if (!usePooledAgent) {
-      headers.set("connection", "close");
-    }
-
     try {
-      const response = await fetch(url, {
+      return await fetch(url, {
         ...init,
         headers,
         signal: AbortSignal.timeout(UPSTREAM_FETCH_TIMEOUT_MS),
-        ...(usePooledAgent
-          ? {
-              // @ts-expect-error Node fetch accepts undici dispatcher for connection reuse.
-              dispatcher: upstreamFetchDispatcher,
-            }
-          : {}),
       });
-      return response;
     } catch (error) {
       lastError = error;
       if (
