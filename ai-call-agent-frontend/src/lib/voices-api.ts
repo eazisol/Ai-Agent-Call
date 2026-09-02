@@ -1,4 +1,4 @@
-import { buildApiUrl } from "./api-url.mjs";
+import { apiRequest } from "./api-client";
 import type { OrganizationRole } from "./organizations-api";
 
 export type VoiceGenderPresentation =
@@ -54,85 +54,6 @@ export type ListVoicesParams = {
   limit?: number;
 };
 
-export type ApiResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; message: string; code?: string; status?: number };
-
-type ErrorEnvelope = {
-  error?: { code?: string; message?: string };
-};
-
-function apiUrl(path: string): string {
-  return buildApiUrl(
-    path,
-    process.env.INTERNAL_API_BASE_URL,
-    process.env.NEXT_PUBLIC_API_BASE_URL,
-  );
-}
-
-async function parseJson(response: Response): Promise<unknown> {
-  const text = await response.text();
-  if (!text) {
-    return null;
-  }
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
-  }
-}
-
-function errorMessage(
-  body: unknown,
-  fallback: string,
-): { message: string; code?: string } {
-  const envelope = body as ErrorEnvelope | null;
-  return {
-    message: envelope?.error?.message?.trim() || fallback,
-    code: envelope?.error?.code,
-  };
-}
-
-async function request<T>(
-  path: string,
-  init?: RequestInit & { timeoutMs?: number },
-): Promise<ApiResult<T>> {
-  try {
-    const headers = new Headers(init?.headers);
-    headers.set("Accept", "application/json");
-    if (init?.body && !headers.has("Content-Type")) {
-      headers.set("Content-Type", "application/json");
-    }
-
-    const { timeoutMs, ...fetchInit } = init ?? {};
-    const response = await fetch(apiUrl(path), {
-      ...fetchInit,
-      credentials: "include",
-      cache: "no-store",
-      headers,
-      signal: fetchInit.signal ?? AbortSignal.timeout(timeoutMs ?? 15_000),
-    });
-
-    const body = await parseJson(response);
-    if (!response.ok) {
-      const parsed = errorMessage(body, "Request failed. Please try again.");
-      return {
-        ok: false,
-        status: response.status,
-        message: parsed.message,
-        code: parsed.code,
-      };
-    }
-
-    return { ok: true, data: body as T };
-  } catch {
-    return {
-      ok: false,
-      message: "The EaziAiCall API is temporarily unavailable.",
-    };
-  }
-}
-
 function queryString(params: ListVoicesParams): string {
   const search = new URLSearchParams();
   if (params.q?.trim()) search.set("q", params.q.trim());
@@ -181,7 +102,7 @@ export function playVoicePreview(preview: VoicePreview): HTMLAudioElement {
 
 export const voicesApi = {
   list: (params: ListVoicesParams = {}) =>
-    request<{
+    apiRequest<{
       voices: VoiceSummary[];
       total: number;
       page: number;
@@ -189,10 +110,10 @@ export const voicesApi = {
     }>(`voices${queryString(params)}`, { timeoutMs: 45_000 }),
 
   get: (id: string) =>
-    request<{ voice: VoiceDetail }>(`voices/${encodeURIComponent(id)}`),
+    apiRequest<{ voice: VoiceDetail }>(`voices/${encodeURIComponent(id)}`),
 
   preview: (id: string, sampleText?: string) =>
-    request<{ preview: VoicePreview }>(
+    apiRequest<{ preview: VoicePreview }>(
       `voices/${encodeURIComponent(id)}/preview`,
       {
         method: "POST",
@@ -202,12 +123,12 @@ export const voicesApi = {
     ),
 
   getAgentVoice: (agentId: string) =>
-    request<{ assignment: AgentVoiceAssignment }>(
+    apiRequest<{ assignment: AgentVoiceAssignment }>(
       `agents/${encodeURIComponent(agentId)}/voice`,
     ),
 
   assignAgentVoice: (agentId: string, voiceId: string) =>
-    request<{ assignment: AgentVoiceAssignment }>(
+    apiRequest<{ assignment: AgentVoiceAssignment }>(
       `agents/${encodeURIComponent(agentId)}/voice`,
       {
         method: "PUT",
@@ -216,7 +137,7 @@ export const voicesApi = {
     ),
 
   clearAgentVoice: (agentId: string) =>
-    request<{ assignment: AgentVoiceAssignment }>(
+    apiRequest<{ assignment: AgentVoiceAssignment }>(
       `agents/${encodeURIComponent(agentId)}/voice`,
       { method: "DELETE" },
     ),

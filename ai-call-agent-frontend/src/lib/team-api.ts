@@ -1,4 +1,4 @@
-import { buildApiUrl } from "./api-url.mjs";
+import { apiRequest } from "./api-client";
 
 export type OrganizationMemberRole =
   | "owner"
@@ -49,84 +49,6 @@ export type InvitationPreview = {
   accountState: InvitationAccountState | null;
 };
 
-export type ApiResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; message: string; code?: string; status?: number };
-
-type ErrorEnvelope = {
-  error?: { code?: string; message?: string };
-};
-
-function apiUrl(path: string): string {
-  return buildApiUrl(
-    path,
-    process.env.INTERNAL_API_BASE_URL,
-    process.env.NEXT_PUBLIC_API_BASE_URL,
-  );
-}
-
-async function parseJson(response: Response): Promise<unknown> {
-  const text = await response.text();
-  if (!text) {
-    return null;
-  }
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
-  }
-}
-
-function errorMessage(
-  body: unknown,
-  fallback: string,
-): { message: string; code?: string } {
-  const envelope = body as ErrorEnvelope | null;
-  return {
-    message: envelope?.error?.message?.trim() || fallback,
-    code: envelope?.error?.code,
-  };
-}
-
-async function request<T>(
-  path: string,
-  init?: RequestInit,
-): Promise<ApiResult<T>> {
-  try {
-    const headers = new Headers(init?.headers);
-    headers.set("Accept", "application/json");
-    if (init?.body && !headers.has("Content-Type")) {
-      headers.set("Content-Type", "application/json");
-    }
-
-    const response = await fetch(apiUrl(path), {
-      ...init,
-      credentials: "include",
-      cache: "no-store",
-      headers,
-      signal: init?.signal ?? AbortSignal.timeout(15_000),
-    });
-
-    const body = await parseJson(response);
-    if (!response.ok) {
-      const parsed = errorMessage(body, "Request failed. Please try again.");
-      return {
-        ok: false,
-        status: response.status,
-        message: parsed.message,
-        code: parsed.code,
-      };
-    }
-
-    return { ok: true, data: body as T };
-  } catch {
-    return {
-      ok: false,
-      message: "The EaziAiCall API is temporarily unavailable.",
-    };
-  }
-}
-
 function orgPath(organizationId: string, suffix: string): string {
   return `organizations/${encodeURIComponent(organizationId)}${suffix}`;
 }
@@ -134,14 +56,14 @@ function orgPath(organizationId: string, suffix: string): string {
 /** Team / invitations client — cookie session; no token logging. */
 export const teamApi = {
   listMembers: (organizationId: string) =>
-    request<{ members: TeamMember[] }>(orgPath(organizationId, "/members")),
+    apiRequest<{ members: TeamMember[] }>(orgPath(organizationId, "/members")),
 
   changeMemberRole: (
     organizationId: string,
     memberId: string,
     role: InviteAssignableRole,
   ) =>
-    request<{ member: TeamMember }>(
+    apiRequest<{ member: TeamMember }>(
       orgPath(organizationId, `/members/${encodeURIComponent(memberId)}`),
       {
         method: "PATCH",
@@ -150,13 +72,13 @@ export const teamApi = {
     ),
 
   removeMember: (organizationId: string, memberId: string) =>
-    request<{ removed: true }>(
+    apiRequest<{ removed: true }>(
       orgPath(organizationId, `/members/${encodeURIComponent(memberId)}`),
       { method: "DELETE" },
     ),
 
   listInvitations: (organizationId: string) =>
-    request<{ invitations: TeamInvitation[] }>(
+    apiRequest<{ invitations: TeamInvitation[] }>(
       orgPath(organizationId, "/invitations"),
     ),
 
@@ -164,7 +86,7 @@ export const teamApi = {
     organizationId: string,
     input: { email: string; role: InviteAssignableRole },
   ) =>
-    request<{ invitation: TeamInvitation }>(
+    apiRequest<{ invitation: TeamInvitation }>(
       orgPath(organizationId, "/invitations"),
       {
         method: "POST",
@@ -173,7 +95,7 @@ export const teamApi = {
     ),
 
   cancelInvitation: (organizationId: string, invitationId: string) =>
-    request<{ cancelled: true }>(
+    apiRequest<{ cancelled: true }>(
       orgPath(
         organizationId,
         `/invitations/${encodeURIComponent(invitationId)}`,
@@ -182,7 +104,7 @@ export const teamApi = {
     ),
 
   transferOwnership: (organizationId: string, memberId: string) =>
-    request<{ previousOwner: TeamMember; newOwner: TeamMember }>(
+    apiRequest<{ previousOwner: TeamMember; newOwner: TeamMember }>(
       orgPath(organizationId, "/transfer-ownership"),
       {
         method: "POST",
@@ -191,12 +113,12 @@ export const teamApi = {
     ),
 
   previewInvitation: (token: string) =>
-    request<{ invitation: InvitationPreview }>(
+    apiRequest<{ invitation: InvitationPreview }>(
       `invitations/preview?token=${encodeURIComponent(token)}`,
     ),
 
   acceptInvitation: (token: string) =>
-    request<{
+    apiRequest<{
       member: TeamMember;
       organizationId: string;
       alreadyMember: boolean;

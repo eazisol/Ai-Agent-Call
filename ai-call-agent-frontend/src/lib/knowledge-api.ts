@@ -1,4 +1,4 @@
-import { buildApiUrl } from "./api-url.mjs";
+import { apiRequest } from "./api-client";
 import type { OrganizationRole } from "./organizations-api";
 
 export type KnowledgeSourceType = "file" | "url" | "text" | "faq";
@@ -115,87 +115,6 @@ export type UpdateKnowledgeInput = {
   items?: KnowledgeFaqItem[];
 };
 
-export type ApiResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; message: string; code?: string; status?: number };
-
-type ErrorEnvelope = {
-  error?: { code?: string; message?: string };
-};
-
-function apiUrl(path: string): string {
-  return buildApiUrl(
-    path,
-    process.env.INTERNAL_API_BASE_URL,
-    process.env.NEXT_PUBLIC_API_BASE_URL,
-  );
-}
-
-async function parseJson(response: Response): Promise<unknown> {
-  const text = await response.text();
-  if (!text) {
-    return null;
-  }
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
-  }
-}
-
-function errorMessage(
-  body: unknown,
-  fallback: string,
-): { message: string; code?: string } {
-  const envelope = body as ErrorEnvelope | null;
-  return {
-    message: envelope?.error?.message?.trim() || fallback,
-    code: envelope?.error?.code,
-  };
-}
-
-async function request<T>(
-  path: string,
-  init?: RequestInit & { timeoutMs?: number },
-): Promise<ApiResult<T>> {
-  try {
-    const headers = new Headers(init?.headers);
-    headers.set("Accept", "application/json");
-    const isFormData =
-      typeof FormData !== "undefined" && init?.body instanceof FormData;
-    if (init?.body && !isFormData && !headers.has("Content-Type")) {
-      headers.set("Content-Type", "application/json");
-    }
-
-    const { timeoutMs, ...fetchInit } = init ?? {};
-    const response = await fetch(apiUrl(path), {
-      ...fetchInit,
-      credentials: "include",
-      cache: "no-store",
-      headers,
-      signal: fetchInit.signal ?? AbortSignal.timeout(timeoutMs ?? 15_000),
-    });
-
-    const body = await parseJson(response);
-    if (!response.ok) {
-      const parsed = errorMessage(body, "Request failed. Please try again.");
-      return {
-        ok: false,
-        status: response.status,
-        message: parsed.message,
-        code: parsed.code,
-      };
-    }
-
-    return { ok: true, data: body as T };
-  } catch {
-    return {
-      ok: false,
-      message: "The EaziAiCall API is temporarily unavailable.",
-    };
-  }
-}
-
 export function canViewKnowledge(): boolean {
   return true;
 }
@@ -258,29 +177,29 @@ export function elevenLabsKnowledgeMapping(
 
 export const knowledgeApi = {
   list: (includeArchived = false) =>
-    request<{ sources: KnowledgeSource[] }>(
+    apiRequest<{ sources: KnowledgeSource[] }>(
       includeArchived ? "knowledge?includeArchived=true" : "knowledge",
     ),
 
   get: (id: string) =>
-    request<{ source: KnowledgeSource }>(
+    apiRequest<{ source: KnowledgeSource }>(
       `knowledge/${encodeURIComponent(id)}`,
     ),
 
   createUrl: (input: CreateKnowledgeUrlInput) =>
-    request<{ source: KnowledgeSource }>("knowledge/url", {
+    apiRequest<{ source: KnowledgeSource }>("knowledge/url", {
       method: "POST",
       body: JSON.stringify(input),
     }),
 
   createText: (input: CreateKnowledgeTextInput) =>
-    request<{ source: KnowledgeSource }>("knowledge/text", {
+    apiRequest<{ source: KnowledgeSource }>("knowledge/text", {
       method: "POST",
       body: JSON.stringify(input),
     }),
 
   createFaq: (input: CreateKnowledgeFaqInput) =>
-    request<{ source: KnowledgeSource }>("knowledge/faq", {
+    apiRequest<{ source: KnowledgeSource }>("knowledge/faq", {
       method: "POST",
       body: JSON.stringify({
         name: input.name,
@@ -291,14 +210,14 @@ export const knowledgeApi = {
     }),
 
   createFile: (formData: FormData) =>
-    request<{ source: KnowledgeSource }>("knowledge/files", {
+    apiRequest<{ source: KnowledgeSource }>("knowledge/files", {
       method: "POST",
       body: formData,
       timeoutMs: 45_000,
     }),
 
   update: (id: string, input: UpdateKnowledgeInput) =>
-    request<{ source: KnowledgeSource }>(
+    apiRequest<{ source: KnowledgeSource }>(
       `knowledge/${encodeURIComponent(id)}`,
       {
         method: "PATCH",
@@ -307,47 +226,47 @@ export const knowledgeApi = {
     ),
 
   archive: (id: string) =>
-    request<{ source: KnowledgeSource }>(
+    apiRequest<{ source: KnowledgeSource }>(
       `knowledge/${encodeURIComponent(id)}/archive`,
       { method: "POST" },
     ),
 
   remove: (id: string) =>
-    request<{ deleted: true }>(`knowledge/${encodeURIComponent(id)}`, {
+    apiRequest<{ deleted: true }>(`knowledge/${encodeURIComponent(id)}`, {
       method: "DELETE",
     }),
 
   sync: (id: string) =>
-    request<{ knowledge: KnowledgeSource; sync: KnowledgeSyncResult }>(
+    apiRequest<{ knowledge: KnowledgeSource; sync: KnowledgeSyncResult }>(
       `knowledge/${encodeURIComponent(id)}/sync`,
       { method: "POST", timeoutMs: 45_000 },
     ),
 
   resync: (id: string) =>
-    request<{ knowledge: KnowledgeSource; sync: KnowledgeSyncResult }>(
+    apiRequest<{ knowledge: KnowledgeSource; sync: KnowledgeSyncResult }>(
       `knowledge/${encodeURIComponent(id)}/resync`,
       { method: "POST", timeoutMs: 45_000 },
     ),
 
   providerStatus: (id: string) =>
-    request<{ status: KnowledgeProviderStatus }>(
+    apiRequest<{ status: KnowledgeProviderStatus }>(
       `knowledge/${encodeURIComponent(id)}/provider-status`,
       { timeoutMs: 20_000 },
     ),
 
   listAgentKnowledge: (agentId: string) =>
-    request<{ assignments: AgentKnowledgeAssignment[] }>(
+    apiRequest<{ assignments: AgentKnowledgeAssignment[] }>(
       `agents/${encodeURIComponent(agentId)}/knowledge`,
     ),
 
   assignToAgent: (agentId: string, knowledgeId: string) =>
-    request<{ assignment: AgentKnowledgeAssignment }>(
+    apiRequest<{ assignment: AgentKnowledgeAssignment }>(
       `agents/${encodeURIComponent(agentId)}/knowledge/${encodeURIComponent(knowledgeId)}`,
       { method: "POST" },
     ),
 
   unassignFromAgent: (agentId: string, knowledgeId: string) =>
-    request<{ deleted: true }>(
+    apiRequest<{ deleted: true }>(
       `agents/${encodeURIComponent(agentId)}/knowledge/${encodeURIComponent(knowledgeId)}`,
       { method: "DELETE" },
     ),

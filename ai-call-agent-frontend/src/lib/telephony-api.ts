@@ -1,5 +1,5 @@
-﻿import { buildApiUrl } from "./api-url.mjs";
-
+import { apiRequest } from "./api-client";
+﻿
 export type TelephonyProviderStatus = {
   provider: string;
   configured: boolean;
@@ -12,82 +12,6 @@ export type TelephonyProviderStatus = {
   } | null;
   activePhoneNumbers: number;
 };
-
-export type ApiResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; message: string; code?: string; status?: number };
-
-type ErrorEnvelope = {
-  error?: { code?: string; message?: string };
-};
-
-function apiUrl(path: string): string {
-  return buildApiUrl(
-    path,
-    process.env.INTERNAL_API_BASE_URL,
-    process.env.NEXT_PUBLIC_API_BASE_URL,
-  );
-}
-
-async function parseJson(response: Response): Promise<unknown> {
-  const text = await response.text();
-  if (!text) {
-    return null;
-  }
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
-  }
-}
-
-function errorMessage(
-  body: unknown,
-  fallback: string,
-): { message: string; code?: string } {
-  const envelope = body as ErrorEnvelope | null;
-  return {
-    message: envelope?.error?.message?.trim() || fallback,
-    code: envelope?.error?.code,
-  };
-}
-
-async function request<T>(
-  path: string,
-  init?: RequestInit & { timeoutMs?: number },
-): Promise<ApiResult<T>> {
-  try {
-    const headers = new Headers(init?.headers);
-    headers.set("Accept", "application/json");
-    const { timeoutMs, ...fetchInit } = init ?? {};
-    const response = await fetch(apiUrl(path), {
-      ...fetchInit,
-      credentials: "include",
-      cache: "no-store",
-      headers,
-      signal: fetchInit.signal ?? AbortSignal.timeout(timeoutMs ?? 15_000),
-    });
-
-    const body = await parseJson(response);
-    if (!response.ok) {
-      const parsed = errorMessage(body, "Request failed. Please try again.");
-      return {
-        ok: false,
-        status: response.status,
-        code: parsed.code,
-        message: parsed.message,
-      };
-    }
-
-    return { ok: true, data: body as T };
-  } catch {
-    return {
-      ok: false,
-      message:
-        "The telephony provider status could not be loaded. Check your connection and try again.",
-    };
-  }
-}
 
 export function telephonyStatusBadge(
   status: TelephonyProviderStatus | null,
@@ -116,9 +40,22 @@ export function formatTelephonyStatus(
   return "Credential error";
 }
 
+async function telephonyRequest<T>(
+  path: string,
+  init?: Parameters<typeof apiRequest>[1],
+): Promise<ApiResult<T>> {
+  return apiRequest<T>(path, {
+    unavailableMessage:
+      "The telephony provider status could not be loaded. Check your connection and try again.",
+    timeoutMessage:
+      "The telephony provider status request timed out. Check your connection and try again.",
+    ...init,
+  });
+}
+
 export const telephonyApi = {
   providerStatus: (options?: { timeoutMs?: number }) =>
-    request<{ status: TelephonyProviderStatus }>("telephony/provider-status", {
+    telephonyRequest<{ status: TelephonyProviderStatus }>("telephony/provider-status", {
       timeoutMs: options?.timeoutMs,
     }),
 };

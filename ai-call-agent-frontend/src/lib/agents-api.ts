@@ -1,5 +1,5 @@
-﻿import { buildApiUrl } from "./api-url.mjs";
-import type { OrganizationRole } from "./organizations-api";
+import { apiRequest } from "./api-client";
+﻿import type { OrganizationRole } from "./organizations-api";
 import type { VoiceSummary } from "./voices-api";
 
 export type AgentStatus = "active" | "inactive" | "archived";
@@ -96,86 +96,6 @@ export type UpdateAgentInput = Partial<CreateAgentInput> & {
   status?: AgentStatus;
 };
 
-export type ApiResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; message: string; code?: string; status?: number };
-
-type ErrorEnvelope = {
-  error?: { code?: string; message?: string };
-};
-
-function apiUrl(path: string): string {
-  return buildApiUrl(
-    path,
-    process.env.INTERNAL_API_BASE_URL,
-    process.env.NEXT_PUBLIC_API_BASE_URL,
-  );
-}
-
-async function parseJson(response: Response): Promise<unknown> {
-  const text = await response.text();
-  if (!text) {
-    return null;
-  }
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
-  }
-}
-
-function errorMessage(
-  body: unknown,
-  fallback: string,
-): { message: string; code?: string } {
-  const envelope = body as ErrorEnvelope | null;
-  return {
-    message: envelope?.error?.message?.trim() || fallback,
-    code: envelope?.error?.code,
-  };
-}
-
-async function request<T>(
-  path: string,
-  init?: RequestInit & { timeoutMs?: number },
-): Promise<ApiResult<T>> {
-  try {
-    const headers = new Headers(init?.headers);
-    headers.set("Accept", "application/json");
-    if (init?.body && !headers.has("Content-Type")) {
-      headers.set("Content-Type", "application/json");
-    }
-
-    const { timeoutMs, ...fetchInit } = init ?? {};
-    const response = await fetch(apiUrl(path), {
-      ...fetchInit,
-      credentials: "include",
-      cache: "no-store",
-      headers,
-      signal:
-        fetchInit.signal ?? AbortSignal.timeout(timeoutMs ?? 15_000),
-    });
-
-    const body = await parseJson(response);
-    if (!response.ok) {
-      const parsed = errorMessage(body, "Request failed. Please try again.");
-      return {
-        ok: false,
-        status: response.status,
-        message: parsed.message,
-        code: parsed.code,
-      };
-    }
-
-    return { ok: true, data: body as T };
-  } catch {
-    return {
-      ok: false,
-      message: "The EaziAiCall API is temporarily unavailable.",
-    };
-  }
-}
-
 export function canListAgents(): boolean {
   return true;
 }
@@ -250,53 +170,53 @@ export function providerSyncStatusBadge(
 
 export const agentsApi = {
   list: (includeArchived = false) =>
-    request<{ agents: Agent[] }>(
+    apiRequest<{ agents: Agent[] }>(
       includeArchived ? "agents?includeArchived=true" : "agents",
     ),
 
   get: (id: string) =>
-    request<{ agent: Agent }>(`agents/${encodeURIComponent(id)}`),
+    apiRequest<{ agent: Agent }>(`agents/${encodeURIComponent(id)}`),
 
   create: (input: CreateAgentInput) =>
-    request<{ agent: Agent }>("agents", {
+    apiRequest<{ agent: Agent }>("agents", {
       method: "POST",
       body: JSON.stringify(input),
     }),
 
   update: (id: string, input: UpdateAgentInput) =>
-    request<{ agent: Agent }>(`agents/${encodeURIComponent(id)}`, {
+    apiRequest<{ agent: Agent }>(`agents/${encodeURIComponent(id)}`, {
       method: "PATCH",
       body: JSON.stringify(input),
     }),
 
   activate: (id: string) =>
-    request<{ agent: Agent }>(`agents/${encodeURIComponent(id)}/activate`, {
+    apiRequest<{ agent: Agent }>(`agents/${encodeURIComponent(id)}/activate`, {
       method: "POST",
     }),
 
   deactivate: (id: string) =>
-    request<{ agent: Agent }>(`agents/${encodeURIComponent(id)}/deactivate`, {
+    apiRequest<{ agent: Agent }>(`agents/${encodeURIComponent(id)}/deactivate`, {
       method: "POST",
     }),
 
   archive: (id: string) =>
-    request<{ agent: Agent }>(`agents/${encodeURIComponent(id)}/archive`, {
+    apiRequest<{ agent: Agent }>(`agents/${encodeURIComponent(id)}/archive`, {
       method: "POST",
     }),
 
   remove: (id: string) =>
-    request<{ deleted: true }>(`agents/${encodeURIComponent(id)}`, {
+    apiRequest<{ deleted: true }>(`agents/${encodeURIComponent(id)}`, {
       method: "DELETE",
     }),
 
   sync: (id: string) =>
-    request<{ agent: Agent; sync: AgentSyncResult }>(
+    apiRequest<{ agent: Agent; sync: AgentSyncResult }>(
       `agents/${encodeURIComponent(id)}/sync`,
       { method: "POST", timeoutMs: 45_000 },
     ),
 
   providerStatus: (id: string) =>
-    request<{ status: AgentProviderStatus }>(
+    apiRequest<{ status: AgentProviderStatus }>(
       `agents/${encodeURIComponent(id)}/provider-status`,
       { timeoutMs: 20_000 },
     ),

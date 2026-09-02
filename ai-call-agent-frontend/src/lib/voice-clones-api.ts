@@ -1,5 +1,5 @@
-﻿import { buildApiUrl } from "./api-url.mjs";
-import type { OrganizationRole } from "./organizations-api";
+import { apiRequest } from "./api-client";
+﻿import type { OrganizationRole } from "./organizations-api";
 
 export type VoiceCloneStatus =
   | "draft"
@@ -60,91 +60,10 @@ export type ListVoiceClonesParams = {
   limit?: number;
 };
 
-export type ApiResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; message: string; code?: string; status?: number };
-
-type ErrorEnvelope = {
-  error?: { code?: string; message?: string };
-};
-
 export const VOICE_CLONE_CONSENT_VERSION = "m09-v1";
 export const VOICE_CLONE_MAX_SAMPLES = 5;
 export const VOICE_CLONE_MIN_TOTAL_SECONDS = 60;
 export const VOICE_CLONE_MAX_SAMPLE_BYTES = 25 * 1024 * 1024;
-
-function apiUrl(path: string): string {
-  return buildApiUrl(
-    path,
-    process.env.INTERNAL_API_BASE_URL,
-    process.env.NEXT_PUBLIC_API_BASE_URL,
-  );
-}
-
-async function parseJson(response: Response): Promise<unknown> {
-  const text = await response.text();
-  if (!text) {
-    return null;
-  }
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
-  }
-}
-
-function errorMessage(
-  body: unknown,
-  fallback: string,
-): { message: string; code?: string } {
-  const envelope = body as ErrorEnvelope | null;
-  return {
-    message: envelope?.error?.message?.trim() || fallback,
-    code: envelope?.error?.code,
-  };
-}
-
-async function request<T>(
-  path: string,
-  init?: RequestInit & { timeoutMs?: number },
-): Promise<ApiResult<T>> {
-  try {
-    const headers = new Headers(init?.headers);
-    headers.set("Accept", "application/json");
-    const isFormData =
-      typeof FormData !== "undefined" && init?.body instanceof FormData;
-    if (init?.body && !isFormData && !headers.has("Content-Type")) {
-      headers.set("Content-Type", "application/json");
-    }
-
-    const { timeoutMs, ...fetchInit } = init ?? {};
-    const response = await fetch(apiUrl(path), {
-      ...fetchInit,
-      credentials: "include",
-      cache: "no-store",
-      headers,
-      signal: fetchInit.signal ?? AbortSignal.timeout(timeoutMs ?? 15_000),
-    });
-
-    const body = await parseJson(response);
-    if (!response.ok) {
-      const parsed = errorMessage(body, "Request failed. Please try again.");
-      return {
-        ok: false,
-        status: response.status,
-        message: parsed.message,
-        code: parsed.code,
-      };
-    }
-
-    return { ok: true, data: body as T };
-  } catch {
-    return {
-      ok: false,
-      message: "The EaziAiCall API is temporarily unavailable.",
-    };
-  }
-}
 
 function queryString(params: ListVoiceClonesParams): string {
   const search = new URLSearchParams();
@@ -209,7 +128,7 @@ export function formatSampleBytes(bytes: number): string {
 
 export const voiceClonesApi = {
   list: (params: ListVoiceClonesParams = {}) =>
-    request<{
+    apiRequest<{
       clones: VoiceCloneSummary[];
       total: number;
       page: number;
@@ -217,23 +136,23 @@ export const voiceClonesApi = {
     }>(`voices/clones${queryString(params)}`),
 
   get: (id: string) =>
-    request<{ clone: VoiceCloneDetail }>(
+    apiRequest<{ clone: VoiceCloneDetail }>(
       `voices/clones/${encodeURIComponent(id)}`,
     ),
 
   status: (id: string) =>
-    request<VoiceCloneStatusSnapshot>(
+    apiRequest<VoiceCloneStatusSnapshot>(
       `voices/clones/${encodeURIComponent(id)}/status`,
     ),
 
   create: (input: CreateVoiceCloneInput) =>
-    request<{ clone: VoiceCloneDetail }>("voices/clones", {
+    apiRequest<{ clone: VoiceCloneDetail }>("voices/clones", {
       method: "POST",
       body: JSON.stringify(input),
     }),
 
   recordConsent: (id: string, input: RecordVoiceCloneConsentInput) =>
-    request<{ consent: { id: string; acceptedAt: string } }>(
+    apiRequest<{ consent: { id: string; acceptedAt: string } }>(
       `voices/clones/${encodeURIComponent(id)}/consent`,
       {
         method: "POST",
@@ -244,7 +163,7 @@ export const voiceClonesApi = {
   uploadSample: (id: string, file: File) => {
     const formData = new FormData();
     formData.append("file", file);
-    return request<{ sample: VoiceCloneSample }>(
+    return apiRequest<{ sample: VoiceCloneSample }>(
       `voices/clones/${encodeURIComponent(id)}/samples`,
       {
         method: "POST",
@@ -255,31 +174,31 @@ export const voiceClonesApi = {
   },
 
   deleteSample: (cloneId: string, sampleId: string) =>
-    request<void>(
+    apiRequest<void>(
       `voices/clones/${encodeURIComponent(cloneId)}/samples/${encodeURIComponent(sampleId)}`,
       { method: "DELETE" },
     ),
 
   submit: (id: string) =>
-    request<{ clone: VoiceCloneDetail }>(
+    apiRequest<{ clone: VoiceCloneDetail }>(
       `voices/clones/${encodeURIComponent(id)}/submit`,
       { method: "POST", timeoutMs: 60_000 },
     ),
 
   retry: (id: string) =>
-    request<{ clone: VoiceCloneDetail }>(
+    apiRequest<{ clone: VoiceCloneDetail }>(
       `voices/clones/${encodeURIComponent(id)}/retry`,
       { method: "POST", timeoutMs: 60_000 },
     ),
 
   revoke: (id: string) =>
-    request<{ clone: VoiceCloneDetail }>(
+    apiRequest<{ clone: VoiceCloneDetail }>(
       `voices/clones/${encodeURIComponent(id)}/revoke`,
       { method: "POST" },
     ),
 
   remove: (id: string) =>
-    request<{ deleted: true }>(
+    apiRequest<{ deleted: true }>(
       `voices/clones/${encodeURIComponent(id)}`,
       { method: "DELETE" },
     ),

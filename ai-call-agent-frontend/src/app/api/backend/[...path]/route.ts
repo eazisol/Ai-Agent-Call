@@ -15,6 +15,8 @@ const FIXED_BACKEND_ORIGIN =
   process.env.BACKEND_PROXY_ORIGIN ??
   "https://dl1t1qnfxrdka.cloudfront.net";
 
+const UPSTREAM_TIMEOUT_MS = 55_000;
+
 async function proxy(request: Request, segments: string[]): Promise<Response> {
   validateProxyPathSegments(segments);
   const incomingUrl = new URL(request.url);
@@ -28,13 +30,27 @@ async function proxy(request: Request, segments: string[]): Promise<Response> {
   const method = request.method.toUpperCase();
   const body = await resolveProxyRequestBody(request);
 
-  const upstream = await fetch(upstreamUrl, {
-    method,
-    headers,
-    body,
-    redirect: "manual",
-    cache: "no-store",
-  });
+  let upstream: Response;
+  try {
+    upstream = await fetch(upstreamUrl, {
+      method,
+      headers,
+      body,
+      redirect: "manual",
+      cache: "no-store",
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+    });
+  } catch {
+    return Response.json(
+      {
+        error: {
+          code: "UPSTREAM_UNAVAILABLE",
+          message: "The upstream API is temporarily unavailable.",
+        },
+      },
+      { status: 502, headers: { "cache-control": "no-store" } },
+    );
+  }
 
   const responseHeaders = buildForwardedResponseHeaders(upstream.headers);
   for (const cookie of getForwardedSetCookieHeaders(upstream.headers)) {

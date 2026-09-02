@@ -1,4 +1,8 @@
-import { buildApiUrl } from "./api-url.mjs";
+import {
+  apiRequest,
+  type ApiResult,
+  DEFAULT_UNAVAILABLE_MESSAGE,
+} from "./api-client";
 
 export type AuthUser = {
   id: string;
@@ -8,102 +12,21 @@ export type AuthUser = {
   createdAt: string;
 };
 
-export type ApiResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; message: string; code?: string; status?: number };
-
-type ErrorEnvelope = {
-  error?: { code?: string; message?: string };
-};
-
-function apiUrl(path: string): string {
-  return buildApiUrl(
-    path,
-    process.env.INTERNAL_API_BASE_URL,
-    process.env.NEXT_PUBLIC_API_BASE_URL,
-  );
-}
-
-async function parseJson(response: Response): Promise<unknown> {
-  const text = await response.text();
-  if (!text) {
-    return null;
-  }
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
-  }
-}
-
-/** Auth client — never logs request bodies, passwords, or tokens. */
-
-function errorMessage(body: unknown, fallback: string): { message: string; code?: string } {
-  const envelope = body as ErrorEnvelope | null;
-  const message = envelope?.error?.message?.trim();
-  const code = envelope?.error?.code;
-  return {
-    message: message || fallback,
-    code,
-  };
-}
-
-function unavailableMessage(error: unknown): string {
-  if (error instanceof DOMException && error.name === "AbortError") {
-    return "The sign-in request timed out. Please try again.";
-  }
-  if (error instanceof Error && error.name === "TimeoutError") {
-    return "The sign-in request timed out. Please try again.";
-  }
-  return "The EaziAiCall API is temporarily unavailable.";
-}
-
-async function request<T>(
+async function authRequest<T>(
   path: string,
-  init?: RequestInit,
+  init?: Parameters<typeof apiRequest>[1],
 ): Promise<ApiResult<T>> {
-  const url = apiUrl(path);
-  try {
-    const headers = new Headers(init?.headers);
-    headers.set("Accept", "application/json");
-    if (init?.body && !headers.has("Content-Type")) {
-      headers.set("Content-Type", "application/json");
-    }
-
-    const response = await fetch(url, {
-      ...init,
-      credentials: "include",
-      cache: "no-store",
-      headers,
-      signal: init?.signal ?? AbortSignal.timeout(30_000),
-    });
-
-    const body = await parseJson(response);
-    if (!response.ok) {
-      const fallback =
-        response.status >= 500
-          ? "The EaziAiCall API is temporarily unavailable."
-          : "Request failed. Please try again.";
-      const parsed = errorMessage(body, fallback);
-      return {
-        ok: false,
-        status: response.status,
-        message: parsed.message,
-        code: parsed.code,
-      };
-    }
-
-    return { ok: true, data: body as T };
-  } catch (error) {
-    return {
-      ok: false,
-      message: unavailableMessage(error),
-    };
-  }
+  return apiRequest<T>(path, {
+    timeoutMs: 30_000,
+    timeoutMessage: "The sign-in request timed out. Please try again.",
+    unavailableMessage: DEFAULT_UNAVAILABLE_MESSAGE,
+    serverErrorFallback: DEFAULT_UNAVAILABLE_MESSAGE,
+    ...init,
+  });
 }
 
 export const authApi = {
-  me: () => request<{ user: AuthUser }>("auth/me"),
+  me: () => authRequest<{ user: AuthUser }>("auth/me"),
 
   register: (input: {
     email: string;
@@ -111,37 +34,37 @@ export const authApi = {
     displayName: string;
     returnTo?: string;
   }) =>
-    request<{ user: AuthUser }>("auth/register", {
+    authRequest<{ user: AuthUser }>("auth/register", {
       method: "POST",
       body: JSON.stringify(input),
     }),
 
   login: (input: { email: string; password: string }) =>
-    request<{ user: AuthUser }>("auth/login", {
+    authRequest<{ user: AuthUser }>("auth/login", {
       method: "POST",
       body: JSON.stringify(input),
     }),
 
   logout: () =>
-    request<{ success: true }>("auth/logout", {
+    authRequest<{ success: true }>("auth/logout", {
       method: "POST",
       body: JSON.stringify({}),
     }),
 
   forgotPassword: (email: string) =>
-    request<{ accepted: true }>("auth/forgot-password", {
+    authRequest<{ accepted: true }>("auth/forgot-password", {
       method: "POST",
       body: JSON.stringify({ email }),
     }),
 
   resetPassword: (token: string, password: string) =>
-    request<{ reset: true }>("auth/reset-password", {
+    authRequest<{ reset: true }>("auth/reset-password", {
       method: "POST",
       body: JSON.stringify({ token, password }),
     }),
 
   verifyEmail: (token: string) =>
-    request<{ user: AuthUser }>("auth/verify-email", {
+    authRequest<{ user: AuthUser }>("auth/verify-email", {
       method: "POST",
       body: JSON.stringify({ token }),
     }),

@@ -1,5 +1,5 @@
-﻿import { buildApiUrl } from "./api-url.mjs";
-
+import { apiRequest } from "./api-client";
+﻿
 export type CallStatus = "started" | "in_progress" | "completed" | "failed";
 
 export type CallDirection = "inbound" | "outbound";
@@ -42,86 +42,6 @@ export type CallListResponse = {
   limit: number;
   total: number;
 };
-
-export type ApiResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; message: string; code?: string; status?: number };
-
-type ErrorEnvelope = {
-  error?: { code?: string; message?: string };
-};
-
-function apiUrl(path: string): string {
-  return buildApiUrl(
-    path,
-    process.env.INTERNAL_API_BASE_URL,
-    process.env.NEXT_PUBLIC_API_BASE_URL,
-  );
-}
-
-async function parseJson(response: Response): Promise<unknown> {
-  const text = await response.text();
-  if (!text) {
-    return null;
-  }
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
-  }
-}
-
-function errorMessage(
-  body: unknown,
-  fallback: string,
-): { message: string; code?: string } {
-  const envelope = body as ErrorEnvelope | null;
-  return {
-    message: envelope?.error?.message?.trim() || fallback,
-    code: envelope?.error?.code,
-  };
-}
-
-async function request<T>(
-  path: string,
-  init?: RequestInit & { timeoutMs?: number },
-): Promise<ApiResult<T>> {
-  try {
-    const headers = new Headers(init?.headers);
-    headers.set("Accept", "application/json");
-    if (init?.body && !headers.has("Content-Type")) {
-      headers.set("Content-Type", "application/json");
-    }
-
-    const { timeoutMs, ...fetchInit } = init ?? {};
-    const response = await fetch(apiUrl(path), {
-      ...fetchInit,
-      credentials: "include",
-      cache: "no-store",
-      headers,
-      signal: fetchInit.signal ?? AbortSignal.timeout(timeoutMs ?? 30_000),
-    });
-
-    const body = await parseJson(response);
-    if (!response.ok) {
-      const parsed = errorMessage(body, "Request failed. Please try again.");
-      return {
-        ok: false,
-        status: response.status,
-        message: parsed.message,
-        code: parsed.code,
-      };
-    }
-
-    return { ok: true, data: body as T };
-  } catch {
-    return {
-      ok: false,
-      message:
-        "The request timed out or the API is temporarily unavailable. Check your connection and try again.",
-    };
-  }
-}
 
 export function formatCallStatus(status: CallStatus): string {
   if (status === "in_progress") return "In progress";
@@ -193,6 +113,20 @@ export function formatCallApiError(
   return message;
 }
 
+async function portalRequest<T>(
+  path: string,
+  init?: Parameters<typeof apiRequest>[1],
+): Promise<ApiResult<T>> {
+  return apiRequest<T>(path, {
+    timeoutMs: 30_000,
+    timeoutMessage:
+      "The request timed out or the API is temporarily unavailable. Check your connection and try again.",
+    unavailableMessage:
+      "The request timed out or the API is temporarily unavailable. Check your connection and try again.",
+    ...init,
+  });
+}
+
 export const callsApi = {
   list: (params?: {
     status?: CallStatus;
@@ -207,11 +141,11 @@ export const callsApi = {
     if (params?.agentId) query.set("agentId", params.agentId);
     if (params?.page) query.set("page", String(params.page));
     if (params?.limit) query.set("limit", String(params.limit));
-    return request<CallListResponse>(`calls?${query.toString()}`);
+    return portalRequest<CallListResponse>(`calls?${query.toString()}`);
   },
 
   get: (id: string) =>
-    request<CallDetailResponse>(`calls/${encodeURIComponent(id)}`),
+    portalRequest<CallDetailResponse>(`calls/${encodeURIComponent(id)}`),
 };
 
 export function canViewCallProviderLinks(
