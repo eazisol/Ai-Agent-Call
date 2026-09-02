@@ -1,0 +1,11 @@
+# Copy to terraform.tfvars and set aws_region explicitly.
+# Do NOT commit terraform.tfvars with real environment-specific secrets or account details.
+
+aws_region = "REPLACE_WITH_YOUR_AWS_REGION"
+
+# Optional overrides (defaults match AWS-D03 design):
+# project_name          = "eaziacall"
+# environment           = "prod"
+# vpc_cidr              = "10.20.0.0/16"
+# public_subnet_cidrs   = ["10.20.0.0/24", "10.20.1.0/24"]
+# private_subnet_cidrs  = ["10.20.10.0/24", "10.20.11.0/24"]

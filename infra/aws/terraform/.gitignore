@@ -1,0 +1,17 @@
+# Local Terraform state and plugins — never commit
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Environment-specific variable files (may contain account-specific settings)
+terraform.tfvars
+*.auto.tfvars
+
+# Keep the example file tracked
+!terraform.tfvars.example

@@ -59,7 +59,7 @@ export const envValidationSchema = Joi.object({
 
   TELEPHONY_PROVIDER: Joi.string().valid('twilio').default('twilio'),
   VOICE_AGENT_PROVIDER: Joi.string()
-    .valid('openai_realtime')
+    .valid('openai_realtime', 'elevenlabs')
     .default('openai_realtime'),
 
   OPENAI_API_KEY: Joi.string().allow('', null),
@@ -190,12 +190,43 @@ export const envValidationSchema = Joi.object({
 
     if (
       environment.OBJECT_STORAGE_ENABLED === true &&
-      (!environment.OBJECT_STORAGE_ENDPOINT ||
-        !environment.OBJECT_STORAGE_BUCKET)
+      !environment.OBJECT_STORAGE_BUCKET
     ) {
       return helpers.message({
         custom:
-          'OBJECT_STORAGE_ENDPOINT and OBJECT_STORAGE_BUCKET are required when object storage is enabled',
+          'OBJECT_STORAGE_BUCKET is required when object storage is enabled',
+      });
+    }
+
+    if (environment.OBJECT_STORAGE_ENABLED === true) {
+      const objectStorageAccessKeyId =
+        typeof environment.OBJECT_STORAGE_ACCESS_KEY_ID === 'string'
+          ? environment.OBJECT_STORAGE_ACCESS_KEY_ID.trim()
+          : '';
+      const objectStorageSecretAccessKey =
+        typeof environment.OBJECT_STORAGE_SECRET_ACCESS_KEY === 'string'
+          ? environment.OBJECT_STORAGE_SECRET_ACCESS_KEY.trim()
+          : '';
+      const hasObjectStorageAccessKey = Boolean(objectStorageAccessKeyId);
+      const hasObjectStorageSecretKey = Boolean(objectStorageSecretAccessKey);
+
+      if (hasObjectStorageAccessKey !== hasObjectStorageSecretKey) {
+        return helpers.message({
+          custom:
+            'OBJECT_STORAGE_ACCESS_KEY_ID and OBJECT_STORAGE_SECRET_ACCESS_KEY must both be set or both omitted (omit both to use the AWS default credential chain / ECS Task Role)',
+        });
+      }
+    }
+
+    const elevenLabsWebhookSecret =
+      typeof environment.ELEVENLABS_WEBHOOK_SECRET === 'string'
+        ? environment.ELEVENLABS_WEBHOOK_SECRET.trim()
+        : '';
+
+    if (production && !elevenLabsWebhookSecret) {
+      return helpers.message({
+        custom:
+          'ELEVENLABS_WEBHOOK_SECRET is required in production for ElevenLabs webhook authentication',
       });
     }
 

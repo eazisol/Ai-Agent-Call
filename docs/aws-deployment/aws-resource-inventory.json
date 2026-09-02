@@ -1,0 +1,264 @@
+{
+    "environment":  "production",
+    "region":  "us-east-1",
+    "accountId":  "812047028300",
+    "network":  {
+                    "vpcId":  "vpc-079b83cf9f1f2135b",
+                    "availabilityZones":  [
+                                              "us-east-1a",
+                                              "us-east-1b"
+                                          ],
+                    "publicSubnetIds":  [
+                                            "subnet-005de662efbe236f5",
+                                            "subnet-0df3643d8ad0501a8"
+                                        ],
+                    "privateSubnetIds":  [
+                                             "subnet-0fc38aac1eef37201",
+                                             "subnet-039f9969241c4bd23"
+                                         ],
+                    "internetGatewayId":  "igw-08d74b61f03cf12d2",
+                    "natGatewayId":  "nat-07aaf235010543afa",
+                    "natEipAllocationId":  "eipalloc-0fdbba505f0cafea7",
+                    "publicRouteTableId":  "rtb-0c148fa7e1e11bf2d",
+                    "privateRouteTableId":  "rtb-037ce13b27182c962",
+                    "albSecurityGroupId":  "sg-098248934945d61d3",
+                    "ecsSecurityGroupId":  "sg-02fe9d3a2c96b513f",
+                    "rdsSecurityGroupId":  "sg-04a82007df199beff",
+                    "dbSubnetGroupName":  "eaziacall-prod-db-subnet-group"
+                },
+    "database":  {
+                     "identifier":  "eaziacall-prod-postgres",
+                     "arn":  "arn:aws:rds:us-east-1:812047028300:db:eaziacall-prod-postgres",
+                     "engine":  "postgres",
+                     "engineVersion":  "17.11",
+                     "instanceClass":  "db.t4g.micro",
+                     "databaseName":  "eazi_ai_call",
+                     "masterUsername":  "eaziadmin",
+                     "port":  5432,
+                     "endpoint":  "eaziacall-prod-postgres.c6hi80sou31r.us-east-1.rds.amazonaws.com",
+                     "dbSubnetGroupName":  "eaziacall-prod-db-subnet-group",
+                     "securityGroupId":  "sg-04a82007df199beff",
+                     "masterSecretArn":  "arn:aws:secretsmanager:us-east-1:812047028300:secret:rds!db-7860815c-b8c0-4d99-bcb3-4cd08646fcde-oob9mk",
+                     "publiclyAccessible":  false,
+                     "multiAz":  false,
+                     "storageEncrypted":  true,
+                     "allocatedStorageGiB":  20,
+                     "storageType":  "gp3",
+                     "backupRetentionPeriod":  7,
+                     "deletionProtection":  true,
+                     "availabilityZone":  "us-east-1b"
+                 },
+    "objectStorage":  {
+                          "bucketName":  "eaziacall-prod-812047028300-us-east-1",
+                          "bucketArn":  "arn:aws:s3:::eaziacall-prod-812047028300-us-east-1",
+                          "region":  "us-east-1",
+                          "versioning":  true,
+                          "encryption":  "AES256",
+                          "publicAccessBlocked":  true,
+                          "objectOwnership":  "BucketOwnerEnforced"
+                      },
+    "iam":  {
+                "ecsTaskRoleName":  "eaziacall-prod-ecs-task-role",
+                "ecsTaskRoleArn":  "arn:aws:iam::812047028300:role/eaziacall-prod-ecs-task-role",
+                "s3PolicyName":  "eaziacall-prod-s3-access",
+                "s3PolicyArn":  "arn:aws:iam::812047028300:policy/eaziacall-prod-s3-access"
+            },
+    "containerRegistry":  {
+                              "repositoryName":  "eaziacall-prod-backend",
+                              "repositoryArn":  "arn:aws:ecr:us-east-1:812047028300:repository/eaziacall-prod-backend",
+                              "repositoryUri":  "812047028300.dkr.ecr.us-east-1.amazonaws.com/eaziacall-prod-backend",
+                              "scanOnPush":  true,
+                              "tagMutability":  "IMMUTABLE",
+                              "encryption":  "AES256"
+                          },
+    "backendImage":  {
+                         "gitSha":  "aa49b93",
+                         "workingTreeDirty":  true,
+                         "tag":  "aa49b93-20260901t140030z",
+                         "digest":  "sha256:65f161a879e82a022ad953fb6334fe0ade8fc0fd93bd7f86a3816c151bac889b",
+                         "imageUri":  "812047028300.dkr.ecr.us-east-1.amazonaws.com/eaziacall-prod-backend:aa49b93-20260901t140030z",
+                         "platform":  "linux/amd64",
+                         "imageSizeBytes":  83671644,
+                         "scanStatus":  "COMPLETE",
+                         "scanCriticalCount":  0,
+                         "scanHighCount":  0,
+                         "alpineVersion":  "3.24.1",
+                         "opensslPackageVersion":  "3.5.8-r0",
+                         "cve202663073Present":  false
+                     },
+    "deprecatedBackendImages":  [
+                                    {
+                                        "tag":  "aa49b93-20260901t122259z",
+                                        "digest":  "sha256:322af9a4129db70af7f5ea6f348a22d9bb7f30214532d9bf6647d4cefdff884a",
+                                        "status":  "NON-CANONICAL / DO NOT DEPLOY",
+                                        "reason":  "OCI index manifest; not ECR-scannable"
+                                    },
+                                    {
+                                        "tag":  "aa49b93-20260901t123434z",
+                                        "digest":  "sha256:e3ca25e9ebd720fc3b1963b6f7a1872c1f6d92da3b913ffa7941bb83bcfc2830",
+                                        "status":  "NON-CANONICAL / DO NOT DEPLOY",
+                                        "reason":  "ECR CRITICAL CVE-2026-63073 (OpenSSL 3.5.7-r0)"
+                                    },
+                                    {
+                                        "tag":  "aa49b93-20260901t125102z",
+                                        "digest":  "sha256:98beea787f8c3eb93aacab3f6abc27ae3efbe92e6b7657681d0afc74a5dfa1b9",
+                                        "status":  "NON-CANONICAL / DO NOT DEPLOY",
+                                        "reason":  "Pre-elevenlabs env.validation; superseded by D11 rebuild"
+                                    }
+                                ],
+    "ecs":  {
+                "clusterName":  "eaziacall-prod-cluster",
+                "clusterArn":  "arn:aws:ecs:us-east-1:812047028300:cluster/eaziacall-prod-cluster",
+                "containerInsights":  true,
+                "applicationTaskRoleArn":  "arn:aws:iam::812047028300:role/eaziacall-prod-ecs-task-role",
+                "executionRoleName":  "eaziacall-prod-ecs-execution-role",
+                "executionRoleArn":  "arn:aws:iam::812047028300:role/eaziacall-prod-ecs-execution-role",
+                "taskDefinitionFamily":  "eaziacall-prod-backend",
+                "taskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:3",
+                "taskDefinitionRevision":  3,
+                "cpu":  "512",
+                "memory":  "1024",
+                "networkMode":  "awsvpc",
+                "runtimePlatform":  {
+                                        "operatingSystem":  "LINUX",
+                                        "cpuArchitecture":  "X86_64"
+                                    },
+                "containerName":  "backend",
+                "containerPort":  3000,
+                "imageDigest":  "sha256:65f161a879e82a022ad953fb6334fe0ade8fc0fd93bd7f86a3816c151bac889b",
+                "imageUri":  "812047028300.dkr.ecr.us-east-1.amazonaws.com/eaziacall-prod-backend@sha256:65f161a879e82a022ad953fb6334fe0ade8fc0fd93bd7f86a3816c151bac889b",
+                "taskRun":  false,
+                "runtimeTaskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:3",
+                "runtimeTaskDefinitionRevision":  3,
+                "secretsConfigured":  true,
+                "publicBaseUrl":  "https://dl1t1qnfxrdka.cloudfront.net",
+                "frontendUrl":  "https://eazi-ai-call.vercel.app",
+                "vercelUrlStatus":  "CONFIGURED",
+                "voiceAgentProvider":  "elevenlabs",
+                "serviceName":  "eaziacall-prod-backend-service",
+                "serviceArn":  "arn:aws:ecs:us-east-1:812047028300:service/eaziacall-prod-cluster/eaziacall-prod-backend-service",
+                "desiredCount":  1,
+                "runningCount":  1,
+                "serviceStable":  true,
+                "serviceCreated":  true,
+                "assignPublicIp":  false
+            },
+    "logging":  {
+                    "backendLogGroup":  "/ecs/eaziacall-prod-backend",
+                    "retentionDays":  14
+                },
+    "loadBalancer":  {
+                         "name":  "eaziacall-prod-alb",
+                         "arn":  "arn:aws:elasticloadbalancing:us-east-1:812047028300:loadbalancer/app/eaziacall-prod-alb/69039d835111f91a",
+                         "dnsName":  "eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
+                         "canonicalHostedZoneId":  "Z35SXDOTRQ7X7K",
+                         "scheme":  "internet-facing",
+                         "state":  "active",
+                         "ipAddressType":  "ipv4",
+                         "securityGroupId":  "sg-098248934945d61d3",
+                         "publicSubnetIds":  [
+                                                 "subnet-005de662efbe236f5",
+                                                 "subnet-0df3643d8ad0501a8"
+                                             ],
+                         "idleTimeoutSeconds":  120,
+                         "cloudFrontPrefixListId":  "pl-3b927c52"
+                     },
+    "targetGroup":  {
+                        "name":  "eaziacall-prod-backend-tg",
+                        "arn":  "arn:aws:elasticloadbalancing:us-east-1:812047028300:targetgroup/eaziacall-prod-backend-tg/5e32c30c919f5bba",
+                        "protocol":  "HTTP",
+                        "port":  3000,
+                        "targetType":  "ip",
+                        "healthCheckPath":  "/health/live",
+                        "registeredTargets":  1
+                    },
+    "albListener":  {
+                        "arn":  "arn:aws:elasticloadbalancing:us-east-1:812047028300:listener/app/eaziacall-prod-alb/69039d835111f91a/0cea905d5020ae5b",
+                        "protocol":  "HTTP",
+                        "port":  80
+                    },
+    "cloudFront":  {
+                       "distributionId":  "EVPODK7JRKPH6",
+                       "distributionArn":  "arn:aws:cloudfront::812047028300:distribution/EVPODK7JRKPH6",
+                       "domainName":  "dl1t1qnfxrdka.cloudfront.net",
+                       "status":  "Deployed",
+                       "enabled":  true,
+                       "publicBaseUrl":  "https://dl1t1qnfxrdka.cloudfront.net",
+                       "apiBaseUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1",
+                       "originAlbDns":  "eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
+                       "cachePolicy":  "Managed-CachingDisabled",
+                       "originRequestPolicy":  "Managed-AllViewerExceptHostHeader",
+                       "viewerProtocol":  "redirect-to-https",
+                       "originProtocol":  "http-only",
+                       "webhookUrls":  {
+                                           "twilioIncoming":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/incoming-call",
+                                           "twilioStatus":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/status-callback",
+                                           "twilioCallEnded":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/call-ended",
+                                           "elevenLabsEvents":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/elevenlabs/conversation-events"
+                                       }
+                   },
+    "secrets":  {
+                    "database":  {
+                                     "name":  "rds-managed",
+                                     "arn":  "arn:aws:secretsmanager:us-east-1:812047028300:secret:rds!db-7860815c-b8c0-4d99-bcb3-4cd08646fcde-oob9mk",
+                                     "status":  "reused"
+                                 },
+                    "auth":  {
+                                 "name":  "eaziacall/prod/auth",
+                                 "arn":  "arn:aws:secretsmanager:us-east-1:812047028300:secret:eaziacall/prod/auth-hWXyew",
+                                 "status":  "configured"
+                             },
+                    "smtp":  {
+                                 "name":  "eaziacall/prod/smtp",
+                                 "arn":  "arn:aws:secretsmanager:us-east-1:812047028300:secret:eaziacall/prod/smtp-pKmUku",
+                                 "status":  "configured"
+                             },
+                    "twilio":  {
+                                   "name":  "eaziacall/prod/twilio",
+                                   "arn":  "arn:aws:secretsmanager:us-east-1:812047028300:secret:eaziacall/prod/twilio-KYVjDs",
+                                   "status":  "configured"
+                               },
+                    "elevenlabs":  {
+                                       "name":  "eaziacall/prod/elevenlabs",
+                                       "arn":  "arn:aws:secretsmanager:us-east-1:812047028300:secret:eaziacall/prod/elevenlabs-JAPAjQ",
+                                       "status":  "configured"
+                                   },
+                    "voice":  {
+                                  "name":  "eaziacall/prod/voice",
+                                  "arn":  "arn:aws:secretsmanager:us-east-1:812047028300:secret:eaziacall/prod/voice-gt87qz",
+                                  "status":  "configured"
+                              },
+                    "voiceAgentProvider":  "elevenlabs"
+                },
+    "databaseMigration":  {
+                              "status":  "PASS",
+                              "taskArn":  "arn:aws:ecs:us-east-1:812047028300:task/eaziacall-prod-cluster/decca4ddccbe47d7bc3d18509aebac02",
+                              "preflightTaskArn":  "arn:aws:ecs:us-east-1:812047028300:task/eaziacall-prod-cluster/4ed60c3a01ab4fd9bdd0f4e1deba5573",
+                              "verificationTaskArn":  "arn:aws:ecs:us-east-1:812047028300:task/eaziacall-prod-cluster/806ef2eeca0a4e7a8cf4329614da70db",
+                              "taskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:3",
+                              "imageDigest":  "sha256:65f161a879e82a022ad953fb6334fe0ade8fc0fd93bd7f86a3816c151bac889b",
+                              "snapshotIdentifier":  "eaziacall-prod-pre-d12-20260901t142626z",
+                              "snapshotArn":  "arn:aws:rds:us-east-1:812047028300:snapshot:eaziacall-prod-pre-d12-20260901t142626z",
+                              "migrationTable":  "eazi_ai_call_migrations",
+                              "registeredMigrationCount":  16,
+                              "appliedMigrationCount":  16,
+                              "pendingMigrationCount":  0,
+                              "pgcrypto":  true,
+                              "completedAt":  "2026-09-01T14:31:04.029Z",
+                              "serviceStarted":  true
+                          },
+    "runtimeHealth":  {
+                          "cloudFrontLive":  200,
+                          "cloudFrontReady":  200,
+                          "targetHealthy":  true,
+                          "targetRegistered":  1
+                      },
+    "frontendIntegration":  {
+                                "productionUrl":  "https://eazi-ai-call.vercel.app",
+                                "sameOriginProxyPath":  "/api/backend",
+                                "backendOrigin":  "https://dl1t1qnfxrdka.cloudfront.net",
+                                "deployed":  false,
+                                "deploymentStatus":  "VERCEL_DEPLOYMENT_ACCESS_REQUIRED",
+                                "implementation":  "nextjs-route-handler"
+                            }
+}

@@ -36,3 +36,10 @@ Thumbs.db
 .cache/
 tmp/
 temp/
+
+# Terraform (infra/aws/terraform)
+**/.terraform/
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/terraform.tfvars
+!**/terraform.tfvars.example

@@ -9,6 +9,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApplicationError } from '../../common/errors/application-error';
 import type { ObjectStoragePort } from './object-storage.port';
+import {
+  buildS3ClientConfig,
+  isObjectStorageConfigured,
+} from './object-storage-client.config';
 
 @Injectable()
 export class S3ObjectStorageAdapter implements ObjectStoragePort {
@@ -22,15 +26,14 @@ export class S3ObjectStorageAdapter implements ObjectStoragePort {
   }
 
   isConfigured(): boolean {
-    if (!this.isEnabled()) {
-      return false;
-    }
-    const bucket = this.config.get<string>('objectStorage.bucket');
-    const accessKeyId = this.config.get<string>('objectStorage.accessKeyId');
-    const secretAccessKey = this.config.get<string>(
-      'objectStorage.secretAccessKey',
-    );
-    return Boolean(bucket && accessKeyId && secretAccessKey);
+    return isObjectStorageConfigured({
+      enabled: this.isEnabled(),
+      bucket: this.config.get<string>('objectStorage.bucket'),
+      region: this.config.get<string>('objectStorage.region'),
+      endpoint: this.config.get<string>('objectStorage.endpoint'),
+      accessKeyId: this.config.get<string>('objectStorage.accessKeyId'),
+      secretAccessKey: this.config.get<string>('objectStorage.secretAccessKey'),
+    });
   }
 
   async healthCheck(): Promise<void> {
@@ -40,7 +43,7 @@ export class S3ObjectStorageAdapter implements ObjectStoragePort {
 
     if (!this.isConfigured()) {
       throw new Error(
-        'Object storage is enabled but credentials are incomplete',
+        'Object storage is enabled but configuration is incomplete',
       );
     }
 
@@ -137,26 +140,14 @@ export class S3ObjectStorageAdapter implements ObjectStoragePort {
       return this.client;
     }
 
-    const region =
-      this.config.get<string>('objectStorage.region') ?? 'us-east-1';
-    const endpoint = this.config.get<string>('objectStorage.endpoint');
-    const accessKeyId = this.config.getOrThrow<string>(
-      'objectStorage.accessKeyId',
-    );
-    const secretAccessKey = this.config.getOrThrow<string>(
-      'objectStorage.secretAccessKey',
-    );
-
-    this.client = new S3Client({
-      region,
-      endpoint: endpoint || undefined,
-      forcePathStyle: Boolean(endpoint),
-      credentials: {
-        accessKeyId,
-        secretAccessKey,
-      },
+    const clientConfig = buildS3ClientConfig({
+      region: this.config.get<string>('objectStorage.region') ?? 'us-east-1',
+      endpoint: this.config.get<string>('objectStorage.endpoint'),
+      accessKeyId: this.config.get<string>('objectStorage.accessKeyId'),
+      secretAccessKey: this.config.get<string>('objectStorage.secretAccessKey'),
     });
 
+    this.client = new S3Client(clientConfig);
     return this.client;
   }
 }

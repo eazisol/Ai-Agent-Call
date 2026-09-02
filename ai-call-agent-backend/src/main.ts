@@ -36,8 +36,8 @@ async function bootstrap() {
   app.enableShutdownHooks();
 
   const port = config.get<number>('app.port') ?? 3000;
-  await app.listen(port);
-  Logger.log(`EaziAiCall API listening on port ${port}`, 'Bootstrap');
+  await app.listen(port, '0.0.0.0');
+  Logger.log(`EaziAiCall API listening on 0.0.0.0:${port}`, 'Bootstrap');
 }
 
 void bootstrap().catch((error: unknown) => {
