@@ -113,3 +113,106 @@ test("preserves backend status codes via response header helper", () => {
     assert.equal(forwarded.get("cache-control"), "no-store");
   }
 });
+
+test("strips stale gzip content-encoding and content-length from proxied responses", () => {
+  const upstream = new Headers({
+    "content-type": "application/json; charset=utf-8",
+    "content-encoding": "gzip",
+    "content-length": "128",
+    "transfer-encoding": "chunked",
+    connection: "keep-alive",
+    vary: "Origin, Accept-Encoding",
+    etag: '"abc123"',
+  });
+  const forwarded = buildForwardedResponseHeaders(upstream);
+  assert.equal(forwarded.get("content-type"), "application/json; charset=utf-8");
+  assert.equal(forwarded.get("content-encoding"), null);
+  assert.equal(forwarded.get("content-length"), null);
+  assert.equal(forwarded.get("transfer-encoding"), null);
+  assert.equal(forwarded.get("connection"), null);
+  assert.equal(forwarded.get("vary"), "Origin, Accept-Encoding");
+  assert.equal(forwarded.get("etag"), '"abc123"');
+  assert.equal(forwarded.get("cache-control"), "no-store");
+});
+
+test("strips stale br content-encoding from proxied responses", () => {
+  const upstream = new Headers({
+    "content-type": "application/json",
+    "content-encoding": "br",
+    "content-length": "64",
+  });
+  const forwarded = buildForwardedResponseHeaders(upstream);
+  assert.equal(forwarded.get("content-encoding"), null);
+  assert.equal(forwarded.get("content-length"), null);
+});
+
+test("preserves location redirect header on proxied responses", () => {
+  const upstream = new Headers({
+    location: "https://example.com/next",
+    "content-type": "application/json",
+  });
+  const forwarded = buildForwardedResponseHeaders(upstream);
+  assert.equal(forwarded.get("location"), "https://example.com/next");
+});
+
+test("preserves correlation headers on proxied responses", () => {
+  const upstream = new Headers({
+    "content-type": "application/json",
+    "x-request-id": "req-123",
+    "x-correlation-id": "corr-456",
+  });
+  const forwarded = buildForwardedResponseHeaders(upstream);
+  assert.equal(forwarded.get("x-request-id"), "req-123");
+  assert.equal(forwarded.get("x-correlation-id"), "corr-456");
+});
+
+test("proxy response assembly keeps decompressed JSON readable", async () => {
+  const payload = JSON.stringify({ ok: true, items: [{ id: "1" }] });
+  const upstream = new Headers({
+    "content-type": "application/json; charset=utf-8",
+    "content-encoding": "gzip",
+    "content-length": "22",
+  });
+  const responseHeaders = buildForwardedResponseHeaders(upstream);
+  const response = new Response(payload, {
+    status: 200,
+    headers: responseHeaders,
+  });
+  assert.equal(responseHeaders.get("content-encoding"), null);
+  assert.equal(responseHeaders.get("content-length"), null);
+  assert.deepEqual(JSON.parse(await response.text()), {
+    ok: true,
+    items: [{ id: "1" }],
+  });
+});
+
+test("proxy response assembly supports empty 204 bodies", () => {
+  const upstream = new Headers({
+    "content-encoding": "gzip",
+    "content-length": "0",
+  });
+  const forwarded = buildForwardedResponseHeaders(upstream);
+  const response = new Response(null, { status: 204, headers: forwarded });
+  assert.equal(response.status, 204);
+  assert.equal(forwarded.get("content-encoding"), null);
+  assert.equal(forwarded.get("content-length"), null);
+});
+
+test("proxy response assembly keeps error JSON readable for client statuses", async () => {
+  for (const status of [400, 401, 403, 404, 409, 500]) {
+    const payload = JSON.stringify({
+      error: { code: "TEST", message: "Readable body" },
+    });
+    const upstream = new Headers({
+      "content-type": "application/json",
+      "content-encoding": status % 2 === 0 ? "gzip" : "br",
+      "content-length": "999",
+    });
+    const response = new Response(payload, {
+      status,
+      headers: buildForwardedResponseHeaders(upstream),
+    });
+    assert.equal(response.headers.get("content-encoding"), null);
+    assert.equal(JSON.parse(await response.text()).error.message, "Readable body");
+  }
+});

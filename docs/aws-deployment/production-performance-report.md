@@ -120,3 +120,11 @@ Authenticated full matrix requires `EAZI_PROD_TEST_EMAIL` / `EAZI_PROD_TEST_PASS
 ## D15 gate
 
 **BLOCKED** until post-deploy benchmark confirms proxy p95 ≤ 2000 ms on representative portal reads and authenticated org/business flows succeed without timeout.
+
+## Content-Encoding fix (2026-09-02)
+
+**Symptom:** `ERR_CONTENT_DECODING_FAILED` on `/api/backend/*` (e.g. Businesses list) when CloudFront returned gzip/br-compressed JSON.
+
+**Root cause:** Node fetch in the Vercel proxy transparently decompresses upstream bodies, but `buildForwardedResponseHeaders` forwarded stale `Content-Encoding` and `Content-Length` from CloudFront. Browsers attempted to decode already-decompressed bytes.
+
+**Fix:** Centralized response header sanitization in `backend-proxy.mjs` — strip `content-encoding`, `content-length`, and hop-by-hop headers; preserve `Content-Type`, `Set-Cookie`, `Location`, correlation headers. Performance settings unchanged (`iad1`, `Connection: close`, 12s upstream timeout).

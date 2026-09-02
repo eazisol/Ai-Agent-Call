@@ -1,4 +1,4 @@
-/** @typedef {string | undefined} MaybeString */
+﻿/** @typedef {string | undefined} MaybeString */
 
 export const DEFAULT_BACKEND_PROXY_ORIGIN =
   "https://dl1t1qnfxrdka.cloudfront.net";
@@ -17,6 +17,17 @@ const HOP_BY_HOP_HEADERS = new Set([
 
 const PROXY_REQUEST_HEADERS_TO_STRIP = new Set([
   ...HOP_BY_HOP_HEADERS,
+  "content-length",
+]);
+
+/**
+ * Node fetch transparently decompresses gzip/br upstream bodies. Forwarding the
+ * original Content-Encoding or Content-Length causes ERR_CONTENT_DECODING_FAILED.
+ */
+const PROXY_RESPONSE_HEADERS_TO_STRIP = new Set([
+  ...HOP_BY_HOP_HEADERS,
+  "set-cookie",
+  "content-encoding",
   "content-length",
 ]);
 
@@ -76,7 +87,7 @@ export function buildForwardedResponseHeaders(upstreamHeaders) {
   const headers = new Headers();
   upstreamHeaders.forEach((value, key) => {
     const lower = key.toLowerCase();
-    if (HOP_BY_HOP_HEADERS.has(lower) || lower === "set-cookie") {
+    if (PROXY_RESPONSE_HEADERS_TO_STRIP.has(lower)) {
       return;
     }
     headers.set(key, value);
