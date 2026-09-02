@@ -17,7 +17,16 @@
 
 **Diagnosis refinement:** Median proxy latency is good (~344 ms), but tail latency hits the upstream timeout (25s then 12s). This pattern matches **stale pooled TLS connections** between Vercel iad1 and CloudFront, not ECS/DB saturation. ALB `TargetResponseTime` occasionally spikes (max 33.6s in the test window) when upstream connections stall.
 
-**Second fix (commit after d0221a4):** shorten keep-alive idle to 4s, 12s per-attempt timeout, **one retry without pooled agent** on timeout/reset.
+**Third fix (commit 3754773):** remove pooled keep-alive entirely; use `Connection: close` with bounded retry.
+
+### After fixes (60 sequential `GET /auth/me`, post-deploy 3754773)
+
+| Path | p50 | p95 | max | timeouts |
+|---|---|---|---|---|
+| Direct CloudFront | 445 ms | 878 ms | 1147 ms | 0 |
+| Vercel proxy | 382 ms | **1104 ms** | 8409 ms | 0 |
+
+Proxy **p95 meets the 2000 ms gate**. One tail outlier (8.4s) remains rare vs prior 25–60s hangs.
 
 ECS CPU ~1–2% avg (max 11%), memory ~7%. RDS not CPU-bound during tests. NestJS request handling is fast when reached directly.
 
