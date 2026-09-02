@@ -1,4 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "regions": ["iad1"]
+},
+{
+  "rewrites": [
+    {
+      "source": "/api/backend/:path*",
+      "destination": "https://your-cloudfront-domain/:path*"
+    }
+  ]
 }
