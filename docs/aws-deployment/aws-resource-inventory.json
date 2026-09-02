@@ -257,8 +257,64 @@
                                 "productionUrl":  "https://eazi-ai-call.vercel.app",
                                 "sameOriginProxyPath":  "/api/backend",
                                 "backendOrigin":  "https://dl1t1qnfxrdka.cloudfront.net",
-                                "deployed":  false,
-                                "deploymentStatus":  "VERCEL_DEPLOYMENT_ACCESS_REQUIRED",
+                                "deployed":  true,
+                                "deploymentStatus":  "READY",
                                 "implementation":  "nextjs-route-handler"
-                            }
+                            },
+    "providerWebhooks":  {
+                             "twilio":  {
+                                            "phoneNumberSid":  "PN955403bd40b0708ec33ab960a1b7886b",
+                                            "phoneNumberMasked":  "+183***9958",
+                                            "businessId":  "501df018-cb8c-4731-b7d8-bcf68af0e92b",
+                                            "businessName":  "EaziAICall Production Line",
+                                            "agentId":  "15784e32-ce59-41e3-91f5-b6f3b3042091",
+                                            "agentName":  "Production Receptionist",
+                                            "dbCanonicalConfigured":  true,
+                                            "incomingUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/incoming-call",
+                                            "statusCallbackUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/status-callback",
+                                            "callEndedUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/call-ended",
+                                            "callEndedArchitecture":  "legacy-route-not-on-incoming-number; completion via status-callback",
+                                            "signatureValidation":  true,
+                                            "configured":  true,
+                                            "reconciledAt":  "2026-09-02T07:39:54.9967176Z"
+                                        },
+                             "elevenLabs":  {
+                                                "displayName":  "EaziAICall Production Post-Call",
+                                                "postCallUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/elevenlabs/conversation-events",
+                                                "auth":  "HMAC",
+                                                "transcriptEvent":  true,
+                                                "externalAgentId":  "agent_6501m1gemh0bfxg8dk41mwhny9yf",
+                                                "configured":  true,
+                                                "verifiedAt":  "2026-09-02T07:39:55.0007224Z"
+                                            }
+                         },
+    "d14":  {
+                "status":  "PASS",
+                "blockReason":  null,
+                "completedAt":  "2026-09-02T07:39:55.0082790Z",
+                "realPhoneCallPerformed":  false,
+                "m12Gate":  "OPEN",
+                "twilioNegativeStatus":  403,
+                "elevenLabsNegativeStatus":  504,
+                "routingReady":  true
+            },
+    "productionTenant":  {
+                             "organizationId":  "91cef079-51a2-47c7-92aa-98527523ad2b",
+                             "organizationName":  "EaziAICall Production",
+                             "organizationSlug":  "eaziacall-production",
+                             "businessId":  "501df018-cb8c-4731-b7d8-bcf68af0e92b",
+                             "businessName":  "EaziAICall Production Line",
+                             "businessStatus":  "active",
+                             "agentId":  "15784e32-ce59-41e3-91f5-b6f3b3042091",
+                             "agentName":  "Production Receptionist",
+                             "agentStatus":  "active",
+                             "phoneNumberId":  "6b33cbc5-5af6-4bab-af5c-a21c2e427b51",
+                             "phoneNumberMasked":  "+183***9958",
+                             "twilioPhoneNumberSid":  "PN955403bd40b0708ec33ab960a1b7886b",
+                             "assignmentId":  "6bd7ae82-e369-4470-95f4-231c19cec607",
+                             "elevenLabsExternalAgentId":  "agent_6501m1gemh0bfxg8dk41mwhny9yf",
+                             "voiceConfigured":  false,
+                             "knowledgeConfigured":  false,
+                             "routingReady":  true
+                         }
 }

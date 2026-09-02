@@ -15,6 +15,8 @@ Idempotent AWS infrastructure scripts for EaziAICall.
 | `d11-secrets-runtime.ps1` | **Windows (canonical)** | AWS-D11 | Production secrets + runtime task definition (no ECS service) |
 | `d12-migrate.ps1` | **Windows (canonical)** | AWS-D12 | Controlled production PostgreSQL migration (one-off ECS task, no service) |
 | `d13-ecs-service.ps1` | **Windows (canonical)** | AWS-D13 | ECS backend service activation + health verification (Part A) |
+| `d14-provider-webhooks.ps1` | **Windows (canonical)** | AWS-D14 | Twilio + ElevenLabs production webhook finalization |
+| `d14-tenant-provision.ps1` | **Windows (canonical)** | AWS-D14 | Production tenant routing remediation (NestJS services) |
 
 ## Requirements
 
@@ -39,6 +41,8 @@ powershell -ExecutionPolicy Bypass -File scripts/aws/d10-cloudfront.ps1
 powershell -ExecutionPolicy Bypass -File scripts/aws/d11-secrets-runtime.ps1
 powershell -ExecutionPolicy Bypass -File scripts/aws/d12-migrate.ps1
 powershell -ExecutionPolicy Bypass -File scripts/aws/d13-ecs-service.ps1
+powershell -ExecutionPolicy Bypass -File scripts/aws/d14-tenant-provision.ps1
+powershell -ExecutionPolicy Bypass -File scripts/aws/d14-provider-webhooks.ps1
 ```
 
 ## Linux/macOS execution
