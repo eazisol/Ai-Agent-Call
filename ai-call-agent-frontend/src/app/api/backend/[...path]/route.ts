@@ -6,10 +6,7 @@ import {
   resolveProxyRequestBody,
   validateProxyPathSegments,
 } from "@/lib/backend-proxy.mjs";
-import {
-  UPSTREAM_FETCH_TIMEOUT_MS,
-  upstreamFetchDispatcher,
-} from "@/lib/upstream-fetch.mjs";
+import { fetchUpstream } from "@/lib/upstream-fetch.mjs";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -34,15 +31,12 @@ async function proxy(request: Request, segments: string[]): Promise<Response> {
 
   let upstream: Response;
   try {
-    upstream = await fetch(upstreamUrl, {
+    upstream = await fetchUpstream(upstreamUrl, {
       method,
       headers,
       body,
       redirect: "manual",
       cache: "no-store",
-      signal: AbortSignal.timeout(UPSTREAM_FETCH_TIMEOUT_MS),
-      // @ts-expect-error Node fetch accepts undici dispatcher for connection reuse.
-      dispatcher: upstreamFetchDispatcher,
     });
   } catch {
     return Response.json(
