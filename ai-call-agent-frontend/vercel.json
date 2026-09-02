@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/backend/:path*",
-      "destination": "https://your-cloudfront-domain/:path*"
+      "destination": "https://dl1t1qnfxrdka.cloudfront.net/api/v1/:path*"
     }
   ]
 }
