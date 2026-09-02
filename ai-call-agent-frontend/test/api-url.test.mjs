@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  DEFAULT_BACKEND_PROXY_ORIGIN,
   buildApiUrl,
   buildBackendProxyUpstreamPath,
   buildBackendProxyUpstreamUrl,
@@ -45,17 +46,19 @@ test("rejects invalid proxy segments", () => {
   assert.throws(() => validateProxyPathSegments([]));
 });
 
-test("builds fixed CloudFront upstream URL", () => {
+test("builds ALB upstream URL by default", () => {
   assert.equal(
-    buildBackendProxyUpstreamUrl(
-      ["auth", "me"],
-      "https://dl1t1qnfxrdka.cloudfront.net",
-      "?x=1",
-    ),
-    "https://dl1t1qnfxrdka.cloudfront.net/api/v1/auth/me?x=1",
+    buildBackendProxyUpstreamUrl(["auth", "me"], undefined, "?x=1"),
+    `${DEFAULT_BACKEND_PROXY_ORIGIN}/api/v1/auth/me?x=1`,
   );
 });
 
+test("falls back from deleted CloudFront origin to ALB", () => {
+  assert.equal(
+    resolveBackendProxyOrigin("https://dl1t1qnfxrdka.cloudfront.net"),
+    DEFAULT_BACKEND_PROXY_ORIGIN,
+  );
+});
 
 test("defaults browser API base without NEXT_PUBLIC env", () => {
   const previousWindow = globalThis.window;
@@ -73,6 +76,13 @@ test("defaults browser API base without NEXT_PUBLIC env", () => {
   }
 });
 
-test("rejects non-https upstream origins", () => {
+test("allows temporary http ALB upstream origins", () => {
+  assert.equal(
+    resolveBackendProxyOrigin(DEFAULT_BACKEND_PROXY_ORIGIN),
+    DEFAULT_BACKEND_PROXY_ORIGIN,
+  );
+});
+
+test("rejects arbitrary non-https upstream origins", () => {
   assert.throws(() => resolveBackendProxyOrigin("http://example.com"));
 });

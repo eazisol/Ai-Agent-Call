@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  DEFAULT_BACKEND_PROXY_ORIGIN,
   buildBackendProxyUpstreamPath,
   buildBackendProxyUpstreamUrl,
   buildForwardedRequestHeaders,
@@ -34,9 +35,9 @@ test("maps login proxy path to upstream auth login", () => {
   assert.equal(
     buildBackendProxyUpstreamUrl(
       ["auth", "login"],
-      "https://dl1t1qnfxrdka.cloudfront.net",
+      DEFAULT_BACKEND_PROXY_ORIGIN,
     ),
-    "https://dl1t1qnfxrdka.cloudfront.net/api/v1/auth/login",
+    `${DEFAULT_BACKEND_PROXY_ORIGIN}/api/v1/auth/login`,
   );
 });
 
@@ -44,10 +45,10 @@ test("preserves query string on upstream URL", () => {
   assert.equal(
     buildBackendProxyUpstreamUrl(
       ["auth", "me"],
-      "https://dl1t1qnfxrdka.cloudfront.net",
+      DEFAULT_BACKEND_PROXY_ORIGIN,
       "?x=1",
     ),
-    "https://dl1t1qnfxrdka.cloudfront.net/api/v1/auth/me?x=1",
+    `${DEFAULT_BACKEND_PROXY_ORIGIN}/api/v1/auth/me?x=1`,
   );
 });
 

@@ -6,7 +6,7 @@
  * EAZI_PROD_TEST_EMAIL
  * EAZI_PROD_TEST_PASSWORD
  * EAZI_PROD_FRONTEND_URL (default https://eazi-ai-call.vercel.app)
- * EAZI_PROD_BACKEND_URL (default https://dl1t1qnfxrdka.cloudfront.net)
+ * EAZI_PROD_BACKEND_URL (default ALB direct HTTP)
  */
 
 const FRONTEND =
@@ -14,7 +14,7 @@ const FRONTEND =
   "https://eazi-ai-call.vercel.app";
 const BACKEND =
   process.env.EAZI_PROD_BACKEND_URL?.replace(/\/$/, "") ??
-  "https://dl1t1qnfxrdka.cloudfront.net";
+  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com";
 
 const EMAIL = process.env.EAZI_PROD_TEST_EMAIL?.trim();
 const PASSWORD = process.env.EAZI_PROD_TEST_PASSWORD;

@@ -177,26 +177,6 @@
                         "protocol":  "HTTP",
                         "port":  80
                     },
-    "cloudFront":  {
-                       "distributionId":  "EVPODK7JRKPH6",
-                       "distributionArn":  "arn:aws:cloudfront::812047028300:distribution/EVPODK7JRKPH6",
-                       "domainName":  "dl1t1qnfxrdka.cloudfront.net",
-                       "status":  "Deployed",
-                       "enabled":  true,
-                       "publicBaseUrl":  "https://dl1t1qnfxrdka.cloudfront.net",
-                       "apiBaseUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1",
-                       "originAlbDns":  "eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
-                       "cachePolicy":  "Managed-CachingDisabled",
-                       "originRequestPolicy":  "Managed-AllViewerExceptHostHeader",
-                       "viewerProtocol":  "redirect-to-https",
-                       "originProtocol":  "http-only",
-                       "webhookUrls":  {
-                                           "twilioIncoming":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/incoming-call",
-                                           "twilioStatus":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/status-callback",
-                                           "twilioCallEnded":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/call-ended",
-                                           "elevenLabsEvents":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/elevenlabs/conversation-events"
-                                       }
-                   },
     "secrets":  {
                     "database":  {
                                      "name":  "rds-managed",
@@ -316,5 +296,27 @@
                              "voiceConfigured":  false,
                              "knowledgeConfigured":  false,
                              "routingReady":  true
-                         }
+                         },
+    "cloudFront":  {
+                       "distributionId":  "E1FWWKUHUKYF6J",
+                       "distributionArn":  "arn:aws:cloudfront::812047028300:distribution/E1FWWKUHUKYF6J",
+                       "domainName":  "d1skouyk8kdayh.cloudfront.net",
+                       "status":  "Deployed",
+                       "enabled":  true,
+                       "temporaryRestore":  true,
+                       "migrationTarget":  "https://api.eaziacall.com",
+                       "publicBaseUrl":  "https://d1skouyk8kdayh.cloudfront.net",
+                       "apiBaseUrl":  "https://d1skouyk8kdayh.cloudfront.net/api/v1",
+                       "originAlbDns":  "eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
+                       "cachePolicy":  "Managed-CachingDisabled",
+                       "originRequestPolicy":  "Managed-AllViewerExceptHostHeader",
+                       "viewerProtocol":  "redirect-to-https",
+                       "originProtocol":  "http-only",
+                       "webhookUrls":  {
+                                           "twilioIncoming":  "https://d1skouyk8kdayh.cloudfront.net/api/v1/webhooks/twilio/incoming-call",
+                                           "twilioStatus":  "https://d1skouyk8kdayh.cloudfront.net/api/v1/webhooks/twilio/status-callback",
+                                           "twilioCallEnded":  "https://d1skouyk8kdayh.cloudfront.net/api/v1/webhooks/twilio/call-ended",
+                                           "elevenLabsEvents":  "https://d1skouyk8kdayh.cloudfront.net/api/v1/webhooks/elevenlabs/conversation-events"
+                                       }
+                   }
 }

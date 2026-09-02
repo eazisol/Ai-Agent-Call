@@ -1,8 +1,10 @@
 import {
+  DEFAULT_BACKEND_PROXY_ORIGIN,
   buildBackendProxyUpstreamUrl,
   buildForwardedRequestHeaders,
   buildForwardedResponseHeaders,
   getForwardedSetCookieHeaders,
+  resolveBackendProxyOrigin,
   resolveProxyRequestBody,
   validateProxyPathSegments,
 } from "@/lib/backend-proxy.mjs";
@@ -11,10 +13,11 @@ import { fetchUpstream } from "@/lib/upstream-fetch.mjs";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const FIXED_BACKEND_ORIGIN =
+const FIXED_BACKEND_ORIGIN = resolveBackendProxyOrigin(
   process.env.INTERNAL_BACKEND_ORIGIN ??
-  process.env.BACKEND_PROXY_ORIGIN ??
-  "https://dl1t1qnfxrdka.cloudfront.net";
+    process.env.BACKEND_PROXY_ORIGIN ??
+    DEFAULT_BACKEND_PROXY_ORIGIN,
+);
 
 async function proxy(request: Request, segments: string[]): Promise<Response> {
   validateProxyPathSegments(segments);
