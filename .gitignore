@@ -17,6 +17,7 @@
 !.env.docker.example
 !**/.env.example
 !**/.env.docker.example
+scripts/aws/db-access.state.json
 
 # Logs and runtime files
 *.log
