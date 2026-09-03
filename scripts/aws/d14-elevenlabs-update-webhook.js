@@ -64,7 +64,11 @@ async function apiFetch(path, options = {}) {
     {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ webhook_url: expectedWebhookUrl }),
+      body: JSON.stringify({
+        name: target.name || target.display_name || 'EaziAICall Production Post-Call',
+        is_disabled: Boolean(target.is_disabled ?? false),
+        webhook_url: expectedWebhookUrl,
+      }),
     },
   );
   if (!updateResponse.ok) {

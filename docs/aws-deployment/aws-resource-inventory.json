@@ -108,8 +108,8 @@
                 "executionRoleName":  "eaziacall-prod-ecs-execution-role",
                 "executionRoleArn":  "arn:aws:iam::812047028300:role/eaziacall-prod-ecs-execution-role",
                 "taskDefinitionFamily":  "eaziacall-prod-backend",
-                "taskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:5",
-                "taskDefinitionRevision":  5,
+                "taskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:6",
+                "taskDefinitionRevision":  6,
                 "cpu":  "512",
                 "memory":  "1024",
                 "networkMode":  "awsvpc",
@@ -125,7 +125,7 @@
                 "runtimeTaskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:3",
                 "runtimeTaskDefinitionRevision":  3,
                 "secretsConfigured":  true,
-                "publicBaseUrl":  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
+                "publicBaseUrl":  "https://eazi-ai-call.vercel.app",
                 "frontendUrl":  "https://eazi-ai-call.vercel.app",
                 "vercelUrlStatus":  "CONFIGURED",
                 "voiceAgentProvider":  "elevenlabs",
@@ -230,19 +230,18 @@
     "frontendIntegration":  {
                                 "productionUrl":  "https://eazi-ai-call.vercel.app",
                                 "sameOriginProxyPath":  "/api/backend",
+                                "providerProxyPath":  "/api/v1",
                                 "backendOrigin":  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
-                                "internalApiBaseUrl":  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com/api/v1",
-                                "nextPublicApiBaseUrl":  "/api/backend",
+                                "publicBaseUrl":  "https://eazi-ai-call.vercel.app",
                                 "deployed":  true,
                                 "deploymentStatus":  "READY",
                                 "deploymentMethod":  "github-vercel-integration",
-                                "latestGitHubDeploymentId":  "6224352007",
+                                "latestCommit":  "c1e9683",
                                 "implementation":  "nextjs-route-handler",
-                                "authQa":  "MANUAL_AUTH_QA_REQUIRED",
-                                "verifiedAt":  "2026-09-03T05:30:08.8844043Z",
-                                "cloudFront":  "UNCHANGED_PRESENT",
-                                "providerUrls":  "UNCHANGED",
-                                "m12Gate":  "OPEN"
+                                "cloudFront":  "DELETED",
+                                "providerUrls":  "VERCEL_HTTPS",
+                                "m12Gate":  "OPEN",
+                                "verifiedAt":  "2026-09-03T05:54:46.6910786Z"
                             },
     "providerWebhooks":  {
                              "twilio":  {
@@ -253,9 +252,9 @@
                                             "agentId":  "15784e32-ce59-41e3-91f5-b6f3b3042091",
                                             "agentName":  "Production Receptionist",
                                             "dbCanonicalConfigured":  true,
-                                            "incomingUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/incoming-call",
-                                            "statusCallbackUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/status-callback",
-                                            "callEndedUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/twilio/call-ended",
+                                            "incomingUrl":  "https://eazi-ai-call.vercel.app/api/v1/webhooks/twilio/incoming-call",
+                                            "statusCallbackUrl":  "https://eazi-ai-call.vercel.app/api/v1/webhooks/twilio/status-callback",
+                                            "callEndedUrl":  "https://eazi-ai-call.vercel.app/api/v1/webhooks/twilio/call-ended",
                                             "callEndedArchitecture":  "legacy-route-not-on-incoming-number; completion via status-callback",
                                             "signatureValidation":  true,
                                             "configured":  true,
@@ -263,7 +262,7 @@
                                         },
                              "elevenLabs":  {
                                                 "displayName":  "EaziAICall Production Post-Call",
-                                                "postCallUrl":  "https://dl1t1qnfxrdka.cloudfront.net/api/v1/webhooks/elevenlabs/conversation-events",
+                                                "postCallUrl":  "https://eazi-ai-call.vercel.app/api/v1/webhooks/elevenlabs/conversation-events",
                                                 "auth":  "HMAC",
                                                 "transcriptEvent":  true,
                                                 "externalAgentId":  "agent_6501m1gemh0bfxg8dk41mwhny9yf",
@@ -301,25 +300,10 @@
                              "routingReady":  true
                          },
     "cloudFront":  {
-                       "distributionId":  "E1FWWKUHUKYF6J",
-                       "distributionArn":  "arn:aws:cloudfront::812047028300:distribution/E1FWWKUHUKYF6J",
-                       "domainName":  "d1skouyk8kdayh.cloudfront.net",
-                       "status":  "Deployed",
-                       "enabled":  true,
-                       "temporaryRestore":  true,
-                       "migrationTarget":  "https://api.eaziacall.com",
-                       "publicBaseUrl":  "https://d1skouyk8kdayh.cloudfront.net",
-                       "apiBaseUrl":  "https://d1skouyk8kdayh.cloudfront.net/api/v1",
-                       "originAlbDns":  "eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
-                       "cachePolicy":  "Managed-CachingDisabled",
-                       "originRequestPolicy":  "Managed-AllViewerExceptHostHeader",
-                       "viewerProtocol":  "redirect-to-https",
-                       "originProtocol":  "http-only",
-                       "webhookUrls":  {
-                                           "twilioIncoming":  "https://d1skouyk8kdayh.cloudfront.net/api/v1/webhooks/twilio/incoming-call",
-                                           "twilioStatus":  "https://d1skouyk8kdayh.cloudfront.net/api/v1/webhooks/twilio/status-callback",
-                                           "twilioCallEnded":  "https://d1skouyk8kdayh.cloudfront.net/api/v1/webhooks/twilio/call-ended",
-                                           "elevenLabsEvents":  "https://d1skouyk8kdayh.cloudfront.net/api/v1/webhooks/elevenlabs/conversation-events"
-                                       }
+                       "status":  "DELETED",
+                       "formerDistributionId":  "E1FWWKUHUKYF6J",
+                       "formerDomainName":  "d1skouyk8kdayh.cloudfront.net",
+                       "deletedAt":  "2026-09-03T05:54:46.7078838Z",
+                       "replacement":  "https://eazi-ai-call.vercel.app"
                    }
 }
