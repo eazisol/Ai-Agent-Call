@@ -165,7 +165,11 @@ export const envValidationSchema = Joi.object({
     const isTemporaryAlbHttp =
       publicBaseUrl.startsWith('http://') &&
       publicBaseUrl.includes('.elb.amazonaws.com');
-    if (production && !publicBaseUrl.startsWith('https://') && !isTemporaryAlbHttp) {
+    if (
+      production &&
+      !publicBaseUrl.startsWith('https://') &&
+      !isTemporaryAlbHttp
+    ) {
       return helpers.message({
         custom:
           'PUBLIC_BASE_URL must use HTTPS in production (http://*.elb.amazonaws.com allowed temporarily without custom domain)',

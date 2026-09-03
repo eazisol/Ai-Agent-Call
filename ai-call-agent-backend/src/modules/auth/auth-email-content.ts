@@ -21,9 +21,7 @@ export function buildAuthAppLink(options: {
   const base = options.publicAppUrl.endsWith('/')
     ? options.publicAppUrl
     : `${options.publicAppUrl}/`;
-  const path = options.path.startsWith('/')
-    ? options.path
-    : `/${options.path}`;
+  const path = options.path.startsWith('/') ? options.path : `/${options.path}`;
   const url = new URL(path, base);
   url.searchParams.set('token', options.token);
   if (options.next) {
