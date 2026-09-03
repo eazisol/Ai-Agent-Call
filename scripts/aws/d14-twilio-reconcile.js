@@ -11,11 +11,15 @@ const stalePatterns = [
   /127\.0\.0\.1/,
   /ngrok/i,
   /\.elb\.amazonaws\.com/i,
-  /vercel\.app/i,
+  /cloudfront\.net/i,
 ];
 
 function isStale(url) {
   if (!url) return true;
+  // Canonical temporary public HTTPS is the production Vercel host.
+  if (/^https:\/\/eazi-ai-call\.vercel\.app\//i.test(url)) {
+    return false;
+  }
   return stalePatterns.some((pattern) => pattern.test(url));
 }
 

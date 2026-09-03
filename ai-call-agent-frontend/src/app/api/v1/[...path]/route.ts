@@ -13,6 +13,13 @@ import { fetchUpstream } from "@/lib/upstream-fetch.mjs";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/**
+ * Fixed-upstream provider gateway.
+ * External: https://eazi-ai-call.vercel.app/api/v1/<path>
+ * Upstream:  http://<alb>/api/v1/<path>
+ *
+ * Used by Twilio / ElevenLabs webhooks. Browser portal traffic stays on /api/backend/*.
+ */
 const FIXED_BACKEND_ORIGIN = resolveBackendProxyOrigin(
   process.env.INTERNAL_BACKEND_ORIGIN ??
     process.env.BACKEND_PROXY_ORIGIN ??

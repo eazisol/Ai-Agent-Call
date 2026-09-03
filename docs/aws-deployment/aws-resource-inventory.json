@@ -72,13 +72,13 @@
                               "encryption":  "AES256"
                           },
     "backendImage":  {
-                         "gitSha":  "aa49b93",
+                         "gitSha":  "1553674",
                          "workingTreeDirty":  true,
-                         "tag":  "aa49b93-20260901t140030z",
-                         "digest":  "sha256:65f161a879e82a022ad953fb6334fe0ade8fc0fd93bd7f86a3816c151bac889b",
-                         "imageUri":  "812047028300.dkr.ecr.us-east-1.amazonaws.com/eaziacall-prod-backend:aa49b93-20260901t140030z",
+                         "tag":  "1553674-20260903t051135z",
+                         "digest":  "sha256:fe52f28a962255453403c9a6161229623bbffc73e3531fb6b31b79a7ec007f74",
+                         "imageUri":  "812047028300.dkr.ecr.us-east-1.amazonaws.com/eaziacall-prod-backend:1553674-20260903t051135z",
                          "platform":  "linux/amd64",
-                         "imageSizeBytes":  83671644,
+                         "imageSizeBytes":  83679331,
                          "scanStatus":  "COMPLETE",
                          "scanCriticalCount":  0,
                          "scanHighCount":  0,
@@ -98,12 +98,6 @@
                                         "digest":  "sha256:e3ca25e9ebd720fc3b1963b6f7a1872c1f6d92da3b913ffa7941bb83bcfc2830",
                                         "status":  "NON-CANONICAL / DO NOT DEPLOY",
                                         "reason":  "ECR CRITICAL CVE-2026-63073 (OpenSSL 3.5.7-r0)"
-                                    },
-                                    {
-                                        "tag":  "aa49b93-20260901t125102z",
-                                        "digest":  "sha256:98beea787f8c3eb93aacab3f6abc27ae3efbe92e6b7657681d0afc74a5dfa1b9",
-                                        "status":  "NON-CANONICAL / DO NOT DEPLOY",
-                                        "reason":  "Pre-elevenlabs env.validation; superseded by D11 rebuild"
                                     }
                                 ],
     "ecs":  {
@@ -114,8 +108,8 @@
                 "executionRoleName":  "eaziacall-prod-ecs-execution-role",
                 "executionRoleArn":  "arn:aws:iam::812047028300:role/eaziacall-prod-ecs-execution-role",
                 "taskDefinitionFamily":  "eaziacall-prod-backend",
-                "taskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:3",
-                "taskDefinitionRevision":  3,
+                "taskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:5",
+                "taskDefinitionRevision":  5,
                 "cpu":  "512",
                 "memory":  "1024",
                 "networkMode":  "awsvpc",
@@ -131,7 +125,7 @@
                 "runtimeTaskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:3",
                 "runtimeTaskDefinitionRevision":  3,
                 "secretsConfigured":  true,
-                "publicBaseUrl":  "https://dl1t1qnfxrdka.cloudfront.net",
+                "publicBaseUrl":  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
                 "frontendUrl":  "https://eazi-ai-call.vercel.app",
                 "vercelUrlStatus":  "CONFIGURED",
                 "voiceAgentProvider":  "elevenlabs",
@@ -141,7 +135,7 @@
                 "runningCount":  1,
                 "serviceStable":  true,
                 "serviceCreated":  true,
-                "assignPublicIp":  false
+                "assignPublicIp":  true
             },
     "logging":  {
                     "backendLogGroup":  "/ecs/eaziacall-prod-backend",
@@ -236,10 +230,19 @@
     "frontendIntegration":  {
                                 "productionUrl":  "https://eazi-ai-call.vercel.app",
                                 "sameOriginProxyPath":  "/api/backend",
-                                "backendOrigin":  "https://dl1t1qnfxrdka.cloudfront.net",
+                                "backendOrigin":  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
+                                "internalApiBaseUrl":  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com/api/v1",
+                                "nextPublicApiBaseUrl":  "/api/backend",
                                 "deployed":  true,
                                 "deploymentStatus":  "READY",
-                                "implementation":  "nextjs-route-handler"
+                                "deploymentMethod":  "github-vercel-integration",
+                                "latestGitHubDeploymentId":  "6224352007",
+                                "implementation":  "nextjs-route-handler",
+                                "authQa":  "MANUAL_AUTH_QA_REQUIRED",
+                                "verifiedAt":  "2026-09-03T05:30:08.8844043Z",
+                                "cloudFront":  "UNCHANGED_PRESENT",
+                                "providerUrls":  "UNCHANGED",
+                                "m12Gate":  "OPEN"
                             },
     "providerWebhooks":  {
                              "twilio":  {
