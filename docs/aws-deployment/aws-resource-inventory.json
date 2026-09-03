@@ -1,4 +1,4 @@
-{
+﻿{
     "environment":  "production",
     "region":  "us-east-1",
     "accountId":  "812047028300",
@@ -72,13 +72,13 @@
                               "encryption":  "AES256"
                           },
     "backendImage":  {
-                         "gitSha":  "1553674",
+                         "gitSha":  "eda8cf7",
                          "workingTreeDirty":  true,
-                         "tag":  "1553674-20260903t051135z",
-                         "digest":  "sha256:fe52f28a962255453403c9a6161229623bbffc73e3531fb6b31b79a7ec007f74",
-                         "imageUri":  "812047028300.dkr.ecr.us-east-1.amazonaws.com/eaziacall-prod-backend:1553674-20260903t051135z",
+                         "tag":  "eda8cf7-20260903t081816z",
+                         "digest":  "sha256:c4bde0f35a2831db6e83e40a4040dd6b055c1fe449b6ddd5c8b57d384db23139",
+                         "imageUri":  "812047028300.dkr.ecr.us-east-1.amazonaws.com/eaziacall-prod-backend:eda8cf7-20260903t081816z",
                          "platform":  "linux/amd64",
-                         "imageSizeBytes":  83679331,
+                         "imageSizeBytes":  83675724,
                          "scanStatus":  "COMPLETE",
                          "scanCriticalCount":  0,
                          "scanHighCount":  0,
@@ -108,8 +108,8 @@
                 "executionRoleName":  "eaziacall-prod-ecs-execution-role",
                 "executionRoleArn":  "arn:aws:iam::812047028300:role/eaziacall-prod-ecs-execution-role",
                 "taskDefinitionFamily":  "eaziacall-prod-backend",
-                "taskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:6",
-                "taskDefinitionRevision":  6,
+                "taskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:8",
+                "taskDefinitionRevision":  8,
                 "cpu":  "512",
                 "memory":  "1024",
                 "networkMode":  "awsvpc",
@@ -119,8 +119,8 @@
                                     },
                 "containerName":  "backend",
                 "containerPort":  3000,
-                "imageDigest":  "sha256:65f161a879e82a022ad953fb6334fe0ade8fc0fd93bd7f86a3816c151bac889b",
-                "imageUri":  "812047028300.dkr.ecr.us-east-1.amazonaws.com/eaziacall-prod-backend@sha256:65f161a879e82a022ad953fb6334fe0ade8fc0fd93bd7f86a3816c151bac889b",
+                "imageDigest":  "sha256:270cec0b9893bd0d65a99f2dc8cff719de6f6aeee8ca1be9c23daa16fd826333",
+                "imageUri":  "812047028300.dkr.ecr.us-east-1.amazonaws.com/eaziacall-prod-backend@sha256:270cec0b9893bd0d65a99f2dc8cff719de6f6aeee8ca1be9c23daa16fd826333",
                 "taskRun":  false,
                 "runtimeTaskDefinitionArn":  "arn:aws:ecs:us-east-1:812047028300:task-definition/eaziacall-prod-backend:3",
                 "runtimeTaskDefinitionRevision":  3,
@@ -265,7 +265,7 @@
                                                 "postCallUrl":  "https://eazi-ai-call.vercel.app/api/v1/webhooks/elevenlabs/conversation-events",
                                                 "auth":  "HMAC",
                                                 "transcriptEvent":  true,
-                                                "externalAgentId":  "agent_6501m1gemh0bfxg8dk41mwhny9yf",
+                                                "externalAgentId":  "agent_6401m1k0r28fevcr9q3fxcvevyzk",
                                                 "configured":  true,
                                                 "verifiedAt":  "2026-09-02T07:39:55.0007224Z"
                                             }
@@ -294,7 +294,7 @@
                              "phoneNumberMasked":  "+183***9958",
                              "twilioPhoneNumberSid":  "PN955403bd40b0708ec33ab960a1b7886b",
                              "assignmentId":  "6bd7ae82-e369-4470-95f4-231c19cec607",
-                             "elevenLabsExternalAgentId":  "agent_6501m1gemh0bfxg8dk41mwhny9yf",
+                             "elevenLabsExternalAgentId":  "agent_6401m1k0r28fevcr9q3fxcvevyzk",
                              "voiceConfigured":  false,
                              "knowledgeConfigured":  false,
                              "routingReady":  true
@@ -305,5 +305,25 @@
                        "formerDomainName":  "d1skouyk8kdayh.cloudfront.net",
                        "deletedAt":  "2026-09-03T05:54:46.7078838Z",
                        "replacement":  "https://eazi-ai-call.vercel.app"
-                   }
+                   },
+    "d15":  {
+                "status":  "BLOCKED",
+                "blockReason":  "Real phone call not yet placed; mapping remediation PASS 2026-09-03",
+                "realPhoneCallPerformed":  false,
+                "m12Gate":  "OPEN",
+                "baselineCallCount":  0,
+                "testedAt":  "2026-09-03T06:05:32.5842851Z",
+                "phoneNumberMasked":  "+183***9958",
+                "businessId":  "501df018-cb8c-4731-b7d8-bcf68af0e92b",
+                "agentId":  "15784e32-ce59-41e3-91f5-b6f3b3042091",
+                "remediation":  {
+                                    "status":  "PASS",
+                                    "completedAt":  "2026-09-03T06:54:00Z",
+                                    "staleExternalAgentId":  "agent_6501m1gemh0bfxg8dk41mwhny9yf",
+                                    "newExternalAgentId":  "agent_6401m1k0r28fevcr9q3fxcvevyzk",
+                                    "providerGet":  200,
+                                    "hrAgentUnchanged":  true,
+                                    "ecsTaskRevision":  8
+                                }
+            }
 }

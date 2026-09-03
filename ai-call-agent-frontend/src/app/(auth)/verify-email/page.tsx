@@ -159,8 +159,9 @@ function VerifyEmailView() {
         {state.message}
       </p>
       <p className="mt-3 text-sm text-muted-foreground">
-        Request a new account registration or contact support if the problem
-        continues.
+        If you already verified this email, continue to sign in. Otherwise
+        request a new verification email by signing in (we will resend the
+        link) or contact support if the problem continues.
       </p>
     </AuthCard>
   );

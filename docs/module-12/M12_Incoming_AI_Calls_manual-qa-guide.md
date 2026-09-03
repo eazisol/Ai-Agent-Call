@@ -308,6 +308,6 @@ Automated regression: `npm test` + `npm run test:e2e` in `ai-call-agent-backend`
 
 | Tester | Date | Commit SHA | Result |
 | --- | --- | --- | --- |
-| | | | Pass / Fail |
+| AWS-D15 preflight (automated + read-only DB) | 2026-09-03 | `eda8cf7` (docs follow-up) | **Blocked** — Production Receptionist ElevenLabs `external_agent_id=agent_6501m1gemh0bfxg8dk41mwhny9yf` returns **404**; no real inbound call placed. Evidence: `docs/aws-deployment/AWS-D15-real-phone-m12-qa.md` |
 
-**M12 module gate:** Do not mark `[M12] Incoming AI Calls = COMPLETE ✅` until this sign-off is **Pass** and `VS-GLOBAL-01`–`VS-GLOBAL-16` are verified.
+**M12 module gate:** Do not mark `[M12] Incoming AI Calls = COMPLETE ✅` until this sign-off is **Pass** and `VS-GLOBAL-01`–`VS-GLOBAL-16` are verified. Keep `P05-M12-GATE = OPEN`.

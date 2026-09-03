@@ -207,6 +207,12 @@ test('sync updates when mapping already has external id', async () => {
     update: async () => ({ affected: 1 }),
   };
 
+  voiceSync.getStatus = async (id) => ({
+    externalAgentId: id,
+    exists: true,
+    name: 'Front Desk',
+    rawStatus: 'available',
+  });
   voiceSync.update = async (id) => {
     updated = true;
     assert.equal(id, 'el-agent-1');
@@ -236,6 +242,194 @@ test('sync updates when mapping already has external id', async () => {
     agentView.id,
   );
   assert.equal(updated, true);
+});
+
+test('synced mapping with provider 404 is not considered healthy', async () => {
+  const { voiceSync } = createSyncHarness();
+  const mappingUpdates = [];
+  const staleMapping = {
+    id: 'mapping-prod',
+    agentId: agentView.id,
+    provider: ELEVENLABS_PROVIDER,
+    externalAgentId: 'agent_6501_stale',
+    syncStatus: 'synced',
+    lastSyncedAt: new Date(),
+    lastError: null,
+  };
+  const mappings = {
+    findOne: async () => staleMapping,
+    findOneByOrFail: async () => staleMapping,
+    save: async (row) => row,
+    update: async (criteria, patch) => {
+      mappingUpdates.push({ criteria, patch });
+      return { affected: 1 };
+    },
+  };
+  voiceSync.getStatus = async (id) => ({
+    externalAgentId: id,
+    exists: false,
+    name: null,
+    rawStatus: 'missing',
+  });
+
+  const service = new AgentProviderSyncService(
+    { transaction: async () => null },
+    { requireMembership: async () => ({ role: 'owner' }) },
+    voiceSync,
+    { getForUser: async () => agentView },
+    { resolveExternalVoiceId: async () => null },
+    mappings,
+  );
+
+  const status = await service.getStatusForUser(
+    'user-1',
+    agentView.organizationId,
+    agentView.businessId,
+    agentView.id,
+  );
+
+  assert.equal(status.syncStatus, 'error');
+  assert.equal(status.remote.exists, false);
+  assert.equal(status.remote.checked, true);
+  assert.equal(mappingUpdates.length, 1);
+  assert.equal(mappingUpdates[0].patch.syncStatus, 'error');
+});
+
+test('resync stale mapping creates new provider agent and stores new id', async () => {
+  const staleId = 'agent_6501_stale';
+  const hrAgentId = 'agent_7101_hr';
+  const newId = 'agent_new_prod';
+  let created = false;
+  let updated = false;
+  let savedCleared = false;
+  const hrMapping = {
+    id: 'mapping-hr',
+    agentId: 'hr-agent-canonical',
+    provider: ELEVENLABS_PROVIDER,
+    externalAgentId: hrAgentId,
+    syncStatus: 'synced',
+  };
+
+  const dataSource = {
+    transaction: async (fn) => {
+      const manager = {
+        findOne: async () => ({
+          id: 'mapping-1',
+          agentId: agentView.id,
+          provider: ELEVENLABS_PROVIDER,
+          externalAgentId: staleId,
+          syncStatus: 'synced',
+          updatedAt: new Date(0),
+          lastSyncedAt: new Date(),
+          lastError: null,
+        }),
+        create: () => {
+          throw new Error('should not create mapping row');
+        },
+        save: async (row) => ({
+          ...row,
+          syncStatus: 'pending',
+          lastError: null,
+        }),
+      };
+      return fn(manager);
+    },
+  };
+
+  const mappings = {
+    findOneByOrFail: async () => ({
+      id: 'mapping-1',
+      externalAgentId: newId,
+      syncStatus: 'pending',
+      lastSyncedAt: null,
+      lastError: null,
+    }),
+    save: async (row) => {
+      if (row.externalAgentId === null) {
+        savedCleared = true;
+      }
+      return row;
+    },
+    update: async () => ({ affected: 1 }),
+    findOne: async ({ where }) => {
+      if (where?.agentId === 'hr-agent-canonical') {
+        return { ...hrMapping };
+      }
+      return null;
+    },
+  };
+
+  const voiceSync = {
+    providerName: 'elevenlabs',
+    isConfigured: () => true,
+    getStatus: async (id) => {
+      if (id === staleId) {
+        return {
+          externalAgentId: id,
+          exists: false,
+          name: null,
+          rawStatus: 'missing',
+        };
+      }
+      if (id === hrAgentId) {
+        return {
+          externalAgentId: id,
+          exists: true,
+          name: 'HR Agent',
+          rawStatus: 'available',
+        };
+      }
+      return {
+        externalAgentId: id,
+        exists: true,
+        name: 'Front Desk',
+        rawStatus: 'available',
+      };
+    },
+    create: async (input) => {
+      created = true;
+      assert.equal(input.name, 'Front Desk');
+      assert.notEqual(input.name, 'HR Agent');
+      return { externalAgentId: newId, warnings: [] };
+    },
+    update: async () => {
+      updated = true;
+      throw new Error('should not update stale id');
+    },
+    deactivate: async () => undefined,
+    delete: async () => undefined,
+  };
+
+  const service = new AgentProviderSyncService(
+    dataSource,
+    { requireMembership: async () => ({ role: 'owner' }) },
+    voiceSync,
+    { getForUser: async () => agentView },
+    { resolveExternalVoiceId: async () => null },
+    mappings,
+  );
+
+  const result = await service.syncForUser(
+    'user-1',
+    agentView.organizationId,
+    agentView.businessId,
+    agentView.id,
+  );
+
+  assert.equal(created, true);
+  assert.equal(updated, false);
+  assert.equal(savedCleared, true);
+  assert.equal(result.sync.syncStatus, 'synced');
+  assert.equal(result.sync.externalAgentId, newId);
+  assert.notEqual(result.sync.externalAgentId, staleId);
+  assert.notEqual(result.sync.externalAgentId, hrAgentId);
+
+  // Unrelated HR Agent mapping remains untouched
+  const hrAfter = await mappings.findOne({
+    where: { agentId: 'hr-agent-canonical' },
+  });
+  assert.equal(hrAfter.externalAgentId, hrAgentId);
+  assert.equal(hrAfter.syncStatus, 'synced');
 });
 
 test('sync returns PROVIDER_NOT_CONFIGURED when key missing', async () => {

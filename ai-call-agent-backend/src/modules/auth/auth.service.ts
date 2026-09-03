@@ -7,6 +7,10 @@ import {
   EMAIL_DELIVERY_PORT,
   type EmailDeliveryPort,
 } from '../../providers/email-delivery.port';
+import {
+  buildAuthAppLink,
+  buildVerificationEmailContent,
+} from './auth-email-content';
 import { AuthTokenService } from './auth-token.service';
 import { EmailVerificationToken } from './entities/email-verification-token.entity';
 import { PasswordResetToken } from './entities/password-reset-token.entity';
@@ -217,22 +221,35 @@ export class AuthService {
       relations: { user: true },
     });
 
-    if (!stored) {
-      throw new ApplicationError(
-        'INVALID_VERIFICATION_TOKEN',
-        'Email verification token is invalid or expired.',
-        400,
-      );
+    if (stored) {
+      if (!stored.user.emailVerifiedAt) {
+        stored.user.emailVerifiedAt = new Date();
+        await this.users.save(stored.user);
+      }
+      stored.consumedAt = new Date();
+      await this.emailVerificationTokens.save(stored);
+      this.logger.log(`Email verified for user ${stored.user.id}`);
+      return { user: this.toUserView(stored.user) };
     }
 
-    if (!stored.user.emailVerifiedAt) {
-      stored.user.emailVerifiedAt = new Date();
-      await this.users.save(stored.user);
+    // Idempotent revisit: same token already consumed for a verified user.
+    // Does not weaken single-use — no new session, no re-issue.
+    const prior = await this.emailVerificationTokens.findOne({
+      where: { tokenHash },
+      relations: { user: true },
+    });
+    if (prior?.user?.emailVerifiedAt) {
+      this.logger.log(
+        `Email verification link revisited for already-verified user ${prior.user.id}`,
+      );
+      return { user: this.toUserView(prior.user) };
     }
-    stored.consumedAt = new Date();
-    await this.emailVerificationTokens.save(stored);
-    this.logger.log(`Email verified for user ${stored.user.id}`);
-    return { user: this.toUserView(stored.user) };
+
+    throw new ApplicationError(
+      'INVALID_VERIFICATION_TOKEN',
+      'Email verification token is invalid or expired.',
+      400,
+    );
   }
 
   async meFromAccessToken(accessToken: string): Promise<AuthUserView> {
@@ -366,11 +383,12 @@ export class AuthService {
     );
 
     const link = this.appLink('/verify-email', rawToken, returnTo);
+    const content = buildVerificationEmailContent(link);
     await this.emailDelivery.send({
       to: user.email,
-      subject: 'Verify your EaziAiCall email',
-      text: `Verify your email by opening this link: ${link}`,
-      html: `<p>Verify your email by opening this link:</p><p><a href="${link}">${link}</a></p>`,
+      subject: content.subject,
+      text: content.text,
+      html: content.html,
     });
   }
 
@@ -405,13 +423,12 @@ export class AuthService {
   private appLink(path: string, token: string, returnTo?: string): string {
     const base =
       this.config.get<string>('auth.publicAppUrl') ?? 'http://localhost:3001';
-    const url = new URL(path, base.endsWith('/') ? base : `${base}/`);
-    url.searchParams.set('token', token);
-    const safeReturn = this.safeInternalReturnTo(returnTo);
-    if (safeReturn) {
-      url.searchParams.set('next', safeReturn);
-    }
-    return url.toString();
+    return buildAuthAppLink({
+      publicAppUrl: base,
+      path,
+      token,
+      next: this.safeInternalReturnTo(returnTo),
+    });
   }
 
   private safeInternalReturnTo(raw?: string): string | undefined {

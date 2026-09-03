@@ -109,9 +109,7 @@ export class AgentProviderSyncService {
     let mapping = await this.beginPending(agentId);
 
     try {
-      const result = mapping.externalAgentId
-        ? await this.voiceSync.update(mapping.externalAgentId, input)
-        : await this.voiceSync.create(input);
+      const result = await this.provisionOrUpdate(mapping, input, agentId);
 
       mapping = await this.markSynced(mapping.id, result.externalAgentId);
       this.logger.log(
@@ -201,6 +199,24 @@ export class AgentProviderSyncService {
 
     try {
       const remote = await this.voiceSync.getStatus(mapping.externalAgentId);
+      // Stale DB "synced" + provider 404 must not be treated as healthy.
+      if (!remote.exists && mapping.syncStatus === 'synced') {
+        await this.markError(
+          mapping.id,
+          'Provider agent is missing remotely. Re-sync required.',
+        );
+        return {
+          ...base,
+          syncStatus: 'error',
+          lastError: 'Provider agent is missing remotely. Re-sync required.',
+          remote: {
+            checked: true,
+            exists: false,
+            name: null,
+            rawStatus: remote.rawStatus ?? 'missing',
+          },
+        };
+      }
       return {
         ...base,
         remote: {
@@ -263,6 +279,34 @@ export class AgentProviderSyncService {
         }`,
       );
     }
+  }
+
+  /**
+   * Update when the remote agent still exists; otherwise clear the stale
+   * external id and create a new provider agent. Never mark synced until
+   * the caller persists after a successful create/update.
+   */
+  private async provisionOrUpdate(
+    mapping: AgentProviderMapping,
+    input: ProviderAgentCreateInput,
+    agentId: string,
+  ): Promise<{ externalAgentId: string; warnings: string[] }> {
+    if (!mapping.externalAgentId) {
+      return this.voiceSync.create(input);
+    }
+
+    const remote = await this.voiceSync.getStatus(mapping.externalAgentId);
+    if (remote.exists) {
+      return this.voiceSync.update(mapping.externalAgentId, input);
+    }
+
+    this.logger.warn(
+      `Stale provider mapping for agent ${agentId}: ${mapping.externalAgentId} missing remotely; re-provisioning`,
+    );
+    mapping.externalAgentId = null;
+    await this.mappings.save(mapping);
+
+    return this.voiceSync.create(input);
   }
 
   private async toProviderInput(

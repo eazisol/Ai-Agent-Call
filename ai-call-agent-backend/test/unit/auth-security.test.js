@@ -421,6 +421,50 @@ test('access token subject cannot resolve a different user identity', async () =
   );
 });
 
+test('verification email includes CTA and plain-text canonical URL without google redirect', async () => {
+  configValues['auth.publicAppUrl'] = 'https://eazi-ai-call.vercel.app';
+  const { auth, sent } = createHarness();
+  await auth.register({
+    email: 'verify-copy@example.com',
+    password: 'correct-horse-battery',
+    displayName: 'Verify Copy',
+  });
+  assert.equal(sent.length, 1);
+  const message = sent[0];
+  assert.match(message.html, /Verify email<\/a>/);
+  assert.match(
+    message.html,
+    /If the button does not work, copy and paste this link into your browser/,
+  );
+  assert.match(
+    message.html,
+    /href="https:\/\/eazi-ai-call\.vercel\.app\/verify-email\?token=[^"]+"/,
+  );
+  assert.match(
+    message.text,
+    /https:\/\/eazi-ai-call\.vercel\.app\/verify-email\?token=/,
+  );
+  assert.equal(String(message.html).includes('google.com'), false);
+  assert.equal(String(message.text).includes('google.com'), false);
+  const token = tokenFromLink(message.text);
+  const verified = await auth.verifyEmail(token);
+  assert.ok(verified.user.emailVerifiedAt);
+
+  // Revisit consumed token → already-verified success (not generic failure)
+  const again = await auth.verifyEmail(token);
+  assert.equal(again.user.id, verified.user.id);
+  assert.ok(again.user.emailVerifiedAt);
+
+  await assert.rejects(
+    () => auth.verifyEmail('definitely-not-a-valid-token'),
+    (error) =>
+      error instanceof ApplicationError &&
+      error.code === 'INVALID_VERIFICATION_TOKEN',
+  );
+
+  configValues['auth.publicAppUrl'] = 'http://localhost:3001';
+});
+
 test('access tokens expire according to configured TTL', async () => {
   const shortConfig = {
     get: (key) => (key === 'auth.accessTtlSeconds' ? 1 : configValues[key]),
