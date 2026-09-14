@@ -250,6 +250,10 @@ export class ElevenLabsVoiceAgentSyncAdapter implements VoiceAgentSyncPort {
         },
         tts: {
           voice_id: this.resolveVoiceId(input),
+          agent_output_audio_format: 'ulaw_8000',
+        },
+        asr: {
+          user_input_audio_format: 'ulaw_8000',
         },
       },
     };
