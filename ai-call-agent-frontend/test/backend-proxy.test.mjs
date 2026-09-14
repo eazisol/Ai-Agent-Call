@@ -75,6 +75,42 @@ test("forwards content-type, cookie, and accept but not hop-by-hop headers", () 
   assert.equal(forwarded.get("content-length"), null);
 });
 
+test("strips Expect: 100-continue from upstream request headers", () => {
+  const incoming = new Headers({
+    "content-type": "application/json",
+    expect: "100-continue",
+    authorization: "Bearer unused",
+  });
+  const forwarded = buildForwardedRequestHeaders(incoming);
+  assert.equal(forwarded.get("expect"), null);
+  assert.equal(forwarded.get("content-type"), "application/json");
+  assert.equal(forwarded.get("authorization"), "Bearer unused");
+});
+
+test("strips Expect header case-insensitively", () => {
+  for (const name of ["Expect", "EXPECT", "eXpEcT"]) {
+    const incoming = new Headers();
+    incoming.set(name, "100-continue");
+    incoming.set("content-type", "application/json");
+    const forwarded = buildForwardedRequestHeaders(incoming);
+    assert.equal(forwarded.get("expect"), null, `failed for ${name}`);
+    assert.equal(forwarded.get("content-type"), "application/json");
+  }
+});
+
+test("requests without Expect keep other headers unchanged", () => {
+  const incoming = new Headers({
+    "content-type": "application/json",
+    accept: "application/json",
+    cookie: "eazi_access=abc",
+  });
+  const forwarded = buildForwardedRequestHeaders(incoming);
+  assert.equal(forwarded.get("expect"), null);
+  assert.equal(forwarded.get("content-type"), "application/json");
+  assert.equal(forwarded.get("accept"), "application/json");
+  assert.equal(forwarded.get("cookie"), "eazi_access=abc");
+});
+
 test("GET and HEAD requests have no proxy body", async () => {
   const getRequest = new Request("https://example.com/api/backend/auth/me", {
     method: "GET",

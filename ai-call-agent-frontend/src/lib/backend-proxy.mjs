@@ -24,6 +24,8 @@ const HOP_BY_HOP_HEADERS = new Set([
 const PROXY_REQUEST_HEADERS_TO_STRIP = new Set([
   ...HOP_BY_HOP_HEADERS,
   "content-length",
+  // undici/fetch to HTTP ALB throws when Expect: 100-continue is forwarded.
+  "expect",
 ]);
 
 const PROXY_RESPONSE_HEADERS_TO_STRIP = new Set([
