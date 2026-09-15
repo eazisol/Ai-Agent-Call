@@ -5,6 +5,7 @@ import { AuthModule } from '../auth/auth.module';
 import { Call } from '../calls/entities/call.entity';
 import { AiConfig } from '../openai-realtime/entities/ai-config.entity';
 import { OrganizationsModule } from '../organizations/organizations.module';
+import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
 import { BusinessesController } from './businesses.controller';
 import { BusinessesService } from './businesses.service';
 import { BusinessHour } from './entities/business-hour.entity';
@@ -23,6 +24,7 @@ import { Business } from './entities/business.entity';
     ]),
     AuthModule,
     OrganizationsModule,
+    SubscriptionsModule,
   ],
   controllers: [BusinessesController],
   providers: [BusinessesService],

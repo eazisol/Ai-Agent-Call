@@ -4,6 +4,7 @@ import { AuthModule } from '../auth/auth.module';
 import { Agent } from '../agents/entities/agent.entity';
 import { Business } from '../businesses/entities/business.entity';
 import { OrganizationsModule } from '../organizations/organizations.module';
+import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
 import { TwilioModule } from '../twilio/twilio.module';
 import { PhoneNumberAssignment } from './entities/phone-number-assignment.entity';
 import { PhoneNumber } from './entities/phone-number.entity';
@@ -20,6 +21,7 @@ import { PhoneNumbersService } from './phone-numbers.service';
     ]),
     AuthModule,
     OrganizationsModule,
+    SubscriptionsModule,
     TwilioModule,
   ],
   controllers: [PhoneNumbersController],

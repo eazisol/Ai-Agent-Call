@@ -10,6 +10,7 @@ import { Agent } from '../agents/entities/agent.entity';
 import { Call } from '../calls/entities/call.entity';
 import { AiConfig } from '../openai-realtime/entities/ai-config.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
+import { EntitlementsService } from '../subscriptions/entitlements.service';
 import { assertBusinessCan } from './business-permissions';
 import type {
   BusinessHourDto,
@@ -71,6 +72,7 @@ export class BusinessesService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly organizations: OrganizationsService,
+    private readonly entitlements: EntitlementsService,
     @InjectRepository(Business)
     private readonly businesses: Repository<Business>,
     @InjectRepository(BusinessSettings)
@@ -95,6 +97,7 @@ export class BusinessesService {
       organizationId,
     );
     assertBusinessCan(membership.role, 'create_business');
+    await this.entitlements.assertCanCreateBusiness(organizationId);
 
     const fields = this.normalizeCoreFields(input, true);
     const hoursInput = this.normalizeHoursInput(input.hours);

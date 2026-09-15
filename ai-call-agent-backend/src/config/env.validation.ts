@@ -154,6 +154,10 @@ export const envValidationSchema = Joi.object({
   ELEVENLABS_DEFAULT_VOICE_FEMALE: Joi.string().allow('', null).optional(),
   ELEVENLABS_DEFAULT_VOICE_MALE: Joi.string().allow('', null).optional(),
   ELEVENLABS_DEFAULT_VOICE_NEUTRAL: Joi.string().allow('', null).optional(),
+
+  SUBSCRIPTION_ENFORCEMENT_MODE: Joi.string()
+    .valid('off', 'enforce')
+    .default('off'),
 })
   .custom((environment: Record<string, unknown>, helpers) => {
     const production = environment.NODE_ENV === 'production';

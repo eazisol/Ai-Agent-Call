@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, Plug, Settings2 } from "lucide-react";
+import { Building2, CreditCard, Plug, Settings2 } from "lucide-react";
 
 import { useOrganizationSession } from "@/components/organizations/organization-session";
 
@@ -11,6 +11,12 @@ const links = [
     title: "Organization",
     description: "Workspace name, slug, and membership context.",
     icon: Building2,
+  },
+  {
+    href: "/settings/plan",
+    title: "Plan & subscription",
+    description: "Current plan, entitlements, and plan comparison.",
+    icon: CreditCard,
   },
   {
     href: "/settings/integrations",

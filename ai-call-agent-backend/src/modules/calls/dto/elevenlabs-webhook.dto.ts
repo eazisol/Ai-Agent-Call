@@ -1,6 +1,25 @@
-import { IsOptional, IsString, MaxLength } from 'class-validator';
+import { Allow, IsObject, IsOptional, IsString, MaxLength } from 'class-validator';
 
+/**
+ * Accepts both flat legacy payloads and the official post-call envelope:
+ * { type, event_timestamp, data: { conversation_id, agent_id, metadata, ... } }
+ * Nested `data` is Allow()'d so ValidationPipe whitelist does not strip it.
+ */
 export class ElevenLabsConversationWebhookDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  type?: string;
+
+  @IsOptional()
+  @Allow()
+  event_timestamp?: number | string;
+
+  @IsOptional()
+  @IsObject()
+  @Allow()
+  data?: Record<string, unknown>;
+
   @IsOptional()
   @IsString()
   @MaxLength(150)

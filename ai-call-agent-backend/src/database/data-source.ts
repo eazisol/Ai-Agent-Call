@@ -49,6 +49,10 @@ import { PhoneNumber } from '../modules/phone-numbers/entities/phone-number.enti
 import { PhoneNumberAssignment } from '../modules/phone-numbers/entities/phone-number-assignment.entity';
 import { PhoneNumberManagement1756130000000 } from './migrations/1756130000000-PhoneNumberManagement';
 import { IncomingAiCalls1756140000000 } from './migrations/1756140000000-IncomingAiCalls';
+import { SubscriptionPlans1756150000000 } from './migrations/1756150000000-SubscriptionPlans';
+import { Plan } from '../modules/subscriptions/entities/plan.entity';
+import { PlanEntitlement } from '../modules/subscriptions/entities/plan-entitlement.entity';
+import { Subscription } from '../modules/subscriptions/entities/subscription.entity';
 
 loadBackendEnv();
 
@@ -95,6 +99,9 @@ export default new DataSource({
     CallProviderMapping,
     ProviderEvent,
     AiConfig,
+    Plan,
+    PlanEntitlement,
+    Subscription,
   ],
   migrations: [
     FoundationBaseline1724500000000,
@@ -113,6 +120,7 @@ export default new DataSource({
     TwilioTelephonyProvider1756120000000,
     PhoneNumberManagement1756130000000,
     IncomingAiCalls1756140000000,
+    SubscriptionPlans1756150000000,
   ],
   migrationsTableName: 'eazi_ai_call_migrations',
   synchronize: false,

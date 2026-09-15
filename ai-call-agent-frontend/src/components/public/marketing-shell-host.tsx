@@ -5,32 +5,23 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { PublicShell } from "@/components/public/public-shell";
 import { ShellNavigationProvider } from "@/components/shell/shell-navigation";
-import { toastComingSoon } from "@/components/shell/portal-nav";
+import { isEnabledMarketingRoute } from "@/lib/marketing-routes";
 
-/** Live marketing foundation routes in Phase 4. */
-export function isEnabledMarketingRoute(href: string): boolean {
-  return href === "/marketing-shell";
-}
+export { isEnabledMarketingRoute };
 
 /**
- * Next.js host adapter for the Public / Marketing shell preview.
- *
- * MarketingShellHost
- *   → ShellNavigationProvider
- *     → PublicShell
- *       → {children}
+ * Marketing shell host — real Next.js navigation for launch routes + auth.
  */
 export function MarketingShellHost({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname() ?? "/marketing-shell";
+  const pathname = usePathname() ?? "/";
   const router = useRouter();
 
   const navigate = React.useCallback(
     (href: string) => {
-      if (isEnabledMarketingRoute(href)) {
-        router.push(href);
+      if (!isEnabledMarketingRoute(href)) {
         return;
       }
-      toastComingSoon();
+      router.push(href);
     },
     [router],
   );

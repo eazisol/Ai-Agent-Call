@@ -124,7 +124,7 @@ flowchart TB
 
 | Platform | Release position | Primary responsibility |
 | --- | --- | --- |
-| Marketing Website | MVP support track | Product, industries, pricing, demos, signup, login, and demo booking |
+| Marketing Website | Commercial P1 complete (15 Sep 2026) | Public product site (features, solutions, M25 public pricing, signup/login CTAs); docs `docs/marketing-website/` |
 | Customer / Business Portal | MVP primary platform | Business, agent, knowledge, voice, phone, call, and account operations |
 | Internal Admin Portal | Commercial launch | Tenant support, provider operations, usage, subscriptions, cost, errors, and audit access |
 | Developer / Integration Portal | Future scale | API keys, documentation, webhooks, OAuth, logs, and SDK guidance |
@@ -344,7 +344,7 @@ This is a deployment separation, not a requirement to create microservices. Each
 | M22 | Automation Engine / n8n | 8 | Commercial | P1 | M14, M17, M23 | Not Started |
 | M23 | Notifications | 8 | Commercial | P1 | M3, M4 | Not Started |
 | M24 | Analytics | 9 | Commercial | P1 | M14, M16, M20, M26 | Not Started |
-| M25 | Subscription Plans & Entitlements | 9 | Commercial | P0 | M2, M3 | Not Started |
+| M25 | Subscription Plans & Entitlements | 9 | Commercial | P0 | M2, M3 | **Complete** — 15 September 2026 |
 | M26 | Usage Metering | 9 | Commercial | P0 | M6, M10–M12, M25 | Not Started |
 | M27 | Billing | 9 | Commercial | P0 | M23, M25, M26 | Not Started |
 | M28 | Internal Admin Portal | 9 | Commercial | P1 | M2, M3, M14, M26, M27 | Not Started |

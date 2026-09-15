@@ -198,5 +198,12 @@ export default () => {
       from: process.env.SMTP_FROM,
       timeoutMs: numberValue(process.env.SMTP_TIMEOUT_MS, 10_000),
     },
+    subscription: {
+      /** `off` (default) resolves entitlements but does not block mutations. */
+      enforcementMode:
+        process.env.SUBSCRIPTION_ENFORCEMENT_MODE === 'enforce'
+          ? 'enforce'
+          : 'off',
+    },
   };
 };

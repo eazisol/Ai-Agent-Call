@@ -18,6 +18,7 @@ import { N8nModule } from './modules/n8n/n8n.module';
 import { OpenaiRealtimeModule } from './modules/openai-realtime/openai-realtime.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { PhoneNumbersModule } from './modules/phone-numbers/phone-numbers.module';
+import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 import { TwilioModule } from './modules/twilio/twilio.module';
 import { VoiceStreamModule } from './modules/voice-stream/voice-stream.module';
 
@@ -57,6 +58,7 @@ import { VoiceStreamModule } from './modules/voice-stream/voice-stream.module';
     }),
     AuthModule,
     OrganizationsModule,
+    SubscriptionsModule,
     BusinessesModule,
     AgentsModule,
     KnowledgeModule,

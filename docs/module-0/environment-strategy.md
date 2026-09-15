@@ -27,6 +27,7 @@ Copy only `*.example` files. Never commit `.env`, `.env.local`, or `.env.docker`
 | `POSTGRES_*`, `N8N_ENCRYPTION_KEY` | Root `.env.docker` (Compose) |
 | Database, Redis, object storage, Twilio, OpenAI, stream signing, `AUTH_*`, `SMTP_*` | Backend `.env` / `.env.docker` |
 | `INTERNAL_API_BASE_URL`, `NEXT_PUBLIC_API_BASE_URL` | Frontend only |
+| `NEXT_PUBLIC_SITE_URL` (optional) | Frontend — absolute marketing sitemap/robots/canonical base; see `docs/marketing-website/environment-and-config.md`. `INTERNAL_API_BASE_URL` is **server-only** for marketing public plans fetch |
 
 ## Auth / SMTP keys (M01)
 
@@ -49,6 +50,14 @@ Copy only `*.example` files. Never commit `.env`, `.env.local`, or `.env.docker`
 | `SMTP_PORT` / `SMTP_SECURE` / `SMTP_USER` / `SMTP_PASSWORD` / `SMTP_TIMEOUT_MS` | No | Defaults documented in `.env.example` |
 
 See also [Module 01 docs](../module-1/README.md), [Module 02 API contracts](../module-2/api-contracts.md), and [Module 03 README](../module-3/README.md).
+
+## Subscription enforcement (M25)
+
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `SUBSCRIPTION_ENFORCEMENT_MODE` | No | `off` (default) = resolve entitlements/APIs without blocking creates; `enforce` = server-side limit/feature/subscription asserts active |
+
+Documented in backend `.env.example` / `.env.docker.example`. Never ship secrets in this variable.
 
 ## External providers (M02 / M03 / M04)
 

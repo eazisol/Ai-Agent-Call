@@ -170,9 +170,14 @@ function createHarness(membersSeed = []) {
     },
   };
 
+  const entitlements = {
+    assertCanCreateBusiness: async () => undefined,
+  };
+
   const service = new BusinessesService(
     dataSource,
     organizations,
+    entitlements,
     businesses,
     settings,
     hours,

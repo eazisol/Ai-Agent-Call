@@ -24,6 +24,7 @@ function createHarness({
   agentSeed = [],
   objectStorageEnabled = true,
   providerConfigured = true,
+  assertCanUseVoiceCloning = async () => undefined,
 } = {}) {
   const cloneRows = [...cloneSeed];
   const consentRows = [...consentSeed];
@@ -233,14 +234,19 @@ function createHarness({
     },
   };
 
+  let createCloneCalls = 0;
   const cloneProvider = {
     providerName: 'elevenlabs',
     isConfigured: () => providerConfigured,
-    createClone: async () => ({
-      externalVoiceId: 'el-clone-1',
-      metadata: { syncStatus: 'synced' },
-    }),
+    createClone: async () => {
+      createCloneCalls += 1;
+      return {
+        externalVoiceId: 'el-clone-1',
+        metadata: { syncStatus: 'synced' },
+      };
+    },
     deleteClone: async () => {},
+    getCreateCloneCalls: () => createCloneCalls,
   };
 
   const catalog = {
@@ -290,6 +296,9 @@ function createHarness({
         }),
     },
     organizations,
+    {
+      assertCanUseVoiceCloning,
+    },
     cloneProvider,
     catalog,
     objectStorage,
@@ -437,6 +446,92 @@ test('submit creates business voice asset', async () => {
   assert.equal(harness.assetRows[0].sourceType, 'business_clone');
   assert.equal(harness.assetRows[0].businessId, bizId);
   assert.equal(harness.mappingRows.length, 1);
+  assert.equal(harness.cloneProvider.getCreateCloneCalls(), 1);
+});
+
+test('FEATURE_NOT_INCLUDED blocks draft create before provider', async () => {
+  const harness = createHarness({
+    ...baseSeeds(),
+    assertCanUseVoiceCloning: async () => {
+      throw new ApplicationError(
+        'FEATURE_NOT_INCLUDED',
+        'This feature is not included in your current plan.',
+        403,
+        { featureKey: 'voice_cloning.enabled' },
+      );
+    },
+  });
+
+  await assert.rejects(
+    () =>
+      harness.service.createDraftForUser(userId, orgId, bizId, {
+        displayName: 'Blocked Clone',
+      }),
+    (error) =>
+      error instanceof ApplicationError &&
+      error.code === 'FEATURE_NOT_INCLUDED',
+  );
+  assert.equal(harness.cloneProvider.getCreateCloneCalls(), 0);
+  assert.equal(harness.cloneRows.length, 0);
+});
+
+test('FEATURE_NOT_INCLUDED blocks submit before provider createClone', async () => {
+  const harness = createHarness({
+    ...baseSeeds(),
+    cloneSeed: [
+      {
+        id: cloneId,
+        businessId: bizId,
+        displayName: 'Draft Clone',
+        status: 'draft',
+        provider: 'elevenlabs',
+        voiceAssetId: null,
+        createdByUserId: userId,
+        submittedAt: null,
+        lastError: null,
+      },
+    ],
+    consentSeed: [
+      {
+        id: randomUUID(),
+        voiceCloneId: cloneId,
+        acceptedByUserId: userId,
+        consentVersion: 'm09-v1',
+        consentTextHash: 'b'.repeat(64),
+        acceptedAt: new Date(),
+      },
+    ],
+    sampleSeed: [
+      {
+        id: randomUUID(),
+        voiceCloneId: cloneId,
+        storageKey: 'org/x/sample.mp3',
+        originalFilename: 'sample.mp3',
+        contentType: 'audio/mpeg',
+        byteSize: '1000',
+        checksumSha256: 'abc',
+        status: 'uploaded',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ],
+    assertCanUseVoiceCloning: async () => {
+      throw new ApplicationError(
+        'FEATURE_NOT_INCLUDED',
+        'This feature is not included in your current plan.',
+        403,
+        { featureKey: 'voice_cloning.enabled' },
+      );
+    },
+  });
+
+  await assert.rejects(
+    () => harness.service.submitForUser(userId, orgId, bizId, cloneId),
+    (error) =>
+      error instanceof ApplicationError &&
+      error.code === 'FEATURE_NOT_INCLUDED',
+  );
+  assert.equal(harness.cloneProvider.getCreateCloneCalls(), 0);
 });
 
 test('delete blocked while assigned to agent', async () => {

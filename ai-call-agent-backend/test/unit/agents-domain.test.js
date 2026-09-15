@@ -167,9 +167,14 @@ function createHarness({ membersSeed = [], businessSeed = [] } = {}) {
     getSummariesForIds: async () => new Map(),
   };
 
+  const entitlements = {
+    assertCanCreateAgent: async () => undefined,
+  };
+
   const service = new AgentsService(
     dataSource,
     organizations,
+    entitlements,
     agents,
     businesses,
     providerSync,

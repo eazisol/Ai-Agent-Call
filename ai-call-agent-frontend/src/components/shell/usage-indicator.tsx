@@ -1,35 +1,68 @@
 "use client";
 
-import { Progress } from "@/components/ui/progress";
-import { usageSummary, type UsageSummary } from "@/mocks/portal-shell";
+import { useOptionalSubscriptionSnapshot } from "@/components/subscriptions/subscription-session";
 import { useShellNavigation } from "./shell-navigation";
 
 /**
- * UsageIndicator — quiet plan-usage summary pinned above the sidebar footer.
- * Hidden in the collapsed icon rail. Chrome-only mock data in Phase 3.
+ * Compact plan minutes summary (M25).
+ * Shows included entitlement only — no fake used/limit progress until M26.
  */
-export function UsageIndicator({ usage = usageSummary }: { usage?: UsageSummary }) {
+export function UsageIndicator() {
   const { navigate } = useShellNavigation();
-  const pct = Math.min(100, Math.round((usage.used / usage.limit) * 100));
+  const snapshot = useOptionalSubscriptionSnapshot();
+  const href = "/settings/plan";
+
+  const planName =
+    snapshot?.status === "ready" && snapshot.subscription
+      ? snapshot.subscription.plan.name
+      : snapshot?.status === "error"
+        ? "Plan unavailable"
+        : snapshot?.status === "loading"
+          ? "Loading plan…"
+          : null;
+
+  const minutesLimit =
+    snapshot?.entitlements?.limits?.["minutes.monthly_included"];
+  const hasMinutesKey =
+    snapshot?.entitlements?.limits != null &&
+    Object.prototype.hasOwnProperty.call(
+      snapshot.entitlements.limits,
+      "minutes.monthly_included",
+    );
+
+  let minutesLine: string;
+  if (snapshot?.status === "loading" || snapshot?.status === "idle") {
+    minutesLine = "Loading…";
+  } else if (!hasMinutesKey) {
+    minutesLine = "Usage available after metering";
+  } else if (minutesLimit === null || minutesLimit === undefined) {
+    minutesLine = "Unlimited included";
+  } else {
+    minutesLine = `${minutesLimit.toLocaleString()} included`;
+  }
 
   return (
     <div className="mx-2 rounded-lg border bg-muted/40 p-3 group-data-[collapsible=icon]:hidden">
-      <div className="flex items-baseline justify-between gap-2">
-        <span className="text-xs font-medium text-muted-foreground">{usage.label}</span>
-        <span className="text-xs font-medium tabular-nums">
-          {usage.used.toLocaleString()} / {usage.limit.toLocaleString()}
-        </span>
+      <div className="space-y-1">
+        <p className="text-xs font-medium text-muted-foreground">
+          {planName ?? "Plan"}
+        </p>
+        <div className="flex items-baseline justify-between gap-2">
+          <span className="text-xs font-medium text-muted-foreground">
+            Monthly minutes
+          </span>
+          <span className="text-xs font-medium tabular-nums">{minutesLine}</span>
+        </div>
       </div>
-      <Progress value={pct} className="mt-2 h-1.5" aria-label={`${usage.label}: ${pct}% used`} />
       <a
-        href={usage.href}
+        href={href}
         onClick={(e) => {
           e.preventDefault();
-          navigate(usage.href);
+          navigate(href);
         }}
         className="mt-2 inline-block text-xs font-medium text-primary hover:underline"
       >
-        View usage
+        View plan
       </a>
     </div>
   );

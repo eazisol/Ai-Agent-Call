@@ -20,6 +20,7 @@ import {
 import { AgentConfig } from '../agents/entities/agent-config.entity';
 import { Business } from '../businesses/entities/business.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
+import { EntitlementsService } from '../subscriptions/entitlements.service';
 import { VoiceAsset } from '../voices/entities/voice-asset.entity';
 import { VoiceProviderMapping } from '../voices/entities/voice-provider-mapping.entity';
 import { VoiceClone } from './entities/voice-clone.entity';
@@ -86,6 +87,7 @@ export class VoiceClonesService {
     private readonly config: ConfigService,
     private readonly dataSource: DataSource,
     private readonly organizations: OrganizationsService,
+    private readonly entitlements: EntitlementsService,
     @Inject(VOICE_CLONE_PORT)
     private readonly cloneProvider: VoiceClonePort,
     @Inject(VOICE_CATALOG_PORT)
@@ -196,6 +198,7 @@ export class VoiceClonesService {
     );
     assertVoiceCloneCan(membership.role, 'create_voice_clone');
     await this.requireActiveBusiness(organizationId, businessId);
+    await this.entitlements.assertCanUseVoiceCloning(organizationId);
 
     const clone = await this.clones.save(
       this.clones.create({
@@ -400,6 +403,7 @@ export class VoiceClonesService {
     );
     assertVoiceCloneCan(membership.role, 'submit_voice_clone');
     await this.requireActiveBusiness(organizationId, businessId);
+    await this.entitlements.assertCanUseVoiceCloning(organizationId);
 
     const clone = await this.findOwnedClone(businessId, cloneId);
     if (clone.status !== 'draft' && clone.status !== 'failed') {

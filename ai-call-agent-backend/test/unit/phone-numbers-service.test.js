@@ -222,9 +222,14 @@ function createHarness({
     },
   };
 
+  const entitlements = {
+    assertCanAddPhoneNumber: async () => undefined,
+  };
+
   const service = new PhoneNumbersService(
     dataSource,
     organizations,
+    entitlements,
     telephonyMappings,
     telephony,
     phoneNumbers,

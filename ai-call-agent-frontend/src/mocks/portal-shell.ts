@@ -37,13 +37,14 @@ import {
 export interface PortalOrganization {
   id: string;
   name: string;
-  plan: string;
+  /** @deprecated Mock plan labels removed in M25.03 — use subscriptions API. */
+  plan?: string;
 }
 
 export const organizations: PortalOrganization[] = [
-  { id: "org_eazi", name: "Eazi Demo Group", plan: "Growth" },
-  { id: "org_acme", name: "Acme Healthcare", plan: "Scale" },
-  { id: "org_nova", name: "Nova Hospitality", plan: "Starter" },
+  { id: "org_eazi", name: "Eazi Demo Group" },
+  { id: "org_acme", name: "Acme Healthcare" },
+  { id: "org_nova", name: "Nova Hospitality" },
 ];
 
 export const currentOrganizationId = "org_eazi";
@@ -79,16 +80,17 @@ export const currentUser: PortalUser = {
 
 export interface UsageSummary {
   label: string;
-  used: number;
-  limit: number;
+  /** @deprecated M26 will supply used minutes. Do not display fake used values. */
+  used?: number;
+  /** Included minutes when known; omit when unknown. */
+  included?: number | null;
   href: string;
 }
 
+/** @deprecated Mock usage removed in M25.03 — UsageIndicator loads live entitlements. */
 export const usageSummary: UsageSummary = {
   label: "Monthly minutes",
-  used: 1820,
-  limit: 2500,
-  href: "/billing",
+  href: "/settings/plan",
 };
 
 export interface ShellNavChild {
@@ -174,7 +176,7 @@ export const portalBottomNav: ShellNavGroup = {
   id: "account",
   items: [
     { id: "team", label: "Team", href: "/team", icon: UsersRound },
-    { id: "billing", label: "Billing", href: "/billing", icon: CreditCard },
+    { id: "plan", label: "Plan", href: "/settings/plan", icon: CreditCard },
     { id: "settings", label: "Settings", href: "/settings", icon: Settings },
     { id: "help", label: "Help & Documentation", href: "/help", icon: LifeBuoy },
   ],

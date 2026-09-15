@@ -9,6 +9,7 @@ import { AgentConfig } from '../agents/entities/agent-config.entity';
 import { AuthModule } from '../auth/auth.module';
 import { Business } from '../businesses/entities/business.entity';
 import { OrganizationsModule } from '../organizations/organizations.module';
+import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
 import { VoiceAsset } from '../voices/entities/voice-asset.entity';
 import { VoiceProviderMapping } from '../voices/entities/voice-provider-mapping.entity';
 import { VoiceClone } from './entities/voice-clone.entity';
@@ -29,6 +30,7 @@ import { VoiceClonesService } from './voice-clones.service';
     ]),
     AuthModule,
     OrganizationsModule,
+    SubscriptionsModule,
     ObjectStorageModule,
   ],
   controllers: [],

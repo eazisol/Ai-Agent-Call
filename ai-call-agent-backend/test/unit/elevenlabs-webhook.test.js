@@ -79,3 +79,41 @@ test('handleConversationEvent marks provider failure on error events', async () 
 
   assert.equal(markFailedCalls, 1);
 });
+
+test('handleConversationEvent accepts nested post_call_transcription envelope', async () => {
+  let linked = null;
+  let completed = 0;
+  let recorded = null;
+  const service = createService({
+    linkProviderCallId: async (callId, provider, externalCallId) => {
+      linked = { callId, provider, externalCallId };
+    },
+    markCompleted: async () => {
+      completed += 1;
+    },
+    recordProviderEvent: async (input) => {
+      recorded = input;
+      return true;
+    },
+  });
+
+  await service.handleConversationEvent({
+    type: 'post_call_transcription',
+    data: {
+      conversation_id: 'conv-nested',
+      agent_id: 'agent_abc',
+      metadata: {
+        phone_call: { call_sid: 'CA100', type: 'twilio' },
+      },
+    },
+  });
+
+  assert.deepEqual(linked, {
+    callId: 'call-1',
+    provider: 'elevenlabs',
+    externalCallId: 'conv-nested',
+  });
+  assert.equal(completed, 1);
+  assert.equal(recorded.eventType, 'conversation:post_call_transcription');
+  assert.equal(recorded.externalEventId, 'conv-nested:post_call_transcription');
+});

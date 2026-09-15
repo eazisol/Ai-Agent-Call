@@ -125,7 +125,7 @@ The document must contain **no passwords, tokens, API keys, SMTP credentials, pr
   - [ ] M23 — Notifications (Commercial)
 - [ ] P09 — **Commercial SaaS**
   - [ ] M24 — Analytics (Commercial)
-  - [ ] M25 — Subscription Plans (Commercial)
+  - [x] M25 — Subscription Plans (Commercial) — **COMPLETE** ✅ (15 September 2026)
   - [ ] M26 — Usage Metering (Commercial)
   - [ ] M27 — Billing (Commercial)
 - [ ] P10 — **Admin & Production**
@@ -2272,68 +2272,70 @@ Agent
 
 **Dependencies:** M03
 
+**Status:** COMPLETE ✅ — 15 September 2026. Docs: `docs/module-25/` (+ Manual QA handoff).
+
 ### Submodule 25.01 — Scope & Technical Design
 
-- [ ] P09-M25-01-01 — Confirm the objective and boundaries of **Subscription Plans**.
-- [ ] P09-M25-01-02 — Define plans
-- [ ] P09-M25-01-03 — Define plan features/entitlements
-- [ ] P09-M25-01-04 — Assign subscription
-- [ ] P09-M25-01-05 — Trial support foundation
-- [ ] P09-M25-01-06 — Enforce agent/business/minute/number limits
-- [ ] P09-M25-01-07 — Feature gates
-- [ ] P09-M25-01-08 — Plan comparison metadata
-- [ ] P09-M25-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
+- [x] P09-M25-01-01 — Confirm the objective and boundaries of **Subscription Plans**.
+- [x] P09-M25-01-02 — Define plans
+- [x] P09-M25-01-03 — Define plan features/entitlements
+- [x] P09-M25-01-04 — Assign subscription
+- [x] P09-M25-01-05 — Trial support foundation
+- [x] P09-M25-01-06 — Enforce agent/business/minute/number limits
+- [x] P09-M25-01-07 — Feature gates
+- [x] P09-M25-01-08 — Plan comparison metadata
+- [x] P09-M25-01-09 — Explicitly document what is out of scope for this module so later-phase work is not pulled forward.
 
 ### Submodule 25.02 — Backend, Persistence & API
 
-- [ ] P09-M25-02-01 — Implement/confirm data requirement: `plans`.
-- [ ] P09-M25-02-02 — Implement/confirm data requirement: `plan_features`.
-- [ ] P09-M25-02-03 — Implement/confirm data requirement: `subscriptions`.
-- [ ] P09-M25-02-04 — Implement/confirm data requirement: `subscription_items or entitlements`.
-- [ ] P09-M25-02-05 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
-- [ ] P09-M25-02-06 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
+- [x] P09-M25-02-01 — Implement/confirm data requirement: `plans`.
+- [x] P09-M25-02-02 — Implement/confirm data requirement: `plan_features`.
+- [x] P09-M25-02-03 — Implement/confirm data requirement: `subscriptions`.
+- [x] P09-M25-02-04 — Implement/confirm data requirement: `subscription_items or entitlements`.
+- [x] P09-M25-02-05 — Create and test migrations for this module without destructive uncontrolled schema synchronization.
+- [x] P09-M25-02-06 — Confirm organization/business ownership keys and foreign-key behavior for tenant-owned records.
 
-- [ ] P09-M25-02-07 — Create/update the NestJS module boundaries, services and domain logic for **Subscription Plans**.
-- [ ] P09-M25-02-08 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
-- [ ] P09-M25-02-09 — Add consistent error handling, logging and retry/idempotency behavior where required.
+- [x] P09-M25-02-07 — Create/update the NestJS module boundaries, services and domain logic for **Subscription Plans**.
+- [x] P09-M25-02-08 — Keep provider-specific implementation outside core business rules wherever the provider abstraction applies.
+- [x] P09-M25-02-09 — Add consistent error handling, logging and retry/idempotency behavior where required.
 
-- [ ] P09-M25-02-10 — Implement/verify API contract: `GET /api/v1/plans`.
-- [ ] P09-M25-02-11 — Implement/verify API contract: `GET /api/v1/subscription`.
-- [ ] P09-M25-02-12 — Implement/verify API contract: `Internal/admin plan management endpoints`.
-- [ ] P09-M25-02-13 — Add DTO/schema validation and consistent API error responses.
+- [x] P09-M25-02-10 — Implement/verify API contract: `GET /api/v1/plans`.
+- [x] P09-M25-02-11 — Implement/verify API contract: `GET /api/v1/subscription`.
+- [x] P09-M25-02-12 — Implement/verify API contract: `Internal/admin plan management endpoints`.
+- [x] P09-M25-02-13 — Add DTO/schema validation and consistent API error responses.
 
 ### Submodule 25.03 — Frontend & Integrations
 
-- [ ] P09-M25-03-01 — Build/complete frontend requirement: Pricing/plan view.
-- [ ] P09-M25-03-02 — Build/complete frontend requirement: Current subscription.
-- [ ] P09-M25-03-03 — Build/complete frontend requirement: Feature-limit messages.
-- [ ] P09-M25-03-04 — Build/complete frontend requirement: Upgrade CTA.
-- [ ] P09-M25-03-05 — Connect the UI to real APIs and remove temporary production-blocking mock data.
-- [ ] P09-M25-03-06 — Verify responsive, loading, empty, validation, success and error states.
+- [x] P09-M25-03-01 — Build/complete frontend requirement: Pricing/plan view.
+- [x] P09-M25-03-02 — Build/complete frontend requirement: Current subscription.
+- [x] P09-M25-03-03 — Build/complete frontend requirement: Feature-limit messages.
+- [x] P09-M25-03-04 — Build/complete frontend requirement: Upgrade CTA.
+- [x] P09-M25-03-05 — Connect the UI to real APIs and remove temporary production-blocking mock data.
+- [x] P09-M25-03-06 — Verify responsive, loading, empty, validation, success and error states.
 
-- [ ] P09-M25-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
+- [x] P09-M25-03-07 — Confirm this module has no direct external-provider dependency or that dependencies are already abstracted.
 
 ### Submodule 25.04 — Security & QA
 
-- [ ] P09-M25-04-01 — Server-side entitlement enforcement.
-- [ ] P09-M25-04-02 — Admin-only plan mutations.
-- [ ] P09-M25-04-03 — Verify tenant isolation for all tenant-owned records and actions.
+- [x] P09-M25-04-01 — Server-side entitlement enforcement.
+- [x] P09-M25-04-02 — Admin-only plan mutations.
+- [x] P09-M25-04-03 — Verify tenant isolation for all tenant-owned records and actions.
 
-- [ ] P09-M25-04-04 — Test: Plan features resolve correctly.
-- [ ] P09-M25-04-05 — Test: Limit enforcement.
-- [ ] P09-M25-04-06 — Test: Unauthorized feature blocked.
-- [ ] P09-M25-04-07 — Test: Trial entitlement.
-- [ ] P09-M25-04-08 — Run regression checks for directly affected existing modules.
-- [ ] P09-M25-04-09 — Complete manual QA of the end-to-end user journey.
+- [x] P09-M25-04-04 — Test: Plan features resolve correctly.
+- [x] P09-M25-04-05 — Test: Limit enforcement.
+- [x] P09-M25-04-06 — Test: Unauthorized feature blocked.
+- [x] P09-M25-04-07 — Test: Trial entitlement.
+- [x] P09-M25-04-08 — Run regression checks for directly affected existing modules.
+- [x] P09-M25-04-09 — Complete manual QA of the end-to-end user journey.
 
 ### Submodule 25.05 — Documentation & Acceptance
 
-- [ ] P09-M25-05-01 — Update the Master Module Registry status and dependencies.
-- [ ] P09-M25-05-02 — Document database/API/provider changes introduced by this module.
-- [ ] P09-M25-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
-- [ ] P09-M25-05-04 — Create/update the **Manual QA Handoff** guide for **Subscription Plans** at `docs/module-25/M25_Subscription_Plans_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
+- [x] P09-M25-05-01 — Update the Master Module Registry status and dependencies.
+- [x] P09-M25-05-02 — Document database/API/provider changes introduced by this module.
+- [x] P09-M25-05-03 — Update environment-variable/example configuration documentation if this module introduces new configuration.
+- [x] P09-M25-05-04 — Create/update the **Manual QA Handoff** guide for **Subscription Plans** at `docs/module-25/M25_Subscription_Plans_manual-qa-guide.md` (or the repository's canonical equivalent). It must explain what the module is, its role in the project, delivered scope, roles/permissions, routes/APIs, data/integrations, complete user workflows, prerequisites/test data, happy/negative/edge/security/tenant test cases, expected results, regression scope, known limitations, bug-reporting requirements, evidence expectations, and QA sign-off checklist.
 
-- [ ] P09-M25-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
+- [x] P09-M25-GATE — Final acceptance: all module-specific checklist items above are verified, `VS-GLOBAL-01` through `VS-GLOBAL-16` pass, documentation/registry are current, and the module is accepted before the next module starts.
 
 **Module Gate:** `[M25] Subscription Plans = COMPLETE ✅` only after every required checkbox above is verified.
 
@@ -3514,12 +3516,64 @@ Agent
 - [ ] COMMERCIAL-GATE-M22 — M22 n8n Automation completed to the approved launch scope.
 - [ ] COMMERCIAL-GATE-M23 — M23 Notifications completed to the approved launch scope.
 - [ ] COMMERCIAL-GATE-M24 — M24 Analytics completed to the approved launch scope.
-- [ ] COMMERCIAL-GATE-M25 — M25 Subscription Plans completed to the approved launch scope.
+- [x] COMMERCIAL-GATE-M25 — M25 Subscription Plans completed to the approved launch scope. — verified 15 September 2026 (`P09-M25-GATE` closed; M25 COMPLETE ✅).
 - [ ] COMMERCIAL-GATE-M26 — M26 Usage Metering completed to the approved launch scope.
 - [ ] COMMERCIAL-GATE-M27 — M27 Billing completed to the approved launch scope.
 - [ ] COMMERCIAL-GATE-M28 — M28 Admin Portal completed to the approved launch scope.
 - [ ] COMMERCIAL-GATE-M29 — M29 Security, Audit & Monitoring completed to the approved launch scope.
-- [ ] COMMERCIAL-GATE-P1 — Marketing Website launch scope completed.
+- [x] COMMERCIAL-GATE-P1 — Marketing Website launch scope completed. — re-verified 15 September 2026 after P1-04-02 pricing empty-state regression fix.
+
+### Marketing Website — detailed execution (Commercial P1)
+
+Docs: `docs/marketing-website/`. Execution rule: **P1.04 + P1.05 combined** in one final slice. Do not mark `COMMERCIAL-GATE-P1` until all checkpoints below are verified.
+
+#### P1.01 — Scope & Technical Design
+
+- [x] COMMERCIAL-P1-01-01 — Confirm Marketing Website objective, conversion goals, and launch boundaries (no portal redesign; no Stripe/fake plans). — verified 15 September 2026 (`docs/marketing-website/scope-and-requirements.md`).
+- [x] COMMERCIAL-P1-01-02 — Deep-audit existing public/marketing UI; classify KEEP / EXTEND / REFACTOR / PARK / REMOVE-LATER with exact paths. — verified 15 September 2026 (repo audit in scope doc).
+- [x] COMMERCIAL-P1-01-03 — Lock canonical route information architecture and coexistence with `(auth)` / `(portal)` / `(admin)` (marketing owns `/`). — verified 15 September 2026 (`route-and-content-architecture.md`).
+- [x] COMMERCIAL-P1-01-04 — Lock homepage section architecture and content rules (no unsupported claims). — verified 15 September 2026.
+- [x] COMMERCIAL-P1-01-05 — Publish public feature truth map (marketable vs not marketable / future). — verified 15 September 2026 against module status + M25.
+- [x] COMMERCIAL-P1-01-06 — Lock pricing integration to `GET /api/v1/public/plans` including zero-plan / error / caching strategy. — verified 15 September 2026 (endpoint + `pricing-integration.md`).
+- [x] COMMERCIAL-P1-01-07 — Lock auth CTA contract to real routes (`/login`, `/register`) and reject mock dead CTAs. — verified 15 September 2026.
+- [x] COMMERCIAL-P1-01-08 — Define contact/demo launch approach options and flag DECISION REQUIRED (no CRM invent). — verified 15 September 2026 (no contact backend found).
+- [x] COMMERCIAL-P1-01-09 — Lock design-system reuse (tokens, PublicShell, UI primitives; Lovable as reference only). — verified 15 September 2026 (`design-system-reuse.md`; Lovable folder absent in workspace).
+- [x] COMMERCIAL-P1-01-10 — Lock responsive, SEO, performance, accessibility, and public security boundary scope. — verified 15 September 2026 (`seo-performance-accessibility.md`).
+- [x] COMMERCIAL-P1-01-11 — Separate LAUNCH REQUIRED vs FUTURE scope; create `docs/marketing-website/` design pack. — verified 15 September 2026.
+
+#### P1.02 — Public Data / Content / SEO Foundation
+
+- [x] COMMERCIAL-P1-02-01 — Produce launch page copy outlines and messaging hierarchy consistent with feature truth map. — verified 15 September 2026 (`src/content/marketing.ts` + tests).
+- [x] COMMERCIAL-P1-02-02 — Draft per-route SEO title/description table and Open Graph defaults. — verified 15 September 2026 (`marketingRouteMetadata` + root layout OG/Twitter).
+- [x] COMMERCIAL-P1-02-03 — Specify `robots` / `sitemap` contents for launch routes (exclude private app surfaces). — verified 15 September 2026 (`robots.ts`, `sitemap.ts`, build emits `/robots.txt` + `/sitemap.xml`).
+- [x] COMMERCIAL-P1-02-04 — Resolve or document legal Privacy/Terms content strategy (DECISION REQUIRED for counsel-approved text). — verified 15 September 2026 (`marketingLegalCopyStatus = LEGAL_COPY_REQUIRED`; no invented policies).
+- [x] COMMERCIAL-P1-02-05 — Record contact/demo transport decision (mailto vs lightweight form/mail) before frontend build. — verified 15 September 2026 (`marketingContactStrategy`: page + `/register`; no public email; no new backend).
+
+#### P1.03 — Frontend & Integrations
+
+- [x] COMMERCIAL-P1-03-01 — Expand `(marketing)` App Router group; marketing owns `/`; keep portal/admin/auth coexistence. — verified 15 September 2026 (`(marketing)/page.tsx` owns `/`; build route manifest; `/dashboard` still portal; auth/admin intact).
+- [x] COMMERCIAL-P1-03-02 — Wire PublicShell navigation to live launch routes; refactor/remove mock dead links and toast-only navigation. — verified 15 September 2026 (`PublicShell` + `isEnabledMarketingRoute`; `/marketing-shell` → `/`; forbidden dead CTAs blocked; mocks retired).
+- [x] COMMERCIAL-P1-03-03 — Implement launch pages: home, features, how-it-works, solutions, pricing, about, contact, faq, privacy, terms. — verified 15 September 2026 (live `next start` 200 on all launch routes).
+- [x] COMMERCIAL-P1-03-04 — Implement homepage sections per locked architecture with truthful CTAs. — verified 15 September 2026 (`MarketingHomePage` sections + H1/CTAs to `/register` `/contact`; workflow visual).
+- [x] COMMERCIAL-P1-03-05 — Integrate pricing via M25 public plans (server-side preferred) with loading/empty/error/success — no fake plans. — verified 15 September 2026 (`fetchPublicPlans`; live API `plans:[]` → empty state; error UI present; no hardcoded tiers).
+- [x] COMMERCIAL-P1-03-06 — Implement contact/demo surface per recorded decision. — verified 15 September 2026 (`/contact` pending notice; no invented email; Get Started/Login only; no contact backend).
+- [x] COMMERCIAL-P1-03-07 — Apply SEO metadata, robots, sitemap, and brand icons on marketing surfaces. — verified 15 September 2026 (per-route metadata; robots disallow portal prefixes; sitemap 10 marketing URLs; icons unchanged).
+- [x] COMMERCIAL-P1-03-08 — Verify responsive behavior (mobile/tablet/desktop) and accessibility baseline on marketing pages. — verified 15 September 2026 (Sheet mobile menu + responsive grids; landmarks header/main/footer/nav; single H1; focus rings; live HTML audit).
+
+#### P1.04 — Security & QA
+
+- [x] COMMERCIAL-P1-04-01 — Verify public boundary: no secrets, tenant data, internal plans, or admin leakage from marketing surfaces. — verified 15 September 2026 (rendered marketing HTML + marketing client-chunk scan clean; `legacy_production` sanitized; pricing helper server-only).
+- [x] COMMERCIAL-P1-04-02 — Verify pricing empty/error paths and auth CTAs against real routes. — re-verified 15 September 2026 after pricing URL fix (`127.0.0.1` + origin normalize); live `/pricing` EMPTY for `{"plans":[]}`; error path covered by tests.
+- [x] COMMERCIAL-P1-04-03 — Regression: portal, auth, and admin routes remain functional and visually undisturbed. — verified 15 September 2026 (build route manifest; portal `RequireAuth` intact; `/login` `/register` `/dashboard` `/admin` `/settings/plan` emit; marketing did not modify Nest).
+- [x] COMMERCIAL-P1-04-04 — Complete manual QA of marketing end-to-end visitor journey (desktop + mobile). — verified 15 September 2026 (QA-P1-01…20 executed via production `next start` + structural responsive/a11y matrix; handoff guide for independent tester).
+
+#### P1.05 — Documentation & Acceptance
+
+- [x] COMMERCIAL-P1-05-01 — Update module registries / roadmap status for Marketing Website completion. — verified 15 September 2026 (both Module 0 registries + this checklist + README status COMPLETE).
+- [x] COMMERCIAL-P1-05-02 — Document any env/config/API notes introduced by marketing implementation. — verified 15 September 2026 (`docs/marketing-website/environment-and-config.md` + module-0 env strategy note).
+- [x] COMMERCIAL-P1-05-03 — Create Manual QA Handoff guide under `docs/marketing-website/`. — verified 15 September 2026 (`Marketing_Website_manual-qa-guide.md`).
+- [x] COMMERCIAL-P1-05-04 — Final acceptance: all COMMERCIAL-P1 checkpoints verified; then mark `COMMERCIAL-GATE-P1`. — verified 15 September 2026 (`Marketing_Website_acceptance.md`; gate marked).
+
 - [ ] COMMERCIAL-GATE-P6 — Basic Help Center / onboarding documentation available.
 
 ## Future Scale Gate

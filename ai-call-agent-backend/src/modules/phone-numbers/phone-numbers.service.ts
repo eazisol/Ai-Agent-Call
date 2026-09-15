@@ -9,6 +9,7 @@ import {
 import { Agent } from '../agents/entities/agent.entity';
 import { Business } from '../businesses/entities/business.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
+import { EntitlementsService } from '../subscriptions/entitlements.service';
 import { TelephonyMappingsService } from '../twilio/telephony-mappings.service';
 import type {
   AssignPhoneNumberDto,
@@ -79,6 +80,7 @@ export class PhoneNumbersService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly organizations: OrganizationsService,
+    private readonly entitlements: EntitlementsService,
     private readonly telephonyMappings: TelephonyMappingsService,
     @Inject(TELEPHONY_PROVIDER_PORT)
     private readonly telephony: TelephonyProviderPort,
@@ -220,6 +222,7 @@ export class PhoneNumbersService {
     );
     assertPhoneNumberCan(membership.role, 'purchase_phone_number');
     await this.requireActiveBusiness(organizationId, businessId);
+    await this.entitlements.assertCanAddPhoneNumber(organizationId);
 
     if (!input.confirm) {
       throw new ApplicationError(
@@ -290,6 +293,7 @@ export class PhoneNumbersService {
     );
     assertPhoneNumberCan(membership.role, 'import_phone_number');
     await this.requireActiveBusiness(organizationId, businessId);
+    await this.entitlements.assertCanAddPhoneNumber(organizationId);
 
     if (!this.telephony.isConfigured()) {
       throw new ApplicationError(

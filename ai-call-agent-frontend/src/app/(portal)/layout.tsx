@@ -12,6 +12,7 @@ import {
   OrganizationSessionProvider,
   RequireOrganization,
 } from "@/components/organizations/organization-session";
+import { SubscriptionProvider } from "@/components/subscriptions/subscription-session";
 import { PortalShell } from "@/components/shell/portal-shell";
 
 /**
@@ -24,9 +25,11 @@ export default function PortalLayout({ children }: { children: ReactNode }) {
       <RequireAuth>
         <OrganizationSessionProvider>
           <RequireOrganization>
-            <BusinessSessionProvider>
-              <PortalChrome>{children}</PortalChrome>
-            </BusinessSessionProvider>
+            <SubscriptionProvider>
+              <BusinessSessionProvider>
+                <PortalChrome>{children}</PortalChrome>
+              </BusinessSessionProvider>
+            </SubscriptionProvider>
           </RequireOrganization>
         </OrganizationSessionProvider>
       </RequireAuth>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useOptionalBusinessSession } from "@/components/businesses/business-session";
 import { useOptionalOrganizationSession } from "@/components/organizations/organization-session";
+import { useOptionalSubscriptionSnapshot } from "@/components/subscriptions/subscription-session";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -26,11 +27,18 @@ export function OrganizationSwitcher() {
   const router = useRouter();
   const session = useOptionalOrganizationSession();
   const businessSession = useOptionalBusinessSession();
+  const subscription = useOptionalSubscriptionSnapshot();
   const [query, setQuery] = React.useState("");
   const [switching, setSwitching] = React.useState(false);
 
   const orgs = session?.organizations ?? [];
   const active = session?.active ?? null;
+  const planLabel =
+    subscription?.status === "ready" && subscription.subscription
+      ? subscription.subscription.plan.name
+      : subscription?.status === "error"
+        ? "Plan unavailable"
+        : null;
   const filtered = orgs.filter((o) =>
     o.name.toLowerCase().includes(query.trim().toLowerCase()),
   );
@@ -105,6 +113,7 @@ export function OrganizationSwitcher() {
                 <span className="truncate font-medium">{active.name}</span>
                 <span className="truncate text-xs capitalize text-muted-foreground">
                   {active.role}
+                  {planLabel ? ` · ${planLabel}` : ""}
                 </span>
               </span>
               <ChevronsUpDown

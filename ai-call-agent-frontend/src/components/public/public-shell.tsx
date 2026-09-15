@@ -1,16 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDown, Menu, PhoneCall } from "lucide-react";
+import Link from "next/link";
+import { Menu, PhoneCall } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
@@ -21,76 +16,50 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
-  industries,
-  publicActions,
-  publicFooterGroups,
-  publicNavLinks,
-  type PublicNavLink,
-} from "@/mocks/marketing-shell";
+  MARKETING_PRODUCT_NAME,
+  marketingAuthCtas,
+  marketingFooterGroups,
+  marketingHeaderNav,
+  type MarketingNavLink,
+} from "@/content/marketing";
 import { useShellNavigation } from "@/components/shell/shell-navigation";
 
-/**
- * PublicShell — reusable marketing/public website shell.
- *
- * Sticky header + content + grouped footer. Same tokens/components as
- * authenticated shells. Portable via ShellNavigationProvider.
- */
 export function PublicShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <PublicHeader />
-      <main className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1">
+        {children}
+      </main>
       <PublicFooter />
     </div>
   );
 }
 
-function BrandLockup() {
-  const { navigate } = useShellNavigation();
+function BrandLockup({ href = "/" }: { href?: string }) {
   return (
-    <a
-      href="/marketing-shell"
-      aria-label="EaziAICall home"
-      onClick={(e) => {
-        e.preventDefault();
-        navigate("/marketing-shell");
-      }}
-      className="flex items-center gap-2.5"
-    >
+    <Link href={href} className="flex items-center gap-2.5" aria-label={`${MARKETING_PRODUCT_NAME} home`}>
       <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
         <PhoneCall className="size-4" aria-hidden="true" />
       </span>
-      <span className="font-display text-lg font-semibold tracking-tight">EaziAICall</span>
-    </a>
+      <span className="font-display text-lg font-semibold tracking-tight">
+        {MARKETING_PRODUCT_NAME}
+      </span>
+    </Link>
   );
 }
 
 const navLinkClasses =
-  "rounded-md px-2 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground";
+  "rounded-md px-2 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
+function isActivePath(currentPath: string, href: string) {
+  if (href === "/") return currentPath === "/";
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
 
 export function PublicHeader() {
-  const { currentPath, navigate } = useShellNavigation();
+  const { currentPath } = useShellNavigation();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const go = (href: string) => {
-    setMobileOpen(false);
-    navigate(href);
-  };
-
-  const link = (item: PublicNavLink) => (
-    <a
-      key={item.href}
-      href={item.href}
-      aria-current={currentPath === item.href ? "page" : undefined}
-      onClick={(e) => {
-        e.preventDefault();
-        navigate(item.href);
-      }}
-      className={cn(navLinkClasses, currentPath === item.href && "text-primary")}
-    >
-      {item.label}
-    </a>
-  );
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
@@ -98,48 +67,29 @@ export function PublicHeader() {
         <BrandLockup />
 
         <nav aria-label="Primary" className="mx-auto hidden items-center gap-1 lg:flex">
-          {publicNavLinks.slice(0, 2).map(link)}
-          <DropdownMenu>
-            <DropdownMenuTrigger
+          {marketingHeaderNav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActivePath(currentPath, item.href) ? "page" : undefined}
               className={cn(
                 navLinkClasses,
-                "flex items-center gap-1 outline-none data-[state=open]:text-foreground",
-                currentPath.startsWith("/industries") && "text-primary",
+                isActivePath(currentPath, item.href) && "text-primary",
               )}
             >
-              Industries
-              <ChevronDown className="size-3.5" aria-hidden="true" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-56">
-              {industries.map((industry) => (
-                <DropdownMenuItem key={industry.href} onSelect={() => navigate(industry.href)}>
-                  {industry.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          {publicNavLinks.slice(2).map(link)}
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5 lg:ml-0">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="hidden sm:inline-flex"
-            onClick={() => navigate(publicActions.login.href)}
-          >
-            {publicActions.login.label}
+          <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
+            <Link href={marketingAuthCtas.login.href}>{marketingAuthCtas.login.label}</Link>
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="hidden md:inline-flex"
-            onClick={() => navigate(publicActions.bookDemo.href)}
-          >
-            {publicActions.bookDemo.label}
-          </Button>
-          <Button size="sm" onClick={() => navigate(publicActions.startTrial.href)}>
-            {publicActions.startTrial.label}
+          <Button size="sm" asChild>
+            <Link href={marketingAuthCtas.getStarted.href}>
+              {marketingAuthCtas.getStarted.label}
+            </Link>
           </Button>
 
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -158,7 +108,7 @@ export function PublicHeader() {
                     <PhoneCall className="size-4" aria-hidden="true" />
                   </span>
                   <span className="font-display text-lg font-semibold tracking-tight">
-                    EaziAICall
+                    {MARKETING_PRODUCT_NAME}
                   </span>
                 </SheetTitle>
                 <SheetDescription className="sr-only">Marketing site navigation</SheetDescription>
@@ -166,47 +116,31 @@ export function PublicHeader() {
 
               <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-3 py-4">
                 <ul className="space-y-0.5">
-                  {[...publicNavLinks.slice(0, 2)].map((item) => (
+                  {marketingHeaderNav.map((item) => (
                     <li key={item.href}>
-                      <MobileNavLink item={item} currentPath={currentPath} onNavigate={go} />
-                    </li>
-                  ))}
-                </ul>
-                <p className="px-3 pb-1 pt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Industries
-                </p>
-                <ul className="space-y-0.5">
-                  {industries.map((item) => (
-                    <li key={item.href}>
-                      <MobileNavLink item={item} currentPath={currentPath} onNavigate={go} />
-                    </li>
-                  ))}
-                </ul>
-                <p className="px-3 pb-1 pt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Company
-                </p>
-                <ul className="space-y-0.5">
-                  {publicNavLinks.slice(2).map((item) => (
-                    <li key={item.href}>
-                      <MobileNavLink item={item} currentPath={currentPath} onNavigate={go} />
+                      <MobileNavLink
+                        item={item}
+                        currentPath={currentPath}
+                        onNavigate={() => setMobileOpen(false)}
+                      />
                     </li>
                   ))}
                 </ul>
               </nav>
 
               <div className="space-y-2 border-t p-4">
-                <Button variant="ghost" className="w-full" onClick={() => go(publicActions.login.href)}>
-                  {publicActions.login.label}
+                <Button variant="ghost" className="w-full" asChild>
+                  <Link href={marketingAuthCtas.login.href} onClick={() => setMobileOpen(false)}>
+                    {marketingAuthCtas.login.label}
+                  </Link>
                 </Button>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => go(publicActions.bookDemo.href)}
-                >
-                  {publicActions.bookDemo.label}
-                </Button>
-                <Button className="w-full" onClick={() => go(publicActions.startTrial.href)}>
-                  {publicActions.startTrial.label}
+                <Button className="w-full" asChild>
+                  <Link
+                    href={marketingAuthCtas.getStarted.href}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {marketingAuthCtas.getStarted.label}
+                  </Link>
                 </Button>
               </div>
             </SheetContent>
@@ -222,31 +156,27 @@ function MobileNavLink({
   currentPath,
   onNavigate,
 }: {
-  item: PublicNavLink;
+  item: MarketingNavLink;
   currentPath: string;
-  onNavigate: (href: string) => void;
+  onNavigate: () => void;
 }) {
-  const active = currentPath === item.href;
+  const active = isActivePath(currentPath, item.href);
   return (
-    <a
+    <Link
       href={item.href}
       aria-current={active ? "page" : undefined}
-      onClick={(e) => {
-        e.preventDefault();
-        onNavigate(item.href);
-      }}
+      onClick={onNavigate}
       className={cn(
-        "block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+        "block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         active && "bg-primary/10 text-primary",
       )}
     >
       {item.label}
-    </a>
+    </Link>
   );
 }
 
 export function PublicFooter() {
-  const { navigate } = useShellNavigation();
   const year = new Date().getFullYear();
 
   return (
@@ -256,28 +186,24 @@ export function PublicFooter() {
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">
             <BrandLockup />
             <p className="mt-3 max-w-xs text-sm text-muted-foreground">
-              AI receptionists that answer every call for your business.
+              AI receptionists that answer inbound calls for your business.
             </p>
           </div>
 
-          {publicFooterGroups.map((group) => (
+          {marketingFooterGroups.map((group) => (
             <nav key={group.title} aria-label={`Footer — ${group.title}`}>
-              <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <h2 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 {group.title}
-              </h3>
+              </h2>
               <ul className="mt-3 space-y-2">
                 {group.links.map((item) => (
-                  <li key={item.href}>
-                    <a
+                  <li key={`${group.title}-${item.href}-${item.label}`}>
+                    <Link
                       href={item.href}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate(item.href);
-                      }}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -288,9 +214,11 @@ export function PublicFooter() {
         <Separator className="my-8" />
 
         <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
-          <span className="font-display text-sm font-semibold tracking-tight">EaziAICall</span>
+          <span className="font-display text-sm font-semibold tracking-tight">
+            {MARKETING_PRODUCT_NAME}
+          </span>
           <p className="text-xs text-muted-foreground">
-            © {year} EaziAICall. All rights reserved.
+              © {year} {MARKETING_PRODUCT_NAME}. All rights reserved.
           </p>
         </div>
       </div>

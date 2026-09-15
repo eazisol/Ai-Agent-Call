@@ -9,6 +9,7 @@ import {
 import { Business } from '../businesses/entities/business.entity';
 import type { OrganizationMemberRole } from '../organizations/entities/organization-member.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
+import { EntitlementsService } from '../subscriptions/entitlements.service';
 import { VoicesService, type VoiceSummaryView } from '../voices/voices.service';
 import { assertAgentCan } from './agent-permissions';
 import {
@@ -65,6 +66,7 @@ export class AgentsService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly organizations: OrganizationsService,
+    private readonly entitlements: EntitlementsService,
     @InjectRepository(Agent)
     private readonly agents: Repository<Agent>,
     @InjectRepository(Business)
@@ -86,6 +88,7 @@ export class AgentsService {
       organizationId,
     );
     assertAgentCan(membership.role, 'create_agent');
+    await this.entitlements.assertCanCreateAgent(organizationId);
     const business = await this.requireActiveBusiness(
       organizationId,
       businessId,
