@@ -103,9 +103,12 @@
 
 | Item | Value |
 | --- | --- |
-| Deployed with this release | **NO** (Vercel still pre-marketing: `/` → `/dashboard`; `/pricing` 404) |
-| Backend contract for pricing | **READY** — public plans 200 + empty |
-| Note | Approved P1 marketing code remains local/unpushed; deploy separately when frontend is released to Vercel with `INTERNAL_BACKEND_ORIGIN` / `INTERNAL_API_BASE_URL` |
+| Deployed with this release | **YES** (commit `95ec18e` pushed to `main`; Vercel production updated) |
+| `/` | **200** (marketing home; no longer forced `/dashboard` redirect) |
+| `/pricing` | **200** |
+| Pricing state | **EMPTY** — “Plans are being finalized” |
+| Fake plans / `legacy_production` | **NO** |
+| Backend contract | `GET /api/v1/public/plans` → **200** `{"plans":[]}` |
 
 ## Gates
 

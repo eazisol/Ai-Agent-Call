@@ -30,8 +30,7 @@ If unset, helper falls back to `http://127.0.0.1:3000/api/v1`. Upstream non-2xx 
 ## Deployed notes
 
 - **M25 backend production (2026-09-15):** ALB `GET /api/v1/public/plans` → **200** `{"plans":[]}` on ECS `eaziacall-prod-backend:13`. See `docs/aws-deployment/M25-production-release.md`.
-- Vercel production may still serve pre-marketing `/` → `/dashboard` and `/pricing` **404** until the approved P1 marketing frontend is pushed/deployed.
-- After marketing deploy, empty catalog must render **“Plans are being finalized”** (not the temporary-unavailable error).
+- **Marketing P1 production (same day):** `/pricing` → **200** empty state (“Plans are being finalized”); `/` is marketing home (**200**).
 
 ## Related
 
