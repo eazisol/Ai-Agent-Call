@@ -9,6 +9,12 @@ const LEGACY_CLOUDFRONT_ORIGINS = new Set([
   "https://d1skouyk8kdayh.cloudfront.net",
 ]);
 
+/** Deleted/replaced ALB hostnames — remap to current DEFAULT if still set in Vercel env. */
+const LEGACY_ALB_ORIGINS = new Set([
+  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
+  "https://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
+]);
+
 const HOP_BY_HOP_HEADERS = new Set([
   "connection",
   "keep-alive",
@@ -51,6 +57,16 @@ export function validateProxyPathSegments(segments) {
 
 export function buildBackendProxyUpstreamPath(segments) {
   validateProxyPathSegments(segments);
+  // Nest excludes health/* from the api/v1 global prefix (ALB target HC + probes).
+  if (segments[0] === "health") {
+    if (segments.length === 1) return "/health/live";
+    if (
+      segments.length === 2 &&
+      (segments[1] === "live" || segments[1] === "ready")
+    ) {
+      return `/health/${encodeURIComponent(segments[1])}`;
+    }
+  }
   return `/api/v1/${segments.map(encodeURIComponent).join("/")}`;
 }
 
@@ -65,7 +81,11 @@ function isAllowedProxyOrigin(parsed) {
 
 export function resolveBackendProxyOrigin(configuredOrigin) {
   let origin = (configuredOrigin || DEFAULT_BACKEND_PROXY_ORIGIN).trim();
-  if (LEGACY_CLOUDFRONT_ORIGINS.has(origin.replace(/\/$/, ""))) {
+  const normalizedOrigin = origin.replace(/\/$/, "");
+  if (
+    LEGACY_CLOUDFRONT_ORIGINS.has(normalizedOrigin) ||
+    LEGACY_ALB_ORIGINS.has(normalizedOrigin)
+  ) {
     origin = DEFAULT_BACKEND_PROXY_ORIGIN;
   }
   const parsed = new URL(origin);

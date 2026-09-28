@@ -86,3 +86,22 @@ test("allows temporary http ALB upstream origins", () => {
 test("rejects arbitrary non-https upstream origins", () => {
   assert.throws(() => resolveBackendProxyOrigin("http://example.com"));
 });
+
+test("falls back from deleted ALB origin to current DEFAULT", () => {
+  assert.equal(
+    resolveBackendProxyOrigin(
+      "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
+    ),
+    DEFAULT_BACKEND_PROXY_ORIGIN,
+  );
+});
+
+test("maps /api/backend/health to Nest /health/live (outside api/v1)", () => {
+  assert.equal(buildBackendProxyUpstreamPath(["health"]), "/health/live");
+  assert.equal(buildBackendProxyUpstreamPath(["health", "live"]), "/health/live");
+  assert.equal(buildBackendProxyUpstreamPath(["health", "ready"]), "/health/ready");
+  assert.equal(
+    buildBackendProxyUpstreamUrl(["health"], "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com"),
+    `${DEFAULT_BACKEND_PROXY_ORIGIN}/health/live`,
+  );
+});
