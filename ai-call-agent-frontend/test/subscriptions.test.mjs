@@ -203,13 +203,12 @@ test("fake 1820/2500 usage is not part of UsageSummary contract anymore", async 
   assert.match(source, /href: "\/settings\/plan"/);
 });
 
-test("billing bottom nav points to billing route", async () => {
+test("plan bottom nav points to settings plan route", async () => {
   const fsp = await import("node:fs/promises");
   const source = await fsp.readFile(
     path.resolve("src/mocks/portal-shell.ts"),
     "utf8",
   );
-  assert.match(source, /id: "billing"[\s\S]*href: "\/billing"/);
   assert.match(source, /id: "plan"[\s\S]*href: "\/settings\/plan"/);
-  assert.equal(source.includes('href: "/billing"'), true);
+  assert.equal(source.includes('href: "/settings/plan"'), true);
 });
