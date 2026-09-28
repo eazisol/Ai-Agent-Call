@@ -2,7 +2,7 @@
 
 /** Temporary no-domain production ALB origin (HTTP until custom domain + ACM). */
 export const DEFAULT_BACKEND_PROXY_ORIGIN =
-  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com";
+  "http://eaziacall-prod-alb-948928283.us-east-1.elb.amazonaws.com";
 
 const LEGACY_CLOUDFRONT_ORIGINS = new Set([
   "https://dl1t1qnfxrdka.cloudfront.net",

@@ -16,7 +16,7 @@ const FRONTEND =
   "https://eazi-ai-call.vercel.app";
 const BACKEND =
   process.env.EAZI_PROD_BACKEND_URL?.replace(/\/$/, "") ??
-  "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com";
+  "http://eaziacall-prod-alb-948928283.us-east-1.elb.amazonaws.com";
 const EMAIL = process.env.EAZI_PROD_TEST_EMAIL?.trim();
 const PASSWORD = process.env.EAZI_PROD_TEST_PASSWORD;
 const DEFAULT_ORG_ID =
