@@ -9,7 +9,7 @@ const LEGACY_CLOUDFRONT_ORIGINS = new Set([
   "https://d1skouyk8kdayh.cloudfront.net",
 ]);
 
-/** Deleted/replaced ALB hostnames — remap to current DEFAULT if still set in Vercel env. */
+/** Deleted/replaced ALB hostnames - remap to current DEFAULT if still set in Vercel env. */
 const LEGACY_ALB_ORIGINS = new Set([
   "http://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
   "https://eaziacall-prod-alb-2044075500.us-east-1.elb.amazonaws.com",
