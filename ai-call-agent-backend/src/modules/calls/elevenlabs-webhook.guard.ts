@@ -72,7 +72,11 @@ export class ElevenLabsWebhookGuard implements CanActivate {
       .map((part) => part.slice(3).trim().toLowerCase())
       .filter((digest) => /^[0-9a-f]+$/.test(digest));
 
-    if (!timestamp || !/^\d+$/.test(timestamp) || providedDigests.length === 0) {
+    if (
+      !timestamp ||
+      !/^\d+$/.test(timestamp) ||
+      providedDigests.length === 0
+    ) {
       return false;
     }
 

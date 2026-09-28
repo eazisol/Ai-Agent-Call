@@ -1,4 +1,10 @@
-import { Allow, IsObject, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  Allow,
+  IsObject,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 /**
  * Accepts both flat legacy payloads and the official post-call envelope:

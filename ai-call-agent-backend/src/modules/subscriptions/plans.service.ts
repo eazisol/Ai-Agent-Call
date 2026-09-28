@@ -103,12 +103,9 @@ export class PlansService {
   async requireByCode(code: string): Promise<Plan> {
     const plan = await this.findByCode(code);
     if (!plan) {
-      throw new ApplicationError(
-        'PLAN_NOT_FOUND',
-        'Plan not found.',
-        404,
-        { code },
-      );
+      throw new ApplicationError('PLAN_NOT_FOUND', 'Plan not found.', 404, {
+        code,
+      });
     }
     return plan;
   }
@@ -310,7 +307,10 @@ export class PlansService {
     }
 
     if (isBooleanEntitlementKey(input.entitlementKey)) {
-      if (typeof input.valueBoolean !== 'boolean' || input.valueInteger != null) {
+      if (
+        typeof input.valueBoolean !== 'boolean' ||
+        input.valueInteger != null
+      ) {
         throw new ApplicationError(
           'INVALID_PLAN_ENTITLEMENT',
           'Boolean entitlements require valueBoolean and null valueInteger.',

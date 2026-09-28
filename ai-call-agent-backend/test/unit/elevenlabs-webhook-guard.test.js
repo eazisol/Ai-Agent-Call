@@ -18,7 +18,11 @@ function createGuard({ secret = SECRET, nodeEnv = 'test' } = {}) {
   return new ElevenLabsWebhookGuard(config);
 }
 
-function signOfficial(rawBody, secret = SECRET, timestamp = String(Math.floor(Date.now() / 1000))) {
+function signOfficial(
+  rawBody,
+  secret = SECRET,
+  timestamp = String(Math.floor(Date.now() / 1000)),
+) {
   const bodyBuffer = Buffer.from(rawBody, 'utf8');
   const digest = createHmac('sha256', secret)
     .update(`${timestamp}.${bodyBuffer.toString('utf8')}`, 'utf8')

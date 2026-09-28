@@ -30,7 +30,8 @@ function createPlansService(seedPlans = []) {
             return row.billingVisibility === where.billingVisibility;
           }
           // In(['public','authenticated']) from TypeORM often stored as FindOperator
-          const values = where.billingVisibility._value ?? where.billingVisibility.value;
+          const values =
+            where.billingVisibility._value ?? where.billingVisibility.value;
           if (Array.isArray(values)) {
             return values.includes(row.billingVisibility);
           }

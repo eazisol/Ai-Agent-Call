@@ -177,7 +177,10 @@ export class EntitlementsService {
     const now = new Date();
 
     if (subscription.status === 'trialing') {
-      if (subscription.trialEnd && subscription.trialEnd.getTime() < now.getTime()) {
+      if (
+        subscription.trialEnd &&
+        subscription.trialEnd.getTime() < now.getTime()
+      ) {
         throw new ApplicationError(
           'TRIAL_EXPIRED',
           'Your trial has expired.',
@@ -320,7 +323,10 @@ export class EntitlementsService {
     }
 
     for (const row of rows) {
-      if (row.valueType === 'boolean' && typeof row.valueBoolean === 'boolean') {
+      if (
+        row.valueType === 'boolean' &&
+        typeof row.valueBoolean === 'boolean'
+      ) {
         entitlements[row.entitlementKey] = row.valueBoolean;
         features[row.entitlementKey] = row.valueBoolean;
       } else if (

@@ -3,6 +3,8 @@
 import * as React from "react";
 
 import { useOptionalOrganizationSession } from "@/components/organizations/organization-session";
+import { useEffectTask } from "@/hooks/use-effect-task";
+
 import {
   subscriptionsApi,
   type EntitlementsView,
@@ -44,7 +46,8 @@ export function SubscriptionProvider({
     setTick((value) => value + 1);
   }, []);
 
-  React.useEffect(() => {
+  const load = React.useCallback(async () => {
+    void tick;
     if (!orgId) {
       setStatus("idle");
       setSubscription(null);
@@ -54,52 +57,53 @@ export function SubscriptionProvider({
       return;
     }
 
-    let cancelled = false;
     setStatus("loading");
     setError(null);
     setErrorCode(undefined);
 
-    void (async () => {
-      const [subResult, entResult] = await Promise.all([
-        subscriptionsApi.getSubscription(),
-        subscriptionsApi.getEntitlements(),
-      ]);
-      if (cancelled) {
-        return;
-      }
-      if (!subResult.ok) {
-        setStatus("error");
-        setSubscription(null);
-        setEntitlements(null);
-        setError(subResult.message);
-        setErrorCode(subResult.code);
-        return;
-      }
-      setSubscription(subResult.data);
-      if (entResult.ok) {
-        setEntitlements(entResult.data);
-      } else {
-        setEntitlements(null);
-      }
-      setStatus("ready");
-    })();
-
-    return () => {
-      cancelled = true;
-    };
+    const [subResult, entResult] = await Promise.all([
+      subscriptionsApi.getSubscription(),
+      subscriptionsApi.getEntitlements(),
+    ]);
+    if (!subResult.ok) {
+      setStatus("error");
+      setSubscription(null);
+      setEntitlements(null);
+      setError(subResult.message);
+      setErrorCode(subResult.code);
+      return;
+    }
+    setSubscription(subResult.data);
+    if (entResult.ok) {
+      setEntitlements(entResult.data);
+    } else {
+      setEntitlements(null);
+    }
+    setStatus("ready");
   }, [orgId, tick]);
 
-  const value = React.useMemo<SubscriptionSnapshot>(
-    () => ({
+  useEffectTask(load, [load]);
+
+  const value = React.useMemo<SubscriptionSnapshot>(() => {
+    if (!orgId) {
+      return {
+        status: "idle",
+        subscription: null,
+        entitlements: null,
+        error: null,
+        errorCode: undefined,
+        refresh,
+      };
+    }
+    return {
       status,
       subscription,
       entitlements,
       error,
       errorCode,
       refresh,
-    }),
-    [status, subscription, entitlements, error, errorCode, refresh],
-  );
+    };
+  }, [orgId, status, subscription, entitlements, error, errorCode, refresh]);
 
   return (
     <SubscriptionContext.Provider value={value}>

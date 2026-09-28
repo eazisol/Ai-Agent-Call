@@ -46,7 +46,11 @@ test('purchase is blocked by PLAN_LIMIT_REACHED before telephony.purchaseNumber'
   };
 
   const businesses = {
-    findOne: async () => ({ id: bizId, organizationId: orgId, status: 'active' }),
+    findOne: async () => ({
+      id: bizId,
+      organizationId: orgId,
+      status: 'active',
+    }),
   };
 
   const phoneNumbers = {
@@ -76,7 +80,13 @@ test('purchase is blocked by PLAN_LIMIT_REACHED before telephony.purchaseNumber'
     telephony,
     phoneNumbers,
     { find: async () => [], save: async (x) => x },
-    { findOne: async () => ({ id: randomUUID(), businessId: bizId, status: 'active' }) },
+    {
+      findOne: async () => ({
+        id: randomUUID(),
+        businessId: bizId,
+        status: 'active',
+      }),
+    },
     businesses,
   );
 
@@ -87,8 +97,7 @@ test('purchase is blocked by PLAN_LIMIT_REACHED before telephony.purchaseNumber'
         confirm: true,
       }),
     (error) =>
-      error instanceof ApplicationError &&
-      error.code === 'PLAN_LIMIT_REACHED',
+      error instanceof ApplicationError && error.code === 'PLAN_LIMIT_REACHED',
   );
   assert.equal(purchaseCalls, 0);
 });

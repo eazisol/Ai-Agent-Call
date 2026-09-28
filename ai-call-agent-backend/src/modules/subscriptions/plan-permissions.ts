@@ -1,7 +1,10 @@
 import { ApplicationError } from '../../common/errors/application-error';
 import type { OrganizationMemberRole } from '../organizations/entities/organization-member.entity';
 
-export type PlanAction = 'view_plans' | 'view_subscription' | 'view_entitlements';
+export type PlanAction =
+  | 'view_plans'
+  | 'view_subscription'
+  | 'view_entitlements';
 
 const PLAN_PERMISSIONS: Record<PlanAction, OrganizationMemberRole[]> = {
   view_plans: ['owner', 'admin', 'manager', 'viewer'],

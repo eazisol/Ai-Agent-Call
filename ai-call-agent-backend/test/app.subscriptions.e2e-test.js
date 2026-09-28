@@ -7,9 +7,7 @@ const {
   PublicPlansController,
   SubscriptionsController,
 } = require('../dist/modules/subscriptions/subscriptions.controller');
-const {
-  PlansService,
-} = require('../dist/modules/subscriptions/plans.service');
+const { PlansService } = require('../dist/modules/subscriptions/plans.service');
 const {
   SubscriptionsService,
 } = require('../dist/modules/subscriptions/subscriptions.service');
@@ -27,9 +25,7 @@ const {
   GlobalExceptionFilter,
 } = require('../dist/common/filters/global-exception.filter');
 const { ConfigService } = require('@nestjs/config');
-const {
-  ApplicationError,
-} = require('../dist/common/errors/application-error');
+const { ApplicationError } = require('../dist/common/errors/application-error');
 const {
   ENTITLEMENT_KEYS,
 } = require('../dist/modules/subscriptions/entitlement-keys');
@@ -366,9 +362,7 @@ test('unauthenticated subscription endpoints are rejected', async () => {
 
   const app = moduleRef.createNestApplication();
   app.setGlobalPrefix('api/v1');
-  app.useGlobalPipes(
-    new ValidationPipe({ whitelist: true, transform: true }),
-  );
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useGlobalFilters(new GlobalExceptionFilter());
   await app.init();
 

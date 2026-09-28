@@ -2,10 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PlansService } from './plans.service';
-import {
-  LEGACY_PRODUCTION_PLAN_CODE,
-  type Plan,
-} from './entities/plan.entity';
+import { LEGACY_PRODUCTION_PLAN_CODE, type Plan } from './entities/plan.entity';
 import {
   Subscription,
   type SubscriptionStatus,

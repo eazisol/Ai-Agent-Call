@@ -19,9 +19,8 @@ export const ENTITLEMENT_KEYS = {
 export type EntitlementKey =
   (typeof ENTITLEMENT_KEYS)[keyof typeof ENTITLEMENT_KEYS];
 
-export const ALL_ENTITLEMENT_KEYS: readonly EntitlementKey[] = Object.values(
-  ENTITLEMENT_KEYS,
-);
+export const ALL_ENTITLEMENT_KEYS: readonly EntitlementKey[] =
+  Object.values(ENTITLEMENT_KEYS);
 
 export const BOOLEAN_ENTITLEMENT_KEYS: readonly EntitlementKey[] = [
   ENTITLEMENT_KEYS.VOICE_CLONING_ENABLED,

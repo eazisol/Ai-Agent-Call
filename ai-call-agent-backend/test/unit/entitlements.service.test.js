@@ -269,7 +269,10 @@ test('inactive subscription clears entitlements in resolved view', async () => {
     limits: { [ENTITLEMENT_KEYS.AGENTS_MAX]: 10 },
   });
   const resolved = await service.getResolvedEntitlements(organizationId);
-  assert.equal(resolved.features[ENTITLEMENT_KEYS.VOICE_CLONING_ENABLED], false);
+  assert.equal(
+    resolved.features[ENTITLEMENT_KEYS.VOICE_CLONING_ENABLED],
+    false,
+  );
   assert.equal(resolved.limits[ENTITLEMENT_KEYS.AGENTS_MAX], 0);
 });
 

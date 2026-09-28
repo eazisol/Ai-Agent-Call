@@ -1,7 +1,5 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createRequire } from "node:module";
-import { pathToFileURL } from "node:url";
 import path from "node:path";
 
 // subscription-messages.ts is TypeScript — test pure logic by duplicating
@@ -205,12 +203,13 @@ test("fake 1820/2500 usage is not part of UsageSummary contract anymore", async 
   assert.match(source, /href: "\/settings\/plan"/);
 });
 
-test("billing bottom nav points to plan settings", async () => {
-  const fs = await import("node:fs/promises");
-  const source = await fs.readFile(
+test("billing bottom nav points to billing route", async () => {
+  const fsp = await import("node:fs/promises");
+  const source = await fsp.readFile(
     path.resolve("src/mocks/portal-shell.ts"),
     "utf8",
   );
-  assert.match(source, /href: "\/settings\/plan"/);
-  assert.equal(source.includes('href: "/billing"'), false);
+  assert.match(source, /id: "billing"[\s\S]*href: "\/billing"/);
+  assert.match(source, /id: "plan"[\s\S]*href: "\/settings\/plan"/);
+  assert.equal(source.includes('href: "/billing"'), true);
 });
