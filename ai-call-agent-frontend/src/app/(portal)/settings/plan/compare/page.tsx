@@ -17,14 +17,7 @@ import {
   subscriptionsApi,
   type AuthenticatedPlanView,
 } from "@/lib/subscriptions-api";
-import {
-  billingApi,
-  canManageBilling,
-  mapBillingError,
-  type BillingInterval,
-} from "@/lib/billing-api";
 import { useEffectTask } from "@/hooks/use-effect-task";
-import { toast } from "sonner";
 
 export default function ComparePlansPage() {
   const org = useOrganizationSession();
@@ -33,8 +26,6 @@ export default function ComparePlansPage() {
   const [error, setError] = React.useState<string | null>(null);
   const [plans, setPlans] = React.useState<AuthenticatedPlanView[]>([]);
   const [reload, setReload] = React.useState(0);
-  const [checkoutPendingCode, setCheckoutPendingCode] = React.useState<string | null>(null);
-  const manage = canManageBilling(org.active?.role);
 
   const loadPlans = React.useCallback(async () => {
     void reload;
@@ -59,7 +50,7 @@ export default function ComparePlansPage() {
   useEffectTask(loadPlans, [loadPlans]);
 
   if (org.status === "loading") {
-    return <p className="text-sm text-muted-foreground">Loading...</p>;
+    return <p className="text-sm text-muted-foreground">Loading…</p>;
   }
 
   if (!org.active) {
@@ -76,7 +67,7 @@ export default function ComparePlansPage() {
     return (
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold tracking-tight">Compare plans</h1>
-        <p className="text-sm text-muted-foreground">Loading...</p>
+        <p className="text-sm text-muted-foreground">Loading plans…</p>
       </div>
     );
   }
@@ -92,20 +83,6 @@ export default function ComparePlansPage() {
   }
 
   const currentCode = subscription?.plan.code;
-
-  async function startCheckout(planCode: string, interval: BillingInterval) {
-    if (!manage || checkoutPendingCode) return;
-    setCheckoutPendingCode(planCode);
-    const result = await billingApi.createCheckout({ planCode, interval });
-    setCheckoutPendingCode(null);
-    if (!result.ok) {
-      const mapped = mapBillingError(result.code, result.message);
-      toast.error(mapped.title, { description: mapped.description });
-      return;
-    }
-    // Redirect only — never optimistically activate subscription.
-    window.location.assign(result.data.url);
-  }
 
   return (
     <div className="mx-auto w-full max-w-4xl space-y-6">
@@ -212,54 +189,14 @@ export default function ComparePlansPage() {
                   </dl>
                 ) : null}
 
-                <div className="mt-auto space-y-2 pt-5">
+                <div className="mt-auto pt-5">
                   {isCurrent ? (
                     <Button disabled className="w-full" variant="secondary">
                       Current plan
                     </Button>
-                  ) : manage ? (
-                    <>
-                      {plan.price.monthlyCents != null ? (
-                        <Button
-                          type="button"
-                          className="w-full"
-                          disabled={checkoutPendingCode === plan.code}
-                          aria-busy={checkoutPendingCode === plan.code}
-                          onClick={() => void startCheckout(plan.code, "month")}
-                        >
-                          {checkoutPendingCode === plan.code
-                            ? "Starting checkout…"
-                            : "Checkout monthly"}
-                        </Button>
-                      ) : null}
-                      {plan.price.annualCents != null ? (
-                        <Button
-                          type="button"
-                          className="w-full"
-                          variant="outline"
-                          disabled={checkoutPendingCode === plan.code}
-                          aria-busy={checkoutPendingCode === plan.code}
-                          onClick={() => void startCheckout(plan.code, "year")}
-                        >
-                          {checkoutPendingCode === plan.code
-                            ? "Starting checkout…"
-                            : "Checkout annually"}
-                        </Button>
-                      ) : null}
-                      {plan.price.monthlyCents == null &&
-                      plan.price.annualCents == null ? (
-                        <Button disabled className="w-full" variant="outline">
-                          Price not published yet
-                        </Button>
-                      ) : null}
-                      <p className="text-xs text-muted-foreground">
-                        Checkout uses server price mapping. No plan-change or
-                        proration is applied from this page.
-                      </p>
-                    </>
                   ) : (
                     <Button disabled className="w-full" variant="outline">
-                      Contact an owner to manage billing
+                      Upgrade — billing setup coming soon
                     </Button>
                   )}
                 </div>

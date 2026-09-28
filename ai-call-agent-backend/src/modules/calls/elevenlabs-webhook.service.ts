@@ -95,9 +95,7 @@ export class ElevenLabsWebhookService {
     eventType: string;
   } {
     const data =
-      body.data && typeof body.data === 'object'
-        ? (body.data as Record<string, unknown>)
-        : undefined;
+      body.data && typeof body.data === 'object' ? body.data : undefined;
 
     const conversationId = this.asString(
       body.conversation_id ??

@@ -4,12 +4,10 @@ import { In, Repository } from 'typeorm';
 import { ApplicationError } from '../../common/errors/application-error';
 import {
   ALL_ENTITLEMENT_KEYS,
-  BOOLEAN_ENTITLEMENT_KEYS,
   ENTITLEMENT_KEYS,
   expectedValueTypeForKey,
   isBooleanEntitlementKey,
   isEntitlementKey,
-  isIntegerEntitlementKey,
   type EntitlementKey,
   type EntitlementValueType,
 } from './entitlement-keys';
